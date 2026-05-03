@@ -1,0 +1,13 @@
+torch 
+torchvision 
+pillow 
+transformers
+fastapi
+uvicorn[standard]
+python-multipart
+psutil
+aiofiles
+einops
+kornia
+timm
+pymongo
