@@ -446,6 +446,34 @@ async def remove_background(
     }
 
     await asyncio.to_thread(collection.insert_one, job_record)
+
+    if wait:
+        await process_job(job_id)
+        completed_job = await asyncio.to_thread(collection.find_one, {"jobId": job_id}, {"_id": 0})
+        if not completed_job:
+            raise HTTPException(status_code=500, detail="Job not found after processing")
+
+        if completed_job.get("status") != "completed":
+            return JSONResponse(
+                {
+                    "job_id": job_id,
+                    "status": completed_job.get("status", "failed"),
+                    "progress": completed_job.get("progress", 0),
+                    "error": completed_job.get("error"),
+                },
+                status_code=500,
+            )
+
+        output_path = Path(completed_job["outputPath"])
+        if not output_path.exists():
+            raise HTTPException(status_code=500, detail="Processed image not found")
+
+        return FileResponse(
+            output_path,
+            media_type="image/png",
+            headers={"X-Job-Id": job_id},
+        )
+
     set_dispatcher_wakeup()
     await broadcast_job_state(job_record)
 

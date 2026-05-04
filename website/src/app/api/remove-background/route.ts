@@ -52,13 +52,16 @@ function getHourKey(): string {
 }
 
 async function getMongoDB() {
-  if (!mongoClient) {
+  if (!mongoClient || !db) {
     const uri = process.env.NEXT_MONGODB_URI;
     if (!uri) {
       throw new Error("NEXT_MONGODB_URI not configured");
     }
-    mongoClient = new MongoClient(uri);
-    await mongoClient.connect();
+    if (!mongoClient) {
+      mongoClient = new MongoClient(uri);
+      await mongoClient.connect();
+    }
+
     db = mongoClient.db("bgremover");
     
     try {
@@ -85,7 +88,12 @@ async function getMongoDB() {
       }
     }
   }
-  return db!;
+
+  if (!db) {
+    throw new Error("Failed to initialize MongoDB connection");
+  }
+
+  return db;
 }
 
 function getUserUploadsCollection(database: Db): Collection<UserUpload> {
@@ -134,8 +142,9 @@ export async function POST(request: NextRequest) {
 
     const workerFormData = new FormData();
     workerFormData.append("file", file);
+    workerFormData.append("wait", "true");
 
-    const workerResponse = await fetchWithRetry(`${WORKER_API_BASE}/remove?wait=false`, {
+    const workerResponse = await fetchWithRetry(`${WORKER_API_BASE}/remove`, {
       method: "POST",
       body: workerFormData,
       headers: {
@@ -143,6 +152,33 @@ export async function POST(request: NextRequest) {
         "x-client-ip": clientKey,
       },
     });
+
+    const contentType = workerResponse.headers.get("content-type") || "";
+
+    if (contentType.includes("image/")) {
+      await userUploads.insertOne({
+        ip: clientKey,
+        fileName: file.name,
+        uploadedAt: new Date(),
+        hourKey,
+      });
+
+      const imageBuffer = await workerResponse.arrayBuffer();
+      const response = new NextResponse(imageBuffer, {
+        status: workerResponse.status,
+        headers: {
+          "Content-Type": contentType,
+          "Content-Disposition": workerResponse.headers.get("content-disposition") || "inline",
+          ...(workerResponse.headers.get("x-job-id") ? { "X-Job-Id": workerResponse.headers.get("x-job-id")! } : {}),
+        },
+      });
+
+      if (isNewSession) {
+        attachSessionCookie(response, sessionId);
+      }
+
+      return response;
+    }
 
     const data = await workerResponse.json();
 

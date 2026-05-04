@@ -158,9 +158,15 @@ export async function watchJobStatus(
   const workerBase = getWorkerApiBase();
   const eventSource = new EventSource(`${workerBase}/events/${jobId}`);
   let settled = false;
+  let fallbackTimer: number | undefined;
+  let fallbackPromise: Promise<JobStatusResponse> | null = null;
 
   return new Promise<JobStatusResponse>((resolve, reject) => {
     const cleanup = () => {
+      if (fallbackTimer !== undefined) {
+        window.clearTimeout(fallbackTimer);
+        fallbackTimer = undefined;
+      }
       if (eventSource.readyState !== EventSource.CLOSED) {
         eventSource.close();
       }
@@ -174,6 +180,27 @@ export async function watchJobStatus(
       cleanup();
       reject(error);
     };
+
+    const startPollingFallback = () => {
+      if (settled || fallbackPromise) {
+        return;
+      }
+
+      fallbackPromise = pollJobStatus(jobId, onProgress, maxAttempts, pollIntervalMs)
+        .then((data) => {
+          settled = true;
+          cleanup();
+          return data;
+        })
+        .catch((error) => {
+          rejectOnce(error instanceof Error ? error : new Error("Polling fallback failed"));
+          throw error;
+        });
+    };
+
+    fallbackTimer = window.setTimeout(() => {
+      startPollingFallback();
+    }, 10000);
 
     eventSource.onmessage = (event) => {
       try {
@@ -191,7 +218,7 @@ export async function watchJobStatus(
     };
 
     eventSource.onerror = () => {
-      rejectOnce(new Error("SSE connection error"));
+      startPollingFallback();
     };
   }).catch(() => pollJobStatus(jobId, onProgress, maxAttempts, pollIntervalMs));
 }

@@ -20,16 +20,24 @@ let mongoClient: MongoClient | null = null;
 let db: Db | null = null;
 
 async function getMongoDB() {
-  if (!mongoClient) {
+  if (!mongoClient || !db) {
     const uri = process.env.NEXT_MONGODB_URI;
     if (!uri) {
       throw new Error("NEXT_MONGODB_URI not configured");
     }
-    mongoClient = new MongoClient(uri);
-    await mongoClient.connect();
+    if (!mongoClient) {
+      mongoClient = new MongoClient(uri);
+      await mongoClient.connect();
+    }
+
     db = mongoClient.db("bgremover");
   }
-  return db!;
+
+  if (!db) {
+    throw new Error("Failed to initialize MongoDB connection");
+  }
+
+  return db;
 }
 
 function getJobsCollection(db: Db): Collection<JobDocument> {
