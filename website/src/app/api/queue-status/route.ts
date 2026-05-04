@@ -12,6 +12,16 @@ interface UserUpload {
   hourKey: string;
 }
 
+interface HourlyUsage {
+  _id?: ObjectId;
+  ip: string;
+  hourKey: string;
+  count: number;
+  createdAt: Date;
+  updatedAt: Date;
+  expiresAt: Date;
+}
+
 let mongoClient: MongoClient | null = null;
 let db: Db | null = null;
 
@@ -41,6 +51,11 @@ function getHourKey(): string {
   return `hour_${hour}`;
 }
 
+function getSecondsUntilHourReset(nowMs: number = Date.now()): number {
+  const nextHourMs = (Math.floor(nowMs / HOUR_WINDOW_MS) + 1) * HOUR_WINDOW_MS;
+  return Math.max(1, Math.ceil((nextHourMs - nowMs) / 1000));
+}
+
 async function getMongoDB() {
   if (!mongoClient || !db) {
     const uri = process.env.NEXT_MONGODB_URI;
@@ -66,6 +81,10 @@ function getUserUploadsCollection(database: Db): Collection<UserUpload> {
   return database.collection<UserUpload>("user_uploads");
 }
 
+function getHourlyUsageCollection(database: Db): Collection<HourlyUsage> {
+  return database.collection<HourlyUsage>("hourly_usage");
+}
+
 export async function GET(request: NextRequest) {
   const { sessionId, isNewSession } = getOrCreateSessionId(request);
   const clientKey = sessionId;
@@ -88,11 +107,13 @@ export async function GET(request: NextRequest) {
       remaining: HOURLY_LIMIT,
       in_queue: 0,
       completed: 0,
+      reset_in_seconds: getSecondsUntilHourReset(),
     };
 
     try {
       const mdb = await getMongoDB();
       const userUploads = getUserUploadsCollection(mdb);
+      const hourlyUsage = getHourlyUsageCollection(mdb);
       const hourKey = getHourKey();
       const hourStart = new Date(Date.now() - HOUR_WINDOW_MS);
 
@@ -103,12 +124,20 @@ export async function GET(request: NextRequest) {
         console.error("Cleanup error:", cleanupErr);
       }
 
-      // Count THIS IP's uploads in current hour
-      const userUploadCount = await userUploads.countDocuments({
-        ip: clientKey,
-        hourKey,
-        uploadedAt: { $gte: hourStart },
-      });
+      const usage = await hourlyUsage.findOne(
+        { ip: clientKey, hourKey },
+        { projection: { count: 1 } }
+      );
+      let userUploadCount = Math.min(HOURLY_LIMIT, usage?.count ?? 0);
+
+      if (!usage) {
+        const legacyCount = await userUploads.countDocuments({
+          ip: clientKey,
+          hourKey,
+          uploadedAt: { $gte: hourStart },
+        });
+        userUploadCount = Math.min(HOURLY_LIMIT, legacyCount);
+      }
 
       sessionStats = {
         uploads_used: userUploadCount,
@@ -116,6 +145,7 @@ export async function GET(request: NextRequest) {
         remaining: Math.max(0, HOURLY_LIMIT - userUploadCount),
         in_queue: 0,
         completed: userUploadCount,
+        reset_in_seconds: getSecondsUntilHourReset(),
       };
     } catch (e) {
       console.error("MongoDB error:", e);

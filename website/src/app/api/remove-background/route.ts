@@ -13,6 +13,16 @@ interface UserUpload {
   hourKey: string;
 }
 
+interface HourlyUsage {
+  _id?: ObjectId;
+  ip: string;
+  hourKey: string;
+  count: number;
+  createdAt: Date;
+  updatedAt: Date;
+  expiresAt: Date;
+}
+
 let mongoClient: MongoClient | null = null;
 let db: Db | null = null;
 
@@ -51,6 +61,11 @@ function getHourKey(): string {
   return `hour_${hour}`;
 }
 
+function getSecondsUntilHourReset(nowMs: number = Date.now()): number {
+  const nextHourMs = (Math.floor(nowMs / HOUR_WINDOW_MS) + 1) * HOUR_WINDOW_MS;
+  return Math.max(1, Math.ceil((nextHourMs - nowMs) / 1000));
+}
+
 async function getMongoDB() {
   if (!mongoClient || !db) {
     const uri = process.env.NEXT_MONGODB_URI;
@@ -87,6 +102,30 @@ async function getMongoDB() {
         console.warn('createIndex(uploadedAt) warning', e);
       }
     }
+
+    try {
+      await db.collection<HourlyUsage>("hourly_usage").createIndex(
+        { ip: 1, hourKey: 1 },
+        { unique: true }
+      );
+    } catch (e) {
+      if (!isIndexConflict(e)) {
+        console.warn("createIndex(hourly_usage ip,hourKey) warning", e);
+      }
+    }
+
+    try {
+      await db.collection<HourlyUsage>("hourly_usage").createIndex(
+        { expiresAt: 1 },
+        { expireAfterSeconds: 0 }
+      );
+    } catch (e) {
+      if (isIndexConflict(e)) {
+        console.warn("hourly_usage TTL index exists with different options; continuing");
+      } else {
+        console.warn("createIndex(hourly_usage expiresAt) warning", e);
+      }
+    }
   }
 
   if (!db) {
@@ -98,6 +137,75 @@ async function getMongoDB() {
 
 function getUserUploadsCollection(database: Db): Collection<UserUpload> {
   return database.collection<UserUpload>("user_uploads");
+}
+
+function getHourlyUsageCollection(database: Db): Collection<HourlyUsage> {
+  return database.collection<HourlyUsage>("hourly_usage");
+}
+
+async function reserveHourlyUploadSlot(
+  collection: Collection<HourlyUsage>,
+  clientKey: string,
+  hourKey: string,
+): Promise<{ allowed: boolean; used: number }> {
+  const now = Date.now();
+  const nowDate = new Date(now);
+  const expiresAt = new Date((Math.floor(now / HOUR_WINDOW_MS) + 1) * HOUR_WINDOW_MS);
+
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const reserved = await collection.findOneAndUpdate(
+        {
+          ip: clientKey,
+          hourKey,
+          count: { $lt: HOURLY_LIMIT },
+        },
+        {
+          $inc: { count: 1 },
+          $set: { updatedAt: nowDate, expiresAt },
+          $setOnInsert: {
+            ip: clientKey,
+            hourKey,
+            createdAt: nowDate,
+          },
+        },
+        {
+          upsert: true,
+          returnDocument: "after",
+        }
+      );
+
+      if (reserved) {
+        return { allowed: true, used: reserved.count };
+      }
+
+      const existing = await collection.findOne(
+        { ip: clientKey, hourKey },
+        { projection: { count: 1 } }
+      );
+
+      return {
+        allowed: false,
+        used: existing?.count ?? HOURLY_LIMIT,
+      };
+    } catch (error) {
+      const details = error as { code?: number; codeName?: string };
+      const isDuplicateKey = details.code === 11000 || details.codeName === "DuplicateKey";
+      if (!isDuplicateKey) {
+        throw error;
+      }
+    }
+  }
+
+  const existing = await collection.findOne(
+    { ip: clientKey, hourKey },
+    { projection: { count: 1 } }
+  );
+
+  return {
+    allowed: false,
+    used: existing?.count ?? HOURLY_LIMIT,
+  };
 }
 
 export async function POST(request: NextRequest) {
@@ -117,26 +225,21 @@ export async function POST(request: NextRequest) {
 
     const db = await getMongoDB();
     const userUploads = getUserUploadsCollection(db);
+    const hourlyUsage = getHourlyUsageCollection(db);
     const hourKey = getHourKey();
+    const resetInSeconds = getSecondsUntilHourReset();
 
-    // Count uploads for this IP in current hour
-    const hourStart = new Date(Date.now() - HOUR_WINDOW_MS);
-    const userUploadCount = await userUploads.countDocuments({
-      ip: clientKey,
-      hourKey,
-      uploadedAt: { $gte: hourStart },
-    });
+    const slotReservation = await reserveHourlyUploadSlot(hourlyUsage, clientKey, hourKey);
 
-    // Check hourly limit (25 per IP per hour)
-    if (userUploadCount >= HOURLY_LIMIT) {
-      const hoursUntilReset = 1;
+    if (!slotReservation.allowed) {
       return NextResponse.json({
         error: "_hourly_limit",
-        message: `Hourly limit reached (${userUploadCount}/${HOURLY_LIMIT}). Try again in 1 hour.`,
-        uploads_used: userUploadCount,
+        message: `Hourly limit reached (${slotReservation.used}/${HOURLY_LIMIT}). Visit after 1 hour.`,
+        uploads_used: slotReservation.used,
         uploads_limit: HOURLY_LIMIT,
         remaining: 0,
-        resets_in_hours: hoursUntilReset,
+        retry_after: resetInSeconds,
+        reset_in_seconds: resetInSeconds,
       }, { status: 403 });
     }
 
@@ -196,15 +299,17 @@ export async function POST(request: NextRequest) {
       hourKey,
     });
 
-    const remaining = HOURLY_LIMIT - userUploadCount - 1;
+    const remaining = Math.max(0, HOURLY_LIMIT - slotReservation.used);
 
     const response = NextResponse.json({ 
       job_id: jobId, 
       status: data.status || "queued",
       progress: data.progress ?? 0,
-      uploads_used: userUploadCount + 1,
+      uploads_used: slotReservation.used,
       uploads_limit: HOURLY_LIMIT,
       remaining,
+      retry_after: resetInSeconds,
+      reset_in_seconds: resetInSeconds,
     });
 
     if (isNewSession) {

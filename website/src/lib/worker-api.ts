@@ -50,6 +50,8 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (err as any).code = error.error;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (err as any).status = response.status;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (err as any).retryAfter = error.retry_after;
     throw err;
   }
@@ -280,6 +282,7 @@ export interface QueueStatus {
   uploads_used: number;
   uploads_limit: number;
   remaining: number;
+  reset_in_seconds?: number;
   in_queue: number;
   completed: number;
 }
