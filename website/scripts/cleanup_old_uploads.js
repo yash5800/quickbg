@@ -4,6 +4,10 @@ const { MongoClient } = require("mongodb");
 
 async function main() {
   const uri = process.env.NEXT_MONGODB_URI;
+if (!uri || !uri.startsWith('mongodb')) {
+  console.error('Invalid or missing MongoDB URI');
+  process.exit(2);
+}
   if (!uri) {
     console.error("NEXT_MONGODB_URI is not set");
     process.exit(2);

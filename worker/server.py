@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Optional
 
 import torch
+import shutil
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
@@ -515,6 +516,28 @@ async def queue_status():
         }
     )
 
+# New endpoint: list jobs for a client (or all if internal)
+@app.get("/jobs")
+async def list_jobs(request: Request, limit: int = 50, skip: int = 0):
+    collection = get_job_store()
+    client_key = request.headers.get("x-client-ip") or (request.client.host if request.client else "anonymous")
+    # Internal callers can see all jobs; external limited to their own
+    if is_internal_request(request):
+        query = {}
+    else:
+        query = {"clientKey": client_key}
+    cursor = collection.find(query, {"_id": 0}).skip(skip).limit(limit).sort("createdAt", -1)
+    raw_jobs = await asyncio.to_thread(list, cursor)
+    # Convert datetime fields to ISO strings for JSON serialization
+    jobs = []
+    for job in raw_jobs:
+        for key, value in job.items():
+            if isinstance(value, (datetime,)):
+                job[key] = value.isoformat()
+        jobs.append(job)
+    return JSONResponse(jobs)
+
+
 
 @app.get("/result/{job_id}")
 async def get_result(job_id: str):
@@ -569,6 +592,55 @@ async def job_events(job_id: str, request: Request):
             await unregister_job_subscriber(job_id, subscriber_queue)
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+# New endpoint: restore original image
+@app.get("/restore/{job_id}")
+async def restore_original(job_id: str):
+    collection = get_job_store()
+    job = await asyncio.to_thread(collection.find_one, {"jobId": job_id}, {"_id": 0})
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    original_path = Path(job.get("inputPath", ""))
+    if not original_path.exists():
+        raise HTTPException(status_code=404, detail="Original image not found")
+    return FileResponse(original_path, media_type="image/png", headers={"X-Job-Id": job_id})
+
+# New endpoint: erase (re-process) an existing original image
+@app.post("/erase/{job_id}")
+async def erase_existing(job_id: str, request: Request):
+    if not is_internal_request(request):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    collection = get_job_store()
+    job = await asyncio.to_thread(collection.find_one, {"jobId": job_id}, {"_id": 0})
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    original_path = Path(job.get("inputPath", ""))
+    if not original_path.exists():
+        raise HTTPException(status_code=404, detail="Original image not found")
+    # Create a new job record that points to the same original file
+    new_job_id = str(uuid.uuid4())
+    input_path, output_path = build_job_paths(new_job_id)
+    # Copy original file to new input location
+    shutil.copy2(original_path, input_path)
+    client_key = job.get("clientKey", "anonymous")
+    new_job_record = {
+        "jobId": new_job_id,
+        "status": "queued",
+        "progress": 0,
+        "createdAt": utcnow(),
+        "updatedAt": utcnow(),
+        "expiresAt": utcnow() + timedelta(hours=JOB_RETENTION_HOURS),
+        "inputPath": str(input_path),
+        "outputPath": str(output_path),
+        "fileName": job.get("fileName", f"{new_job_id}.png"),
+        "clientKey": client_key,
+        "error": None,
+    }
+    await asyncio.to_thread(collection.insert_one, new_job_record)
+    set_dispatcher_wakeup()
+    await broadcast_job_state(new_job_record)
+    return JSONResponse({"job_id": new_job_id, "status": "queued", "progress": 0}, status_code=202)
+
 
 
 @app.get("/health")
