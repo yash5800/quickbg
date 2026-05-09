@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload,
   Download,
   Trash2,
-  Sparkles,
   CheckCircle2,
   AlertCircle,
   Loader2,
@@ -51,8 +50,8 @@ export default function Home() {
               isDragActive={isDragActive}
             />
           ) : (
-            <Dashboard
-              key="dashboard"
+            <GalleryView
+              key="gallery"
               images={images}
               getRootProps={getRootProps}
               getInputProps={getInputProps}
@@ -113,8 +112,17 @@ function HeroSection({ getRootProps, getInputProps, isDragActive }: any) {
   );
 }
 
-function Dashboard({ images, getRootProps, getInputProps }: any) {
+function GalleryView({ images, getRootProps, getInputProps }: any) {
   const { removeImage } = useImages();
+  const [selectedId, setSelectedId] = useState(images[0]?.id || null);
+
+  React.useEffect(() => {
+    if (images.length > 0 && !selectedId) {
+      setSelectedId(images[0].id);
+    }
+  }, [images, selectedId]);
+
+  const selectedImage = images.find((img: ImageItem) => img.id === selectedId);
 
   return (
     <motion.div
@@ -122,18 +130,17 @@ function Dashboard({ images, getRootProps, getInputProps }: any) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Your Images</h2>
+          <h2 className="text-2xl font-bold">Remove Background</h2>
           <p className="text-muted-foreground text-sm mt-1">
-            {images.length} {images.length === 1 ? "image" : "images"} uploaded
+            {images.length} {images.length === 1 ? "image" : "images"}
           </p>
         </div>
 
         <Button
           variant="outline"
           size="sm"
-          className="cursor-pointer"
           onClick={() => document.getElementById("add-more-input")?.click()}
         >
           <input id="add-more-input" {...getInputProps()} />
@@ -142,35 +149,55 @@ function Dashboard({ images, getRootProps, getInputProps }: any) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {images.map((image: ImageItem) => (
-          <JobCard key={image.id} image={image} onRemove={() => removeImage(image.id)} />
-        ))}
+      <div className="grid grid-cols-1 gap-8">
+        {selectedImage && (
+          <SelectedPreview
+            key={selectedImage.id}
+            image={selectedImage}
+            onRemove={() => {
+              const remaining = images.filter((i: ImageItem) => i.id !== selectedImage.id);
+              if (remaining.length > 0) {
+                setSelectedId(remaining[0].id);
+              }
+              removeImage(selectedImage.id);
+            }}
+          />
+        )}
       </div>
+
+      {images.length > 1 && (
+        <div className="mt-6">
+          <p className="text-sm text-muted-foreground mb-3 font-medium">All Images</p>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {images.map((image: ImageItem) => (
+              <ImageThumbnail
+                key={image.id}
+                image={image}
+                isSelected={image.id === selectedId}
+                onClick={() => setSelectedId(image.id)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }
 
-function JobCard({ image, onRemove }: { image: ImageItem; onRemove: () => void }) {
+function SelectedPreview({ image, onRemove }: { image: ImageItem; onRemove: () => void }) {
   const { updateImageStatus, updateImage } = useImages();
   const [jobId, setJobId] = useState<string | null>(image.jobId || null);
-  const { status: liveStatus, error: liveError } = useJobStatus(jobId);
+  const { status: liveStatus } = useJobStatus(jobId);
   const [resultUrl, setResultUrl] = useState<string | null>(image.result || null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (image.status === "pending") {
       startProcessing();
     }
-  }, [image.status]);
+  }, [image.id]);
 
-  useEffect(() => {
-    if (liveStatus !== "unknown" && liveStatus !== image.status) {
-      updateImageStatus(image.id, liveStatus as any);
-    }
-  }, [liveStatus, image.id, image.status]);
-
-  useEffect(() => {
+  React.useEffect(() => {
     if (liveStatus === "completed" && !resultUrl && jobId) {
       fetchResult();
     }
@@ -221,14 +248,16 @@ function JobCard({ image, onRemove }: { image: ImageItem; onRemove: () => void }
 
   const isCompleted = image.status === "completed" && !!resultUrl;
   const isError = image.status === "error" || liveStatus === "failed";
-  const isQueued = image.status === "queued" || image.status === "uploading";
-  const isRunning = image.status === "running" || image.status === "processing";
-  const isProcessing = isQueued || isRunning;
+  const isProcessing = ["queued", "uploading", "running", "processing"].includes(image.status);
 
   return (
-    <div className="bg-card border rounded-xl overflow-hidden">
-      <div className="flex flex-col sm:flex-row">
-        <div className="relative w-full sm:w-64 h-48 sm:h-auto bg-muted shrink-0">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-card border rounded-xl overflow-hidden"
+    >
+      <div className="flex flex-col lg:flex-row">
+        <div className="relative flex-1 aspect-[4/3] lg:aspect-auto lg:h-[450px] bg-muted">
           <AnimatePresence mode="wait">
             {isCompleted ? (
               <motion.div
@@ -254,14 +283,14 @@ function JobCard({ image, onRemove }: { image: ImageItem; onRemove: () => void }
                 <img
                   src={image.preview}
                   alt="Preview"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain p-8"
                 />
                 {isProcessing && (
                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                     <div className="flex flex-col items-center gap-2">
                       <Loader2 className="h-8 w-8 text-white animate-spin" />
                       <span className="text-white text-sm font-medium">
-                        {isQueued ? "Waiting..." : "Processing..."}
+                        {image.status === "queued" ? "Waiting..." : "Processing..."}
                       </span>
                     </div>
                   </div>
@@ -271,10 +300,10 @@ function JobCard({ image, onRemove }: { image: ImageItem; onRemove: () => void }
           </AnimatePresence>
         </div>
 
-        <div className="flex-1 p-4 sm:p-6 flex flex-col">
-          <div className="flex items-start justify-between mb-4">
-            <div className="min-w-0 flex-1 mr-3">
-              <h3 className="font-medium text-sm truncate" title={image.file.name}>
+        <div className="lg:w-72 p-5 border-t lg:border-t-0 lg:border-l flex flex-col">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="font-medium text-sm truncate max-w-[180px]" title={image.file.name}>
                 {image.file.name}
               </h3>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -283,8 +312,7 @@ function JobCard({ image, onRemove }: { image: ImageItem; onRemove: () => void }
             </div>
             <button
               onClick={onRemove}
-              className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors shrink-0"
-              aria-label="Remove image"
+              className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -295,30 +323,57 @@ function JobCard({ image, onRemove }: { image: ImageItem; onRemove: () => void }
           {isError && (
             <div className="mt-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
               <p className="font-medium">Processing failed</p>
-              <p className="text-xs mt-1 opacity-80">{image.error || liveError}</p>
+              <p className="text-xs mt-1 opacity-80">{image.error}</p>
             </div>
           )}
 
           <div className="mt-auto pt-4">
             {isCompleted ? (
-              <Button
-                onClick={downloadResult}
-                disabled={isDownloading}
-                className="w-full"
-                size="sm"
-              >
+              <Button onClick={downloadResult} disabled={isDownloading} className="w-full">
                 <Download className="h-4 w-4 mr-2" />
                 {isDownloading ? "Downloading..." : "Download PNG"}
               </Button>
             ) : isError ? (
-              <Button onClick={startProcessing} variant="outline" size="sm" className="w-full">
+              <Button onClick={startProcessing} variant="outline" className="w-full">
                 Try Again
               </Button>
             ) : null}
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
+  );
+}
+
+function ImageThumbnail({ image, isSelected, onClick }: { image: ImageItem; isSelected: boolean; onClick: () => void }) {
+  const { status: liveStatus } = useJobStatus(image.jobId || null);
+  const isCompleted = image.status === "completed";
+  const isProcessing = ["queued", "uploading", "running", "processing"].includes(image.status);
+
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "relative shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all",
+        isSelected ? "border-primary ring-2 ring-primary/20" : "border-transparent hover:border-border"
+      )}
+    >
+      <img
+        src={image.preview}
+        alt={image.file.name}
+        className="w-full h-full object-cover"
+      />
+      {isCompleted && (
+        <div className="absolute bottom-1 right-1 bg-green-500 rounded-full p-0.5">
+          <CheckCircle2 className="h-3 w-3 text-white" />
+        </div>
+      )}
+      {isProcessing && (
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+          <Loader2 className="h-4 w-4 text-white animate-spin" />
+        </div>
+      )}
+    </button>
   );
 }
 
@@ -339,10 +394,10 @@ function StatusIndicator({ status, liveStatus }: { status: string; liveStatus: s
   return (
     <div className={cn("inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium", config.color)}>
       {s === "completed" && <CheckCircle2 className="h-3 w-3" />}
-      {s === "processing" || s === "running" || s === "uploading" ? (
+      {["processing", "running", "uploading"].includes(s) && (
         <Loader2 className="h-3 w-3 animate-spin" />
-      ) : null}
-      {(s === "error" || s === "failed") && <AlertCircle className="h-3 w-3" />}
+      )}
+      {["error", "failed"].includes(s) && <AlertCircle className="h-3 w-3" />}
       {config.label}
     </div>
   );
