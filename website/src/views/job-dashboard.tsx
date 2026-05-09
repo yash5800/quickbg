@@ -40,7 +40,7 @@ export const JobDashboard: React.FC = () => {
     
     const fetchJobs = async () => {
       try {
-        const resp = await fetch("/jobs?limit=100");
+        const resp = await fetch("/api/jobs?limit=100", { cache: "no-store" });
         if (resp.ok) {
           const data: JobRecord[] = await resp.json();
           setJobs(data);

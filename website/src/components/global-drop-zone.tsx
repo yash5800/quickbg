@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Image as ImageIcon } from "lucide-react";
+import { Upload } from "lucide-react";
 import { useImages } from "@/contexts/ImageContext";
 
 export function GlobalDropZone({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const { addImages } = useImages();
   const [isDragging, setIsDragging] = useState(false);
   const [, setDragCounter] = useState(0);
@@ -48,16 +46,17 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
       setIsDragging(false);
       setDragCounter(0);
 
+      if (e.target && (e.target as HTMLElement).closest("[data-dropzone]")) return;
+
       const files = Array.from(e.dataTransfer?.files || []).filter((file) =>
         file.type.startsWith("image/")
       );
 
       if (files.length > 0) {
         addImages(files);
-        router.push("/uploads");
       }
     },
-    [addImages, router]
+    [addImages]
   );
 
   useEffect(() => {
@@ -83,30 +82,17 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 backdrop-blur-lg cursor-copy"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="flex flex-col items-center gap-5 text-center"
-            >
-              <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-secondary shadow-xl shadow-primary/20">
-                <ImageIcon className="h-12 w-12 text-white" />
+            <div className="flex flex-col items-center gap-4 text-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-white">
+                <Upload className="h-8 w-8" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-foreground mb-2">Drop your images here</h2>
-                <p className="text-muted-foreground">Release to start removing backgrounds</p>
+                <h2 className="text-xl font-semibold">Drop images to upload</h2>
+                <p className="text-muted-foreground text-sm mt-1">Supports PNG, JPG, WebP</p>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                <div className="flex -space-x-2">
-                  <div className="h-7 w-7 rounded-full bg-primary/20 border-2 border-background" />
-                  <div className="h-7 w-7 rounded-full bg-secondary/20 border-2 border-background" />
-                  <div className="h-7 w-7 rounded-full bg-purple-500/20 border-2 border-background" />
-                </div>
-                <span>Multiple files supported</span>
-              </div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -11,33 +11,31 @@ export async function GET(
   try {
     const { job_id } = await params;
     
-    // First check status
-    const statusResponse = await fetch(`${WORKER_API_BASE}/status/${job_id}`, {
-      cache: "no-store",
-    });
-    if (!statusResponse.ok) {
-      const data = await statusResponse.json();
-      return NextResponse.json(data, { status: statusResponse.status });
-    }
-
-    const statusData = await statusResponse.json();
-    if (statusData.status !== "completed") {
-      return NextResponse.json(
-        { error: "_not_completed", message: "Job not completed", status: statusData.status },
-        { status: 409 }
-      );
-    }
-
-    // Fetch the actual image from worker
+    // Prefer fetching the result directly from the worker. This allows the
+    // frontend to return the processed image even if the job document in the
+    // database hasn't been updated to `completed` yet.
     const workerResponse = await fetch(`${WORKER_API_BASE}/result/${job_id}`, {
       cache: "no-store",
     });
 
     if (!workerResponse.ok) {
-      return NextResponse.json(
-        { error: "_result_not_found", message: "Result not found" },
-        { status: 404 }
-      );
+      // If the worker says the job is not completed, surface that status to the caller.
+      if (workerResponse.status === 409) {
+        // Try to fetch status for a clearer response body
+        const statusResponse = await fetch(`${WORKER_API_BASE}/status/${job_id}`, { cache: "no-store" });
+        if (statusResponse.ok) {
+          const statusData = await statusResponse.json();
+          return NextResponse.json(
+            { error: "_not_completed", message: "Job not completed", status: statusData.status },
+            { status: 409 }
+          );
+        }
+
+        return NextResponse.json({ error: "_not_completed", message: "Job not completed" }, { status: 409 });
+      }
+
+      // For other errors (404 etc.), return a not found response
+      return NextResponse.json({ error: "_result_not_found", message: "Result not found" }, { status: 404 });
     }
 
     // Return the image as a stream

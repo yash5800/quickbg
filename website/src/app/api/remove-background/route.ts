@@ -245,7 +245,6 @@ export async function POST(request: NextRequest) {
 
     const workerFormData = new FormData();
     workerFormData.append("file", file);
-    workerFormData.append("wait", "true");
 
     const workerResponse = await fetchWithRetry(`${WORKER_API_BASE}/remove`, {
       method: "POST",

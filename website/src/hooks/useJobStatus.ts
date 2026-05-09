@@ -7,46 +7,59 @@ interface JobStatusState {
   error?: string;
 }
 
-export function useJobStatus(jobId: string | null) {
+export function useJobStatus(jobId: string | null, intervalMs: number = 2000) {
   const [state, setState] = useState<JobStatusState>({
     status: "unknown",
     progress: 0,
   });
-  const eventSourceRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
-    if (!jobId) {
-      setState({ status: "unknown", progress: 0 });
+    if (!jobId || jobId === "direct") {
+      if (jobId === "direct") {
+        setState({ status: "completed", progress: 100 });
+      } else {
+        setState({ status: "unknown", progress: 0 });
+      }
       return;
     }
 
-    const eventSource = new EventSource(`/events/${jobId}`);
-    eventSourceRef.current = eventSource;
+    let isMounted = true;
+    let timerId: NodeJS.Timeout;
 
-    eventSource.onmessage = (event) => {
+    const checkStatus = async () => {
       try {
-        const data = JSON.parse(event.data);
+        const resp = await fetch(`/api/status/${jobId}`, { cache: "no-store" });
+        if (!resp.ok) return;
+        
+        const data = await resp.json();
+        if (!isMounted) return;
+
         setState({
           status: data.status || "unknown",
           progress: data.progress ?? 0,
           error: data.error,
         });
-      } catch {
-        // ignore parse errors
+
+        if (data.status === "completed" || data.status === "failed" || data.status === "error") {
+          return; // Stop polling
+        }
+
+        timerId = setTimeout(checkStatus, intervalMs);
+      } catch (err) {
+        console.error("Status check error:", err);
+        if (isMounted) {
+            timerId = setTimeout(checkStatus, intervalMs);
+        }
       }
     };
 
-    eventSource.onerror = () => {
-      // If the connection closes after terminal state, it's fine
-      if (eventSource.readyState === EventSource.CLOSED) {
-        eventSource.close();
-      }
-    };
+    checkStatus();
 
     return () => {
-      eventSource.close();
+      isMounted = false;
+      if (timerId) clearTimeout(timerId);
     };
-  }, [jobId]);
+  }, [jobId, intervalMs]);
 
   return state;
 }

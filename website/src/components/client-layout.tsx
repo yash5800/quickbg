@@ -37,7 +37,6 @@ function Header() {
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/uploads", label: "Editor", icon: ImagePlus },
   ];
 
   return (

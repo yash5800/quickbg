@@ -51,7 +51,9 @@ export async function GET(
   try {
     const { job_id } = await params;
 
-    const workerResponse = await fetch(`${WORKER_API_BASE}/status/${job_id}`);
+    const workerResponse = await fetch(`${WORKER_API_BASE}/status/${job_id}`, {
+      cache: "no-store",
+    });
 
     if (!workerResponse.ok) {
       const data = await workerResponse.json();
@@ -59,25 +61,6 @@ export async function GET(
     }
 
     const statusData = await workerResponse.json();
-
-    try {
-      const db = await getMongoDB();
-      const jobs = getJobsCollection(db);
-      
-      await jobs.updateOne(
-        { jobId: job_id },
-        {
-          $set: {
-            status: statusData.status,
-            progress: statusData.progress,
-            completedAt: statusData.status === "completed" || statusData.status === "failed" ? new Date() : undefined,
-            error: statusData.error,
-          },
-        }
-      );
-    } catch (dbError) {
-      console.error("MongoDB update error:", dbError);
-    }
 
     return NextResponse.json({
       job_id: job_id,
