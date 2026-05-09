@@ -228,7 +228,7 @@ function SelectedPreview({ image, onRemove }: { image: ImageItem; onRemove: () =
       const blob = await getJobResult(jobId);
       const url = URL.createObjectURL(blob);
       setResultUrl(url);
-      updateImage(image.id, { result: url });
+      updateImageStatus(image.id, "completed", { result: url });
     } catch (err) {
       console.error("Failed to fetch result:", err);
     }
