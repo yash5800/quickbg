@@ -131,6 +131,17 @@ def load_model():
     local_model_path = os.path.join(os.path.dirname(__file__), "ZhengPeng7_BiRefNet_lite")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     logger.info("Loading model on device: %s", device)
+
+    if not os.path.exists(local_model_path) or not os.listdir(local_model_path):
+        logger.info("Model not found locally, downloading from HuggingFace...")
+        from huggingface_hub import snapshot_download
+        snapshot_download(
+            repo_id="ZhengPeng7/BiRefNet_lite",
+            local_dir=local_model_path,
+            local_dir_use_symlinks=False
+        )
+        logger.info("Model downloaded to %s", local_model_path)
+
     model = AutoModelForImageSegmentation.from_pretrained(local_model_path, trust_remote_code=True)
     model.to(device)
     model.eval()
