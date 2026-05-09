@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Optional
 
 import torch
+from huggingface_hub import snapshot_download
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
@@ -54,6 +55,12 @@ ALLOWED_ORIGINS = [
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(name)s %(message)s")
 logger = logging.getLogger("bgremover.worker")
+
+MODEL_REPO_ID = os.getenv("WORKER_MODEL_REPO_ID", "ZhengPeng7/BiRefNet_lite")
+MODEL_LOCAL_DIR = Path(
+    os.getenv("WORKER_MODEL_LOCAL_DIR", str(Path(__file__).parent / "ZhengPeng7_BiRefNet_lite"))
+)
+MODEL_CACHE_DIR = os.getenv("WORKER_MODEL_CACHE_DIR")
 
 mongo_client: Optional[MongoClient] = None
 db: Optional[Database] = None
@@ -108,9 +115,52 @@ def ensure_database() -> Collection:
 
 def load_model():
     global model, device
-    local_model_path = os.path.join(os.path.dirname(__file__), "ZhengPeng7_BiRefNet_lite")
+
+    def has_checkpoint_files(model_dir: Path) -> bool:
+        if not model_dir.exists():
+            return False
+
+        patterns = [
+            "model.safetensors",
+            "pytorch_model.bin",
+            "pytorch_model.bin.index.json",
+            "*.safetensors",
+        ]
+        return any(any(model_dir.glob(pattern)) for pattern in patterns)
+
+    local_model_path = MODEL_LOCAL_DIR
+
+    if not has_checkpoint_files(local_model_path):
+        logger.warning(
+            "No local model checkpoint found at %s. Downloading %s...",
+            local_model_path,
+            MODEL_REPO_ID,
+        )
+        local_model_path.mkdir(parents=True, exist_ok=True)
+
+        snapshot_kwargs = {
+            "repo_id": MODEL_REPO_ID,
+            "local_dir": str(local_model_path),
+            "local_dir_use_symlinks": False,
+        }
+        if MODEL_CACHE_DIR:
+            snapshot_kwargs["cache_dir"] = MODEL_CACHE_DIR
+
+        snapshot_download(**snapshot_kwargs)
+
+        if not has_checkpoint_files(local_model_path):
+            raise RuntimeError(
+                f"Model download completed but checkpoint files are still missing in {local_model_path}"
+            )
+
+        logger.info("Model weights downloaded to %s", local_model_path)
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model = AutoModelForImageSegmentation.from_pretrained(local_model_path, trust_remote_code=True)
+    model = AutoModelForImageSegmentation.from_pretrained(
+        str(local_model_path),
+        trust_remote_code=True,
+        local_files_only=True,
+    )
     model.to(device)
     model.eval()
     return model, device
