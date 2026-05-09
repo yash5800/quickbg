@@ -1,7 +1,8 @@
-torch
-torchvision
-pillow
+torch 
+torchvision 
+pillow 
 transformers
+huggingface-hub
 fastapi
 uvicorn[standard]
 python-multipart
@@ -11,4 +12,3 @@ einops
 kornia
 timm
 pymongo
-huggingface-hub
