@@ -10,10 +10,14 @@ import {
   Loader2,
   Clock,
   Monitor,
+  Layers,
+  Palette,
+  Eraser,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface PreviewInfoProps {
   image: ImageItem;
@@ -25,6 +29,7 @@ interface PreviewInfoProps {
   onDownload: () => void;
   isDownloading: boolean;
   liveStatus: string;
+  onOpenEraser?: () => void;
 }
 
 export function PreviewInfo({
@@ -37,7 +42,9 @@ export function PreviewInfo({
   onDownload,
   isDownloading,
   liveStatus,
+  onOpenEraser,
 }: PreviewInfoProps) {
+  const router = useRouter();
   const status = liveStatus !== "unknown" ? liveStatus : image.status;
 
   const statusConfig = {
@@ -240,29 +247,48 @@ export function PreviewInfo({
       </div>
 
       {/* Tools Section */}
-      {isCompleted && (
+      {isCompleted && image.result && (
         <div className="pt-2 border-t">
           <h4 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-            Tools
+            Quick Edit
           </h4>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-2">
+            {onOpenEraser && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                onClick={onOpenEraser}
+              >
+                <Eraser className="h-3 w-3 mr-1" />
+                Eraser
+              </Button>
+            )}
             <Button
               variant="outline"
               size="sm"
-              className="flex-1 text-xs"
-              disabled
-              title="Coming soon"
+              className="text-xs"
+              onClick={() => {
+                sessionStorage.setItem("originalImage", image.preview);
+                sessionStorage.setItem("processedImage", image.result!);
+                router.push("/blur-bg");
+              }}
             >
-              ✏️ Edit
+              <Layers className="h-3 w-3 mr-1" />
+              Blur BG
             </Button>
             <Button
               variant="outline"
               size="sm"
-              className="flex-1 text-xs"
-              disabled
-              title="Coming soon"
+              className="text-xs"
+              onClick={() => {
+                sessionStorage.setItem("originalImage", image.preview);
+                sessionStorage.setItem("processedImage", image.result!);
+                router.push("/replace-bg");
+              }}
             >
-              ⚙️ Adjust
+              <Palette className="h-3 w-3 mr-1" />
+              Replace BG
             </Button>
           </div>
         </div>

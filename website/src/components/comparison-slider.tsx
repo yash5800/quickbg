@@ -26,10 +26,10 @@ export function ComparisonSlider({
         itemTwo={<img src={afterImage} alt="Background Removed" style={{ width: '100%', height: '100%', objectFit: 'contain' }} draggable={false} />}
         style={{ width: '100%', height: '100%' }}
       />
-      <div className="absolute bottom-4 left-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+      <div className="absolute bottom-0 left-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
         {beforeLabel}
       </div>
-      <div className="absolute bottom-4 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+      <div className="absolute bottom-0 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
         {afterLabel}
       </div>
     </div>

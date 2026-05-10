@@ -9,7 +9,7 @@ import { ToastProvider } from "@/components/ui/toast";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
-import { Menu, X, Home, Sparkles, Zap, Clock } from "lucide-react";
+import { Menu, X, Home, Sparkles, Zap, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getQueueStatus, QueueStatus } from "@/lib/worker-api";
 
@@ -111,7 +111,8 @@ function Header() {
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
-    { href: "/editor", label: images.length > 0 ? `Editor (${images.length})` : "Editor", icon: Sparkles },
+    { href: "/tools", label: "Tools", icon: Package },
+    { href: "/remover", label: images.length > 0 ? `Remover (${images.length})` : "Remover", icon: Sparkles },
   ];
 
   return (

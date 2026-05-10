@@ -2,11 +2,77 @@
 
 import React, { useCallback, useRef } from "react";
 import { motion } from "framer-motion";
-import { Upload } from "lucide-react";
+import { Upload,
+  Scissors,
+  Maximize2,
+  Palette,
+  Layers,
+  Crop,
+  Zap,
+  Contrast,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useImages } from "@/contexts/ImageContext";
 import { AppLayout } from "@/components/app-layout";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+const tools = [
+  {
+    id: "remove-bg",
+    icon: Scissors,
+    title: "Background Remover",
+    description: "Instantly remove backgrounds from any image with AI precision",
+    badge: "Core",
+    href: "/remover",
+    color: "from-primary to-blue-500",
+  },
+  {
+    id: "resize",
+    icon: Maximize2,
+    title: "Smart Resize",
+    description: "Resize images without losing quality using AI upscaling",
+    badge: "Popular",
+    href: "/resize",
+    color: "from-violet-500 to-purple-500",
+  },
+  {
+    id: "replace-bg",
+    icon: Palette,
+    title: "Background Replace",
+    description: "Replace backgrounds with solid colors, gradients, or images",
+    badge: "New",
+    href: "/replace-bg",
+    color: "from-cyan-500 to-teal-500",
+  },
+  {
+    id: "blur-bg",
+    icon: Layers,
+    title: "Blur Background",
+    description: "Add beautiful blur effects to background",
+    badge: null,
+    href: "/blur-bg",
+    color: "from-rose-500 to-pink-500",
+  },
+  {
+    id: "crop",
+    icon: Crop,
+    title: "Smart Crop",
+    description: "Auto-crop to perfect aspect ratios for social media and ads",
+    badge: null,
+    href: "/crop",
+    color: "from-emerald-500 to-green-500",
+  },
+  {
+    id: "adjust",
+    icon: Contrast,
+    title: "Adjust Image",
+    description: "Fine-tune brightness, contrast, and saturation levels",
+    badge: null,
+    href: "/adjust",
+    color: "from-blue-600 to-cyan-600",
+  },
+];
 
 export default function Home() {
   const { images, addImages } = useImages();
@@ -19,7 +85,7 @@ export default function Home() {
       if (files.length > 0) {
         addImages(files);
         // Navigate to editor when files are added
-        router.push("/editor");
+        router.push("/remover");
       }
       e.target.value = "";
     },
@@ -109,7 +175,7 @@ export default function Home() {
                   Drag images here or click
                 </h2>
                 <p className="text-muted-foreground text-base sm:text-lg mb-4">
-                  Upload up to 5 images at once
+                  Upload multiple images at once
                 </p>
 
                 <div className="flex gap-2 flex-wrap justify-center text-xs text-muted-foreground/70">
@@ -130,13 +196,83 @@ export default function Home() {
               className="mt-8"
             >
               <Link
-                href="/editor"
+                href="/remover"
                 className="text-primary hover:text-primary/80 font-medium"
               >
                 View {images.length} processing image{images.length !== 1 ? "s" : ""} →
               </Link>
             </motion.div>
           )}
+
+          {/* Tools Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="w-full max-w-5xl mt-20"
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                Powerful Tools
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                All the image editing tools you need in one place
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {tools.map((tool, idx) => (
+                <motion.div
+                  key={tool.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * idx }}
+                >
+                  <Link
+                    href={tool.href}
+                    className="group relative block p-5 rounded-2xl bg-muted/30 border border-border/50 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+                    onClick={(e) => {
+                      if (tool.id === "remove-bg" && !hasImages) {
+                        e.preventDefault();
+                        fileInputRef.current?.click();
+                      }
+                    }}
+                  >
+                    {tool.badge && (
+                      <span className={cn(
+                        "absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold rounded-full bg-gradient-to-r text-white shadow-md",
+                        tool.badge === "Core" ? "from-primary to-blue-500" :
+                        tool.badge === "Popular" ? "from-violet-500 to-purple-500" :
+                        tool.badge === "New" ? "from-cyan-500 to-teal-500" :
+                        "from-indigo-500 to-blue-600"
+                      )}>
+                        {tool.badge}
+                      </span>
+                    )}
+
+                    <div className={cn(
+                      "w-12 h-12 rounded-xl mb-4 flex items-center justify-center bg-gradient-to-br shadow-lg transition-transform group-hover:scale-110",
+                      tool.color
+                    )}>
+                      <tool.icon className="h-6 w-6 text-white" />
+                    </div>
+
+                    <h3 className="text-base font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors">
+                      {tool.title}
+                    </h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {tool.description}
+                    </p>
+
+                    <div className="mt-3 flex items-center gap-1 text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span>Use tool</span>
+                      <Zap className="h-3 w-3" />
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
           {/* Features */}
           <motion.div
@@ -146,9 +282,9 @@ export default function Home() {
             className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 w-full max-w-2xl"
           >
             {[
-              { label: "Lightning Fast", value: "< 5 seconds" },
+              { label: "Lightning Fast", value: "< 15 seconds" },
               { label: "High Quality", value: "4K Support" },
-              { label: "Batch Process", value: "Up to 5 at once" },
+              { label: "Batch Process", value: "Unlimited" },
             ].map((feature, idx) => (
               <div
                 key={idx}

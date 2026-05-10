@@ -11,14 +11,15 @@ import { PreviewDisplay } from "@/components/preview-display";
 import { PreviewInfo } from "@/components/preview-info";
 import { ThumbnailGallery } from "@/components/thumbnail-gallery";
 import { FeedbackSection } from "@/components/feedback-section";
-import Link from "next/link";
+import { EraserTool } from "@/components/eraser-tool";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function EditorPage() {
-  const { images, addImages, removeImage } = useImages();
+  const { images, addImages, removeImage, updateImageResult } = useImages();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showEraser, setShowEraser] = useState(false);
   const { addToast } = useToast();
   const prevCompletedCount = useRef(0);
   const router = useRouter();
@@ -92,21 +93,41 @@ export default function EditorPage() {
 
   const selectedImage = images.find((img: ImageItem) => img.id === selectedId);
 
-  // No images state - redirect to home
+  // No images state - show drag & drop area
   if (images.length === 0) {
     return (
       <AppLayout>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleFileSelect}
+          className="hidden"
+        />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="flex items-center gap-3 mb-8">
+            <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="h-9 w-9">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold">Background Remover</h1>
+              <p className="text-muted-foreground text-sm">Remove background from images instantly</p>
+            </div>
+          </div>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center min-h-[60vh] space-y-6"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex flex-col items-center justify-center min-h-[60vh] border-2 border-dashed border-border/50 rounded-3xl cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
           >
-            <p className="text-muted-foreground text-lg">No images to process</p>
-            <Button onClick={() => router.push("/")} variant="outline" size="lg">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
+            <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+              <Upload className="h-12 w-12 text-primary" />
+            </div>
+            <h2 className="text-2xl font-semibold mb-2">Drop images here</h2>
+            <p className="text-muted-foreground mb-4">or click to browse</p>
+            <p className="text-sm text-muted-foreground">Supports PNG, JPG, WebP</p>
           </motion.div>
         </div>
       </AppLayout>
@@ -179,6 +200,7 @@ export default function EditorPage() {
                     key={`info-${selectedImage.id}`}
                     image={selectedImage}
                     onRemove={() => handleRemove(selectedImage.id)}
+                    onOpenEraser={() => setShowEraser(true)}
                   />
                 )}
               </AnimatePresence>
@@ -197,6 +219,20 @@ export default function EditorPage() {
 
           {/* Feedback Section */}
           <FeedbackSection />
+
+          {/* Eraser Tool Modal */}
+          {showEraser && selectedImage && selectedImage.result && (
+            <EraserTool
+              processedImage={selectedImage.result}
+              originalImage={selectedImage.preview}
+              onSave={(dataUrl) => {
+                updateImageResult(selectedImage.id, dataUrl);
+                setShowEraser(false);
+                addToast({ type: "success", title: "Changes saved!", duration: 3000 });
+              }}
+              onClose={() => setShowEraser(false)}
+            />
+          )}
         </motion.div>
       </div>
     </AppLayout>
@@ -224,7 +260,7 @@ function SelectedPreview({
   );
 }
 
-function SelectedInfo({ image, onRemove }: { image: ImageItem; onRemove: () => void }) {
+function SelectedInfo({ image, onRemove, onOpenEraser }: { image: ImageItem; onRemove: () => void; onOpenEraser?: () => void }) {
   const [resultUrl, setResultUrl] = useState<string | null>(image.result || null);
   const [isDownloading, setIsDownloading] = useState(false);
   const jobIdRef = useRef<string | null>(image.jobId || null);
@@ -280,6 +316,7 @@ function SelectedInfo({ image, onRemove }: { image: ImageItem; onRemove: () => v
         onDownload={downloadResult}
         isDownloading={isDownloading}
         liveStatus="unknown"
+        onOpenEraser={onOpenEraser}
       />
     </motion.div>
   );

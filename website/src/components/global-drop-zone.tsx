@@ -1,23 +1,40 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload } from "lucide-react";
 import { useImages } from "@/contexts/ImageContext";
 
+// Pages that should use the global drop zone (ONLY home and remover)
+// Tool pages have their own drop handling
+const globalDropPages = ["/", "/remover"];
+
 export function GlobalDropZone({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isGlobalDropPage = globalDropPages.some(page => pathname === page);
+
+  if (!isGlobalDropPage) {
+    // On tools pages, just render children without global drop
+    return <>{children}</>;
+  }
+
+  return <GlobalDropZoneInner>{children}</GlobalDropZoneInner>;
+}
+
+function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
   const { addImages } = useImages();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
-  const [, setDragCounter] = useState(0);
+  const dragCounterRef = useRef(0);
   const dropTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleDragEnter = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     if (e.dataTransfer?.types.includes("Files")) {
-      setDragCounter((prev) => prev + 1);
+      dragCounterRef.current++;
       setIsDragging(true);
     }
   }, []);
@@ -25,15 +42,12 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
   const handleDragLeave = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
     if (e.dataTransfer?.types.includes("Files")) {
-      setDragCounter((prev) => {
-        const newCount = prev - 1;
-        if (newCount <= 0) {
-          setIsDragging(false);
-          return 0;
-        }
-        return newCount;
-      });
+      dragCounterRef.current--;
+      if (dragCounterRef.current <= 0) {
+        setIsDragging(false);
+      }
     }
   }, []);
 
@@ -47,7 +61,15 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(false);
-      setDragCounter(0);
+      dragCounterRef.current = 0;
+
+      // Check if drop is inside a tool-specific drop zone
+      const dropTarget = e.target as HTMLElement;
+      const toolDropZone = dropTarget.closest('[data-drop-zone]');
+      if (toolDropZone) {
+        // Let the tool handle it
+        return;
+      }
 
       // Prevent duplicate drops within 500ms
       if (dropTimeoutRef.current) {
@@ -64,8 +86,7 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
       if (files.length > 0) {
         console.log("[GlobalDropZone] Adding files:", files.length);
         addImages(files);
-        // Navigate to editor
-        router.push("/editor");
+        router.push("/remover");
       }
     },
     [addImages, router]

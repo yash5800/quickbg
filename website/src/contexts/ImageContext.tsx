@@ -34,19 +34,18 @@ interface ImageContextType {
   clearImages: () => void;
   updateImageStatus: (id: string, status: ImageItem["status"], data?: Partial<ImageItem>) => void;
   updateImage: (id: string, data: Partial<ImageItem>) => void;
+  updateImageResult: (id: string, result: string) => void;
 }
 
 const ImageContext = createContext<ImageContextType | undefined>(undefined);
 
 export function ImageProvider({ children }: { children: React.ReactNode }) {
   const [images, setImages] = useState<ImageItem[]>([]);
-  const [queueStatus, setQueueStatus] = useState<{ remaining: number; reset_in_seconds?: number } | null>(null);
   const addCountRef = useRef(0);
   const recentFileKeysRef = useRef<Set<string>>(new Set());
   const processingRef = useRef(false);
   const processingQueueRef = useRef<string[]>([]);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  const lastWarningTimeRef = useRef<number>(0);
   const toastAddedRef = useRef(false);
 
   // Cleanup polling intervals on unmount
@@ -80,14 +79,21 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, [creditToast]);
+  // Only show warning when:
+  // 1. Credits are 0 AND
+  // 2. All images are either completed or errored (no processing in progress)
   useEffect(() => {
     const checkCredits = async () => {
       try {
         const status = await getQueueStatus();
-        setQueueStatus(status);
 
-        // Show warning when credits hit 0
-        if (status.remaining === 0 && !toastAddedRef.current) {
+        const pendingOrProcessing = images.filter((img) =>
+          ["pending", "uploading", "queued", "running", "processing"].includes(img.status)
+        );
+
+        const allDone = pendingOrProcessing.length === 0 && images.length > 0;
+
+        if (status.remaining === 0 && allDone && !toastAddedRef.current) {
           toastAddedRef.current = true;
           const id = Math.random().toString(36).substring(2, 9);
           setCreditToast({ id, resetInSeconds: status.reset_in_seconds ?? 3600, endTime: Date.now() + (status.reset_in_seconds ?? 3600) * 1000 });
@@ -102,7 +108,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     checkCredits();
     const interval = setInterval(checkCredits, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [images]);
 
   // Poll job status for queued images
   useEffect(() => {
@@ -180,6 +186,18 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       // Find the first pending image
       const pendingImage = images.find((img) => img.status === "pending");
       if (!pendingImage) return;
+
+      // Check credits before submitting
+      try {
+        const status = await getQueueStatus();
+        if (status.remaining === 0) {
+          // Credits exhausted, don't submit - will be retried after credits reset
+          console.log("[ImageContext] Credits exhausted, pausing processing");
+          return;
+        }
+      } catch {
+        // If we can't check status, continue anyway
+      }
 
       // If this image was just added, add it to the processing queue
       if (!processingQueueRef.current.includes(pendingImage.id)) {
@@ -342,6 +360,15 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  // Update image result directly (used by eraser tool)
+  const updateImageResult = useCallback((id: string, result: string) => {
+    setImages((prev) =>
+      prev.map((img) =>
+        img.id === id ? { ...img, result } : img
+      )
+    );
+  }, []);
+
   return (
     <ImageContext.Provider
       value={{
@@ -352,6 +379,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         clearImages,
         updateImageStatus,
         updateImage,
+        updateImageResult,
       }}
     >
       {children}
