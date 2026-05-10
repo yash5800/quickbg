@@ -1,7 +1,13 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from "react";
-import { submitImage, getJobStatus, JobQueuedResponse } from "@/lib/worker-api";
+import { submitImage, getJobStatus, JobQueuedResponse, getQueueStatus } from "@/lib/worker-api";
+
+function formatResetTime(seconds: number) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
 
 export interface ImageItem {
   id: string;
@@ -34,11 +40,14 @@ const ImageContext = createContext<ImageContextType | undefined>(undefined);
 
 export function ImageProvider({ children }: { children: React.ReactNode }) {
   const [images, setImages] = useState<ImageItem[]>([]);
+  const [queueStatus, setQueueStatus] = useState<{ remaining: number; reset_in_seconds?: number } | null>(null);
   const addCountRef = useRef(0);
   const recentFileKeysRef = useRef<Set<string>>(new Set());
   const processingRef = useRef(false);
   const processingQueueRef = useRef<string[]>([]);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const lastWarningTimeRef = useRef<number>(0);
+  const toastAddedRef = useRef(false);
 
   // Cleanup polling intervals on unmount
   useEffect(() => {
@@ -48,6 +57,51 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       });
       pollingIntervalsRef.current.clear();
     };
+  }, []);
+
+  const [creditToast, setCreditToast] = useState<{ id: string; resetInSeconds: number; endTime: number } | null>(null);
+  const [creditCountdown, setCreditCountdown] = useState<number>(0);
+
+  // Live countdown ticker for credit warning
+  useEffect(() => {
+    if (!creditToast) return;
+
+    const tick = () => {
+      const remaining = Math.max(0, Math.ceil((creditToast.endTime - Date.now()) / 1000));
+      setCreditCountdown(remaining);
+
+      if (remaining <= 0) {
+        setCreditToast(null);
+        toastAddedRef.current = false;
+      }
+    };
+
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [creditToast]);
+  useEffect(() => {
+    const checkCredits = async () => {
+      try {
+        const status = await getQueueStatus();
+        setQueueStatus(status);
+
+        // Show warning when credits hit 0
+        if (status.remaining === 0 && !toastAddedRef.current) {
+          toastAddedRef.current = true;
+          const id = Math.random().toString(36).substring(2, 9);
+          setCreditToast({ id, resetInSeconds: status.reset_in_seconds ?? 3600, endTime: Date.now() + (status.reset_in_seconds ?? 3600) * 1000 });
+        } else if (status.remaining > 0) {
+          toastAddedRef.current = false;
+        }
+      } catch (err) {
+        console.error("Failed to fetch queue status:", err);
+      }
+    };
+
+    checkCredits();
+    const interval = setInterval(checkCredits, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   // Poll job status for queued images
@@ -85,7 +139,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
                   pollingIntervalsRef.current.delete(img.id);
                 }
               }
-            } else if (status.status === "failed" || status.status === "error") {
+            } else if (status.status === "failed") {
               setImages((prev) =>
                 prev.map((item) =>
                   item.id === img.id
@@ -301,6 +355,16 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
+      {creditToast && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[100]">
+          <div className="px-4 py-3 rounded-lg bg-destructive/90 text-destructive-foreground border border-destructive/50 shadow-lg backdrop-blur-sm">
+            <p className="text-sm font-semibold text-center">Credits exhausted</p>
+            <p className="text-xs text-center mt-0.5 opacity-90 font-mono tabular-nums">
+              Resets in {formatResetTime(creditCountdown)}
+            </p>
+          </div>
+        </div>
+      )}
     </ImageContext.Provider>
   );
 }

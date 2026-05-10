@@ -25,7 +25,7 @@ export function FeedbackSection() {
 
           <div>
             <h3 className="text-2xl font-bold text-foreground">
-              Love QuickBG&apos;s background removal?
+              Love QuickBG&apos;s ?
             </h3>
             <p className="text-muted-foreground mt-2">
               We&apos;d love to hear your feedback and suggestions for improvements.

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ImageProvider, useImages } from "@/contexts/ImageContext";
 import { ToastProvider } from "@/components/ui/toast";
@@ -15,39 +15,67 @@ import { getQueueStatus, QueueStatus } from "@/lib/worker-api";
 
 function FloatingCredits() {
   const [queueStatus, setQueueStatus] = useState<QueueStatus | null>(null);
+  const [displaySeconds, setDisplaySeconds] = useState<string>("");
+  const [isExhausted, setIsExhausted] = useState(false);
+  const resetEndTimeRef = useRef<number>(0);
 
   useEffect(() => {
     const fetchStatus = async () => {
       try {
         const status = await getQueueStatus();
         setQueueStatus(status);
+
+        if (status.remaining === 0) {
+          setIsExhausted(true);
+          resetEndTimeRef.current = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
+        } else {
+          setIsExhausted(false);
+        }
       } catch (err) {
         console.error("Failed to fetch queue status:", err);
       }
     };
+
     fetchStatus();
     const interval = setInterval(fetchStatus, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  const remaining = queueStatus?.remaining ?? 25;
-  const resetSeconds = queueStatus?.reset_in_seconds ?? 3600;
+  // Live countdown ticker
+  useEffect(() => {
+    if (!isExhausted) {
+      setDisplaySeconds("");
+      return;
+    }
 
-  const formatResetTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
+    const updateCountdown = () => {
+      const remaining = Math.max(0, Math.ceil((resetEndTimeRef.current - Date.now()) / 1000));
+      const mins = Math.floor(remaining / 60);
+      const secs = remaining % 60;
+      setDisplaySeconds(`${mins}:${secs.toString().padStart(2, "0")}`);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [isExhausted]);
+
+  const remaining = queueStatus?.remaining ?? 25;
 
   return (
     <div className="fixed top-17 right-3 z-40 md:top-20 md:right-6">
-      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background/90 border border-border/60 shadow-md backdrop-blur-sm text-xs">
-        <Zap className="h-3.5 w-3.5 text-primary" />
-        <span className="font-semibold">{remaining}</span>
-        {remaining < 10 && (
-          <span className={`${remaining === 0 ? "text-destructive" : "text-amber-500"}`}>
-            {formatResetTime(resetSeconds)}
-          </span>
+      <div className={cn(
+        "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background/90 border shadow-md backdrop-blur-sm text-xs transition-colors",
+        remaining === 0 ? "border-destructive/60 bg-destructive/10" :
+        remaining < 10 ? "border-amber-500/50 bg-amber-500/10" : "border-border/60"
+      )}>
+        <Zap className={cn(
+          "h-3.5 w-3.5",
+          remaining === 0 ? "text-destructive" : remaining < 10 ? "text-amber-500" : "text-primary"
+        )} />
+        <span className={cn("font-semibold", remaining === 0 ? "text-destructive" : "")}>{remaining}</span>
+        {isExhausted && displaySeconds && (
+          <span className="font-semibold tabular-nums text-destructive animate-pulse">{displaySeconds}</span>
         )}
       </div>
     </div>
