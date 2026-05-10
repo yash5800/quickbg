@@ -1,11 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Download, History, Image as ImageIcon, ExternalLink } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { JobRecord } from "@/types/job";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 export const HistoryGallery: React.FC = () => {
   const [jobs, setJobs] = React.useState<JobRecord[]>([]);

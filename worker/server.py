@@ -4,6 +4,7 @@ import io
 import logging
 import os
 import uuid
+import psutil
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -36,10 +37,12 @@ PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 ALLOWED_CONTENT_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/webp"}
 MAX_UPLOAD_SIZE_BYTES = int(os.getenv("WORKER_MAX_UPLOAD_SIZE_BYTES", str(10 * 1024 * 1024)))
 MAX_CONCURRENCY = max(1, int(os.getenv("WORKER_MAX_CONCURRENCY", "2")))
-MAX_JOBS_PER_CLIENT = max(1, int(os.getenv("WORKER_MAX_JOBS_PER_CLIENT", "2")))
+MAX_JOBS_PER_CLIENT = max(1, int(os.getenv("WORKER_MAX_JOBS_PER_CLIENT", "1")))
 JOB_RETENTION_HOURS = max(1, int(os.getenv("WORKER_JOB_RETENTION_HOURS", "24")))
 QUEUE_POLL_SECONDS = float(os.getenv("WORKER_QUEUE_POLL_SECONDS", "1.0"))
 CLEANUP_INTERVAL_SECONDS = int(os.getenv("WORKER_CLEANUP_INTERVAL_SECONDS", "1800"))
+CPU_THRESHOLD_PERCENT = int(os.getenv("WORKER_CPU_THRESHOLD_PERCENT", "80"))
+MEMORY_THRESHOLD_PERCENT = int(os.getenv("WORKER_MEMORY_THRESHOLD_PERCENT", "80"))
 
 MONGO_URI = os.getenv("NEXT_MONGODB_URI")
 MONGO_DB_NAME = os.getenv("NEXT_MONGODB_DB", "bgremover")
@@ -75,6 +78,20 @@ active_tasks: set[asyncio.Task] = set()
 active_tasks_lock = asyncio.Lock()
 job_subscribers: dict[str, set[asyncio.Queue[dict]]] = {}
 job_subscribers_lock = asyncio.Lock()
+
+def get_dynamic_concurrency() -> int:
+    try:
+        cpu_percent = psutil.cpu_percent(interval=0.1)
+        memory = psutil.virtual_memory()
+        memory_percent = memory.percent
+
+        if cpu_percent > CPU_THRESHOLD_PERCENT or memory_percent > MEMORY_THRESHOLD_PERCENT:
+            return 1
+        if cpu_percent < CPU_THRESHOLD_PERCENT * 0.5 and memory_percent < MEMORY_THRESHOLD_PERCENT * 0.5:
+            return min(MAX_CONCURRENCY, 2)
+        return 1
+    except Exception:
+        return 1
 
 
 def utcnow() -> datetime:
@@ -221,7 +238,7 @@ def process_image_bytes(image_bytes: bytes) -> bytes:
     input_tensor = transform(image).unsqueeze(0).to(device)
     input_tensor = input_tensor.to(next(model.parameters()).dtype)
 
-    with torch.no_grad():
+    with torch.inference_mode():
         preds = model(input_tensor)[-1].sigmoid().cpu()
         pred = preds[0].squeeze()
 
@@ -362,7 +379,8 @@ async def dispatcher_loop() -> None:
             async with active_tasks_lock:
                 active_count = len(active_tasks)
 
-            if active_count >= MAX_CONCURRENCY:
+            current_concurrency = get_dynamic_concurrency()
+            if active_count >= current_concurrency:
                 break
 
             job = await asyncio.to_thread(claim_next_job)
@@ -461,6 +479,8 @@ async def remove_background(
     wait: bool = Form(False),
     file: UploadFile = File(...),
 ):
+    logger.info(f"Received remove request: filename={file.filename}, size={file.size}")
+
     if not is_internal_request(request):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
@@ -470,12 +490,15 @@ async def remove_background(
         raise HTTPException(status_code=415, detail="Unsupported media type")
 
     file_bytes = await file.read()
+    logger.info(f"File read complete: {len(file_bytes)} bytes")
+
     if len(file_bytes) > MAX_UPLOAD_SIZE_BYTES:
         raise HTTPException(status_code=413, detail="File too large")
 
     job_id = str(uuid.uuid4())
     input_path, output_path = build_job_paths(job_id)
     input_path.write_bytes(file_bytes)
+    logger.info(f"Job {job_id} created, file saved to {input_path}")
 
     client_key = request.headers.get("x-client-ip")
     if not client_key and request.client is not None:
@@ -626,13 +649,26 @@ async def health():
     collection = get_job_store()
     queued_jobs = collection.count_documents({"status": "queued"})
     running_jobs = collection.count_documents({"status": {"$in": ["starting", "running"]}})
+    current_concurrency = get_dynamic_concurrency()
+
+    cpu_percent = 0
+    memory_percent = 0
+    try:
+        cpu_percent = psutil.cpu_percent(interval=0.1)
+        memory = psutil.virtual_memory()
+        memory_percent = memory.percent
+    except Exception:
+        pass
+
     return {
         "status": "healthy",
         "device": device,
         "model_loaded": model is not None,
         "queued_jobs": queued_jobs,
         "running_jobs": running_jobs,
-        "max_concurrency": MAX_CONCURRENCY,
+        "max_concurrency": current_concurrency,
+        "cpu_percent": cpu_percent,
+        "memory_percent": memory_percent,
     }
 
 

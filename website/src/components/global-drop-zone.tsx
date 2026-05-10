@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload } from "lucide-react";
 import { useImages } from "@/contexts/ImageContext";
 
 export function GlobalDropZone({ children }: { children: React.ReactNode }) {
   const { addImages } = useImages();
+  const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const [, setDragCounter] = useState(0);
+  const dropTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleDragEnter = useCallback((e: DragEvent) => {
     e.preventDefault();
@@ -46,17 +49,26 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
       setIsDragging(false);
       setDragCounter(0);
 
-      if (e.target && (e.target as HTMLElement).closest("[data-dropzone]")) return;
+      // Prevent duplicate drops within 500ms
+      if (dropTimeoutRef.current) {
+        return;
+      }
+      dropTimeoutRef.current = setTimeout(() => {
+        dropTimeoutRef.current = null;
+      }, 500);
 
       const files = Array.from(e.dataTransfer?.files || []).filter((file) =>
         file.type.startsWith("image/")
       );
 
       if (files.length > 0) {
+        console.log("[GlobalDropZone] Adding files:", files.length);
         addImages(files);
+        // Navigate to editor
+        router.push("/editor");
       }
     },
-    [addImages]
+    [addImages, router]
   );
 
   useEffect(() => {

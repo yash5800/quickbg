@@ -2,14 +2,57 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ImageProvider } from "@/contexts/ImageContext";
+import { ImageProvider, useImages } from "@/contexts/ImageContext";
+import { ToastProvider } from "@/components/ui/toast";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
-import { Menu, X, Home, ImagePlus, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Home, Sparkles, Zap, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getQueueStatus, QueueStatus } from "@/lib/worker-api";
+
+function FloatingCredits() {
+  const [queueStatus, setQueueStatus] = useState<QueueStatus | null>(null);
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const status = await getQueueStatus();
+        setQueueStatus(status);
+      } catch (err) {
+        console.error("Failed to fetch queue status:", err);
+      }
+    };
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const remaining = queueStatus?.remaining ?? 25;
+  const resetSeconds = queueStatus?.reset_in_seconds ?? 3600;
+
+  const formatResetTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  return (
+    <div className="fixed top-17 right-3 z-40 md:top-20 md:right-6">
+      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background/90 border border-border/60 shadow-md backdrop-blur-sm text-xs">
+        <Zap className="h-3.5 w-3.5 text-primary" />
+        <span className="font-semibold">{remaining}</span>
+        {remaining < 10 && (
+          <span className={`${remaining === 0 ? "text-destructive" : "text-amber-500"}`}>
+            {formatResetTime(resetSeconds)}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,13 +62,15 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       enableSystem
     >
       <ImageProvider>
-        <div className="min-h-screen bg-background relative overflow-hidden">
-          <div className="absolute inset-0 -z-10 gradient-mesh opacity-50" />
-          <Header />
-          <main className="pt-16">
-            <GlobalDropZone>{children}</GlobalDropZone>
-          </main>
-        </div>
+        <ToastProvider>
+          <div className="min-h-screen bg-background relative overflow-hidden">
+            <div className="absolute inset-0 -z-10 gradient-mesh opacity-50" />
+            <Header />
+            <main className="pt-16">
+              <GlobalDropZone>{children}</GlobalDropZone>
+            </main>
+          </div>
+        </ToastProvider>
       </ImageProvider>
     </ThemeProvider>
   );
@@ -34,9 +79,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { images } = useImages();
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
+    { href: "/editor", label: images.length > 0 ? `Editor (${images.length})` : "Editor", icon: Sparkles },
   ];
 
   return (
@@ -52,9 +99,9 @@ function Header() {
 
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
-              <Button 
-                key={item.href} 
-                variant="ghost" 
+              <Button
+                key={item.href}
+                variant="ghost"
                 size="sm"
                 asChild
                 className={cn(
@@ -87,6 +134,8 @@ function Header() {
           </div>
         </div>
       </header>
+
+      <FloatingCredits />
 
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[60] md:hidden">

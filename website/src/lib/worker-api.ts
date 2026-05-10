@@ -25,6 +25,7 @@ export interface QueueStatus {
 }
 
 export async function submitImage(file: File): Promise<JobQueuedResponse> {
+  console.log("[Worker API] submitImage called:", file.name, file.size);
   const formData = new FormData();
   formData.append("file", file);
 
