@@ -25,7 +25,16 @@ from transformers import AutoModelForImageSegmentation
 from dotenv import load_dotenv
 load_dotenv()
 
-print(os.getenv("NEXT_MONGODB_URI"))
+print(os.getenv("NEXT_MONGODB_URI") and "MONGO" or "No MONGO URI configured")
+
+from huggingface_hub import login
+
+HF_TOKEN = os.getenv("HF_TOKEN")
+if HF_TOKEN:
+    login(token=HF_TOKEN)
+    print("Logged into Hugging Face Hub")
+else:
+    print("No HF_TOKEN configured; relying on cached models or public access")
 
 UPLOADS_DIR = Path(__file__).parent / "uploads"
 ORG_DIR = UPLOADS_DIR / "org"
@@ -59,7 +68,7 @@ ALLOWED_ORIGINS = [
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(name)s %(message)s")
 logger = logging.getLogger("bgremover.worker")
 
-MODEL_REPO_ID = os.getenv("WORKER_MODEL_REPO_ID", "ZhengPeng7/BiRefNet_lite")
+MODEL_REPO_ID = os.getenv("WORKER_MODEL_REPO_ID", "Joker5800/ZhengPeng7_BiRefNet_lite")
 MODEL_LOCAL_DIR = Path(
     os.getenv("WORKER_MODEL_LOCAL_DIR", str(Path(__file__).parent / "ZhengPeng7_BiRefNet_lite"))
 )
