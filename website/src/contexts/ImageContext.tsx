@@ -43,10 +43,8 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const addCountRef = useRef(0);
   const recentFileKeysRef = useRef<Set<string>>(new Set());
   const processingRef = useRef(false);
-  const processingQueueRef = useRef<string[]>([]);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const toastAddedRef = useRef(false);
-  const [creditsAvailable, setCreditsAvailable] = useState(true);
   const [globalCredits, setGlobalCredits] = useState<{ remaining: number; resetIn: number } | null>(null);
 
   // Cleanup polling intervals on unmount
@@ -102,24 +100,6 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     const interval = setInterval(checkCredits, 10000);
     return () => clearInterval(interval);
   }, [images]);
-
-  // Update creditsAvailable when credits reset (triggers reprocessing)
-  useEffect(() => {
-    const checkCreditsForReset = async () => {
-      try {
-        const status = await getQueueStatus();
-        if (status.remaining > 0) {
-          // Credits available - trigger reprocessing
-          setCreditsAvailable(prev => !prev); // Toggle to trigger useEffect
-        }
-      } catch {
-        // ignore
-      }
-    };
-
-    const interval = setInterval(checkCreditsForReset, 10000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Poll worker status for active jobs (queued/running) until terminal state.
   useEffect(() => {
@@ -227,136 +207,84 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   // Auto-process images when:
   // 1. A new image is added and is in "pending" state
   // 2. The current processing job completes
-  // 3. Credits become available (creditsAvailable state change triggers this)
   useEffect(() => {
-    let isMounted = true;
-    let processingTimeout: NodeJS.Timeout | null = null;
+    // Skip if already processing
+    if (processingRef.current) {
+      console.log("[ImageContext] Skipping - already processing");
+      return;
+    }
 
-    const processNext = async () => {
-      // Debounce: ensure we don't start new processing within 500ms of last start
-      if (processingTimeout) return;
+    // Find the first pending image
+    const pendingImage = images.find((img) => img.status === "pending");
+    if (!pendingImage) {
+      console.log("[ImageContext] No pending images found");
+      return;
+    }
 
-      // Find the first pending image
-      const pendingImage = images.find((img) => img.status === "pending");
-      if (!pendingImage) return;
+    console.log("[ImageContext] Processing image:", pendingImage.id);
+    processingRef.current = true;
 
-      // Check credits AND queue status before submitting
-      try {
-        const status = await getQueueStatus();
+    // Check credits AND queue status before submitting
+    getQueueStatus()
+      .then((status) => {
+        console.log("[ImageContext] Queue status:", status);
 
         // If credits are exhausted OR queue is too full, pause
-        // Allow max 3 queued jobs to avoid overwhelming the queue
         const maxQueuedJobs = 3;
         if (status.remaining === 0 || status.queue_length >= maxQueuedJobs) {
+          processingRef.current = false;
           setImages((prev) => {
-            const needsUpdate = prev.some(img =>
-              img.status === "pending" &&
-              img.waitingReason === "credits_exhausted" &&
-              (img.creditResetAt == null || img.creditResetAt < Date.now())
-            );
-
-            if (!needsUpdate) return prev;
-
             const resetAt = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
             return prev.map((img) =>
               img.status === "pending"
-                ? {
-                    ...img,
-                    waitingReason: "credits_exhausted",
-                    creditResetAt: resetAt,
-                  }
+                ? { ...img, waitingReason: "credits_exhausted", creditResetAt: resetAt }
                 : img
             );
           });
-          console.log("[ImageContext] Credits or queue full, pausing. remaining:", status.remaining, "queue:", status.queue_length);
+          console.log("[ImageContext] Paused - remaining:", status.remaining, "queue:", status.queue_length);
           return;
         }
-      } catch {
-        // If we can't check status, continue anyway
-      }
-
-      // If this image was just added, add it to the processing queue
-      if (!processingQueueRef.current.includes(pendingImage.id)) {
-        processingQueueRef.current.push(pendingImage.id);
-      }
-
-      // If this image is at the front of the queue and not already processing
-      if (
-        processingQueueRef.current[0] === pendingImage.id &&
-        !processingRef.current
-      ) {
-        processingRef.current = true;
-
-        // Set debounce timeout
-        processingTimeout = setTimeout(() => {
-          processingTimeout = null;
-        }, 500);
+        return submitImage(pendingImage.file);
+      })
+      .then((response) => {
+        if (!response) return; // Paused
+        console.log("[ImageContext] Submit response:", response);
 
         const startTime = Date.now();
-        setImages((prev) =>
-          prev.map((img) =>
-            img.id === pendingImage.id
-              ? { ...img, status: "uploading", startTime }
-              : img
-          )
-        );
-
-        try {
-          const response = (await submitImage(pendingImage.file)) as JobQueuedResponse;
-
-          if (!isMounted) return;
-
-          setImages((prev) => {
-            if (response.status === "completed" && response.imageBlob) {
-              const url = URL.createObjectURL(response.imageBlob);
-              return prev.map((img) =>
-                img.id === pendingImage.id
-                  ? {
-                      ...img,
-                      status: "completed",
-                      result: url,
-                      jobId: "direct",
-                      duration: Date.now() - startTime,
-                    }
-                  : img
-              );
-            }
-            return prev.map((img) =>
-              img.id === pendingImage.id
-                ? { ...img, status: "queued", jobId: response.job_id }
-                : img
-            );
-          });
-        } catch (err) {
-          console.error("Processing failed:", err);
-          if (!isMounted) return;
+        if (response.status === "completed" && response.imageBlob) {
+          const url = URL.createObjectURL(response.imageBlob);
           setImages((prev) =>
             prev.map((img) =>
               img.id === pendingImage.id
-                ? {
-                    ...img,
-                    status: "error",
-                    error: err instanceof Error ? err.message : "Unknown error",
-                  }
+                ? { ...img, status: "completed", result: url, jobId: "direct", duration: Date.now() - startTime }
                 : img
             )
           );
-        } finally {
-          processingRef.current = false;
-          processingQueueRef.current.shift();
+        } else {
+          setImages((prev) =>
+            prev.map((img) =>
+              img.id === pendingImage.id
+                ? { ...img, status: "queued", jobId: response.job_id }
+                : img
+            )
+          );
         }
-      }
-    };
-
-    processNext();
-
-    return () => {
-      isMounted = false;
-      if (processingTimeout) {
-        clearTimeout(processingTimeout);
-      }
-    };
-  }, [images, creditsAvailable]);
+      })
+      .catch((err) => {
+        console.error("[ImageContext] Processing failed:", err);
+        setImages((prev) =>
+          prev.map((img) =>
+            img.id === pendingImage.id
+              ? { ...img, status: "error", error: err.message || "Unknown error" }
+              : img
+          )
+        );
+      })
+      .finally(() => {
+        console.log("[ImageContext] Processing complete, resetting flag");
+        processingRef.current = false;
+      });
+  }, [images]);
 
   const addImages = useCallback((files: File[]) => {
     // Create unique keys for deduplication (name + size + lastModified)
