@@ -1,10 +1,15 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
-import { ImageItem } from "@/contexts/ImageContext";
-import { ComparisonSlider } from "@/components/comparison-slider";
+import { ImageItem } from "@/types/image";
 import { Card } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
+
+const ComparisonSlider = dynamic(
+  () => import("@/components/comparison-slider").then((mod) => mod.ComparisonSlider),
+  { ssr: false }
+);
 
 interface PreviewDisplayProps {
   image: ImageItem;

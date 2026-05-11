@@ -2,64 +2,47 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
+import { QueryProvider } from "@/components/query-provider";
 import { ImageProvider, useImages } from "@/contexts/ImageContext";
 import { ToastProvider } from "@/components/ui/toast";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
+import { Footer } from "@/components/footer";
 import { Menu, X, Home, Sparkles, Zap, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getQueueStatus, QueueStatus } from "@/lib/worker-api";
+import { useCreditsStore } from "@/store/credits";
+import { useCreditsSync } from "@/store/useCreditsSync";
 
 function FloatingCredits() {
-  const [queueStatus, setQueueStatus] = useState<QueueStatus | null>(null);
-  const [displaySeconds, setDisplaySeconds] = useState<string>("");
-  const [isExhausted, setIsExhausted] = useState(false);
-  const resetEndTimeRef = useRef<number>(0);
+  const remaining = useCreditsStore((state) => state.remaining);
+  const resetAt = useCreditsStore((state) => state.resetAt);
+  const [liveResetInSeconds, setLiveResetInSeconds] = useState(() =>
+    Math.max(0, Math.ceil((resetAt - Date.now()) / 1000))
+  );
+
+  // Sync credits for the whole app from one mounted place.
+  useCreditsSync();
 
   useEffect(() => {
-    const fetchStatus = async () => {
-      try {
-        const status = await getQueueStatus();
-        setQueueStatus(status);
-
-        if (status.remaining === 0) {
-          setIsExhausted(true);
-          resetEndTimeRef.current = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
-        } else {
-          setIsExhausted(false);
-        }
-      } catch (err) {
-        console.error("Failed to fetch queue status:", err);
-      }
+    const update = () => {
+      setLiveResetInSeconds(Math.max(0, Math.ceil((resetAt - Date.now()) / 1000)));
     };
 
-    fetchStatus();
-    const interval = setInterval(fetchStatus, 30000);
-    return () => clearInterval(interval);
-  }, []);
+    update();
+    const interval = window.setInterval(update, 1000);
+    return () => window.clearInterval(interval);
+  }, [resetAt]);
 
-  useEffect(() => {
-    if (!isExhausted) {
-      setDisplaySeconds("");
-      return;
-    }
+  const formatResetTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
 
-    const updateCountdown = () => {
-      const remaining = Math.max(0, Math.ceil((resetEndTimeRef.current - Date.now()) / 1000));
-      const mins = Math.floor(remaining / 60);
-      const secs = remaining % 60;
-      setDisplaySeconds(`${mins}:${secs.toString().padStart(2, "0")}`);
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [isExhausted]);
-
-  const remaining = queueStatus?.remaining ?? 25;
+  const isExhausted = remaining === 0;
 
   return (
     <div className="fixed top-20 right-3 z-40 md:right-6">
@@ -80,8 +63,8 @@ function FloatingCredits() {
           )}
         />
         <span className={cn("font-semibold", remaining === 0 ? "text-destructive" : "")}>{remaining}</span>
-        {isExhausted && displaySeconds && (
-          <span className="font-semibold tabular-nums text-destructive animate-pulse">{displaySeconds}</span>
+        {isExhausted && (
+          <span className="font-semibold tabular-nums text-destructive animate-pulse">{formatResetTime(liveResetInSeconds)}</span>
         )}
       </div>
     </div>
@@ -98,18 +81,20 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       defaultTheme="dark"
       enableSystem
     >
-      <ImageProvider>
-        <ToastProvider>
-          <div className="min-h-screen bg-background relative overflow-hidden">
-            <div className="absolute inset-0 -z-10 gradient-mesh opacity-50" />
-            {!isAdminArea && <Header />}
-            <main className="pt-16">
-              <GlobalDropZone>{children}</GlobalDropZone>
-            </main>
-            {!isAdminArea && <FloatingCredits />}
-          </div>
-        </ToastProvider>
-      </ImageProvider>
+      <QueryProvider>
+        <ImageProvider>
+          <ToastProvider>
+            <div className="min-h-screen bg-background relative overflow-x-hidden flex flex-col">
+              {!isAdminArea && <Header />}
+              <main className="pt-16 flex-1">
+                <GlobalDropZone>{children}</GlobalDropZone>
+              </main>
+              {!isAdminArea && <FloatingCredits />}
+              {!isAdminArea && <Footer />}
+            </div>
+          </ToastProvider>
+        </ImageProvider>
+      </QueryProvider>
     </ThemeProvider>
   );
 }

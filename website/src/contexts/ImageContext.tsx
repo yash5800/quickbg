@@ -1,104 +1,93 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from "react";
-import { submitImage, getJobStatus, JobQueuedResponse, getQueueStatus } from "@/lib/worker-api";
+import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
+import { submitImage, getJobStatus, getQueueStatus, WorkerApiError } from "@/lib/worker-api";
+import { useImagesStore } from "@/store/images";
+import { useCreditsStore } from "@/store/credits";
+import { useProcessingStore } from "@/store/processing";
+import { ImageItem, ImageWaitingReason } from "@/types/image";
 
-export interface ImageItem {
-  id: string;
-  file: File;
-  preview: string;
-  status: "pending" | "uploading" | "queued" | "processing" | "completed" | "error";
-  result?: string;
-  error?: string;
-  startTime?: number;
-  duration?: number;
-  dimensions?: {
-    width: number;
-    height: number;
-  };
-  jobId?: string; // Worker API job_id
-  progress?: number; // 0-100
-  queuePosition?: number | null;
-  estimatedWaitSeconds?: number | null;
-  waitingReason?: "credits_exhausted" | null;
-  creditResetAt?: number | null; // timestamp when credits reset
-}
-
-interface ImageContextType {
+const ImageContext = createContext<{
   images: ImageItem[];
-  setImages: (images: ImageItem[]) => void;
   addImages: (files: File[]) => void;
   removeImage: (id: string) => void;
   clearImages: () => void;
   updateImageStatus: (id: string, status: ImageItem["status"], data?: Partial<ImageItem>) => void;
   updateImage: (id: string, data: Partial<ImageItem>) => void;
   updateImageResult: (id: string, result: string) => void;
-  creditsInfo: { remaining: number; resetIn: number } | null;
-}
-
-const ImageContext = createContext<ImageContextType | undefined>(undefined);
+} | null>(null);
 
 export function ImageProvider({ children }: { children: React.ReactNode }) {
-  const [images, setImages] = useState<ImageItem[]>([]);
-  const addCountRef = useRef(0);
-  const recentFileKeysRef = useRef<Set<string>>(new Set());
+  const images = useImagesStore((state) => state.images);
+  const addImagesStore = useImagesStore((state) => state.addImages);
+  const removeImageStore = useImagesStore((state) => state.removeImage);
+  const clearImagesStore = useImagesStore((state) => state.clearImages);
+  const updateImageStatusStore = useImagesStore((state) => state.updateImageStatus);
+  const updateImageStore = useImagesStore((state) => state.updateImage);
+  const updateImageResultStore = useImagesStore((state) => state.updateImageResult);
+  const pausePendingImages = useImagesStore((state) => state.pausePendingImages);
+  const clearWaitingState = useImagesStore((state) => state.clearWaitingState);
+
+  const setCredits = useCreditsStore((state) => state.setCredits);
+  const { currentImageId, setSubmitting, clearSubmitting } = useProcessingStore();
   const processingRef = useRef(false);
+  const [retryTick, setRetryTick] = React.useState(0);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  const toastAddedRef = useRef(false);
-  const [globalCredits, setGlobalCredits] = useState<{ remaining: number; resetIn: number } | null>(null);
+
+  const pausePending = useCallback((reason: ImageWaitingReason, retryInSeconds: number) => {
+    pausePendingImages(reason, Date.now() + retryInSeconds * 1000);
+  }, [pausePendingImages]);
 
   // Cleanup polling intervals on unmount
   useEffect(() => {
+    const intervals = pollingIntervalsRef.current;
     return () => {
-      pollingIntervalsRef.current.forEach((intervalId) => {
+      intervals.forEach((intervalId) => {
         clearInterval(intervalId);
       });
-      pollingIntervalsRef.current.clear();
+      intervals.clear();
     };
   }, []);
 
-  // Update global credits state and check for exhausted credits
+  // Older local queue-cap logic could leave images stuck as queue_full. Clear it
+  // so available credits can drive submission.
   useEffect(() => {
-    const checkCredits = async () => {
-      try {
-        const status = await getQueueStatus();
-        setGlobalCredits({ remaining: status.remaining, resetIn: status.reset_in_seconds ?? 3600 });
-
-        // Only update creditResetAt if NOT already set (set once when credits hit 0)
-        if (status.remaining === 0) {
-          setImages((prev) => {
-            // Check if any pending image needs creditResetAt set
-            const needsReset = prev.some(img =>
-              img.status === "pending" &&
-              img.waitingReason === "credits_exhausted" &&
-              img.creditResetAt == null
-            );
-
-            if (!needsReset) return prev;
-
-            const resetAt = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
-            return prev.map((img) =>
-              img.status === "pending" && img.creditResetAt == null
-                ? {
-                    ...img,
-                    waitingReason: "credits_exhausted",
-                    creditResetAt: resetAt,
-                  }
-                : img
-            );
-          });
-          toastAddedRef.current = true;
-        } else if (status.remaining > 0) {
-          toastAddedRef.current = false;
-        }
-      } catch (err) {
-        console.error("Failed to fetch queue status:", err);
+    images.forEach((img) => {
+      if (img.status === "pending" && img.waitingReason === "queue_full") {
+        clearWaitingState(img.id);
       }
-    };
+    });
+  }, [images, clearWaitingState]);
 
-    checkCredits();
-    const interval = setInterval(checkCredits, 10000);
-    return () => clearInterval(interval);
+  // Re-run the processing effect when a paused pending image is ready to retry.
+  useEffect(() => {
+    const now = Date.now();
+    const nextRetryAt = images.reduce<number | null>((next, img) => {
+      if (img.status !== "pending" || !img.waitingReason) {
+        return next;
+      }
+
+      const retryAt =
+        img.waitingReason === "credits_exhausted"
+          ? img.creditResetAt
+          : null;
+
+      if (!retryAt || retryAt <= now) {
+        return next;
+      }
+
+      return next == null ? retryAt : Math.min(next, retryAt);
+    }, null);
+
+    if (nextRetryAt == null) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      setRetryTick((tick) => tick + 1);
+    }, Math.max(250, nextRetryAt - now));
+
+    return () => window.clearTimeout(timer);
   }, [images]);
 
   // Poll worker status for active jobs (queued/running) until terminal state.
@@ -113,77 +102,74 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
     activeImages.forEach((img) => {
       if (!pollingIntervalsRef.current.has(img.id)) {
-        // Start polling for this image
         const intervalId = setInterval(async () => {
           try {
             const status = await getJobStatus(img.jobId!);
 
             const mappedStatus =
-              status.status === "running"
+              status.status === "running" ||
+              status.status === "starting" ||
+              status.status === "uploading_result"
                 ? "processing"
                 : status.status === "queued"
-                ? "queued"
-                : status.status;
+                  ? "queued"
+                  : status.status === "failed" ||
+                    status.status === "expired" ||
+                    status.status === "cancelled" ||
+                    status.status === "error"
+                    ? "error"
+                    : status.status;
 
-            setImages((prev) =>
-              prev.map((item) =>
-                item.id === img.id
-                  ? {
-                      ...item,
-                      status:
-                        mappedStatus === "completed"
-                          ? "completed"
-                          : mappedStatus === "failed"
-                          ? "error"
-                          : mappedStatus,
-                      progress: status.progress,
-                      queuePosition:
-                        status.status === "queued" ? status.queue_position ?? null : null,
-                      estimatedWaitSeconds:
-                        status.status === "queued" ? status.estimated_wait_seconds ?? null : null,
-                    }
-                  : item
-              )
-            );
+            useImagesStore.getState().updateImageStatus(img.id, mappedStatus as ImageItem["status"], {
+              progress: status.progress,
+              queuePosition: status.status === "queued" ? status.queue_position ?? null : null,
+              estimatedWaitSeconds: status.status === "queued" ? status.estimated_wait_seconds ?? null : null,
+            });
 
             if (status.status === "completed") {
-              // Fetch result and update status
               const resultResp = await fetch(`/api/result/${img.jobId}`, { cache: "no-store" });
               if (resultResp.ok) {
                 const blob = await resultResp.blob();
                 const url = URL.createObjectURL(blob);
-                setImages((prev) =>
-                  prev.map((item) =>
-                    item.id === img.id
-                      ? {
-                          ...item,
-                          status: "completed",
-                          result: url,
-                          duration: item.startTime ? Date.now() - item.startTime : undefined,
-                        }
-                      : item
-                  )
-                );
-                // Stop polling
+                useImagesStore.getState().updateImageStatus(img.id, "completed", {
+                  result: url,
+                  duration: img.startTime ? Date.now() - img.startTime : undefined,
+                  progress: 100,
+                });
                 const existingInterval = pollingIntervalsRef.current.get(img.id);
                 if (existingInterval) {
                   clearInterval(existingInterval);
                   pollingIntervalsRef.current.delete(img.id);
                 }
               }
-            } else if (status.status === "failed") {
-              setImages((prev) =>
-                prev.map((item) =>
-                  item.id === img.id
-                    ? { ...item, status: "error", error: status.error || "Processing failed" }
-                    : item
-                )
-              );
-              // Stop polling
+            } else if (
+              status.status === "failed" ||
+              status.status === "expired" ||
+              status.status === "cancelled" ||
+              status.status === "error"
+            ) {
+              useImagesStore.getState().updateImageStatus(img.id, "error", {
+                error: status.error || "Processing failed",
+                progress: 0,
+              });
               const existingInterval = pollingIntervalsRef.current.get(img.id);
               if (existingInterval) {
                 clearInterval(existingInterval);
                 pollingIntervalsRef.current.delete(img.id);
+              }
+            }
+
+            // Clear submitting state when job completes or fails
+            if (
+              status.status === "completed" ||
+              status.status === "failed" ||
+              status.status === "expired" ||
+              status.status === "cancelled" ||
+              status.status === "error"
+            ) {
+              const store = useProcessingStore.getState();
+              if (store.currentImageId === img.id) {
+                clearSubmitting();
               }
             }
           } catch (err) {
@@ -202,204 +188,140 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         pollingIntervalsRef.current.delete(imageId);
       }
     });
-  }, [images]);
+  }, [images, clearSubmitting]);
 
-  // Auto-process images when:
-  // 1. A new image is added and is in "pending" state
-  // 2. The current processing job completes
+  // Auto-process images - ONE AT A TIME
   useEffect(() => {
-    // Skip if already processing
+    // Don't run if already processing
     if (processingRef.current) {
-      console.log("[ImageContext] Skipping - already processing");
       return;
     }
 
-    // Find the first pending image
-    const pendingImage = images.find((img) => img.status === "pending");
+    // Don't run if another image is being submitted
+    if (currentImageId !== null) {
+      return;
+    }
+
+    // Find first pending image
+    const now = Date.now();
+    const pendingImage = images.find(
+      (img) =>
+        img.status === "pending" &&
+        (
+          !img.waitingReason ||
+          (img.waitingReason === "credits_exhausted" && (img.creditResetAt ?? 0) <= now)
+        )
+    );
     if (!pendingImage) {
-      console.log("[ImageContext] No pending images found");
       return;
     }
 
     console.log("[ImageContext] Processing image:", pendingImage.id);
     processingRef.current = true;
+    setSubmitting(pendingImage.id);
 
-    // Check credits AND queue status before submitting
+    // Check queue status and submit
     getQueueStatus()
       .then((status) => {
-        console.log("[ImageContext] Queue status:", status);
+        // Update credits store
+        setCredits(status.remaining, status.reset_in_seconds ?? 3600);
 
-        // If credits are exhausted OR queue is too full, pause
-        const maxQueuedJobs = 3;
-        if (status.remaining === 0 || status.queue_length >= maxQueuedJobs) {
+        if (status.remaining === 0) {
           processingRef.current = false;
-          setImages((prev) => {
-            const resetAt = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
-            return prev.map((img) =>
-              img.status === "pending"
-                ? { ...img, waitingReason: "credits_exhausted", creditResetAt: resetAt }
-                : img
-            );
-          });
-          console.log("[ImageContext] Paused - remaining:", status.remaining, "queue:", status.queue_length);
+          clearSubmitting();
+          pausePending("credits_exhausted", status.reset_in_seconds ?? 3600);
+          console.log("[ImageContext] Paused - credits exhausted");
           return;
         }
+
+        // Update status to uploading
+        clearWaitingState(pendingImage.id);
+        useImagesStore.getState().updateImageStatus(pendingImage.id, "uploading", { startTime: Date.now() });
+
+        // Submit to server
         return submitImage(pendingImage.file);
       })
       .then((response) => {
-        if (!response) return; // Paused
+        if (!response) return;
+
         console.log("[ImageContext] Submit response:", response);
 
-        const startTime = Date.now();
         if (response.status === "completed" && response.imageBlob) {
           const url = URL.createObjectURL(response.imageBlob);
-          setImages((prev) =>
-            prev.map((img) =>
-              img.id === pendingImage.id
-                ? { ...img, status: "completed", result: url, jobId: "direct", duration: Date.now() - startTime }
-                : img
-            )
-          );
+          const currentImage = useImagesStore.getState().images.find((img) => img.id === pendingImage.id);
+          useImagesStore.getState().updateImageStatus(pendingImage.id, "completed", {
+            result: url,
+            jobId: "direct",
+            duration: currentImage?.startTime ? Date.now() - currentImage.startTime : undefined,
+            progress: 100,
+          });
         } else {
-          setImages((prev) =>
-            prev.map((img) =>
-              img.id === pendingImage.id
-                ? { ...img, status: "queued", jobId: response.job_id }
-                : img
-            )
-          );
+          useImagesStore.getState().updateImageStatus(pendingImage.id, "queued", {
+            jobId: response.job_id,
+            waitingReason: null,
+            creditResetAt: null,
+            queueRetryAt: null,
+          });
         }
       })
       .catch((err) => {
         console.error("[ImageContext] Processing failed:", err);
-        setImages((prev) =>
-          prev.map((img) =>
-            img.id === pendingImage.id
-              ? { ...img, status: "error", error: err.message || "Unknown error" }
-              : img
-          )
-        );
+        if (err instanceof WorkerApiError && err.status === 403) {
+          const details = err.details as { reset_in_seconds?: number; remaining?: number } | null;
+          setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
+          pausePending("credits_exhausted", details?.reset_in_seconds ?? 3600);
+          return;
+        }
+        useImagesStore.getState().updateImageStatus(pendingImage.id, "error", {
+          error: err.message || "Unknown error",
+          progress: 0,
+        });
       })
       .finally(() => {
-        console.log("[ImageContext] Processing complete, resetting flag");
+        console.log("[ImageContext] Processing complete");
         processingRef.current = false;
+        // Only clear if this image is still the current one
+        const store = useProcessingStore.getState();
+        if (store.currentImageId === pendingImage.id) {
+          clearSubmitting();
+        }
       });
-  }, [images]);
+  }, [images, currentImageId, retryTick, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
 
   const addImages = useCallback((files: File[]) => {
-    // Create unique keys for deduplication (name + size + lastModified)
-    const fileKeys = files.map(f => `${f.name}-${f.size}-${f.lastModified}`);
+    addImagesStore(files);
+  }, [addImagesStore]);
 
-    // Filter out files that were recently added (within last 2 seconds)
-    const uniqueFiles: File[] = [];
-    const newFileKeys: string[] = [];
+  const removeImage = useCallback((id: string) => {
+    removeImageStore(id);
+  }, [removeImageStore]);
 
-    for (let i = 0; i < files.length; i++) {
-      const key = fileKeys[i];
-      if (!recentFileKeysRef.current.has(key)) {
-        uniqueFiles.push(files[i]);
-        newFileKeys.push(key);
-      }
-    }
+  const clearImages = useCallback(() => {
+    clearImagesStore();
+  }, [clearImagesStore]);
 
-    // Add new keys to recent set with 2 second expiry
-    newFileKeys.forEach(key => {
-      recentFileKeysRef.current.add(key);
-      setTimeout(() => {
-        recentFileKeysRef.current.delete(key);
-      }, 2000);
-    });
+  const updateImageStatus = useCallback((id: string, status: ImageItem["status"], data?: Partial<ImageItem>) => {
+    updateImageStatusStore(id, status, data);
+  }, [updateImageStatusStore]);
 
-    if (uniqueFiles.length === 0) {
-      console.log("[ImageContext] All files were recently added, skipping duplicates");
-      return;
-    }
+  const updateImage = useCallback((id: string, data: Partial<ImageItem>) => {
+    updateImageStore(id, data);
+  }, [updateImageStore]);
 
-    console.log(`[ImageContext] Adding ${uniqueFiles.length} unique files (filtered ${files.length - uniqueFiles.length} duplicates)`);
-
-    const batchId = ++addCountRef.current;
-    const newImages: ImageItem[] = uniqueFiles.map((file) => ({
-      id: `${batchId}-${Math.random().toString(36).slice(2, 9)}`,
-      file,
-      preview: URL.createObjectURL(file),
-      status: "pending",
-    }));
-
-    setImages((prev) => [...newImages, ...prev]);
-
-    newImages.forEach((image) => {
-      const loader = new window.Image();
-      loader.onload = () => {
-        const width = loader.naturalWidth;
-        const height = loader.naturalHeight;
-
-        setImages((current) =>
-          current.map((item) =>
-            item.id === image.id
-              ? { ...item, dimensions: { width, height } }
-              : item
-          )
-        );
-      };
-      loader.src = image.preview;
-    });
-  }, []);
-
-  const removeImage = (id: string) => {
-    setImages((prev) => {
-      const item = prev.find((image) => image.id === id);
-      if (item) {
-        URL.revokeObjectURL(item.preview);
-      }
-
-      return prev.filter((image) => image.id !== id);
-    });
-  };
-
-  const clearImages = () => {
-    setImages((prev) => {
-      prev.forEach((image) => URL.revokeObjectURL(image.preview));
-      return [];
-    });
-  };
-
-  const updateImageStatus = (id: string, status: ImageItem["status"], data?: Partial<ImageItem>) => {
-    setImages((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, status, ...data } : item
-      )
-    );
-  };
-
-  const updateImage = (id: string, data: Partial<ImageItem>) => {
-    setImages((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, ...data } : item
-      )
-    );
-  };
-
-  // Update image result directly (used by eraser tool)
   const updateImageResult = useCallback((id: string, result: string) => {
-    setImages((prev) =>
-      prev.map((img) =>
-        img.id === id ? { ...img, result } : img
-      )
-    );
-  }, []);
+    updateImageResultStore(id, result);
+  }, [updateImageResultStore]);
 
   return (
     <ImageContext.Provider
       value={{
         images,
-        setImages,
         addImages,
         removeImage,
         clearImages,
         updateImageStatus,
         updateImage,
         updateImageResult,
-        creditsInfo: globalCredits,
       }}
     >
       {children}

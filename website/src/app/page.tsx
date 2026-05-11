@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useCallback, useRef } from "react";
-import { motion } from "framer-motion";
+import React, { useCallback, useRef, useState } from "react";
 import { Upload,
   Scissors,
   Maximize2,
@@ -10,12 +9,15 @@ import { Upload,
   Crop,
   Zap,
   Contrast,
+  Loader2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useImages } from "@/contexts/ImageContext";
 import { AppLayout } from "@/components/app-layout";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { StockSample, stockSamples } from "@/lib/stock-samples";
 
 const tools = [
   {
@@ -78,6 +80,7 @@ export default function Home() {
   const { images, addImages } = useImages();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +93,34 @@ export default function Home() {
       e.target.value = "";
     },
     [addImages, router]
+  );
+
+  const handleSampleSelect = useCallback(
+    async (sample: StockSample) => {
+      if (loadingSampleId) return;
+
+      try {
+        setLoadingSampleId(sample.id);
+        const response = await fetch(sample.image.src);
+
+        if (!response.ok) {
+          throw new Error(`Could not load ${sample.fileName}`);
+        }
+
+        const blob = await response.blob();
+        const file = new File([blob], sample.fileName, {
+          type: blob.type || "image/jpeg",
+        });
+
+        addImages([file]);
+        router.push("/remover");
+      } catch (error) {
+        console.error("[Home] Failed to load stock sample", error);
+      } finally {
+        setLoadingSampleId(null);
+      }
+    },
+    [addImages, loadingSampleId, router]
   );
 
   // If images exist and user is on home, show link to editor
@@ -106,111 +137,120 @@ export default function Home() {
         className="hidden"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center justify-center min-h-[60vh]"
-        >
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
           {/* Hero Content */}
-          <div className="text-center mb-12 max-w-3xl space-y-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20"
-            >
-              <span className="text-xs font-semibold text-primary uppercase tracking-wide">
-                ✨ AI-Powered
+          <div className="text-center mb-8 max-w-3xl space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 shadow-sm">
+              <span className="text-xs font-semibold text-blue-400 uppercase tracking-wide">
+                AI background removal
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-5xl sm:text-6xl font-bold tracking-tight"
-            >
-              Remove Backgrounds{" "}
-              <span className="bg-gradient-to-r from-primary via-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                Instantly
-              </span>
-            </motion.h1>
+            <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">
+              Upload an image. Get a clean cutout.
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto"
-            >
-              Professional AI-powered background removal. Upload your images and get crystal clear
-              results in seconds. Perfect for e-commerce, portraits, and product shots.
-            </motion.p>
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+              Use your own image or try a sample. Every image runs through the
+              same remover queue, so the demo behaves like the real workflow.
+            </p>
           </div>
 
           {/* Drop Zone */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
+          <div
             onClick={() => fileInputRef.current?.click()}
             className="w-full max-w-2xl cursor-pointer group"
           >
-            <div className="relative rounded-3xl border-2 border-dashed border-muted-foreground/30 p-12 sm:p-16 transition-all duration-300 group-hover:border-primary/50 group-hover:bg-primary/5 bg-muted/20 overflow-hidden">
-              {/* Animated background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:via-primary/10 group-hover:to-primary/5 transition-all duration-300" />
-
-              {/* Content */}
+            <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border bg-card p-8 shadow-sm transition-all duration-200 group-hover:border-primary/60 group-hover:bg-primary/5 sm:p-10">
               <div className="relative flex flex-col items-center justify-center text-center">
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/80 text-white shadow-lg"
-                >
-                  <Upload className="h-10 w-10" />
-                </motion.div>
+                <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+                  <Upload className="h-8 w-8" />
+                </div>
 
-                <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-                  Drag images here or click
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
+                  Drop images here or click to upload
                 </h2>
-                <p className="text-muted-foreground text-base sm:text-lg mb-4">
-                  Upload multiple images at once
+                <p className="text-muted-foreground text-sm sm:text-base mb-4">
+                  Batch upload supported. Results download as PNG.
                 </p>
 
                 <div className="flex gap-2 flex-wrap justify-center text-xs text-muted-foreground/70">
-                  <span className="bg-muted/50 px-3 py-1 rounded-full">PNG</span>
-                  <span className="bg-muted/50 px-3 py-1 rounded-full">JPG</span>
-                  <span className="bg-muted/50 px-3 py-1 rounded-full">WebP</span>
+                  <span className="bg-muted px-3 py-1 rounded-full">PNG</span>
+                  <span className="bg-muted px-3 py-1 rounded-full">JPG</span>
+                  <span className="bg-muted px-3 py-1 rounded-full">WebP</span>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
+
+          <div className="mt-8 w-full max-w-5xl">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-sm font-semibold text-foreground">
+                  Try a sample
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  These use the real background-remover flow.
+                </p>
+              </div>
+              {loadingSampleId && (
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  Loading sample
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {stockSamples.map((sample) => (
+                <button
+                  key={sample.id}
+                  type="button"
+                  onClick={() => handleSampleSelect(sample)}
+                  disabled={!!loadingSampleId}
+                  className="group overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-md disabled:pointer-events-none disabled:opacity-70"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                    <Image
+                      src={sample.image}
+                      alt={`${sample.label} sample`}
+                      fill
+                      sizes="(max-width: 640px) 50vw, 240px"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      placeholder="blur"
+                    />
+                  </div>
+                  <div className="flex items-center justify-between gap-2 p-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-foreground">
+                        {sample.label}
+                      </p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {sample.description}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-xs font-medium text-primary">
+                      Try
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* View Processing Images Link */}
           {hasImages && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="mt-8"
-            >
+            <div className="mt-8">
               <Link
                 href="/remover"
                 className="text-primary hover:text-primary/80 font-medium"
               >
                 View {images.length} processing image{images.length !== 1 ? "s" : ""} →
               </Link>
-            </motion.div>
+            </div>
           )}
 
           {/* Tools Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="w-full max-w-5xl mt-20"
-          >
+          <div className="w-full max-w-5xl mt-20">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
                 Powerful Tools
@@ -221,13 +261,8 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {tools.map((tool, idx) => (
-                <motion.div
-                  key={tool.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * idx }}
-                >
+              {tools.map((tool) => (
+                <div key={tool.id}>
                   <Link
                     href={tool.href}
                     className="group relative block p-5 rounded-2xl bg-muted/30 border border-border/50 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
@@ -269,18 +304,13 @@ export default function Home() {
                       <Zap className="h-3 w-3" />
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Features */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 w-full max-w-2xl"
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 w-full max-w-2xl">
             {[
               { label: "Lightning Fast", value: "< 15 seconds" },
               { label: "High Quality", value: "4K Support" },
@@ -296,8 +326,8 @@ export default function Home() {
                 </div>
               </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </AppLayout>
   );

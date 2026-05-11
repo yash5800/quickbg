@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useImages, ImageItem } from "@/contexts/ImageContext";
+import { useImagesStore } from "@/store/images";
+import { useCreditsStore } from "@/store/credits";
 import { useToast } from "@/components/ui/toast";
 import { AppLayout } from "@/components/app-layout";
 import { PreviewDisplay } from "@/components/preview-display";
@@ -14,9 +15,15 @@ import { FeedbackSection } from "@/components/feedback-section";
 import { EraserTool } from "@/components/eraser-tool";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ImageItem } from "@/types/image";
 
 export default function EditorPage() {
-  const { images, addImages, removeImage, updateImageResult, creditsInfo } = useImages();
+  const images = useImagesStore((state) => state.images);
+  const addImages = useImagesStore((state) => state.addImages);
+  const removeImage = useImagesStore((state) => state.removeImage);
+  const updateImageStatus = useImagesStore((state) => state.updateImageStatus);
+  const updateImageResult = useImagesStore((state) => state.updateImageResult);
+  const remaining = useCreditsStore((state) => state.remaining);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showEraser, setShowEraser] = useState(false);
@@ -91,6 +98,23 @@ export default function EditorPage() {
     removeImage(id);
   }, [images, selectedId, removeImage]);
 
+  const handleRetry = useCallback((id: string) => {
+    setSelectedId(id);
+    updateImageStatus(id, "pending", {
+      error: undefined,
+      result: undefined,
+      jobId: undefined,
+      progress: 0,
+      queuePosition: null,
+      estimatedWaitSeconds: null,
+      waitingReason: null,
+      creditResetAt: null,
+      queueRetryAt: null,
+      startTime: undefined,
+      duration: undefined,
+    });
+  }, [updateImageStatus]);
+
   const selectedImage = images.find((img: ImageItem) => img.id === selectedId);
 
   // No images state - show drag & drop area
@@ -162,11 +186,9 @@ export default function EditorPage() {
                   <h1 className="text-2xl font-bold text-foreground">Processing</h1>
                   <p className="text-muted-foreground text-sm mt-0.5">
                     {images.length} {images.length === 1 ? "image" : "images"} selected
-                    {creditsInfo && (
-                      <span className="ml-2 text-amber-600">
-                        ({creditsInfo.remaining} credits left)
-                      </span>
-                    )}
+                    <span className="ml-2 text-amber-600">
+                      ({remaining} credits left)
+                    </span>
                   </p>
                 </div>
               </div>
@@ -205,6 +227,7 @@ export default function EditorPage() {
                     key={`info-${selectedImage.id}`}
                     image={selectedImage}
                     onRemove={() => handleRemove(selectedImage.id)}
+                    onRetry={() => handleRetry(selectedImage.id)}
                     onOpenEraser={() => setShowEraser(true)}
                   />
                 )}
@@ -265,7 +288,7 @@ function SelectedPreview({
   );
 }
 
-function SelectedInfo({ image, onRemove, onOpenEraser }: { image: ImageItem; onRemove: () => void; onOpenEraser?: () => void }) {
+function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: ImageItem; onRemove: () => void; onRetry: () => void; onOpenEraser?: () => void }) {
   const [resultUrl, setResultUrl] = useState<string | null>(image.result || null);
   const [isDownloading, setIsDownloading] = useState(false);
   const jobIdRef = useRef<string | null>(image.jobId || null);
@@ -295,7 +318,7 @@ function SelectedInfo({ image, onRemove, onOpenEraser }: { image: ImageItem; onR
 
   const finalResultUrl = resultUrl || image.result || null;
   const isCompleted = image.status === "completed" && !!finalResultUrl;
-  const isError = image.status === "error";
+  const isError = image.status === "error" || image.status === "failed";
   const isProcessing = [
     "queued",
     "uploading",
@@ -317,7 +340,7 @@ function SelectedInfo({ image, onRemove, onOpenEraser }: { image: ImageItem; onR
         isCompleted={isCompleted}
         isError={isError}
         onRemove={onRemove}
-        onRetry={() => {}}
+        onRetry={onRetry}
         onDownload={downloadResult}
         isDownloading={isDownloading}
         liveStatus="unknown"

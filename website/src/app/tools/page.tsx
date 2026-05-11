@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Scissors, Maximize2, Palette, Layers, Crop, Contrast, ArrowLeft } from "lucide-react";
 
@@ -13,6 +14,7 @@ const tools = [
     icon: Scissors,
     title: "Background Remover",
     description: "Instantly remove backgrounds from any image",
+    bestFor: "Product photos, portraits, ecommerce",
     badge: "Core",
     href: "/remover",
     color: "from-primary to-blue-500",
@@ -22,6 +24,7 @@ const tools = [
     icon: Maximize2,
     title: "Smart Resize",
     description: "Resize to perfect dimensions",
+    bestFor: "Social posts, ads, marketplaces",
     badge: "Popular",
     href: "/resize",
     color: "from-violet-500 to-purple-500",
@@ -31,6 +34,7 @@ const tools = [
     icon: Palette,
     title: "Background Replace",
     description: "Replace with colors or images",
+    bestFor: "Brand backgrounds and listings",
     badge: "New",
     href: "/replace-bg",
     color: "from-cyan-500 to-teal-500",
@@ -40,6 +44,7 @@ const tools = [
     icon: Layers,
     title: "Blur Background",
     description: "Add blur effects to background",
+    bestFor: "Profile photos and campaign creative",
     badge: null,
     href: "/blur-bg",
     color: "from-rose-500 to-pink-500",
@@ -49,6 +54,7 @@ const tools = [
     icon: Crop,
     title: "Smart Crop",
     description: "Crop to aspect ratios",
+    bestFor: "Thumbnails, feeds, banners",
     badge: null,
     href: "/crop",
     color: "from-emerald-500 to-green-500",
@@ -58,6 +64,7 @@ const tools = [
     icon: Contrast,
     title: "Adjust Image",
     description: "Brightness, contrast, saturation",
+    bestFor: "Final polish and compression",
     badge: null,
     href: "/adjust",
     color: "from-blue-600 to-cyan-600",
@@ -80,45 +87,45 @@ export default function ToolsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tools.map((tool, idx) => (
-            <motion.div
-              key={tool.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.05 }}
-            >
+        <div className="mb-6 rounded-xl border border-border bg-card p-4">
+          <p className="text-sm font-medium">Workflow</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Start with background removal, then use editing tools to resize, crop, replace, blur, or export.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {tools.map((tool) => (
+            <Card key={tool.id} className="group transition-colors hover:border-primary/50">
               <button
                 onClick={() => router.push(tool.href)}
-                className="group relative flex flex-col items-center justify-start text-center w-full h-full p-8 rounded-2xl bg-muted/30 border border-border/50 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+                className="relative flex h-full w-full flex-col items-start justify-start p-5 text-left"
               >
                 {tool.badge && (
-                  <span className={cn(
-                    "absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold rounded-full bg-gradient-to-r text-white shadow-md",
-                    tool.badge === "Core" ? "from-primary to-blue-500" :
-                    tool.badge === "Popular" ? "from-violet-500 to-purple-500" :
-                    tool.badge === "New" ? "from-cyan-500 to-teal-500" :
-                    "from-indigo-500 to-blue-600"
-                  )}>
+                  <Badge className="absolute right-4 top-4" variant={tool.badge === "Core" ? "default" : "secondary"}>
                     {tool.badge}
-                  </span>
+                  </Badge>
                 )}
 
                 <div className={cn(
-                  "w-16 h-16 rounded-2xl mb-4 flex items-center justify-center bg-gradient-to-br shadow-lg transition-transform group-hover:scale-110",
+                  "mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-gradient-to-br text-white shadow-sm",
                   tool.color
                 )}>
-                  <tool.icon className="h-8 w-8 text-white" />
+                  <tool.icon className="h-5 w-5" />
                 </div>
 
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors">
                   {tool.title}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
                   {tool.description}
                 </p>
+                <CardContent className="mt-4 p-0">
+                  <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Best for</p>
+                  <p className="mt-1 text-sm">{tool.bestFor}</p>
+                </CardContent>
               </button>
-            </motion.div>
+            </Card>
           ))}
         </div>
       </div>

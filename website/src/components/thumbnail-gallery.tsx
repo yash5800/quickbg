@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ImageItem } from "@/contexts/ImageContext";
+import { ImageItem } from "@/types/image";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, AlertCircle, Loader2, X } from "lucide-react";
 
@@ -59,7 +59,7 @@ function ThumbnailItem({
   onRemove: () => void;
 }) {
   const isCompleted = image.status === "completed";
-  const isError = image.status === "error";
+  const isError = image.status === "error" || image.status === "failed";
   const isProcessing = [
     "queued",
     "uploading",

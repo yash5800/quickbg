@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { JobStatus } from "@/types/job";
 
 interface JobStatusState {
@@ -8,58 +8,26 @@ interface JobStatusState {
 }
 
 export function useJobStatus(jobId: string | null, intervalMs: number = 2000) {
-  const [state, setState] = useState<JobStatusState>({
-    status: "unknown",
-    progress: 0,
+  const query = useQuery({
+    queryKey: ["job-status", jobId],
+    enabled: !!jobId && jobId !== "direct",
+    queryFn: async () => {
+      const resp = await fetch(`/api/status/${jobId}`, { cache: "no-store" });
+      if (!resp.ok) throw new Error(`Status check failed: ${resp.status}`);
+      return resp.json();
+    },
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "completed" || status === "failed" || status === "error" ? false : intervalMs;
+    },
   });
 
-  useEffect(() => {
-    if (!jobId || jobId === "direct") {
-      if (jobId === "direct") {
-        setState({ status: "completed", progress: 100 });
-      } else {
-        setState({ status: "unknown", progress: 0 });
-      }
-      return;
-    }
+  if (jobId === "direct") return { status: "completed" as const, progress: 100 };
+  if (!jobId) return { status: "unknown" as const, progress: 0 };
 
-    let isMounted = true;
-    let timerId: NodeJS.Timeout;
-
-    const checkStatus = async () => {
-      try {
-        const resp = await fetch(`/api/status/${jobId}`, { cache: "no-store" });
-        if (!resp.ok) return;
-        
-        const data = await resp.json();
-        if (!isMounted) return;
-
-        setState({
-          status: data.status || "unknown",
-          progress: data.progress ?? 0,
-          error: data.error,
-        });
-
-        if (data.status === "completed" || data.status === "failed" || data.status === "error") {
-          return; // Stop polling
-        }
-
-        timerId = setTimeout(checkStatus, intervalMs);
-      } catch (err) {
-        console.error("Status check error:", err);
-        if (isMounted) {
-            timerId = setTimeout(checkStatus, intervalMs);
-        }
-      }
-    };
-
-    checkStatus();
-
-    return () => {
-      isMounted = false;
-      if (timerId) clearTimeout(timerId);
-    };
-  }, [jobId, intervalMs]);
-
-  return state;
+  return {
+    status: (query.data?.status || "unknown") as JobStatus | "unknown",
+    progress: query.data?.progress ?? 0,
+    error: query.data?.error,
+  } satisfies JobStatusState;
 }

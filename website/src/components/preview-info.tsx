@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ImageItem } from "@/contexts/ImageContext";
+import { ImageItem } from "@/types/image";
 import {
   Download,
   X,
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
@@ -50,13 +51,17 @@ export function PreviewInfo({
 
   const statusConfig = {
     pending: { label: "Waiting", icon: Clock, color: "bg-slate-500/10 text-slate-600" },
+    starting: { label: "Starting", icon: Loader2, color: "bg-blue-500/10 text-blue-600" },
     uploading: { label: "Uploading", icon: Loader2, color: "bg-blue-500/10 text-blue-600" },
     queued: { label: "In Queue", icon: Loader2, color: "bg-amber-500/10 text-amber-600" },
     processing: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
     running: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
+    uploading_result: { label: "Finalizing", icon: Loader2, color: "bg-primary/10 text-primary" },
     completed: { label: "Done", icon: CheckCircle2, color: "bg-green-500/10 text-green-600" },
     error: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
     failed: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
+    expired: { label: "Expired", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
+    cancelled: { label: "Cancelled", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
   }[status as string] || { label: status, icon: Clock, color: "bg-slate-500/10 text-slate-600" };
 
   const StatusIcon = statusConfig.icon;
@@ -94,24 +99,20 @@ export function PreviewInfo({
         </div>
 
         {/* Status Badge */}
-        <div
-          className={cn(
-            "inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold",
-            statusConfig.color
-          )}
-        >
-          {status === "processing" || status === "queued" || status === "running" || status === "uploading" ? (
+        <Badge variant={isError ? "destructive" : isCompleted ? "success" : isProcessing ? "warning" : "outline"} className={cn("gap-2", statusConfig.color)}>
+          {status === "processing" || status === "queued" || status === "running" || status === "uploading" || status === "starting" || status === "uploading_result" ? (
             <StatusIcon className="h-3.5 w-3.5 animate-spin" />
           ) : (
             <StatusIcon className="h-3.5 w-3.5" />
           )}
           {statusConfig.label}
-        </div>
-      </Card>
+        </Badge>
 
-      {/* Credits Exhausted - Waiting for reset */}
+              </Card>
+
+      {/* Waiting states */}
       <AnimatePresence>
-        {image.status === "pending" && image.waitingReason === "credits_exhausted" && (
+        {image.status === "pending" && image.waitingReason && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -119,16 +120,25 @@ export function PreviewInfo({
           >
             <Card className="p-4 space-y-3 bg-amber-500/10 border-amber-500/30">
               <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
-                Hourly limit reached
+                {image.waitingReason === "credits_exhausted" ? "Hourly limit reached" : "Queue is full"}
               </h4>
               <p className="text-xs text-muted-foreground">
-                This image will process automatically when credits reset.
+                {image.waitingReason === "credits_exhausted"
+                  ? "This image will process automatically when credits reset."
+                  : "This image will process automatically when queue capacity opens."}
               </p>
-              {image.creditResetAt && (
+              {image.waitingReason === "credits_exhausted" && image.creditResetAt && (
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="h-4 w-4 text-amber-600" />
                   <span className="text-muted-foreground">Resets in</span>
                   <ResetTimer resetAt={image.creditResetAt} />
+                </div>
+              )}
+              {image.waitingReason === "queue_full" && image.queueRetryAt && (
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock className="h-4 w-4 text-amber-600" />
+                  <span className="text-muted-foreground">Retrying in</span>
+                  <ResetTimer resetAt={image.queueRetryAt} />
                 </div>
               )}
             </Card>

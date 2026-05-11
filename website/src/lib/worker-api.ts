@@ -1,6 +1,15 @@
 const API_BASE = "/api";
 
-export type JobStatus = "queued" | "running" | "completed" | "failed";
+export type JobStatus =
+  | "queued"
+  | "starting"
+  | "running"
+  | "uploading_result"
+  | "completed"
+  | "failed"
+  | "expired"
+  | "cancelled"
+  | "error";
 
 export interface JobQueuedResponse {
   job_id: string;
@@ -26,6 +35,18 @@ export interface QueueStatus {
   reset_in_seconds?: number;
 }
 
+export class WorkerApiError extends Error {
+  status: number;
+  details: unknown;
+
+  constructor(message: string, status: number, details: unknown) {
+    super(message);
+    this.name = "WorkerApiError";
+    this.status = status;
+    this.details = details;
+  }
+}
+
 export async function submitImage(file: File): Promise<JobQueuedResponse> {
   console.log("[Worker API] submitImage called:", file.name, file.size);
   const formData = new FormData();
@@ -38,7 +59,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: "Upload failed" }));
-    throw new Error(error.message || `HTTP ${response.status}`);
+    throw new WorkerApiError(error.message || `HTTP ${response.status}`, response.status, error);
   }
 
   const contentType = response.headers.get("content-type") || "";
@@ -86,7 +107,13 @@ export async function watchJobStatus(
     const status = await getJobStatus(jobId);
     onProgress(status);
 
-    if (status.status === "completed" || status.status === "failed") {
+    if (
+      status.status === "completed" ||
+      status.status === "failed" ||
+      status.status === "expired" ||
+      status.status === "cancelled" ||
+      status.status === "error"
+    ) {
       return status;
     }
 
