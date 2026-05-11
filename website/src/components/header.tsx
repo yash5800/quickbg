@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { Sparkles, Clock, Zap, Settings } from "lucide-react";
+import { Sparkles, Clock, Zap } from "lucide-react";
 import { getQueueStatus, QueueStatus } from "@/lib/worker-api";
 
 export function Header() {
   const [queueStatus, setQueueStatus] = useState<QueueStatus | null>(null);
+  const [resetSeconds, setResetSeconds] = useState(3600);
   const pathname = usePathname();
   const isRemoverPage = pathname === "/remover";
 
@@ -17,18 +18,26 @@ export function Header() {
       try {
         const status = await getQueueStatus();
         setQueueStatus(status);
+        setResetSeconds(status.reset_in_seconds ?? 3600);
       } catch (err) {
         console.error("Failed to fetch queue status:", err);
       }
     };
 
     fetchStatus();
-    const interval = setInterval(fetchStatus, 30000);
+    const interval = setInterval(fetchStatus, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Live countdown for reset timer
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setResetSeconds(prev => Math.max(0, prev - 1));
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 
   const remaining = queueStatus?.remaining ?? 25;
-  const resetSeconds = queueStatus?.reset_in_seconds ?? 3600;
 
   const formatResetTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -53,15 +62,10 @@ export function Header() {
                 <Zap className="h-4 w-4 text-primary" />
                 <span className="font-medium">{remaining}</span>
                 <span className="text-muted-foreground">uploads left</span>
-                {remaining < 10 && remaining > 0 && (
-                  <span className="text-xs text-amber-500 ml-1">
-                    Resets in {formatResetTime(resetSeconds)}
-                  </span>
-                )}
                 {remaining === 0 && (
                   <span className="flex items-center gap-1 text-xs text-destructive ml-1">
                     <Clock className="h-3 w-3" />
-                    Resets in {formatResetTime(resetSeconds)}
+                    {formatResetTime(resetSeconds)}
                   </span>
                 )}
               </div>
@@ -69,13 +73,6 @@ export function Header() {
           )}
 
           <div className="flex items-center gap-4">
-            <Link
-              href="/admin"
-              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-            >
-              <Settings className="h-4 w-4" />
-              <span>Admin</span>
-            </Link>
             <ThemeToggle />
           </div>
         </div>

@@ -38,7 +38,7 @@ export default function BlurBgPage() {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload = () => resolve(img);
-      img.onerror = (e) => reject(new Error(`Failed to load: ${src}`));
+      img.onerror = () => reject(new Error(`Failed to load: ${src}`));
       img.src = src;
     });
   }, []);

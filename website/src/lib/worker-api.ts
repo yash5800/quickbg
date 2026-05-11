@@ -13,6 +13,8 @@ export interface JobStatusResponse {
   status: JobStatus;
   progress: number;
   error: string | null;
+  queue_position?: number | null;
+  estimated_wait_seconds?: number | null;
 }
 
 export interface QueueStatus {

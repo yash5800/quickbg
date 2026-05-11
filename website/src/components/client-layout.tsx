@@ -41,7 +41,6 @@ function FloatingCredits() {
     return () => clearInterval(interval);
   }, []);
 
-  // Live countdown ticker
   useEffect(() => {
     if (!isExhausted) {
       setDisplaySeconds("");
@@ -63,16 +62,23 @@ function FloatingCredits() {
   const remaining = queueStatus?.remaining ?? 25;
 
   return (
-    <div className="fixed top-17 right-3 z-40 md:top-20 md:right-6">
-      <div className={cn(
-        "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background/90 border shadow-md backdrop-blur-sm text-xs transition-colors",
-        remaining === 0 ? "border-destructive/60 bg-destructive/10" :
-        remaining < 10 ? "border-amber-500/50 bg-amber-500/10" : "border-border/60"
-      )}>
-        <Zap className={cn(
-          "h-3.5 w-3.5",
-          remaining === 0 ? "text-destructive" : remaining < 10 ? "text-amber-500" : "text-primary"
-        )} />
+    <div className="fixed top-20 right-3 z-40 md:right-6">
+      <div
+        className={cn(
+          "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background/90 border shadow-md backdrop-blur-sm text-xs transition-colors",
+          remaining === 0
+            ? "border-destructive/60 bg-destructive/10"
+            : remaining < 10
+              ? "border-amber-500/50 bg-amber-500/10"
+              : "border-border/60"
+        )}
+      >
+        <Zap
+          className={cn(
+            "h-3.5 w-3.5",
+            remaining === 0 ? "text-destructive" : remaining < 10 ? "text-amber-500" : "text-primary"
+          )}
+        />
         <span className={cn("font-semibold", remaining === 0 ? "text-destructive" : "")}>{remaining}</span>
         {isExhausted && displaySeconds && (
           <span className="font-semibold tabular-nums text-destructive animate-pulse">{displaySeconds}</span>
@@ -83,6 +89,9 @@ function FloatingCredits() {
 }
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isAdminArea = pathname.startsWith("/admin");
+
   return (
     <ThemeProvider
       attribute="class"
@@ -93,10 +102,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <ToastProvider>
           <div className="min-h-screen bg-background relative overflow-hidden">
             <div className="absolute inset-0 -z-10 gradient-mesh opacity-50" />
-            <Header />
+            {!isAdminArea && <Header />}
             <main className="pt-16">
               <GlobalDropZone>{children}</GlobalDropZone>
             </main>
+            {!isAdminArea && <FloatingCredits />}
           </div>
         </ToastProvider>
       </ImageProvider>
@@ -105,9 +115,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 }
 
 function Header() {
-  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { images } = useImages();
+  const pathname = usePathname();
 
   const navItems = [
     { href: "/", label: "Home", icon: Home },
@@ -133,10 +143,7 @@ function Header() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className={cn(
-                  "gap-2 px-3.5",
-                  pathname === item.href && "text-primary bg-primary/10"
-                )}
+                className={cn("gap-2 px-3.5", pathname === item.href && "text-primary bg-primary/10")}
               >
                 <Link href={item.href}>
                   <item.icon className="h-4 w-4" />
@@ -164,14 +171,9 @@ function Header() {
         </div>
       </header>
 
-      <FloatingCredits />
-
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[60] md:hidden">
-          <div 
-            className="absolute inset-0 bg-background/60 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-          />
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
           <div className="absolute right-0 top-0 h-full w-72 border-l border-border bg-background p-5 shadow-xl animate-in slide-in-from-right duration-200">
             <div className="flex items-center justify-between mb-6">
               <span className="font-semibold">Menu</span>

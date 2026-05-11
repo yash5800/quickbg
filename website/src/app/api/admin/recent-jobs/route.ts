@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
 
@@ -12,7 +13,11 @@ interface JobDocument {
   sessionId: string;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (!isAdminAuthenticated(request)) {
+    return NextResponse.json([], { status: 401 });
+  }
+
   if (!MONGODB_URI) {
     return NextResponse.json([]);
   }

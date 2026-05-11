@@ -1,2 +1,0 @@
-- take mutiple image, after uploaded stop images that excited credits show the warning with dynamic countdow of reset 
-- that sticky credit indicator must have dynamic countdown not static

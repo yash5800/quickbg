@@ -1,9 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
 
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
+  if (!isAdminAuthenticated(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   if (!MONGODB_URI) {
     return NextResponse.json({ error: "Database not configured" }, { status: 500 });
   }

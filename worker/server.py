@@ -17,9 +17,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from PIL import Image
 from pymongo import MongoClient, ReturnDocument
-from pymongo.errors import PyMongoError
+from pymongo.errors import PyMongoError, DuplicateKeyError
 from pymongo.collection import Collection
 from pymongo.database import Database
+import hashlib
 from torchvision import transforms
 from transformers import AutoModelForImageSegmentation
 from dotenv import load_dotenv
@@ -119,6 +120,29 @@ def ensure_database() -> Collection:
     mongo_client = MongoClient(MONGO_URI)
     db = mongo_client.get_database(MONGO_DB_NAME)
     jobs_collection = db["jobs"]
+    # analytics collection stores aggregated counts per day and hourly breakdowns
+    try:
+        db.create_collection("analytics")
+    except Exception:
+        pass
+    try:
+        db.create_collection("analytics_seen")
+    except Exception:
+        pass
+    analytics_collection = db["analytics"]
+    analytics_seen = db["analytics_seen"]
+
+    # ensure indexes
+    try:
+        analytics_collection.create_index([("date", 1)], unique=True)
+    except Exception:
+        pass
+    # Temporary dedupe store for user hashes (TTL ~ 25 hours)
+    try:
+        analytics_seen.create_index([("date", 1), ("h", 1)], unique=True)
+        analytics_seen.create_index("createdAt", expireAfterSeconds=int(25 * 3600))
+    except Exception:
+        pass
 
     def safe_create_index(keys, **kwargs):
         try:
@@ -137,6 +161,43 @@ def ensure_database() -> Collection:
     safe_create_index([("clientKey", 1), ("status", 1), ("createdAt", 1)])
     safe_create_index([("expiresAt", 1)], expireAfterSeconds=0)
     return jobs_collection
+
+
+def record_analytics(client_key: Optional[str]) -> None:
+    """Record job and unique user counts without storing raw IPs.
+    We store only a hash of client_key temporarily in `analytics_seen` to dedupe unique users per day.
+    """
+    try:
+        if db is None:
+            return
+
+        analytics = db["analytics"]
+        analytics_seen = db["analytics_seen"]
+
+        now = utcnow()
+        date_str = now.date().isoformat()
+        hour_str = f"{now.hour:02d}"
+
+        # Increment job counters (daily + hourly)
+        update_ops = {
+            "$inc": {"jobs": 1, f"hours.{hour_str}.jobs": 1},
+            "$setOnInsert": {"date": date_str},
+        }
+        analytics.update_one({"date": date_str}, update_ops, upsert=True)
+
+        # If we have a client key, store a hash in analytics_seen to dedupe unique users per day.
+        if client_key:
+            h = hashlib.sha256(client_key.encode("utf-8")).hexdigest()
+            seen_doc = {"date": date_str, "h": h, "createdAt": utcnow()}
+            try:
+                analytics_seen.insert_one(seen_doc)
+                # first-seen for this day -> increment unique user counters
+                analytics.update_one({"date": date_str}, {"$inc": {"unique_users": 1, f"hours.{hour_str}.users": 1}, "$setOnInsert": {"date": date_str}}, upsert=True)
+            except DuplicateKeyError:
+                # already seen today, do nothing for unique user counts
+                pass
+    except Exception:
+        logger.exception("Failed to record analytics")
 
 
 def load_model():
@@ -433,16 +494,41 @@ async def cleanup_loop() -> None:
         await asyncio.sleep(CLEANUP_INTERVAL_SECONDS)
 
 
+def get_queue_position(job_id: str, created_at: datetime) -> Optional[int]:
+    """Calculate job's position in queue. Returns None if not queued."""
+    collection = get_job_store()
+    count = collection.count_documents({
+        "status": "queued",
+        "createdAt": {"$lt": created_at}
+    })
+    return count + 1
+
+
+def estimate_wait(queue_position: Optional[int], avg_seconds_per_job: int = 12) -> Optional[int]:
+    """Estimate wait time in seconds based on queue position."""
+    if queue_position is None:
+        return None
+    return queue_position * avg_seconds_per_job
+
+
 def build_status_payload(job: dict) -> dict:
     public_status = job.get("status", "queued")
     if public_status == "starting":
         public_status = "running"
+
+    queue_position = None
+    estimated_wait = None
+    if public_status == "queued":
+        queue_position = get_queue_position(job["jobId"], job["createdAt"])
+        estimated_wait = estimate_wait(queue_position)
 
     return {
         "job_id": job["jobId"],
         "status": public_status,
         "progress": job.get("progress", 0),
         "error": job.get("error"),
+        "queue_position": queue_position,
+        "estimated_wait_seconds": estimated_wait,
     }
 
 
@@ -528,6 +614,12 @@ async def remove_background(
     }
 
     await asyncio.to_thread(collection.insert_one, job_record)
+
+    # Record analytics (jobs + unique users) asynchronously; we store only hashed client keys temporarily.
+    try:
+        asyncio.create_task(asyncio.to_thread(record_analytics, client_key))
+    except Exception:
+        logger.exception("Failed to schedule analytics recording")
 
     if wait:
         await process_job(job_id)

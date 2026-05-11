@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import { ImageItem } from "@/contexts/ImageContext";
 import {
   Download,
@@ -99,7 +100,7 @@ export function PreviewInfo({
             statusConfig.color
           )}
         >
-          {status === "processing" || status === "running" || status === "uploading" ? (
+          {status === "processing" || status === "queued" || status === "running" || status === "uploading" ? (
             <StatusIcon className="h-3.5 w-3.5 animate-spin" />
           ) : (
             <StatusIcon className="h-3.5 w-3.5" />
@@ -107,6 +108,74 @@ export function PreviewInfo({
           {statusConfig.label}
         </div>
       </Card>
+
+      {/* Credits Exhausted - Waiting for reset */}
+      <AnimatePresence>
+        {image.status === "pending" && image.waitingReason === "credits_exhausted" && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <Card className="p-4 space-y-3 bg-amber-500/10 border-amber-500/30">
+              <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                Hourly limit reached
+              </h4>
+              <p className="text-xs text-muted-foreground">
+                This image will process automatically when credits reset.
+              </p>
+              {image.creditResetAt && (
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock className="h-4 w-4 text-amber-600" />
+                  <span className="text-muted-foreground">Resets in</span>
+                  <ResetTimer resetAt={image.creditResetAt} />
+                </div>
+              )}
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Queue Position Info */}
+      <AnimatePresence>
+        {image.status === "queued" && image.queuePosition != null && image.queuePosition > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            <Card className="p-4 space-y-3 bg-amber-500/5 border-amber-500/20">
+              <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+                Position in Queue
+              </h4>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <span>#</span>
+                    <span>Your Position</span>
+                  </div>
+                  <span className="font-semibold text-2xl text-amber-600 dark:text-amber-400">
+                    {image.queuePosition}
+                  </span>
+                </div>
+
+                {image.estimatedWaitSeconds && (
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>Est. Wait</span>
+                    </div>
+                    <span className="font-semibold text-foreground">
+                      ~{image.estimatedWaitSeconds}s
+                    </span>
+                  </div>
+                )}
+              </div>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Processing Info - Show when completed */}
       <AnimatePresence>
@@ -294,5 +363,27 @@ export function PreviewInfo({
         </div>
       )}
     </motion.div>
+  );
+}
+
+// Live timer component for credit reset countdown
+function ResetTimer({ resetAt }: { resetAt: number }) {
+  const [timeLeft, setTimeLeft] = useState(() => {
+    return Math.max(0, Math.ceil((resetAt - Date.now()) / 1000));
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(Math.max(0, Math.ceil((resetAt - Date.now()) / 1000)));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [resetAt]);
+
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  return (
+    <span className="font-bold text-amber-600 dark:text-amber-400 tabular-nums">
+      {mins}:{secs.toString().padStart(2, "0")}
+    </span>
   );
 }

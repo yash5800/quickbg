@@ -1,139 +1,136 @@
-# BG Remover ✨
+# Website
 
-Remove image backgrounds instantly with AI. Fast, simple, and free.
-
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://typescriptlang.org)
-[![Python](https://img.shields.io/badge/PyTorch-2.0-red)](https://pytorch.org)
-
-<p align="center">
-  <a href="https://yourwebsite.com">
-    <img src="https://img.shields.io/badge/Try%20Now-Get%20Started-green?style=for-the-badge&logo=rocket" alt="Try Now">
-  </a>
-  <a href="https://yourwebsite.com/uploads">
-    <img src="https://img.shields.io/badge/Upload%20Images-Start%20Here-blue?style=for-the-badge&logo=upload" alt="Upload">
-  </a>
-</p>
+Next.js 14 frontend for QuickBG - AI-powered background removal.
 
 ---
 
-## 🚀 Features
+## Overview
 
-- **⚡ 3 AI Models** - Fast (browser), Quality (server), Best (premium)
-- **📱 Drag & Drop** - Upload multiple images at once
-- **🎨 Image Editor** - Adjust brightness, contrast, eraser tool
-- **🌙 Dark/Light Mode** - Follows your system theme
-- **💾 Export Options** - Download or copy to clipboard
-- **🔄 Queue Processing** - Handles multiple images efficiently
+This is the public-facing web interface. It handles:
+- Image uploads via drag & drop
+- Client-side AI processing (TensorFlow.js)
+- Server-side processing via worker API
+- Image editing tools (brightness, contrast, eraser)
+- Admin panel for analytics and job management
 
----
+## Tech Stack
 
-## 🧠 AI Models
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Animation**: Framer Motion
+- **State**: React Context
+- **Icons**: Lucide React
+- **AI**: TensorFlow.js (client), Worker API (server)
 
-| Model | Type | Speed | Best For |
-|-------|------|-------|----------|
-| **Fast** | Client-side | ⚡⚡⚡ | Quick edits, simple images |
-| **Quality** | Server | ⚡⚡ | Detailed recovery |
-| **Best** | Server | ⚡ | Professional results |
-
----
-
-## 🛠️ Tech Stack
-
-**Frontend**
-- Next.js 14
-- React 18
-- TypeScript
-- Tailwind CSS
-- Framer Motion
-
-**AI Processing**
-- TensorFlow.js (client-side)
-- PyTorch + Transformers (server-side)
-
----
-
-## 🚀 Quick Start
+## Getting Started
 
 ```bash
-# Clone
-git clone https://github.com/yourusername/bgremover.git
-cd bgremover
-
-# Install
+# Install dependencies
 npm install
 
-# Run
+# Configure environment
+cp .env.local.example .env.local
+# Edit .env.local with your values
+
+# Run development server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
 
----
+## Project Structure
 
-## 📦 Deployment
+```
+src/
+├── app/                    # Next.js pages
+│   ├── api/               # API routes
+│   │   ├── admin/        # Admin API (analytics, cleanup, login)
+│   │   └── status/       # Job status polling
+│   ├── admin/           # Admin dashboard
+│   ├── adjust/          # Image adjustment tool
+│   ├── blur-bg/         # Blur background tool
+│   ├── crop/             # Crop tool
+│   ├── enhance/         # Enhancement tool
+│   ├── page.tsx          # Home/upload page
+│   ├── remover/          # Main background removal
+│   ├── replace-bg/       # Replace background tool
+│   ├── resize/           # Resize tool
+│   └── tools/            # Tools landing page
+├── components/           # UI components
+│   ├── ui/              # Shadcn-style components
+│   └── *.tsx           # Feature components
+├── contexts/            # React contexts (ImageContext)
+└── lib/                 # Utilities
+    ├── admin-auth.ts    # Admin authentication
+    ├── client-model.ts  # Client-side TF.js model
+    ├── worker-api.ts    # Worker API client
+    └── utils.ts         # General utilities
+```
+
+## Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` | Home - upload images, select processing mode |
+| `/remover` | Main background removal interface |
+| `/adjust` | Adjust brightness, contrast, saturation |
+| `/blur-bg` | Blur image backgrounds |
+| `/crop` | Crop images |
+| `/enhance` | Enhance image quality |
+| `/replace-bg` | Replace background with color/image |
+| `/resize` | Resize images |
+| `/admin` | Admin dashboard (protected) |
+
+## API Routes
+
+### Admin API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/admin/login` | POST | Admin login |
+| `/api/admin/logout` | POST | Admin logout |
+| `/api/admin/stats` | GET | System statistics |
+| `/api/admin/recent-jobs` | GET | Recent jobs list |
+| `/api/admin/analytics` | GET | Analytics data |
+| `/api/admin/cleanup` | POST | Trigger cleanup |
+| `/api/admin/delete-all-data` | DELETE | Delete all data |
+
+### Status API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/status/{job_id}` | GET | Poll job status |
+
+## Environment Variables
 
 ```bash
-# Build
-npm run build
+# Worker API (required)
+NEXT_PUBLIC_WORKER_API_URL=http://localhost:8000
 
-# Start production
-npm run start
+# MongoDB (required for persistence)
+NEXT_MONGODB_URI=mongodb://...
+NEXT_MONGODB_DB=bgremover
+
+# Internal token for worker communication
+WORKER_INTERNAL_TOKEN=your-secret-token
 ```
 
-Deploy to Vercel, Render, or any Node.js hosting.
+## Build
 
----
-
-## 📁 Project Structure
-
-```
-├── src/
-│   ├── app/           # Next.js pages
-│   ├── components/    # UI components
-│   ├── lib/          # Client model (TF.js)
-│   └── contexts/     # State management
-├── public/models/    # AI models
-├── bgremove.py       # Python processing
-└── package.json
+```bash
+npm run build    # Production build
+npm run start    # Start production server
+npm run lint     # Lint code
 ```
 
----
+## Admin Panel
 
-## 🌐 Live Demo
+Access at `/admin` - requires login with `ADMIN_PASSWORD` environment variable.
 
-<p align="center">
-  <a href="https://yourwebsite.com">
-    <img src="https://img.shields.io/badge/Visit-Live%20Site-1DA1F2?style=for-the-badge" alt="Live Site">
-  </a>
-</p>
-
----
-
-## 🤝 Contributing
-
-1. Fork the repo
-2. Create your branch (`git checkout -b feature/amazing`)
-3. Commit changes (`git commit -m 'Add something'`)
-4. Push to branch (`git push origin feature/amazing`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-MIT License - feel free to use!
-
----
-
-## 🙏 Acknowledgments
-
-- [BiRefNet](https://github.com/ZhengPeng7/BiRefNet) - Quality models
-- [BriaAI](https://huggingface.co/briaai) - RMBG-1.4 model
-- [TensorFlow](https://tensorflow.org) - Client-side ML
-
----
-
-<p align="center">
-  Made with ❤️
-</p>
+Features:
+- Live job statistics
+- Recent jobs with status
+- Analytics charts (jobs, unique users over time)
+- Manual cleanup trigger
+- Delete all data (with confirmation)

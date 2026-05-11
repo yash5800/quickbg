@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
 
@@ -36,7 +37,11 @@ function getSecondsUntilHourReset(): number {
   return Math.max(1, Math.ceil((nextHourMs - nowMs) / 1000));
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (!isAdminAuthenticated(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   if (!MONGODB_URI) {
     return NextResponse.json({ error: "Database not configured" }, { status: 500 });
   }

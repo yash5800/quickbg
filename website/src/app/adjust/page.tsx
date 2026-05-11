@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Download, RefreshCw, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft, ZoomIn, ZoomOut } from "lucide-react";
+import { Download, RefreshCw, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";

@@ -16,7 +16,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function EditorPage() {
-  const { images, addImages, removeImage, updateImageResult } = useImages();
+  const { images, addImages, removeImage, updateImageResult, creditsInfo } = useImages();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showEraser, setShowEraser] = useState(false);
@@ -162,6 +162,11 @@ export default function EditorPage() {
                   <h1 className="text-2xl font-bold text-foreground">Processing</h1>
                   <p className="text-muted-foreground text-sm mt-0.5">
                     {images.length} {images.length === 1 ? "image" : "images"} selected
+                    {creditsInfo && (
+                      <span className="ml-2 text-amber-600">
+                        ({creditsInfo.remaining} credits left)
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>

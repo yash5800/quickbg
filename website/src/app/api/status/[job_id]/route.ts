@@ -25,6 +25,8 @@ export async function GET(
       status: statusData.status,
       progress: statusData.progress,
       error: statusData.error,
+      queue_position: statusData.queue_position ?? null,
+      estimated_wait_seconds: statusData.estimated_wait_seconds ?? null,
     });
   } catch (error) {
     console.error("API error:", error);

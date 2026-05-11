@@ -12,6 +12,13 @@ interface PreviewDisplayProps {
   isProcessing: boolean;
 }
 
+function formatWait(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`;
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}m ${secs}s`;
+}
+
 export function PreviewDisplay({
   image,
   resultUrl,
@@ -80,11 +87,15 @@ export function PreviewDisplay({
                           {image.status === "uploading"
                             ? "Uploading..."
                             : image.status === "queued"
-                            ? "In Queue..."
+                            ? image.queuePosition != null && image.queuePosition > 0
+                              ? `Queue Position: #${image.queuePosition}`
+                              : "In Queue..."
                             : "Processing..."}
                         </p>
                         <p className="text-white/70 text-sm mt-1">
-                          Please wait, this may take a moment
+                          {image.status === "queued" && image.estimatedWaitSeconds
+                            ? `Est. wait: ${formatWait(image.estimatedWaitSeconds)}`
+                            : "Please wait, this may take a moment"}
                         </p>
                       </div>
                     </motion.div>

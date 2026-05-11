@@ -3,12 +3,6 @@
 import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from "react";
 import { submitImage, getJobStatus, JobQueuedResponse, getQueueStatus } from "@/lib/worker-api";
 
-function formatResetTime(seconds: number) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-}
-
 export interface ImageItem {
   id: string;
   file: File;
@@ -24,6 +18,10 @@ export interface ImageItem {
   };
   jobId?: string; // Worker API job_id
   progress?: number; // 0-100
+  queuePosition?: number | null;
+  estimatedWaitSeconds?: number | null;
+  waitingReason?: "credits_exhausted" | null;
+  creditResetAt?: number | null; // timestamp when credits reset
 }
 
 interface ImageContextType {
@@ -35,6 +33,7 @@ interface ImageContextType {
   updateImageStatus: (id: string, status: ImageItem["status"], data?: Partial<ImageItem>) => void;
   updateImage: (id: string, data: Partial<ImageItem>) => void;
   updateImageResult: (id: string, result: string) => void;
+  creditsInfo: { remaining: number; resetIn: number } | null;
 }
 
 const ImageContext = createContext<ImageContextType | undefined>(undefined);
@@ -47,6 +46,8 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const processingQueueRef = useRef<string[]>([]);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const toastAddedRef = useRef(false);
+  const [creditsAvailable, setCreditsAvailable] = useState(true);
+  const [globalCredits, setGlobalCredits] = useState<{ remaining: number; resetIn: number } | null>(null);
 
   // Cleanup polling intervals on unmount
   useEffect(() => {
@@ -58,45 +59,37 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const [creditToast, setCreditToast] = useState<{ id: string; resetInSeconds: number; endTime: number } | null>(null);
-  const [creditCountdown, setCreditCountdown] = useState<number>(0);
-
-  // Live countdown ticker for credit warning
-  useEffect(() => {
-    if (!creditToast) return;
-
-    const tick = () => {
-      const remaining = Math.max(0, Math.ceil((creditToast.endTime - Date.now()) / 1000));
-      setCreditCountdown(remaining);
-
-      if (remaining <= 0) {
-        setCreditToast(null);
-        toastAddedRef.current = false;
-      }
-    };
-
-    tick();
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
-  }, [creditToast]);
-  // Only show warning when:
-  // 1. Credits are 0 AND
-  // 2. All images are either completed or errored (no processing in progress)
+  // Update global credits state and check for exhausted credits
   useEffect(() => {
     const checkCredits = async () => {
       try {
         const status = await getQueueStatus();
+        setGlobalCredits({ remaining: status.remaining, resetIn: status.reset_in_seconds ?? 3600 });
 
-        const pendingOrProcessing = images.filter((img) =>
-          ["pending", "uploading", "queued", "running", "processing"].includes(img.status)
-        );
+        // Only update creditResetAt if NOT already set (set once when credits hit 0)
+        if (status.remaining === 0) {
+          setImages((prev) => {
+            // Check if any pending image needs creditResetAt set
+            const needsReset = prev.some(img =>
+              img.status === "pending" &&
+              img.waitingReason === "credits_exhausted" &&
+              img.creditResetAt == null
+            );
 
-        const allDone = pendingOrProcessing.length === 0 && images.length > 0;
+            if (!needsReset) return prev;
 
-        if (status.remaining === 0 && allDone && !toastAddedRef.current) {
+            const resetAt = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
+            return prev.map((img) =>
+              img.status === "pending" && img.creditResetAt == null
+                ? {
+                    ...img,
+                    waitingReason: "credits_exhausted",
+                    creditResetAt: resetAt,
+                  }
+                : img
+            );
+          });
           toastAddedRef.current = true;
-          const id = Math.random().toString(36).substring(2, 9);
-          setCreditToast({ id, resetInSeconds: status.reset_in_seconds ?? 3600, endTime: Date.now() + (status.reset_in_seconds ?? 3600) * 1000 });
         } else if (status.remaining > 0) {
           toastAddedRef.current = false;
         }
@@ -110,16 +103,69 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(interval);
   }, [images]);
 
-  // Poll job status for queued images
+  // Update creditsAvailable when credits reset (triggers reprocessing)
   useEffect(() => {
-    const queuedImages = images.filter((img) => img.status === "queued" && img.jobId && img.jobId !== "direct");
+    const checkCreditsForReset = async () => {
+      try {
+        const status = await getQueueStatus();
+        if (status.remaining > 0) {
+          // Credits available - trigger reprocessing
+          setCreditsAvailable(prev => !prev); // Toggle to trigger useEffect
+        }
+      } catch {
+        // ignore
+      }
+    };
 
-    queuedImages.forEach((img) => {
+    const interval = setInterval(checkCreditsForReset, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Poll worker status for active jobs (queued/running) until terminal state.
+  useEffect(() => {
+    const activeImages = images.filter(
+      (img) =>
+        img.jobId &&
+        img.jobId !== "direct" &&
+        img.status !== "completed" &&
+        img.status !== "error"
+    );
+
+    activeImages.forEach((img) => {
       if (!pollingIntervalsRef.current.has(img.id)) {
         // Start polling for this image
         const intervalId = setInterval(async () => {
           try {
             const status = await getJobStatus(img.jobId!);
+
+            const mappedStatus =
+              status.status === "running"
+                ? "processing"
+                : status.status === "queued"
+                ? "queued"
+                : status.status;
+
+            setImages((prev) =>
+              prev.map((item) =>
+                item.id === img.id
+                  ? {
+                      ...item,
+                      status:
+                        mappedStatus === "completed"
+                          ? "completed"
+                          : mappedStatus === "failed"
+                          ? "error"
+                          : mappedStatus,
+                      progress: status.progress,
+                      queuePosition:
+                        status.status === "queued" ? status.queue_position ?? null : null,
+                      estimatedWaitSeconds:
+                        status.status === "queued" ? status.estimated_wait_seconds ?? null : null,
+                    }
+                  : item
+              )
+            );
+
             if (status.status === "completed") {
               // Fetch result and update status
               const resultResp = await fetch(`/api/result/${img.jobId}`, { cache: "no-store" });
@@ -168,10 +214,10 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       }
     });
 
-    // Cleanup intervals for images no longer queued
+    // Cleanup intervals for images that are no longer active.
     pollingIntervalsRef.current.forEach((intervalId, imageId) => {
       const img = images.find((i) => i.id === imageId);
-      if (!img || img.status !== "queued" || !img.jobId || img.jobId === "direct") {
+      if (!img || !img.jobId || img.jobId === "direct" || img.status === "completed" || img.status === "error") {
         clearInterval(intervalId);
         pollingIntervalsRef.current.delete(imageId);
       }
@@ -181,18 +227,48 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   // Auto-process images when:
   // 1. A new image is added and is in "pending" state
   // 2. The current processing job completes
+  // 3. Credits become available (creditsAvailable state change triggers this)
   useEffect(() => {
+    let isMounted = true;
+    let processingTimeout: NodeJS.Timeout | null = null;
+
     const processNext = async () => {
+      // Debounce: ensure we don't start new processing within 500ms of last start
+      if (processingTimeout) return;
+
       // Find the first pending image
       const pendingImage = images.find((img) => img.status === "pending");
       if (!pendingImage) return;
 
-      // Check credits before submitting
+      // Check credits AND queue status before submitting
       try {
         const status = await getQueueStatus();
-        if (status.remaining === 0) {
-          // Credits exhausted, don't submit - will be retried after credits reset
-          console.log("[ImageContext] Credits exhausted, pausing processing");
+
+        // If credits are exhausted OR queue is too full, pause
+        // Allow max 3 queued jobs to avoid overwhelming the queue
+        const maxQueuedJobs = 3;
+        if (status.remaining === 0 || status.queue_length >= maxQueuedJobs) {
+          setImages((prev) => {
+            const needsUpdate = prev.some(img =>
+              img.status === "pending" &&
+              img.waitingReason === "credits_exhausted" &&
+              (img.creditResetAt == null || img.creditResetAt < Date.now())
+            );
+
+            if (!needsUpdate) return prev;
+
+            const resetAt = Date.now() + (status.reset_in_seconds ?? 3600) * 1000;
+            return prev.map((img) =>
+              img.status === "pending"
+                ? {
+                    ...img,
+                    waitingReason: "credits_exhausted",
+                    creditResetAt: resetAt,
+                  }
+                : img
+            );
+          });
+          console.log("[ImageContext] Credits or queue full, pausing. remaining:", status.remaining, "queue:", status.queue_length);
           return;
         }
       } catch {
@@ -211,6 +287,11 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       ) {
         processingRef.current = true;
 
+        // Set debounce timeout
+        processingTimeout = setTimeout(() => {
+          processingTimeout = null;
+        }, 500);
+
         const startTime = Date.now();
         setImages((prev) =>
           prev.map((img) =>
@@ -222,6 +303,8 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
         try {
           const response = (await submitImage(pendingImage.file)) as JobQueuedResponse;
+
+          if (!isMounted) return;
 
           setImages((prev) => {
             if (response.status === "completed" && response.imageBlob) {
@@ -246,6 +329,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           });
         } catch (err) {
           console.error("Processing failed:", err);
+          if (!isMounted) return;
           setImages((prev) =>
             prev.map((img) =>
               img.id === pendingImage.id
@@ -265,7 +349,14 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     };
 
     processNext();
-  }, [images]);
+
+    return () => {
+      isMounted = false;
+      if (processingTimeout) {
+        clearTimeout(processingTimeout);
+      }
+    };
+  }, [images, creditsAvailable]);
 
   const addImages = useCallback((files: File[]) => {
     // Create unique keys for deduplication (name + size + lastModified)
@@ -380,19 +471,10 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         updateImageStatus,
         updateImage,
         updateImageResult,
+        creditsInfo: globalCredits,
       }}
     >
       {children}
-      {creditToast && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[100]">
-          <div className="px-4 py-3 rounded-lg bg-destructive/90 text-destructive-foreground border border-destructive/50 shadow-lg backdrop-blur-sm">
-            <p className="text-sm font-semibold text-center">Credits exhausted</p>
-            <p className="text-xs text-center mt-0.5 opacity-90 font-mono tabular-nums">
-              Resets in {formatResetTime(creditCountdown)}
-            </p>
-          </div>
-        </div>
-      )}
     </ImageContext.Provider>
   );
 }

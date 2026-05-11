@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
-
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+import { setAdminSessionCookie, validateAdminPassword } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
   try {
     const { password } = await request.json();
 
-    if (password === ADMIN_PASSWORD) {
-      return NextResponse.json({ success: true });
+    if (validateAdminPassword(String(password || ""))) {
+      const response = NextResponse.json({ success: true });
+      setAdminSessionCookie(response);
+      return response;
     }
 
     return NextResponse.json(
