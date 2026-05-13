@@ -43,7 +43,7 @@ export default function LegalPage() {
           <div>
             <h2 className="text-lg font-semibold text-foreground mb-2">Trademark</h2>
             <p>
-              "QuickBG" and the QuickBG logo are trademarks. You may not use our
+              &ldquo;QuickBG&rdquo; and the QuickBG logo are trademarks. You may not use our
               branding without explicit permission.
             </p>
           </div>

@@ -26,8 +26,9 @@
 - `GET /api/admin/recent-jobs` - Recent jobs list
 
 ### Data Management
-- `POST /api/admin/cleanup` - Clean up old data
 - `DELETE /api/admin/delete-all-data` - Delete all data (dangerous)
+
+**Note:** Manual cleanup endpoint removed (May 2026). Data now auto-deletes via MongoDB TTL. See [AUTO_DELETION_TIMELINE.md](AUTO_DELETION_TIMELINE.md).
 
 ## Worker API Routes (Internal)
 
@@ -47,6 +48,8 @@ The Worker service exposes:
   "estimated_wait_seconds": 60
 }
 ```
+
+**Note:** `progress` is derived from `status` (not stored). See [OPTIMIZATION.md](OPTIMIZATION.md) for details.
 
 ### Result Response
 Binary image data (PNG/JPEG)

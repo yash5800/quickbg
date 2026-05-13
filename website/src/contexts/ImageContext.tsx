@@ -256,6 +256,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
             progress: 100,
           });
         } else {
+          // Job was queued on the worker
           useImagesStore.getState().updateImageStatus(pendingImage.id, "queued", {
             jobId: response.job_id,
             waitingReason: null,

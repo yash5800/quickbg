@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { JobStatus } from "@/types/job";
+import { getProgressFromStatus } from "@/lib/mongodb";
 
 interface JobStatusState {
   status: JobStatus | "unknown";
@@ -25,9 +26,13 @@ export function useJobStatus(jobId: string | null, intervalMs: number = 2000) {
   if (jobId === "direct") return { status: "completed" as const, progress: 100 };
   if (!jobId) return { status: "unknown" as const, progress: 0 };
 
+  const status = (query.data?.status || "unknown") as JobStatus | "unknown";
+  // Progress is now derived from status instead of stored separately
+  const progress = status !== "unknown" ? getProgressFromStatus(status) : 0;
+
   return {
-    status: (query.data?.status || "unknown") as JobStatus | "unknown",
-    progress: query.data?.progress ?? 0,
+    status,
+    progress,
     error: query.data?.error,
   } satisfies JobStatusState;
 }

@@ -1,4 +1,5 @@
 import { MongoClient, Db, ObjectId } from "mongodb";
+import { v4 as uuidv4 } from "uuid";
 
 const uri = process.env.NEXT_MONGODB_URI;
 
@@ -6,11 +7,13 @@ interface JobDocument {
   _id?: ObjectId;
   jobId: string;
   status: "queued" | "running" | "completed" | "failed";
-  progress: number;
   createdAt: Date;
-  completedAt?: Date;
+  updatedAt: Date;
+  expiresAt: Date;
   fileName: string;
   sessionId: string;
+  resultPath?: string;
+  error?: string;
 }
 
 let mongoClient: MongoClient | null = null;
@@ -23,8 +26,15 @@ export async function connectDB() {
     db = mongoClient.db("bgremover");
     
     const jobs = db.collection<JobDocument>("jobs");
-    await jobs.createIndex({ sessionId: 1, createdAt: -1 });
+    
+    // Create indexes
     await jobs.createIndex({ jobId: 1 }, { unique: true });
+    await jobs.createIndex({ sessionId: 1, createdAt: -1 });
+    
+    // TTL index: auto-delete documents when expiresAt is reached
+    await jobs.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+    
+    console.log("[MongoDB] Connection established and indexes created");
   }
   return db;
 }
@@ -34,6 +44,7 @@ export async function closeDB() {
     await mongoClient.close();
     mongoClient = null;
     db = null;
+    console.log("[MongoDB] Connection closed");
   }
 }
 
@@ -41,21 +52,64 @@ export function getJobsCollection(database: Db) {
   return database.collection<JobDocument>("jobs");
 }
 
-export async function cleanupOldJobs(daysOld: number = 7) {
+/**
+ * Create a new job in the database
+ * @param fileName Original filename
+ * @param sessionId User session identifier
+ * @returns Created job document
+ */
+export async function createJob(fileName: string, sessionId: string) {
   if (!db) {
     await connectDB();
   }
   
   const jobs = getJobsCollection(db!);
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - daysOld);
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
   
-  const result = await jobs.deleteMany({
-    createdAt: { $lt: cutoff },
-    status: { $in: ["completed", "failed"] },
-  });
+  const jobId = uuidv4();
+  const job: JobDocument = {
+    jobId,
+    status: "queued",
+    createdAt: now,
+    updatedAt: now,
+    expiresAt,
+    fileName,
+    sessionId,
+  };
   
-  return result.deletedCount;
+  await jobs.insertOne(job);
+  console.log(`[Job Created] ${jobId} - expires at ${expiresAt.toISOString()}`);
+  
+  return job;
+}
+
+/**
+ * Update job status
+ * @param jobId Job identifier
+ * @param status New status
+ * @param data Additional fields to update
+ */
+export async function updateJobStatus(
+  jobId: string,
+  status: "queued" | "running" | "completed" | "failed",
+  data?: { resultPath?: string; error?: string }
+) {
+  if (!db) {
+    await connectDB();
+  }
+  
+  const jobs = getJobsCollection(db!);
+  const update: Record<string, unknown> = {
+    status,
+    updatedAt: new Date(),
+  };
+  
+  if (data?.resultPath) update.resultPath = data.resultPath;
+  if (data?.error) update.error = data.error;
+  
+  await jobs.updateOne({ jobId }, { $set: update });
+  console.log(`[Job Updated] ${jobId} - status: ${status}`);
 }
 
 export async function getSessionStats(sessionId: string) {
@@ -74,6 +128,25 @@ export async function getSessionStats(sessionId: string) {
   ]);
   
   return { total, queued, running, completed, failed };
+}
+
+/**
+ * Get progress percentage based on job status
+ * Removed: progress field is now derived from status
+ */
+export function getProgressFromStatus(status: string): number {
+  switch (status) {
+    case "queued":
+      return 0;
+    case "running":
+      return 50;
+    case "completed":
+      return 100;
+    case "failed":
+      return 0;
+    default:
+      return 0;
+  }
 }
 
 export async function isHealthy() {

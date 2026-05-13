@@ -48,7 +48,14 @@ ALLOWED_CONTENT_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/webp"}
 MAX_UPLOAD_SIZE_BYTES = int(os.getenv("WORKER_MAX_UPLOAD_SIZE_BYTES", str(10 * 1024 * 1024)))
 MAX_CONCURRENCY = max(1, int(os.getenv("WORKER_MAX_CONCURRENCY", "2")))
 MAX_JOBS_PER_CLIENT = max(1, int(os.getenv("WORKER_MAX_JOBS_PER_CLIENT", "1")))
-JOB_RETENTION_HOURS = max(1, int(os.getenv("WORKER_JOB_RETENTION_HOURS", "24")))
+# Support both WORKER_JOB_RETENTION_MINUTES (new) and WORKER_JOB_RETENTION_HOURS (legacy for backward compatibility)
+# Minimum of 1 minute for testing. Default: 24 hours = 1440 minutes
+if "WORKER_JOB_RETENTION_MINUTES" in os.environ:
+    JOB_RETENTION_MINUTES = max(1, int(os.getenv("WORKER_JOB_RETENTION_MINUTES")))
+else:
+    # Legacy: convert hours to minutes
+    JOB_RETENTION_HOURS = max(1, int(os.getenv("WORKER_JOB_RETENTION_HOURS", "24")))
+    JOB_RETENTION_MINUTES = JOB_RETENTION_HOURS * 60
 QUEUE_POLL_SECONDS = float(os.getenv("WORKER_QUEUE_POLL_SECONDS", "1.0"))
 CLEANUP_INTERVAL_SECONDS = int(os.getenv("WORKER_CLEANUP_INTERVAL_SECONDS", "1800"))
 CPU_THRESHOLD_PERCENT = int(os.getenv("WORKER_CPU_THRESHOLD_PERCENT", "80"))
@@ -343,8 +350,14 @@ def is_internal_request(request: Request) -> bool:
 
 
 async def update_job(job_id: str, updates: dict) -> None:
+    """Update job document. Always removes 'progress' field to use status-derived progress."""
     collection = get_job_store()
-    await asyncio.to_thread(collection.update_one, {"jobId": job_id}, {"$set": {**updates, "updatedAt": utcnow()}})
+    # Remove 'progress' field as it's redundant (derived from status)
+    updates.pop("progress", None)
+    updates.pop("completedAt", None)  # No need to store completion time separately
+    updates["updatedAt"] = utcnow()
+    
+    result = await asyncio.to_thread(collection.update_one, {"jobId": job_id}, {"$set": updates})
     job = await asyncio.to_thread(collection.find_one, {"jobId": job_id}, {"_id": 0})
     if job:
         await broadcast_job_state(job)
@@ -357,41 +370,47 @@ async def process_job(job_id: str) -> None:
     try:
         job = await asyncio.to_thread(collection.find_one, {"jobId": job_id})
         if not job:
+            logger.warning(f"Job {job_id} not found, skipping")
             return
 
         input_path = Path(job["inputPath"])
         output_path = Path(job["outputPath"])
 
-        await update_job(job_id, {"status": "running", "progress": 10, "startedAt": now})
+        # Update to running (progress derived from status)
+        await update_job(job_id, {"status": "running", "startedAt": now})
+        logger.info(f"[Job {job_id}] Processing started")
 
         if not input_path.exists():
-            raise FileNotFoundError("Input file not found")
+            logger.warning(f"[Job {job_id}] Input file not found, deleting job")
+            await asyncio.to_thread(collection.delete_one, {"jobId": job_id})
+            return
 
         image_bytes = input_path.read_bytes()
-        await update_job(job_id, {"progress": 35})
+        logger.info(f"[Job {job_id}] Image loaded: {len(image_bytes)} bytes")
+        
         processed_bytes = await asyncio.to_thread(process_image_bytes, image_bytes)
         output_path.write_bytes(processed_bytes)
+        logger.info(f"[Job {job_id}] Image processed and saved")
 
+        # Update to completed (no progress field needed)
         await update_job(
             job_id,
             {
                 "status": "completed",
-                "progress": 100,
-                "completedAt": utcnow(),
                 "error": None,
             },
         )
+        logger.info(f"[Job {job_id}] Successfully completed")
     except Exception as exc:
         logger.exception("Job %s failed", job_id)
         await update_job(
             job_id,
             {
                 "status": "failed",
-                "progress": 100,
-                "completedAt": utcnow(),
                 "error": str(exc),
             },
         )
+        logger.error(f"[Job {job_id}] Failed: {str(exc)}")
     finally:
         current_task = asyncio.current_task()
         async with active_tasks_lock:
@@ -418,6 +437,18 @@ def claim_next_job() -> Optional[dict]:
         collection.find({"status": "queued"}).sort("createdAt", 1).limit(100)
     )
 
+    # Clean up queued jobs with missing input files
+    for job in candidates:
+        input_path = Path(job.get("inputPath", ""))
+        if input_path and not input_path.exists():
+            logger.warning(f"[Job {job['jobId']}] Queued job has missing input file, deleting")
+            collection.delete_one({"jobId": job["jobId"]})
+
+    # Re-fetch candidates after cleanup
+    candidates = list(
+        collection.find({"status": "queued"}).sort("createdAt", 1).limit(100)
+    )
+
     for job in candidates:
         if not can_run_job(job):
             continue
@@ -427,7 +458,6 @@ def claim_next_job() -> Optional[dict]:
             {
                 "$set": {
                     "status": "starting",
-                    "progress": 5,
                     "updatedAt": utcnow(),
                     "startedAt": utcnow(),
                 }
@@ -436,6 +466,7 @@ def claim_next_job() -> Optional[dict]:
         )
 
         if claimed:
+            logger.info(f"[Job {claimed['jobId']}] Claimed for processing")
             return claimed
 
     return None
@@ -470,26 +501,56 @@ async def dispatcher_loop() -> None:
 
 
 async def cleanup_loop() -> None:
+    """
+    Monitor and clean up expired jobs. Calls cleanup_files for each expired job
+    before MongoDB TTL auto-deletes the documents.
+    """
     collection = get_job_store()
+    cleanup_count = 0
+    files_cleaned = 0
 
     while True:
-        cutoff = utcnow() - timedelta(hours=JOB_RETENTION_HOURS)
-        stale_jobs = list(
-            collection.find(
-                {
-                    "status": {"$in": ["completed", "failed", "cancelled", "expired"]},
-                    "$or": [
-                        {"completedAt": {"$lt": cutoff}},
-                        {"createdAt": {"$lt": cutoff}},
-                    ],
-                },
-                {"jobId": 1, "inputPath": 1, "outputPath": 1},
-            )
-        )
+        try:
+            now = utcnow()
 
-        for job in stale_jobs:
-            cleanup_files(job["jobId"])
-            await asyncio.to_thread(collection.delete_one, {"jobId": job["jobId"]})
+            # Find expired jobs that haven't been cleaned yet
+            expired_jobs = list(collection.find(
+                {"expiresAt": {"$lt": now}, "status": {"$ne": "cleaned"}},
+                {"jobId": 1, "status": 1, "resultPath": 1}
+            ))
+
+            if expired_jobs:
+                logger.info(f"[TTL Cleanup] Found {len(expired_jobs)} expired jobs to clean")
+
+                for job in expired_jobs:
+                    job_id = job.get("jobId")
+                    if job_id:
+                        # Clean up the files on disk
+                        cleanup_files(job_id)
+                        files_cleaned += 1
+                        logger.debug(f"[TTL Cleanup] Cleaned files for job {job_id}")
+
+                        # Mark as cleaned so we don't process again
+                        try:
+                            collection.update_one(
+                                {"jobId": job_id},
+                                {"$set": {"status": "cleaned"}}
+                            )
+                        except Exception as e:
+                            logger.warning(f"[TTL Cleanup] Failed to mark job {job_id} as cleaned: {e}")
+
+                logger.info(f"[TTL Cleanup] Cleaned {len(expired_jobs)} jobs, {files_cleaned} total file cleanups")
+
+            # Also log what's coming up
+            soon_expire = now + timedelta(minutes=5)
+            expiring_soon = collection.count_documents({"expiresAt": {"$gte": now, "$lte": soon_expire}})
+            if expiring_soon > 0:
+                logger.info(f"[TTL Cleanup] {expiring_soon} jobs expiring in next 5 minutes")
+
+            cleanup_count += len(expired_jobs)
+
+        except Exception as e:
+            logger.error(f"[TTL Cleanup] Error during monitoring: {e}", exc_info=True)
 
         await asyncio.sleep(CLEANUP_INTERVAL_SECONDS)
 
@@ -511,10 +572,30 @@ def estimate_wait(queue_position: Optional[int], avg_seconds_per_job: int = 12) 
     return queue_position * avg_seconds_per_job
 
 
+def get_progress_from_status(status: str) -> int:
+    """Derive progress percentage from status.
+    This eliminates the need to store redundant progress field.
+    """
+    status_map = {
+        "queued": 0,
+        "starting": 25,
+        "running": 50,
+        "completed": 100,
+        "failed": 0,
+        "cancelled": 0,
+        "expired": 0,
+    }
+    return status_map.get(status, 0)
+
+
 def build_status_payload(job: dict) -> dict:
+    """Build status response for API, deriving progress from status."""
     public_status = job.get("status", "queued")
     if public_status == "starting":
         public_status = "running"
+
+    # Progress is now derived from status instead of stored separately
+    progress = get_progress_from_status(public_status)
 
     queue_position = None
     estimated_wait = None
@@ -525,7 +606,7 @@ def build_status_payload(job: dict) -> dict:
     return {
         "job_id": job["jobId"],
         "status": public_status,
-        "progress": job.get("progress", 0),
+        "progress": progress,
         "error": job.get("error"),
         "queue_position": queue_position,
         "estimated_wait_seconds": estimated_wait,
@@ -602,10 +683,9 @@ async def remove_background(
     job_record = {
         "jobId": job_id,
         "status": "queued",
-        "progress": 0,
         "createdAt": utcnow(),
         "updatedAt": utcnow(),
-        "expiresAt": utcnow() + timedelta(hours=JOB_RETENTION_HOURS),
+        "expiresAt": utcnow() + timedelta(minutes=JOB_RETENTION_MINUTES),
         "inputPath": str(input_path),
         "outputPath": str(output_path),
         "fileName": file.filename or f"{job_id}.png",
@@ -614,6 +694,7 @@ async def remove_background(
     }
 
     await asyncio.to_thread(collection.insert_one, job_record)
+    logger.info(f"[Job {job_id}] Created - expires at {job_record['expiresAt'].isoformat()}")
 
     # Record analytics (jobs + unique users) asynchronously; we store only hashed client keys temporarily.
     try:
@@ -632,7 +713,7 @@ async def remove_background(
                 {
                     "job_id": job_id,
                     "status": completed_job.get("status", "failed"),
-                    "progress": completed_job.get("progress", 0),
+                    "progress": get_progress_from_status(completed_job.get("status", "failed")),
                     "error": completed_job.get("error"),
                 },
                 status_code=500,

@@ -43,6 +43,8 @@ Get job status.
 }
 ```
 
+**Note:** `progress` is derived from `status` (May 2026 optimization). See [OPTIMIZATION.md](OPTIMIZATION.md#how-progress-works-now).
+
 ### GET /result/{job_id}
 Get processed image result.
 
@@ -55,7 +57,19 @@ Create `worker/.env` with:
 MONGODB_URI=mongodb://...
 WORKER_INTERNAL_TOKEN=secret
 MODEL_PATH=./ZhengPeng7_BiRefNet_lite
+
+# Auto-deletion configuration
+WORKER_JOB_RETENTION_MINUTES=10  # Jobs auto-delete after 10 minutes
 ```
+
+## Auto-Deletion (10-minute TTL)
+
+- Each job has `expiresAt` set to 10 minutes from creation
+- MongoDB TTL index auto-deletes job documents when expired
+- Worker cleanup loop also deletes image files from disk:
+  - `/uploads/org/{jobId}.png` - original upload
+  - `/uploads/processed/{jobId}.png` - processed result
+- No traces left after 10 minutes
 
 ## Running Worker
 

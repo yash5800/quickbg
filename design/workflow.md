@@ -26,7 +26,7 @@
 ### 3. Status Polling
 - Frontend polls `/api/status/[jobId]` periodically
 - Status updates: queued → running → completed/error
-- Progress percentage is displayed
+- Progress percentage is displayed (derived from job status: queued=0%, running=50%, completed=100%)
 - Queue position shown when queued
 
 ### 4. Result Retrieval
@@ -38,6 +38,15 @@
 ### 5. Credits Deduction
 - Credits are deducted after successful processing
 - Credits sync with server via `/api/admin/session`
+
+### 6. Auto-Deletion (10-minute TTL)
+- Each job has an `expiresAt` field set to 10 minutes from creation
+- MongoDB TTL index automatically deletes documents when `expiresAt` passes
+- Worker runs cleanup loop that:
+  - Finds expired jobs
+  - Deletes their image files from disk (`/uploads/org/` and `/uploads/processed/`)
+  - Marks jobs as "cleaned" to avoid double-processing
+- After 10 minutes, no traces remain in database or on worker filesystem
 
 ## Client-Side Processing (Fast Model)
 - Uses TensorFlow.js

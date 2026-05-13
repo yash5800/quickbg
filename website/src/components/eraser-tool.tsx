@@ -27,7 +27,8 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
   const [brushSize, setBrushSize] = useState(40);
   const [hasChanges, setHasChanges] = useState(false);
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
-  const [scale, setScale] = useState(1);
+  const [fitScale, setFitScale] = useState(1);
+  const [zoom, setZoom] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const originalImgRef = useRef<HTMLImageElement | null>(null);
@@ -83,7 +84,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
       const scaleY = maxHeight / origImg.height;
       const newScale = Math.min(scaleX, scaleY, 1);
 
-      setScale(newScale);
+      setFitScale(newScale);
       canvas.style.width = `${origImg.width * newScale}px`;
       canvas.style.height = `${origImg.height * newScale}px`;
 
@@ -101,16 +102,31 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     });
   }, [processedImage, originalImage]);
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const previewCanvas = previewCanvasRef.current;
+    if (!canvas || !canvas.width || !canvas.height) return;
+
+    const displayScale = fitScale * zoom;
+    canvas.style.width = `${canvas.width * displayScale}px`;
+    canvas.style.height = `${canvas.height * displayScale}px`;
+
+    if (previewCanvas) {
+      previewCanvas.style.width = canvas.style.width;
+      previewCanvas.style.height = canvas.style.height;
+    }
+  }, [fitScale, zoom]);
+
   // Get canvas position
   const getCanvasPos = useCallback((clientX: number, clientY: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
     return {
-      x: (clientX - rect.left) / scale,
-      y: (clientY - rect.top) / scale,
+      x: (clientX - rect.left) / (fitScale * zoom),
+      y: (clientY - rect.top) / (fitScale * zoom),
     };
-  }, [scale]);
+  }, [fitScale, zoom]);
 
   // Draw preview stroke
   const drawPreviewStroke = useCallback((path: Point[]) => {
@@ -287,6 +303,10 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     setHasChanges(false);
   };
 
+  const handleZoomChange = (value: number) => {
+    setZoom(Math.min(3, Math.max(0.5, value)));
+  };
+
   const handleSave = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -294,14 +314,16 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     onSave(dataUrl);
   };
 
+  const displayScale = fitScale * zoom;
+
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-card rounded-2xl shadow-2xl max-w-6xl w-full max-h-[95vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-stretch justify-center p-0 sm:items-center sm:p-4">
+      <div className="bg-card rounded-none sm:rounded-2xl shadow-2xl w-full h-[100dvh] sm:h-auto sm:max-w-6xl sm:max-h-[95vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
+        <div className="flex items-center justify-between p-4 sm:p-4 border-b border-border">
           <div className="flex items-center gap-2">
             <Eraser className="h-5 w-5" />
-            <h2 className="text-lg font-semibold">Magic Edit</h2>
+            <h2 className="text-base sm:text-lg font-semibold">Magic Edit</h2>
           </div>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
@@ -309,8 +331,8 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
         </div>
 
         {/* Toolbar */}
-        <div className="flex items-center gap-6 p-4 border-b border-border bg-muted/30 flex-wrap">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-3 p-3 sm:p-4 border-b border-border bg-muted/30 sm:flex-row sm:items-center sm:gap-6 sm:flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
             <Button
               variant={mode === "erase" ? "default" : "outline"}
               size="sm"
@@ -328,26 +350,26 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
             </Button>
           </div>
 
-          <div className="h-8 w-px bg-border" />
+          <div className="hidden sm:block h-8 w-px bg-border" />
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground font-medium">Size:</span>
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:w-auto sm:flex-none">
+            <span className="text-sm text-muted-foreground font-medium shrink-0">Size:</span>
             <input
               type="range"
               min="10"
               max="300"
               value={brushSize}
               onChange={(e) => setBrushSize(Number(e.target.value))}
-              className="w-48 accent-primary"
+              className="w-full sm:w-48 accent-primary"
             />
-            <span className="text-sm font-semibold w-14 text-center bg-muted px-2 py-1 rounded-md">
+            <span className="text-sm font-semibold w-14 shrink-0 text-center bg-muted px-2 py-1 rounded-md">
               {brushSize}px
             </span>
           </div>
 
-          <div className="h-8 w-px bg-border" />
+          <div className="hidden sm:block h-8 w-px bg-border" />
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
             <Button variant="outline" size="sm" onClick={handleUndo} disabled={undoStackRef.current.length <= 1}>
               <Undo2 className="h-4 w-4 mr-2" />
               Undo
@@ -357,12 +379,33 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
               Reset
             </Button>
           </div>
+
+          <div className="hidden sm:block h-8 w-px bg-border" />
+
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:min-w-[280px] sm:flex-none">
+            <span className="text-sm text-muted-foreground font-medium shrink-0">Zoom:</span>
+            <input
+              type="range"
+              min="0.5"
+              max="3"
+              step="0.1"
+              value={zoom}
+              onChange={(e) => handleZoomChange(Number(e.target.value))}
+              className="w-full sm:w-40 accent-primary"
+            />
+            <span className="text-sm font-semibold w-14 shrink-0 text-center bg-muted px-2 py-1 rounded-md">
+              {Math.round(zoom * 100)}%
+            </span>
+            <Button variant="outline" size="sm" onClick={() => handleZoomChange(1)}>
+              Fit
+            </Button>
+          </div>
         </div>
 
         {/* Canvas Area */}
-        <div className="flex-1 overflow-auto p-6 bg-muted/20 flex items-center justify-center">
+        <div className="flex-1 min-h-0 overflow-auto p-2 sm:p-6 bg-muted/20 flex items-center justify-center overscroll-contain">
           <div
-            className="relative cursor-none select-none"
+            className="relative cursor-none select-none max-w-full max-h-full touch-none"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -392,10 +435,10 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
                   mode === "erase" ? "border-red-500" : "border-green-500"
                 )}
                 style={{
-                  width: `${brushSize * scale}px`,
-                  height: `${brushSize * scale}px`,
-                  left: `${cursorPos.x - (brushSize * scale) / 2}px`,
-                  top: `${cursorPos.y - (brushSize * scale) / 2}px`,
+                  width: `${brushSize * displayScale}px`,
+                  height: `${brushSize * displayScale}px`,
+                  left: `${cursorPos.x - (brushSize * displayScale) / 2}px`,
+                  top: `${cursorPos.y - (brushSize * displayScale) / 2}px`,
                 }}
               />
             )}
@@ -403,18 +446,18 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-4 border-t border-border">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between p-4 border-t border-border">
+          <div className="flex items-center gap-3 min-w-0">
             <div className={cn("w-5 h-5 rounded-full", mode === "erase" ? "bg-red-500" : "bg-green-500")} />
             <p className="text-sm text-muted-foreground">
               {mode === "erase" ? "Draw to remove pixels (make transparent)" : "Draw to restore original background"}
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={onClose}>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Button variant="outline" onClick={onClose} className="flex-1 sm:flex-none">
               Cancel
             </Button>
-            <Button onClick={handleSave} disabled={!hasChanges}>
+            <Button onClick={handleSave} disabled={!hasChanges} className="flex-1 sm:flex-none">
               <Download className="h-4 w-4 mr-2" />
               Save Changes
             </Button>

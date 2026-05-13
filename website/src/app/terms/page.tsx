@@ -50,7 +50,7 @@ export default function TermsPage() {
           <div>
             <h2 className="text-lg font-semibold text-foreground mb-2">Disclaimer</h2>
             <p>
-              QuickBG is provided "as is" without warranties of any kind. We do not guarantee
+              QuickBG is provided &ldquo;as is&rdquo; without warranties of any kind. We do not guarantee
               uninterrupted service or error-free processing.
             </p>
           </div>

@@ -163,7 +163,7 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
         description: "Thank you for your message.",
       });
       onClose();
-    } catch (error) {
+    } catch {
       addToast({
         type: "error",
         title: "Failed to send",

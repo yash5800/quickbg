@@ -26,13 +26,13 @@
 - **Admin Panel** (`/admin`) - Dashboard with analytics
 - **Login** (`/admin/login`) - Admin authentication
 - **Analytics** - Usage statistics and metrics
-- **Cleanup** - Clean old jobs and data
+- **Auto-Cleanup** - Jobs auto-deleted after 10 minutes via MongoDB TTL + worker file cleanup
 - **Stats** - System performance metrics
 
 ## User Features
 - **Credits System** - Track user credits
 - **Global Drop Zone** - Drag and drop file upload
-- **Progress Tracking** - Real-time job progress
+- **Progress Tracking** - Real-time job progress (derived from status, not stored)
 - **Queue Status** - View position in processing queue
 
 ## AI Models

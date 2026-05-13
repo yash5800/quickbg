@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Download, RefreshCw, Crop, ZoomIn, ZoomOut } from "lucide-react";
+import { Download, RefreshCw, Crop, ZoomIn, ZoomOut, Settings } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -245,13 +245,18 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
           <div className="lg:col-span-2 space-y-4">
             {!image ? (
               <div
-                data-drop-zone
                 onClick={() => fileInputRef.current?.click()}
-                className="aspect-video border-2 border-dashed border-border/50 rounded-2xl p-12 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+                className="border-2 border-dashed border-border/50 rounded-2xl p-12 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+                aria-hidden
               >
-                <Crop className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-lg font-semibold">Upload your image</p>
-                <p className="text-sm text-muted-foreground mt-1">Click to select a file</p>
+                <div className="flex flex-col items-center justify-center">
+                  <Settings className="h-14 w-14 mb-4 text-muted-foreground" />
+                  <p className="text-lg font-semibold">Upload your image</p>
+                  <p className="text-sm text-muted-foreground mt-2 max-w-md text-center">Supported formats: JPG, PNG, WebP.</p>
+                  <div className="mt-6 flex gap-3">
+                    <Button variant="default" onClick={() => fileInputRef.current?.click()}>Select Image</Button>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="relative rounded-2xl overflow-hidden bg-black border border-border/50">

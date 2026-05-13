@@ -140,20 +140,45 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           {/* Hero Content */}
           <div className="text-center mb-8 max-w-3xl space-y-4">
+            {/* Free Unlimited Ultimate Badges - Visual Shapes */}
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-bold shadow-lg shadow-green-500/25 transform hover:scale-105 transition-transform">
+                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                100% FREE
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-purple-500 to-violet-600 text-white text-sm font-bold shadow-lg shadow-purple-500/25 transform hover:scale-105 transition-transform">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.491-.88-1.193-.88-2.122 0-1.138.61-2.163 1.52-2.981a1 1 0 00-1.065-1.366z"/></svg>
+                UNLIMITED
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 text-white text-sm font-bold shadow-lg shadow-amber-500/25 transform hover:scale-105 transition-transform">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                ULTIMATE
+              </span>
+            </div>
+
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 shadow-sm">
               <span className="text-xs font-semibold text-blue-400 uppercase tracking-wide">
-                AI background removal
+                #1 Free Unlimited Background Remover
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">
-              Upload an image. Get a clean cutout.
+              <span className="bg-gradient-to-r from-primary via-blue-500 to-purple-500 bg-clip-text text-transparent">
+                Remove Backgrounds Free
+              </span>
+              <br />
+              <span className="text-2xl sm:text-4xl text-muted-foreground">No Limits. No Signup. Forever.</span>
             </h1>
 
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Use your own image or try a sample. Every image runs through the
-              same remover queue, so the demo behaves like the real workflow.
+              The ultimate <span className="text-green-400 font-semibold">free unlimited</span> background removal tool. Plus image resizer, background replacer, blur effects, smart crop & image adjuster — <span className="text-amber-400 font-semibold">all free forever</span>. No signup, no limits, just upload and go.
             </p>
+
+            {/* Quality Assurance */}
+            <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20">
+              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+              <span className="text-sm text-blue-400 font-medium">Original quality preserved • No compression • Full resolution</span>
+            </div>
           </div>
 
           {/* Drop Zone */}
@@ -253,10 +278,10 @@ export default function Home() {
           <div className="w-full max-w-5xl mt-20">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
-                Powerful Tools
+                <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">All Free Unlimited Tools</span>
               </h2>
               <p className="text-muted-foreground text-sm">
-                All the image editing tools you need in one place
+                Background removal • Resize • Replace • Blur • Crop • Adjust — <span className="text-green-400 font-semibold">All 100% Free</span>
               </p>
             </div>
 
@@ -309,18 +334,26 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-16 w-full max-w-2xl">
+          {/* Features - Free Unlimited Ultimate */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-16 w-full max-w-3xl">
             {[
-              { label: "Lightning Fast", value: "< 15 seconds" },
-              { label: "High Quality", value: "4K Support" },
-              { label: "Batch Process", value: "Unlimited" },
+              { label: "Lightning Fast", value: "< 15 sec", icon: "⚡", color: "from-yellow-500 to-orange-500" },
+              { label: "100% Free Forever", value: "No Credit Card", icon: "🎁", color: "from-green-500 to-emerald-500" },
+              { label: "Unlimited Usage", value: "No Limits", icon: "♾️", color: "from-purple-500 to-violet-500" },
+              { label: "4K Quality", value: "Premium", icon: "💎", color: "from-amber-500 to-orange-500" },
             ].map((feature, idx) => (
               <div
                 key={idx}
-                className="text-center p-4 rounded-xl bg-muted/50 border border-border/50 hover:border-primary/30 transition-colors"
+                className={cn(
+                  "text-center p-4 rounded-xl border hover:-translate-y-1 transition-all duration-300 cursor-default",
+                  "bg-gradient-to-br from-muted/50 to-muted/30 border-border/50 hover:border-primary/40 hover:shadow-lg"
+                )}
               >
-                <div className="text-2xl font-bold text-primary">{feature.value}</div>
+                <div className="text-2xl mb-1">{feature.icon}</div>
+                <div className={cn(
+                  "text-lg font-bold bg-gradient-to-r bg-clip-text text-transparent",
+                  feature.color
+                )}>{feature.value}</div>
                 <div className="text-xs text-muted-foreground mt-1 font-medium">
                   {feature.label}
                 </div>

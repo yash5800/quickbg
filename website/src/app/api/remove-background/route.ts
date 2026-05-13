@@ -303,7 +303,6 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ 
       job_id: jobId, 
       status: data.status || "queued",
-      progress: data.progress ?? 0,
       uploads_used: slotReservation.used,
       uploads_limit: HOURLY_LIMIT,
       remaining,

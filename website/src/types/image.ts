@@ -1,4 +1,4 @@
-export type ImageWaitingReason = "credits_exhausted" | "queue_full";
+  export type ImageWaitingReason = "credits_exhausted" | "queue_full";
 
 export interface ImageItem {
   id: string;
