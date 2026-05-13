@@ -45,15 +45,12 @@ async function fetchWithRetry(url: string, init?: RequestInit, retries = 2, dela
   throw lastError instanceof Error ? lastError : new Error("Worker request failed");
 }
 
-function getHourKey(): string {
-  const now = new Date();
-  const hour = Math.floor(now.getTime() / HOUR_WINDOW_MS);
-  return `hour_${hour}`;
+function getWindowKey(nowMs: number = Date.now()): string {
+  return `window_${nowMs}`;
 }
 
-function getSecondsUntilHourReset(nowMs: number = Date.now()): number {
-  const nextHourMs = (Math.floor(nowMs / HOUR_WINDOW_MS) + 1) * HOUR_WINDOW_MS;
-  return Math.max(1, Math.ceil((nextHourMs - nowMs) / 1000));
+function getSecondsUntilReset(resetAtMs: number, nowMs: number = Date.now()): number {
+  return Math.max(1, Math.ceil((resetAtMs - nowMs) / 1000));
 }
 
 async function getMongoDB() {
@@ -107,14 +104,13 @@ export async function GET(request: NextRequest) {
       remaining: HOURLY_LIMIT,
       in_queue: 0,
       completed: 0,
-      reset_in_seconds: getSecondsUntilHourReset(),
+      reset_in_seconds: getSecondsUntilReset(Date.now() + HOUR_WINDOW_MS),
     };
 
     try {
       const mdb = await getMongoDB();
       const userUploads = getUserUploadsCollection(mdb);
       const hourlyUsage = getHourlyUsageCollection(mdb);
-      const hourKey = getHourKey();
       const hourStart = new Date(Date.now() - HOUR_WINDOW_MS);
 
       // Cleanup any leftover records older than 1 hour (defensive cleanup on visit)
@@ -124,19 +120,36 @@ export async function GET(request: NextRequest) {
         console.error("Cleanup error:", cleanupErr);
       }
 
-      const usage = await hourlyUsage.findOne(
-        { ip: clientKey, hourKey },
-        { projection: { count: 1 } }
+      const now = Date.now();
+      const activeUsage = await hourlyUsage.findOne(
+        { ip: clientKey, expiresAt: { $gt: new Date(now) } },
+        { projection: { count: 1, expiresAt: 1 } }
       );
-      let userUploadCount = Math.min(HOURLY_LIMIT, usage?.count ?? 0);
 
-      if (!usage) {
+      let userUploadCount = Math.min(HOURLY_LIMIT, activeUsage?.count ?? 0);
+      let resetInSeconds = activeUsage?.expiresAt ? getSecondsUntilReset(activeUsage.expiresAt.getTime(), now) : getSecondsUntilReset(now + HOUR_WINDOW_MS, now);
+
+      if (!activeUsage) {
         const legacyCount = await userUploads.countDocuments({
           ip: clientKey,
-          hourKey,
           uploadedAt: { $gte: hourStart },
         });
         userUploadCount = Math.min(HOURLY_LIMIT, legacyCount);
+
+        const recentUploads = await userUploads
+          .find(
+            {
+              ip: clientKey,
+              uploadedAt: { $gte: hourStart },
+            },
+            { projection: { uploadedAt: 1 } }
+          )
+          .sort({ uploadedAt: 1 })
+          .toArray();
+
+        if (recentUploads.length > 0) {
+          resetInSeconds = getSecondsUntilReset(recentUploads[0].uploadedAt.getTime() + HOUR_WINDOW_MS, now);
+        }
       }
 
       sessionStats = {
@@ -145,7 +158,7 @@ export async function GET(request: NextRequest) {
         remaining: Math.max(0, HOURLY_LIMIT - userUploadCount),
         in_queue: 0,
         completed: userUploadCount,
-        reset_in_seconds: getSecondsUntilHourReset(),
+        reset_in_seconds: resetInSeconds,
       };
     } catch (e) {
       console.error("MongoDB error:", e);

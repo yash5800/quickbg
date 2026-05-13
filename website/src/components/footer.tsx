@@ -20,7 +20,7 @@ export function Footer() {
           </div>
 
           <p className="text-xs text-muted-foreground max-w-md">
-            AI-powered background removal. Results may vary — please review before use.
+            AI-powered background removal. Results may vary, please review before use.
           </p>
 
           {donateUrl && (

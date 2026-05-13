@@ -78,24 +78,9 @@ function ActionButtons() {
   return (
     <>
       <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-        <Button
-          size="lg"
-          className="gap-2"
-          onClick={() =>
-            window.open("https://github.com/yash5800/quickbg/issues", "_blank")
-          }
-        >
+        <Button size="lg" className="gap-2" onClick={() => setShowForm(true)}>
           <MessageSquare className="h-4 w-4" />
           Share Feedback
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
-          className="gap-2"
-          onClick={() => setShowForm(true)}
-        >
-          <Mail className="h-4 w-4" />
-          Contact Us
         </Button>
         <SupportButton />
       </div>

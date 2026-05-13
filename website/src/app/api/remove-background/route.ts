@@ -55,15 +55,12 @@ async function fetchWithRetry(url: string, init: RequestInit, retries = 2, delay
   throw lastError instanceof Error ? lastError : new Error("Worker request failed");
 }
 
-function getHourKey(): string {
-  const now = new Date();
-  const hour = Math.floor(now.getTime() / HOUR_WINDOW_MS);
-  return `hour_${hour}`;
+function getWindowKey(nowMs: number = Date.now()): string {
+  return `window_${nowMs}`;
 }
 
-function getSecondsUntilHourReset(nowMs: number = Date.now()): number {
-  const nextHourMs = (Math.floor(nowMs / HOUR_WINDOW_MS) + 1) * HOUR_WINDOW_MS;
-  return Math.max(1, Math.ceil((nextHourMs - nowMs) / 1000));
+function getSecondsUntilReset(resetAtMs: number, nowMs: number = Date.now()): number {
+  return Math.max(1, Math.ceil((resetAtMs - nowMs) / 1000));
 }
 
 async function getMongoDB() {
@@ -146,23 +143,65 @@ function getHourlyUsageCollection(database: Db): Collection<HourlyUsage> {
 async function reserveHourlyUploadSlot(
   collection: Collection<HourlyUsage>,
   clientKey: string,
-  hourKey: string,
-): Promise<{ allowed: boolean; used: number }> {
+): Promise<{ allowed: boolean; used: number; resetAt: number; hourKey: string }> {
   const now = Date.now();
   const nowDate = new Date(now);
-  const expiresAt = new Date((Math.floor(now / HOUR_WINDOW_MS) + 1) * HOUR_WINDOW_MS);
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
+    const activeUsage = await collection.findOne(
+      { ip: clientKey, expiresAt: { $gt: nowDate } },
+      { projection: { count: 1, expiresAt: 1, hourKey: 1 } }
+    );
+
+    if (activeUsage) {
+      if (activeUsage.count >= HOURLY_LIMIT) {
+        return {
+          allowed: false,
+          used: activeUsage.count,
+          resetAt: activeUsage.expiresAt.getTime(),
+          hourKey: activeUsage.hourKey,
+        };
+      }
+
+      const updated = await collection.findOneAndUpdate(
+        {
+          _id: activeUsage._id,
+          expiresAt: { $gt: nowDate },
+          count: { $lt: HOURLY_LIMIT },
+        },
+        {
+          $inc: { count: 1 },
+          $set: { updatedAt: nowDate },
+        },
+        {
+          returnDocument: "after",
+        }
+      );
+
+      if (updated) {
+        return {
+          allowed: true,
+          used: updated.count,
+          resetAt: updated.expiresAt.getTime(),
+          hourKey: updated.hourKey,
+        };
+      }
+
+      continue;
+    }
+
+    const resetAt = new Date(now + HOUR_WINDOW_MS);
+    const hourKey = getWindowKey(now);
+
     try {
       const reserved = await collection.findOneAndUpdate(
         {
           ip: clientKey,
           hourKey,
-          count: { $lt: HOURLY_LIMIT },
         },
         {
           $inc: { count: 1 },
-          $set: { updatedAt: nowDate, expiresAt },
+          $set: { updatedAt: nowDate, expiresAt: resetAt },
           $setOnInsert: {
             ip: clientKey,
             hourKey,
@@ -176,18 +215,13 @@ async function reserveHourlyUploadSlot(
       );
 
       if (reserved) {
-        return { allowed: true, used: reserved.count };
+        return {
+          allowed: true,
+          used: reserved.count,
+          resetAt: reserved.expiresAt.getTime(),
+          hourKey: reserved.hourKey,
+        };
       }
-
-      const existing = await collection.findOne(
-        { ip: clientKey, hourKey },
-        { projection: { count: 1 } }
-      );
-
-      return {
-        allowed: false,
-        used: existing?.count ?? HOURLY_LIMIT,
-      };
     } catch (error) {
       const details = error as { code?: number; codeName?: string };
       const isDuplicateKey = details.code === 11000 || details.codeName === "DuplicateKey";
@@ -198,13 +232,15 @@ async function reserveHourlyUploadSlot(
   }
 
   const existing = await collection.findOne(
-    { ip: clientKey, hourKey },
-    { projection: { count: 1 } }
+    { ip: clientKey, expiresAt: { $gt: new Date() } },
+    { projection: { count: 1, expiresAt: 1, hourKey: 1 } }
   );
 
   return {
     allowed: false,
     used: existing?.count ?? HOURLY_LIMIT,
+    resetAt: existing?.expiresAt?.getTime() ?? now + HOUR_WINDOW_MS,
+    hourKey: existing?.hourKey ?? getWindowKey(now),
   };
 }
 
@@ -226,15 +262,13 @@ export async function POST(request: NextRequest) {
     const db = await getMongoDB();
     const userUploads = getUserUploadsCollection(db);
     const hourlyUsage = getHourlyUsageCollection(db);
-    const hourKey = getHourKey();
-    const resetInSeconds = getSecondsUntilHourReset();
-
-    const slotReservation = await reserveHourlyUploadSlot(hourlyUsage, clientKey, hourKey);
+    const slotReservation = await reserveHourlyUploadSlot(hourlyUsage, clientKey);
+    const resetInSeconds = getSecondsUntilReset(slotReservation.resetAt);
 
     if (!slotReservation.allowed) {
       return NextResponse.json({
         error: "_hourly_limit",
-        message: `Hourly limit reached (${slotReservation.used}/${HOURLY_LIMIT}). Visit after 1 hour.`,
+        message: `Hourly limit reached (${slotReservation.used}/${HOURLY_LIMIT}). Visit after 1 hour from your first upload.`,
         uploads_used: slotReservation.used,
         uploads_limit: HOURLY_LIMIT,
         remaining: 0,
@@ -262,7 +296,7 @@ export async function POST(request: NextRequest) {
         ip: clientKey,
         fileName: file.name,
         uploadedAt: new Date(),
-        hourKey,
+        hourKey: slotReservation.hourKey,
       });
 
       const imageBuffer = await workerResponse.arrayBuffer();
@@ -295,7 +329,7 @@ export async function POST(request: NextRequest) {
       ip: clientKey,
       fileName: file.name,
       uploadedAt: new Date(),
-      hourKey,
+      hourKey: slotReservation.hourKey,
     });
 
     const remaining = Math.max(0, HOURLY_LIMIT - slotReservation.used);

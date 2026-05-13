@@ -171,7 +171,7 @@ export default function Home() {
             </h1>
 
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              The ultimate <span className="text-green-400 font-semibold">free unlimited</span> background removal tool. Plus image resizer, background replacer, blur effects, smart crop & image adjuster — <span className="text-amber-400 font-semibold">all free forever</span>. No signup, no limits, just upload and go.
+              The ultimate <span className="text-green-400 font-semibold">free unlimited</span> background removal tool. Plus image resizer, background replacer, blur effects, smart crop & image adjuster <span className="text-amber-400 font-semibold">all free forever</span>. No signup, no limits, just upload and go.
             </p>
 
             {/* Quality Assurance */}
@@ -281,7 +281,7 @@ export default function Home() {
                 <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">All Free Unlimited Tools</span>
               </h2>
               <p className="text-muted-foreground text-sm">
-                Background removal • Resize • Replace • Blur • Crop • Adjust — <span className="text-green-400 font-semibold">All 100% Free</span>
+                Background removal • Resize • Replace • Blur • Crop • Adjust • <span className="text-green-400 font-semibold">All 100% Free</span>
               </p>
             </div>
 
