@@ -12,7 +12,7 @@ export function useCreditsSync() {
   });
 
   useEffect(() => {
-    if (query.data) {
+    if (query.data && Number.isFinite(query.data.remaining)) {
       setCredits(query.data.remaining, query.data.reset_in_seconds ?? 3600);
     }
   }, [query.data, setCredits]);

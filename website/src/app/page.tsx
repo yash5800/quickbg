@@ -81,6 +81,7 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
+  const [isDropActive, setIsDropActive] = useState(false);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,6 +123,37 @@ export default function Home() {
     },
     [addImages, loadingSampleId, router]
   );
+
+  const handleDropZoneDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (Array.from(e.dataTransfer.types).includes("Files")) {
+      setIsDropActive(true);
+    }
+  }, []);
+
+  const handleDropZoneDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDropActive(false);
+  }, []);
+
+  const handleDropZoneDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDropZoneDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDropActive(false);
+
+    const files = Array.from(e.dataTransfer.files).filter((file) => file.type.startsWith("image/"));
+    if (files.length > 0) {
+      addImages(files);
+      router.push("/remover");
+    }
+  }, [addImages, router]);
 
   // If images exist and user is on home, show link to editor
   const hasImages = images.length > 0;
@@ -184,10 +216,19 @@ export default function Home() {
           {/* Drop Zone */}
           <div
             onClick={() => fileInputRef.current?.click()}
+            onDragEnter={handleDropZoneDragEnter}
+            onDragLeave={handleDropZoneDragLeave}
+            onDragOver={handleDropZoneDragOver}
+            onDrop={handleDropZoneDrop}
             className="w-full max-w-2xl cursor-pointer group"
           >
             <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border bg-card p-8 shadow-sm transition-all duration-200 group-hover:border-primary/60 group-hover:bg-primary/5 sm:p-10">
-              <div className="relative flex flex-col items-center justify-center text-center">
+              <div
+                className={cn(
+                  "relative flex flex-col items-center justify-center text-center rounded-xl transition-colors",
+                  isDropActive && "bg-primary/10"
+                )}
+              >
                 <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
                   <Upload className="h-8 w-8" />
                 </div>

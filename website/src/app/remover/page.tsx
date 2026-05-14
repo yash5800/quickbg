@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
 import { useToast } from "@/components/ui/toast";
@@ -24,9 +25,11 @@ export default function EditorPage() {
   const updateImageStatus = useImagesStore((state) => state.updateImageStatus);
   const updateImageResult = useImagesStore((state) => state.updateImageResult);
   const remaining = useCreditsStore((state) => state.remaining);
+  const creditsLeft = Number.isFinite(remaining) ? remaining : 0;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showEraser, setShowEraser] = useState(false);
+  const [isDropActive, setIsDropActive] = useState(false);
   const { addToast } = useToast();
   const prevCompletedCount = useRef(0);
   const router = useRouter();
@@ -117,6 +120,36 @@ export default function EditorPage() {
 
   const selectedImage = images.find((img: ImageItem) => img.id === selectedId);
 
+  const handleDropZoneDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (Array.from(e.dataTransfer.types).includes("Files")) {
+      setIsDropActive(true);
+    }
+  }, []);
+
+  const handleDropZoneDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDropActive(false);
+  }, []);
+
+  const handleDropZoneDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDropZoneDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDropActive(false);
+
+    const files = Array.from(e.dataTransfer.files).filter((file) => file.type.startsWith("image/"));
+    if (files.length > 0) {
+      addImages(files);
+    }
+  }, [addImages]);
+
   // No images state - show drag & drop area
   if (images.length === 0) {
     return (
@@ -129,7 +162,13 @@ export default function EditorPage() {
           onChange={handleFileSelect}
           className="hidden"
         />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div
+          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+          onDragEnter={handleDropZoneDragEnter}
+          onDragLeave={handleDropZoneDragLeave}
+          onDragOver={handleDropZoneDragOver}
+          onDrop={handleDropZoneDrop}
+        >
           <div className="flex items-center gap-3 mb-8">
             <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="h-9 w-9">
               <ArrowLeft className="h-5 w-5" />
@@ -144,7 +183,10 @@ export default function EditorPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             onClick={() => fileInputRef.current?.click()}
-            className="flex flex-col items-center justify-center min-h-[60vh] border-2 border-dashed border-border/50 rounded-3xl cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+            className={cn(
+              "flex flex-col items-center justify-center min-h-[60vh] border-2 border-dashed border-border/50 rounded-3xl cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all",
+              isDropActive && "border-primary/70 bg-primary/10"
+            )}
           >
             <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
               <Upload className="h-12 w-12 text-primary" />
@@ -168,7 +210,13 @@ export default function EditorPage() {
         onChange={handleFileSelect}
         className="hidden"
       />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div
+        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+        onDragEnter={handleDropZoneDragEnter}
+        onDragLeave={handleDropZoneDragLeave}
+        onDragOver={handleDropZoneDragOver}
+        onDrop={handleDropZoneDrop}
+      >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -186,8 +234,8 @@ export default function EditorPage() {
                   <h1 className="text-2xl font-bold text-foreground">Processing</h1>
                   <p className="text-muted-foreground text-sm mt-0.5">
                     {images.length} {images.length === 1 ? "image" : "images"} selected
-                    <span className="ml-2 text-amber-600">
-                      ({remaining} credits left)
+                    <span className="ml-2 text-amber-600 tabular-nums">
+                      ({creditsLeft} credits left)
                     </span>
                   </p>
                 </div>

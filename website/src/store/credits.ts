@@ -15,11 +15,16 @@ export const useCreditsStore = create<CreditsState>((set) => ({
   lastUpdated: Date.now(),
   setCredits: (remaining, resetInSeconds) => {
     const now = Date.now();
-    set({
-      remaining,
-      resetInSeconds,
-      resetAt: now + resetInSeconds * 1000,
-      lastUpdated: now,
+    set((state) => {
+      const safeRemaining = Number.isFinite(remaining) ? remaining : state.remaining;
+      const safeResetInSeconds = Number.isFinite(resetInSeconds) ? resetInSeconds : state.resetInSeconds;
+
+      return {
+        remaining: safeRemaining,
+        resetInSeconds: safeResetInSeconds,
+        resetAt: now + safeResetInSeconds * 1000,
+        lastUpdated: now,
+      };
     });
   },
 }));

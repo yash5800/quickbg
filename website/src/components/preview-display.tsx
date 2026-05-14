@@ -39,7 +39,13 @@ export function PreviewDisplay({
       transition={{ duration: 0.3 }}
     >
       <Card className="overflow-hidden bg-muted/50 border-2 border-border/50">
-        <div className="relative w-full aspect-video sm:aspect-square lg:aspect-auto lg:h-[500px] bg-muted flex items-center justify-center">
+        <div
+          className={
+            isCompleted
+              ? "relative w-full aspect-video sm:aspect-square lg:aspect-auto lg:h-[500px] bg-muted flex items-center justify-center"
+              : "relative w-full bg-muted flex items-center justify-center"
+          }
+        >
           <AnimatePresence mode="wait">
             {isCompleted ? (
               <motion.div
@@ -63,12 +69,12 @@ export function PreviewDisplay({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="relative w-full h-full flex items-center justify-center"
+                className="relative w-full flex items-center justify-center"
               >
                 <img
                   src={image.preview}
                   alt="Preview"
-                  className="max-w-full max-h-full object-contain p-4 sm:p-8"
+                  className="w-full h-auto object-contain"
                   draggable={false}
                 />
 

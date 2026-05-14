@@ -19,6 +19,7 @@ import { useCreditsSync } from "@/store/useCreditsSync";
 function FloatingCredits() {
   const remaining = useCreditsStore((state) => state.remaining);
   const resetAt = useCreditsStore((state) => state.resetAt);
+  const creditsLeft = Number.isFinite(remaining) ? remaining : 0;
   const [liveResetInSeconds, setLiveResetInSeconds] = useState(() =>
     Math.max(0, Math.ceil((resetAt - Date.now()) / 1000))
   );
@@ -48,7 +49,7 @@ function FloatingCredits() {
     <div className="fixed top-20 right-3 z-40 md:right-6">
       <div
         className={cn(
-          "flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-background/90 border shadow-md backdrop-blur-sm text-xs transition-colors",
+          "flex w-fit items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 border shadow-md backdrop-blur-sm text-xs transition-colors",
           remaining === 0
             ? "border-destructive/60 bg-destructive/10"
             : remaining < 10
@@ -62,7 +63,7 @@ function FloatingCredits() {
             remaining === 0 ? "text-destructive" : remaining < 10 ? "text-amber-500" : "text-primary"
           )}
         />
-        <span className={cn("font-semibold", remaining === 0 ? "text-destructive" : "")}>{remaining}</span>
+        <span className={cn("font-semibold tabular-nums", remaining === 0 ? "text-destructive" : "")}>{creditsLeft}</span>
         {isExhausted && (
           <span className="font-semibold tabular-nums text-destructive animate-pulse">{formatResetTime(liveResetInSeconds)}</span>
         )}
