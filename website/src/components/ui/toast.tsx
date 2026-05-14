@@ -133,8 +133,12 @@ export function useToast() {
     // can safely call `addToast` / `dismissToast` without throwing.
     return {
       toasts: [],
-      addToast: (_toast: Omit<Toast, "id">) => {},
-      dismissToast: (_id: string) => {},
+      addToast: (_toast: Omit<Toast, "id">) => {
+        void _toast;
+      },
+      dismissToast: (_id: string) => {
+        void _id;
+      },
     } as ToastContextType;
   }
 
