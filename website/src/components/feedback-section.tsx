@@ -82,7 +82,7 @@ function ActionButtons() {
           <MessageSquare className="h-4 w-4" />
           Share Feedback
         </Button>
-        <SupportButton />
+        {/* <SupportButton /> */}
       </div>
 
       {showForm && <FeedbackForm onClose={() => setShowForm(false)} />}
@@ -90,22 +90,22 @@ function ActionButtons() {
   );
 }
 
-function SupportButton() {
-  const donateUrl = process.env.NEXT_PUBLIC_DONATE_URL;
+// function SupportButton() {
+//   const donateUrl = process.env.NEXT_PUBLIC_DONATE_URL;
 
-  if (!donateUrl) return null;
+//   if (!donateUrl) return null;
 
-  return (
-    <Button
-      size="lg"
-      className="gap-2 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 hover:from-rose-600 hover:via-pink-600 hover:to-purple-600 text-white border-0"
-      onClick={() => window.open(donateUrl, "_blank")}
-    >
-      <Heart className="h-4 w-4" />
-      Support Us
-    </Button>
-  );
-}
+//   return (
+//     <Button
+//       size="lg"
+//       className="gap-2 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 hover:from-rose-600 hover:via-pink-600 hover:to-purple-600 text-white border-0"
+//       onClick={() => window.open(donateUrl, "_blank")}
+//     >
+//       <Heart className="h-4 w-4" />
+//       Support Us
+//     </Button>
+//   );
+// }
 
 function FeedbackForm({ onClose }: { onClose: () => void }) {
   const { addToast } = useToast();
