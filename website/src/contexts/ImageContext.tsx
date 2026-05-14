@@ -6,6 +6,10 @@ import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
 import { useProcessingStore } from "@/store/processing";
 import { ImageItem, ImageWaitingReason } from "@/types/image";
+import { useToast } from "@/components/ui/toast";
+
+const MAX_FILE_SIZE_MB = 20;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 const ImageContext = createContext<{
   images: ImageItem[];
@@ -30,6 +34,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
   const setCredits = useCreditsStore((state) => state.setCredits);
   const { currentImageId, setSubmitting, clearSubmitting } = useProcessingStore();
+  const { addToast } = useToast();
   const processingRef = useRef(false);
   const [retryTick, setRetryTick] = React.useState(0);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
@@ -290,8 +295,33 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   }, [images, currentImageId, retryTick, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
 
   const addImages = useCallback((files: File[]) => {
-    addImagesStore(files);
-  }, [addImagesStore]);
+    const validFiles: File[] = [];
+    const oversizedFiles: string[] = [];
+
+    for (const file of files) {
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+        oversizedFiles.push(file.name);
+      } else {
+        validFiles.push(file);
+      }
+    }
+
+    if (oversizedFiles.length > 0) {
+      const fileList = oversizedFiles.length > 1
+        ? oversizedFiles.slice(0, 3).join(", ") + (oversizedFiles.length > 3 ? ` and ${oversizedFiles.length - 3} more` : "")
+        : oversizedFiles[0];
+      addToast({
+        type: "warning",
+        title: "File too large",
+        description: `${fileList} exceed ${MAX_FILE_SIZE_MB}MB limit. Please use smaller images.`,
+        duration: 5000,
+      });
+    }
+
+    if (validFiles.length > 0) {
+      addImagesStore(validFiles);
+    }
+  }, [addImagesStore, addToast]);
 
   const removeImage = useCallback((id: string) => {
     removeImageStore(id);
