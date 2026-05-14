@@ -129,7 +129,14 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 export function useToast() {
   const context = React.useContext(ToastContext);
   if (!context) {
-    throw new Error("useToast must be used within a ToastProvider");
+    // Provider missing — return a no-op implementation so callers
+    // can safely call `addToast` / `dismissToast` without throwing.
+    return {
+      toasts: [],
+      addToast: (_toast: Omit<Toast, "id">) => {},
+      dismissToast: (_id: string) => {},
+    } as ToastContextType;
   }
+
   return context;
 }

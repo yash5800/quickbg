@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const WORKER_API_BASE = process.env.NEXT_PUBLIC_WORKER_API_URL || "http://localhost:8000";
+const WORKER_API_BASE = (process.env.NEXT_PUBLIC_WORKER_API_URL || "http://localhost:8000").replace(/\/+$/, "");
 const WORKER_INTERNAL_TOKEN = process.env.WORKER_INTERNAL_TOKEN;
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     const limit = searchParams.get("limit") || "50";
     const skip = searchParams.get("skip") || "0";
 
