@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 
 export default function AdjustPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const router = useRouter();
 
   const [image, setImage] = useState<{ preview: string; name: string } | null>(null);
@@ -52,33 +51,6 @@ export default function AdjustPage() {
     }
     e.target.value = "";
   }, []);
-
-  // Update preview on changes
-  useEffect(() => {
-    if (!image) return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const img = new window.Image();
-    img.crossOrigin = "anonymous";
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`;
-      ctx.drawImage(img, 0, 0);
-      ctx.filter = "none";
-
-      const mimeType = format === "png" ? "image/png" : format === "jpeg" ? "image/jpeg" : "image/webp";
-      const dataUrl = canvas.toDataURL(mimeType, quality / 100);
-      setResult(dataUrl);
-    };
-    img.src = image.preview;
-  }, [image, brightness, contrast, saturation, format, quality]);
 
   const processImage = async () => {
     if (!image) return;
@@ -182,7 +154,6 @@ export default function AdjustPage() {
   return (
     <AppLayout>
       <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
-      <canvas ref={canvasRef} className="hidden" />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center gap-4 mb-6">
@@ -241,7 +212,9 @@ export default function AdjustPage() {
                       {result ? (
                         <img src={result} alt="processed" className="max-w-full max-h-80 object-contain" />
                       ) : (
-                        <div className="text-muted-foreground text-sm">Preview will update as you change settings</div>
+                        <div className="text-muted-foreground text-sm text-center max-w-sm">
+                          Adjust the sliders, then click Apply Changes to render the preview.
+                        </div>
                       )}
                     </div>
                   </div>
@@ -280,7 +253,7 @@ export default function AdjustPage() {
                     max="200"
                     value={brightness}
                     onChange={(e) => setBrightness(Number(e.target.value))}
-                    className="w-full accent-primary"
+                    className="w-full accent-primary cursor-pointer"
                   />
                 </div>
 
@@ -298,7 +271,7 @@ export default function AdjustPage() {
                     max="200"
                     value={contrast}
                     onChange={(e) => setContrast(Number(e.target.value))}
-                    className="w-full accent-primary"
+                    className="w-full accent-primary cursor-pointer"
                   />
                 </div>
 
@@ -316,7 +289,7 @@ export default function AdjustPage() {
                     max="200"
                     value={saturation}
                     onChange={(e) => setSaturation(Number(e.target.value))}
-                    className="w-full accent-primary"
+                    className="w-full accent-primary cursor-pointer"
                   />
                 </div>
               </div>
@@ -382,7 +355,7 @@ export default function AdjustPage() {
                 max="100"
                 value={quality}
                 onChange={(e) => setQuality(Number(e.target.value))}
-                className="w-full accent-primary"
+                className="w-full accent-primary cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-3">
                 <span>Smaller file</span>

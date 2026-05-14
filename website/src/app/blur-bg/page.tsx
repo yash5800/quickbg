@@ -96,14 +96,6 @@ export default function BlurBgPage() {
       });
   }, [processedImage, originalImage, loadImage]);
 
-  // Re-render when blur changes
-  useEffect(() => {
-    if (isLoaded) {
-      console.log("Re-rendering with blur:", blurStrength);
-      renderCanvas();
-    }
-  }, [blurStrength, isLoaded, renderCanvas]);
-
   const handleDownload = () => {
     if (!canvasRef.current) return;
     const dataUrl = canvasRef.current.toDataURL("image/png");
@@ -198,13 +190,18 @@ export default function BlurBgPage() {
                 max="50"
                 value={blurStrength}
                 onChange={(e) => setBlurStrength(Number(e.target.value))}
-                className="w-full accent-primary"
+                className="w-full accent-primary cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>Sharp</span>
                 <span>Blurred</span>
               </div>
+              <p className="mt-3 text-xs text-muted-foreground">Move the slider freely, then click Apply Changes to update the preview.</p>
             </div>
+            <Button onClick={renderCanvas} disabled={!isLoaded} className="w-full" size="lg">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Apply Changes
+            </Button>
           </div>
         </div>
       </div>

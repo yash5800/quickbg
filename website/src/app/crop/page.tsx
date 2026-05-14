@@ -387,8 +387,9 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                 max="180"
                 value={rotation}
                 onChange={(e) => setRotation(Number(e.target.value))}
-                className="w-full accent-primary"
+                className="w-full accent-primary cursor-pointer"
               />
+              <p className="mt-3 text-xs text-muted-foreground">Rotate freely, then click Apply Crop to render the result.</p>
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>-180°</span>
                 <span>{rotation}°</span>
@@ -418,7 +419,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
               ) : (
                 <>
                   <Crop className="h-4 w-4 mr-2" />
-                  Crop Image
+                  Apply Crop
                 </>
               )}
             </Button>
