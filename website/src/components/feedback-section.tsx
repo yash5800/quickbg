@@ -115,6 +115,7 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+  const fallbackRecipientEmail = process.env.NEXT_PUBLIC_FEEDBACK_TO_EMAIL?.trim();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,29 +131,36 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
 
     if (!formRef.current) return;
 
+    const formData = new FormData(formRef.current);
+    const name = String(formData.get("name") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
     setIsSending(true);
     try {
-      // Initialize with public key (only once)
-      if (publicKey) {
-        emailjs.init(publicKey);
-      }
-
-      await emailjs.sendForm(
-        serviceId,
-        templateId,
-        formRef.current
-      );
+      await emailjs.send(serviceId, templateId, {
+        name,
+        email,
+        message,
+        title: "QuickBG Feedback",
+        client_email: fallbackRecipientEmail || email,
+      }, publicKey);
       addToast({
         type: "success",
         title: "Feedback sent!",
         description: "Thank you for your message.",
       });
       onClose();
-    } catch {
+    } catch (error) {
+      const description =
+        typeof error === "object" && error !== null && "text" in error
+          ? String((error as { text?: string }).text || "Please try again later.")
+          : "Please try again later.";
+
       addToast({
         type: "error",
         title: "Failed to send",
-        description: "Please try again later.",
+        description,
       });
     } finally {
       setIsSending(false);
@@ -170,7 +178,7 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
           <label htmlFor="name" className="text-sm font-medium">Name</label>
           <input
             type="text"
-            name="from_name"
+            name="name"
             id="name"
             required
             className="w-full mt-1 px-3 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
@@ -181,7 +189,7 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
           <label htmlFor="email" className="text-sm font-medium">Email</label>
           <input
             type="email"
-            name="reply_to"
+            name="email"
             id="email"
             required
             className="w-full mt-1 px-3 py-2 bg-background border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
