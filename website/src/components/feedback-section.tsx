@@ -163,7 +163,7 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-6 p-6 bg-background/80 backdrop-blur-sm rounded-lg border"
+      className="mt-6 p-6 bg-background/80 backdrop-blur-sm rounded-lg border max-w-md mx-auto"
     >
       <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
         <div>
