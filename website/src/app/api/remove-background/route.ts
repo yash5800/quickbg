@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { MongoClient, Db, Collection, ObjectId } from "mongodb";
 import { attachSessionCookie, getOrCreateSessionId } from "@/lib/request-session";
 
+export const dynamic = "force-dynamic";
+
 const WORKER_API_BASE = (process.env.NEXT_PUBLIC_WORKER_API_URL || "http://localhost:8000").replace(/\/+$/, "");
 const WORKER_INTERNAL_TOKEN = process.env.WORKER_INTERNAL_TOKEN;
 

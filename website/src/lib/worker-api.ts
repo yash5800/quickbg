@@ -1,4 +1,5 @@
-const API_BASE = "/api";
+const WORKER_API_BASE = process.env.NEXT_PUBLIC_WORKER_API_URL?.replace(/\/+$/, "") || null;
+const API_BASE = WORKER_API_BASE || "/api";
 
 export type JobStatus =
   | "queued"
@@ -52,7 +53,8 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch(`${API_BASE}/remove-background`, {
+  const uploadPath = WORKER_API_BASE ? `${API_BASE}/remove` : `${API_BASE}/remove-background`;
+  const response = await fetch(uploadPath, {
     method: "POST",
     body: formData,
   });
