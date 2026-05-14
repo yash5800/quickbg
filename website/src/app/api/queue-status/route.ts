@@ -45,9 +45,6 @@ async function fetchWithRetry(url: string, init?: RequestInit, retries = 2, dela
   throw lastError instanceof Error ? lastError : new Error("Worker request failed");
 }
 
-function getWindowKey(nowMs: number = Date.now()): string {
-  return `window_${nowMs}`;
-}
 
 function getSecondsUntilReset(resetAtMs: number, nowMs: number = Date.now()): number {
   return Math.max(1, Math.ceil((resetAtMs - nowMs) / 1000));

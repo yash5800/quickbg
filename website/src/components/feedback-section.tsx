@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Mail, Clock, Heart, Send, Loader2 } from "lucide-react";
+import { MessageSquare, Clock, Send, Loader2 } from "lucide-react";
 import emailjs from "emailjs-com";
 import { useToast } from "@/components/ui/toast";
 
