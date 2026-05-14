@@ -65,7 +65,7 @@ MONGO_URI = os.getenv("NEXT_MONGODB_URI")
 MONGO_DB_NAME = os.getenv("NEXT_MONGODB_DB", "bgremover")
 WORKER_INTERNAL_TOKEN = os.getenv("WORKER_INTERNAL_TOKEN")
 ALLOWED_ORIGINS = [
-    origin.strip()
+    origin.strip().rstrip("/")
     for origin in os.getenv(
         "WORKER_CORS_ORIGINS",
         "http://localhost:3000,http://localhost:3001",
@@ -346,7 +346,14 @@ def is_internal_request(request: Request) -> bool:
     if not WORKER_INTERNAL_TOKEN:
         return True
 
-    return request.headers.get("x-internal-token") == WORKER_INTERNAL_TOKEN
+    if request.headers.get("x-internal-token") == WORKER_INTERNAL_TOKEN:
+        return True
+
+    origin = request.headers.get("origin")
+    if origin and origin in ALLOWED_ORIGINS:
+        return True
+
+    return False
 
 
 async def update_job(job_id: str, updates: dict) -> None:

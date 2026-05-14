@@ -28,6 +28,7 @@ This service processes images asynchronously using the BiRefNet model:
 |----------|----------|-------------|
 | `NEXT_MONGODB_URI` | Yes | MongoDB connection string |
 | `WORKER_INTERNAL_TOKEN` | Yes | Token for internal API auth |
+| `WORKER_CORS_ORIGINS` | Yes | Allowed browser origins for direct uploads |
 | `HF_TOKEN` | Yes | HuggingFace API token |
 | `WORKER_MAX_CONCURRENCY` | No | Default: 1 (for limited RAM) |
 | `ADMIN_CLEANUP_TOKEN` | No | Token for admin cleanup endpoint |
@@ -49,6 +50,11 @@ Client → /remove → MongoDB (queue) → Worker picks up → BiRefNet → Save
                                 ↓
                          SSE events ← Client polls status
 ```
+
+For browser-direct uploads from the public website, the request is accepted when the
+`Origin` header matches one of the configured `WORKER_CORS_ORIGINS` values. Keep
+`WORKER_INTERNAL_TOKEN` for server-to-server calls, but browser uploads do not need
+to send it.
 
 ## Local Development
 
