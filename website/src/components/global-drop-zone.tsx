@@ -63,14 +63,6 @@ function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
       setIsDragging(false);
       dragCounterRef.current = 0;
 
-      // Check if drop is inside a tool-specific drop zone
-      const dropTarget = e.target as HTMLElement;
-      const toolDropZone = dropTarget.closest('[data-drop-zone]');
-      if (toolDropZone) {
-        // Let the tool handle it
-        return;
-      }
-
       // Prevent duplicate drops within 500ms
       if (dropTimeoutRef.current) {
         return;
