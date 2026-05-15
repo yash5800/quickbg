@@ -54,15 +54,19 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   const formData = new FormData();
   formData.append("file", file);
 
-  const uploadPath = `${APP_API_BASE}/remove-background`;
-  const response = await fetch(uploadPath, {
+  if (!WORKER_API_BASE) {
+    throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
+  }
+
+  const response = await fetch(`${WORKER_API_BASE}/remove`, {
     method: "POST",
     body: formData,
   });
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: "Upload failed" }));
-    throw new WorkerApiError(error.message || `HTTP ${response.status}`, response.status, error);
+    const message = error.message || error.detail || `HTTP ${response.status}`;
+    throw new WorkerApiError(message, response.status, error);
   }
 
   const contentType = response.headers.get("content-type") || "";

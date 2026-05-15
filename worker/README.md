@@ -30,6 +30,7 @@ This service processes images asynchronously using the BiRefNet model:
 | `WORKER_INTERNAL_TOKEN` | Yes | Token for internal API auth |
 | `WORKER_CORS_ORIGINS` | Yes | Allowed browser origins for direct uploads |
 | `HF_TOKEN` | Yes | HuggingFace API token |
+| `WORKER_MAX_UPLOAD_SIZE_BYTES` | No | Default: 20 MB upload limit |
 | `WORKER_MAX_CONCURRENCY` | No | Default: 1 (for limited RAM) |
 | `ADMIN_CLEANUP_TOKEN` | No | Token for admin cleanup endpoint |
 
@@ -54,7 +55,8 @@ Client → /remove → MongoDB (queue) → Worker picks up → BiRefNet → Save
 For browser-direct uploads from the public website, the request is accepted when the
 `Origin` header matches one of the configured `WORKER_CORS_ORIGINS` values. Keep
 `WORKER_INTERNAL_TOKEN` for server-to-server calls, but browser uploads do not need
-to send it.
+to send it. The worker enforces a 20 MB default upload limit unless
+`WORKER_MAX_UPLOAD_SIZE_BYTES` is overridden.
 
 ## Local Development
 

@@ -9,7 +9,7 @@ Next.js 14 frontend for QuickBG - AI-powered background removal.
 This is the public-facing web interface. It handles:
 - Image uploads via drag & drop
 - Client-side AI processing (TensorFlow.js)
-- Server-side processing via worker API
+- Direct browser-to-worker processing for uploads
 - Image editing tools (brightness, contrast, eraser)
 - Admin panel for analytics and job management
 
@@ -105,14 +105,14 @@ src/
 ## Environment Variables
 
 ```bash
-# Worker API (required)
+# Worker API (required for direct uploads and status/result polling)
 NEXT_PUBLIC_WORKER_API_URL=http://localhost:8000
 
 # MongoDB (required for persistence)
 NEXT_MONGODB_URI=mongodb://...
 NEXT_MONGODB_DB=bgremover
 
-# Internal token for worker communication
+# Internal token for worker communication from server-side routes only
 WORKER_INTERNAL_TOKEN=your-secret-token
 ```
 
