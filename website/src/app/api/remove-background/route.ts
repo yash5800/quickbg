@@ -4,9 +4,6 @@ import { attachSessionCookie, getOrCreateSessionId } from "@/lib/request-session
 
 export const dynamic = "force-dynamic";
 
-const WORKER_API_BASE = (process.env.NEXT_PUBLIC_WORKER_API_URL || "http://localhost:8000").replace(/\/+$/, "");
-const WORKER_INTERNAL_TOKEN = process.env.WORKER_INTERNAL_TOKEN;
-
 interface UserUpload {
   _id?: ObjectId;
   ip: string;
@@ -38,23 +35,6 @@ function isIndexConflict(error: unknown): boolean {
 
   const details = error as { code?: number; codeName?: string; errmsg?: string; message?: string };
   return details.code === 85 || details.codeName === "IndexOptionsConflict" || /IndexOptionsConflict/i.test(details.errmsg || details.message || "");
-}
-
-async function fetchWithRetry(url: string, init: RequestInit, retries = 2, delayMs = 250): Promise<Response> {
-  let lastError: unknown;
-
-  for (let attempt = 0; attempt < retries; attempt += 1) {
-    try {
-      return await fetch(url, init);
-    } catch (error) {
-      lastError = error;
-      if (attempt < retries - 1) {
-        await new Promise((resolve) => setTimeout(resolve, delayMs * (attempt + 1)));
-      }
-    }
-  }
-
-  throw lastError instanceof Error ? lastError : new Error("Worker request failed");
 }
 
 function getWindowKey(nowMs: number = Date.now()): string {
@@ -252,11 +232,11 @@ export async function POST(request: NextRequest) {
 
   try {
     const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    const reserveOnly = formData.get("reserveOnly") === "true";
 
-    if (!file) {
+    if (!reserveOnly) {
       return NextResponse.json(
-        { error: "_no_file", message: "No file provided" },
+        { error: "_reserve_only_required", message: "This endpoint only reserves upload credits" },
         { status: 400 }
       );
     }
@@ -279,66 +259,16 @@ export async function POST(request: NextRequest) {
       }, { status: 403 });
     }
 
-    const workerFormData = new FormData();
-    workerFormData.append("file", file);
+    const remaining = Math.max(0, HOURLY_LIMIT - slotReservation.used);
 
-    const workerResponse = await fetchWithRetry(`${WORKER_API_BASE}/remove`, {
-      method: "POST",
-      body: workerFormData,
-      headers: {
-        ...(WORKER_INTERNAL_TOKEN ? { "x-internal-token": WORKER_INTERNAL_TOKEN } : {}),
-        "x-client-ip": clientKey,
-      },
-    });
-
-    const contentType = workerResponse.headers.get("content-type") || "";
-
-    if (contentType.includes("image/")) {
-      await userUploads.insertOne({
-        ip: clientKey,
-        fileName: file.name,
-        uploadedAt: new Date(),
-        hourKey: slotReservation.hourKey,
-      });
-
-      const imageBuffer = await workerResponse.arrayBuffer();
-      const response = new NextResponse(imageBuffer, {
-        status: workerResponse.status,
-        headers: {
-          "Content-Type": contentType,
-          "Content-Disposition": workerResponse.headers.get("content-disposition") || "inline",
-          ...(workerResponse.headers.get("x-job-id") ? { "X-Job-Id": workerResponse.headers.get("x-job-id")! } : {}),
-        },
-      });
-
-      if (isNewSession) {
-        attachSessionCookie(response, sessionId);
-      }
-
-      return response;
-    }
-
-    const data = await workerResponse.json();
-
-    if (!workerResponse.ok) {
-      return NextResponse.json(data, { status: workerResponse.status });
-    }
-
-    const jobId = data.job_id;
-    
-    // Record this upload
     await userUploads.insertOne({
       ip: clientKey,
-      fileName: file.name,
+      fileName: "direct-worker-upload",
       uploadedAt: new Date(),
       hourKey: slotReservation.hourKey,
     });
 
-    const remaining = Math.max(0, HOURLY_LIMIT - slotReservation.used);
-
-    const response = NextResponse.json({ 
-      job_id: jobId, 
-      status: data.status || "queued",
+    const response = NextResponse.json({
       uploads_used: slotReservation.used,
       uploads_limit: HOURLY_LIMIT,
       remaining,

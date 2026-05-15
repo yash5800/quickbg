@@ -17,6 +17,8 @@ export interface JobQueuedResponse {
   job_id: string;
   status: JobStatus;
   imageBlob?: Blob;
+  remaining?: number;
+  reset_in_seconds?: number;
 }
 
 export interface JobStatusResponse {
@@ -51,12 +53,29 @@ export class WorkerApiError extends Error {
 
 export async function submitImage(file: File): Promise<JobQueuedResponse> {
   console.log("[Worker API] submitImage called:", file.name, file.size);
-  const formData = new FormData();
-  formData.append("file", file);
 
   if (!WORKER_API_BASE) {
     throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
   }
+
+  const reservationFormData = new FormData();
+  reservationFormData.append("reserveOnly", "true");
+
+  const reservationResponse = await fetch(`${APP_API_BASE}/remove-background`, {
+    method: "POST",
+    body: reservationFormData,
+  });
+
+  if (!reservationResponse.ok) {
+    const error = await reservationResponse.json().catch(() => ({ message: "Failed to reserve upload slot" }));
+    const message = error.message || error.detail || `HTTP ${reservationResponse.status}`;
+    throw new WorkerApiError(message, reservationResponse.status, error);
+  }
+
+  const reservation = await reservationResponse.json().catch(() => ({} as Partial<JobQueuedResponse>));
+
+  const formData = new FormData();
+  formData.append("file", file);
 
   const response = await fetch(`${WORKER_API_BASE}/remove`, {
     method: "POST",
@@ -73,10 +92,21 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
 
   if (contentType.includes("image")) {
     const blob = await response.blob();
-    return { job_id: "direct", status: "completed", imageBlob: blob };
+    return {
+      job_id: "direct",
+      status: "completed",
+      imageBlob: blob,
+      remaining: reservation.remaining,
+      reset_in_seconds: reservation.reset_in_seconds,
+    };
   }
 
-  return response.json();
+  const queuedResponse = await response.json();
+  return {
+    ...queuedResponse,
+    remaining: reservation.remaining,
+    reset_in_seconds: reservation.reset_in_seconds,
+  };
 }
 
 export async function getJobStatus(jobId: string): Promise<JobStatusResponse> {

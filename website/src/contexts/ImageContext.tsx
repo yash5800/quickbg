@@ -33,7 +33,6 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const clearWaitingState = useImagesStore((state) => state.clearWaitingState);
 
   const setCredits = useCreditsStore((state) => state.setCredits);
-  const consumeCredit = useCreditsStore((state) => state.consumeCredit);
   const { currentImageId, setSubmitting, clearSubmitting } = useProcessingStore();
   const { addToast } = useToast();
   const processingRef = useRef(false);
@@ -283,7 +282,6 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         // Update status to uploading
         clearWaitingState(pendingImage.id);
         useImagesStore.getState().updateImageStatus(pendingImage.id, "uploading", { startTime: Date.now() });
-        consumeCredit();
 
         // Submit to server
         return submitImage(pendingImage.file);
@@ -292,6 +290,10 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         if (!response) return;
 
         console.log("[ImageContext] Submit response:", response);
+
+        if (Number.isFinite(response.remaining)) {
+          setCredits(response.remaining ?? 0, response.reset_in_seconds ?? 3600);
+        }
 
         getQueueStatus()
           .then((status) => {
@@ -342,7 +344,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           clearSubmitting();
         }
       });
-  }, [images, currentImageId, retryTick, setCredits, consumeCredit, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
+  }, [images, currentImageId, retryTick, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
 
   const addImages = useCallback((files: File[]) => {
     const validFiles: File[] = [];
