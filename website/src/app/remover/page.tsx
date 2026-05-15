@@ -337,22 +337,10 @@ function SelectedPreview({
 }
 
 function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: ImageItem; onRemove: () => void; onRetry: () => void; onOpenEraser?: () => void }) {
-  const [resultUrl, setResultUrl] = useState<string | null>(image.result || null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const jobIdRef = useRef<string | null>(image.jobId || null);
-
-  // Sync result URL when image result changes
-  React.useEffect(() => {
-    if (image.result && image.result !== resultUrl) {
-      setResultUrl(image.result);
-    }
-    if (image.jobId) {
-      jobIdRef.current = image.jobId;
-    }
-  }, [image.result, image.jobId, resultUrl]);
 
   const downloadResult = async () => {
-    const url = resultUrl || image.result;
+    const url = image.result;
     if (!url || isDownloading) return;
     setIsDownloading(true);
     const a = document.createElement("a");
@@ -364,8 +352,7 @@ function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: Image
     setTimeout(() => setIsDownloading(false), 500);
   };
 
-  const finalResultUrl = resultUrl || image.result || null;
-  const isCompleted = image.status === "completed" && !!finalResultUrl;
+  const isCompleted = image.status === "completed" && !!image.result;
   const isError = image.status === "error" || image.status === "failed";
   const isProcessing = [
     "queued",

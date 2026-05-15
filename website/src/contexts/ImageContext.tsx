@@ -199,7 +199,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
               }
             }
           }
-        }, 2000);
+        }, 500);
         pollingIntervalsRef.current.set(img.id, intervalId);
       }
     });
