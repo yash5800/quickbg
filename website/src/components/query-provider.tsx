@@ -9,9 +9,11 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: true,
+            refetchOnReconnect: true,
+            refetchIntervalInBackground: true,
             retry: 1,
-            staleTime: 10_000,
+            staleTime: 0,
           },
         },
       })

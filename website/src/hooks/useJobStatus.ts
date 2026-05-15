@@ -17,6 +17,10 @@ export function useJobStatus(jobId: string | null, intervalMs: number = 2000) {
       if (!resp.ok) throw new Error(`Status check failed: ${resp.status}`);
       return resp.json();
     },
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchIntervalInBackground: true,
+    staleTime: 0,
     refetchInterval: (query) => {
       const status = query.state.data?.status;
       return status === "completed" || status === "failed" || status === "error" ? false : intervalMs;

@@ -9,6 +9,10 @@ export function useCreditsSync() {
     queryKey: ["queue-status"],
     queryFn: getQueueStatus,
     refetchInterval: 10000,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchIntervalInBackground: true,
+    staleTime: 0,
   });
 
   useEffect(() => {

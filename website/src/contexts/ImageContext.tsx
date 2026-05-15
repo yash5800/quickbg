@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
 import { submitImage, getJobStatus, getQueueStatus, getJobResult, WorkerApiError } from "@/lib/worker-api";
+import { persistImageState, restoreImageState } from "@/lib/image-state-persistence";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
 import { useProcessingStore } from "@/store/processing";
@@ -23,6 +24,7 @@ const ImageContext = createContext<{
 
 export function ImageProvider({ children }: { children: React.ReactNode }) {
   const images = useImagesStore((state) => state.images);
+  const setImagesStore = useImagesStore((state) => state.setImages);
   const addImagesStore = useImagesStore((state) => state.addImages);
   const removeImageStore = useImagesStore((state) => state.removeImage);
   const clearImagesStore = useImagesStore((state) => state.clearImages);
@@ -38,10 +40,145 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const processingRef = useRef(false);
   const [retryTick, setRetryTick] = React.useState(0);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const [isHydrated, setIsHydrated] = React.useState(false);
 
   const pausePending = useCallback((reason: ImageWaitingReason, retryInSeconds: number) => {
     pausePendingImages(reason, Date.now() + retryInSeconds * 1000);
   }, [pausePendingImages]);
+
+  const stopPollingForImage = useCallback((imageId: string) => {
+    const existingInterval = pollingIntervalsRef.current.get(imageId);
+    if (existingInterval) {
+      clearInterval(existingInterval);
+      pollingIntervalsRef.current.delete(imageId);
+    }
+  }, []);
+
+  const fetchWorkerResult = useCallback(async (jobId: string) => {
+    try {
+      return await getJobResult(jobId);
+    } catch (workerErr) {
+      try {
+        const resultResp = await fetch(`/api/result/${jobId}`, { cache: "no-store" });
+        if (resultResp.ok) {
+          return await resultResp.blob();
+        }
+      } catch (proxyErr) {
+        console.error("Failed to retrieve result from worker and proxy:", workerErr, proxyErr);
+      }
+
+      throw workerErr;
+    }
+  }, []);
+
+  const refreshImageFromWorker = useCallback(async (img: ImageItem) => {
+    if (!img.jobId || img.jobId === "direct") {
+      return;
+    }
+
+    try {
+      const status = await getJobStatus(img.jobId);
+
+      const mappedStatus =
+        status.status === "running" ||
+        status.status === "starting" ||
+        status.status === "uploading_result"
+          ? "processing"
+          : status.status === "queued"
+            ? "queued"
+            : status.status === "failed" ||
+                status.status === "expired" ||
+                status.status === "cancelled" ||
+                status.status === "error"
+              ? "error"
+              : status.status;
+
+      updateImageStatusStore(img.id, mappedStatus as ImageItem["status"], {
+        progress: status.progress,
+        queuePosition: status.status === "queued" ? status.queue_position ?? null : null,
+        estimatedWaitSeconds: status.status === "queued" ? status.estimated_wait_seconds ?? null : null,
+      });
+
+      if (status.status === "completed") {
+        if (!img.result) {
+          try {
+            const blob = await fetchWorkerResult(img.jobId);
+            const url = URL.createObjectURL(blob);
+            updateImageStatusStore(img.id, "completed", {
+              result: url,
+              duration: img.startTime ? Date.now() - img.startTime : undefined,
+              progress: 100,
+            });
+          } catch (resultErr) {
+            console.error("[ImageContext] Failed to recover completed result:", resultErr);
+          }
+        }
+
+        stopPollingForImage(img.id);
+      } else if (
+        status.status === "failed" ||
+        status.status === "expired" ||
+        status.status === "cancelled" ||
+        status.status === "error"
+      ) {
+        updateImageStatusStore(img.id, "error", {
+          error: status.error || "Processing failed",
+          progress: 0,
+        });
+        stopPollingForImage(img.id);
+
+        const store = useProcessingStore.getState();
+        if (store.currentImageId === img.id) {
+          clearSubmitting();
+        }
+      }
+
+      if (
+        status.status === "completed" ||
+        status.status === "failed" ||
+        status.status === "expired" ||
+        status.status === "cancelled" ||
+        status.status === "error"
+      ) {
+        const store = useProcessingStore.getState();
+        if (store.currentImageId === img.id) {
+          clearSubmitting();
+        }
+      }
+    } catch (err) {
+      console.error("Polling error for", img.id, err);
+      const message = err instanceof Error ? err.message : String(err);
+      if (message.includes("404") || message.toLowerCase().includes("job not found")) {
+        updateImageStatusStore(img.id, "error", {
+          error: "Job no longer exists on the worker",
+          progress: 0,
+        });
+
+        stopPollingForImage(img.id);
+
+        const store = useProcessingStore.getState();
+        if (store.currentImageId === img.id) {
+          clearSubmitting();
+        }
+      }
+    }
+  }, [clearSubmitting, fetchWorkerResult, stopPollingForImage, updateImageStatusStore]);
+
+  const syncActiveJobs = useCallback(async () => {
+    const activeImages = useImagesStore.getState().images.filter(
+      (img) =>
+        img.jobId &&
+        img.jobId !== "direct" &&
+        img.status !== "error" &&
+        (img.status !== "completed" || !img.result)
+    );
+
+    if (activeImages.length === 0) {
+      return;
+    }
+
+    await Promise.all(activeImages.map((img) => refreshImageFromWorker(img)));
+  }, [refreshImageFromWorker]);
 
   // Cleanup polling intervals on unmount
   useEffect(() => {
@@ -53,6 +190,81 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       intervals.clear();
     };
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const hydrate = async () => {
+      try {
+        const restoredImages = await restoreImageState();
+        if (cancelled) {
+          restoredImages.forEach((image) => {
+            URL.revokeObjectURL(image.preview);
+            if (image.result) {
+              URL.revokeObjectURL(image.result);
+            }
+          });
+          return;
+        }
+
+        if (restoredImages.length > 0) {
+          setImagesStore(restoredImages);
+        }
+
+        clearSubmitting();
+        setIsHydrated(true);
+
+        if (restoredImages.some((image) => image.jobId && image.jobId !== "direct")) {
+          void syncActiveJobs();
+        }
+      } catch (error) {
+        console.warn("[ImageContext] Failed to restore persisted images:", error);
+        if (!cancelled) {
+          setIsHydrated(true);
+        }
+      }
+    };
+
+    void hydrate();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [clearSubmitting, setImagesStore, syncActiveJobs]);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      void persistImageState(images).catch((error) => {
+        console.warn("[ImageContext] Failed to persist images:", error);
+      });
+    }, 250);
+
+    return () => window.clearTimeout(timer);
+  }, [images, isHydrated]);
+
+  useEffect(() => {
+    const handleVisible = () => {
+      if (document.visibilityState === "visible") {
+        void syncActiveJobs();
+      }
+    };
+
+    const handleFocus = () => {
+      void syncActiveJobs();
+    };
+
+    document.addEventListener("visibilitychange", handleVisible);
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisible);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [syncActiveJobs]);
 
   // Older local queue-cap logic could leave images stuck as queue_full. Clear it
   // so available credits can drive submission.
@@ -97,6 +309,10 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
   // Poll worker status for active jobs (queued/running) until terminal state.
   useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
     const activeImages = images.filter(
       (img) =>
         img.jobId &&
@@ -107,119 +323,8 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
     activeImages.forEach((img) => {
       if (!pollingIntervalsRef.current.has(img.id)) {
-        const intervalId = setInterval(async () => {
-          try {
-            const status = await getJobStatus(img.jobId!);
-
-            const mappedStatus =
-              status.status === "running" ||
-              status.status === "starting" ||
-              status.status === "uploading_result"
-                ? "processing"
-                : status.status === "queued"
-                  ? "queued"
-                  : status.status === "failed" ||
-                    status.status === "expired" ||
-                    status.status === "cancelled" ||
-                    status.status === "error"
-                    ? "error"
-                    : status.status;
-
-            useImagesStore.getState().updateImageStatus(img.id, mappedStatus as ImageItem["status"], {
-              progress: status.progress,
-              queuePosition: status.status === "queued" ? status.queue_position ?? null : null,
-              estimatedWaitSeconds: status.status === "queued" ? status.estimated_wait_seconds ?? null : null,
-            });
-
-            if (status.status === "completed") {
-              // Try to fetch the result directly from the worker API in the browser.
-              // This avoids an extra server relay and ensures the object URL is
-              // created client-side as soon as the worker has the blob.
-              try {
-                const blob = await getJobResult(img.jobId!);
-                const url = URL.createObjectURL(blob);
-                useImagesStore.getState().updateImageStatus(img.id, "completed", {
-                  result: url,
-                  duration: img.startTime ? Date.now() - img.startTime : undefined,
-                  progress: 100,
-                });
-              } catch (workerErr) {
-                // If direct worker fetch fails (CORS, network, or worker URL not configured),
-                // fall back to the server-side proxy route.
-                try {
-                  const resultResp = await fetch(`/api/result/${img.jobId}`, { cache: "no-store" });
-                  if (resultResp.ok) {
-                    const blob = await resultResp.blob();
-                    const url = URL.createObjectURL(blob);
-                    useImagesStore.getState().updateImageStatus(img.id, "completed", {
-                      result: url,
-                      duration: img.startTime ? Date.now() - img.startTime : undefined,
-                      progress: 100,
-                    });
-                  } else {
-                    console.warn("Result proxy returned non-ok status", resultResp.status);
-                  }
-                } catch (proxyErr) {
-                  console.error("Failed to retrieve result from worker and proxy:", workerErr, proxyErr);
-                }
-              } finally {
-                const existingInterval = pollingIntervalsRef.current.get(img.id);
-                if (existingInterval) {
-                  clearInterval(existingInterval);
-                  pollingIntervalsRef.current.delete(img.id);
-                }
-              }
-            } else if (
-              status.status === "failed" ||
-              status.status === "expired" ||
-              status.status === "cancelled" ||
-              status.status === "error"
-            ) {
-              useImagesStore.getState().updateImageStatus(img.id, "error", {
-                error: status.error || "Processing failed",
-                progress: 0,
-              });
-              const existingInterval = pollingIntervalsRef.current.get(img.id);
-              if (existingInterval) {
-                clearInterval(existingInterval);
-                pollingIntervalsRef.current.delete(img.id);
-              }
-            }
-
-            // Clear submitting state when job completes or fails
-            if (
-              status.status === "completed" ||
-              status.status === "failed" ||
-              status.status === "expired" ||
-              status.status === "cancelled" ||
-              status.status === "error"
-            ) {
-              const store = useProcessingStore.getState();
-              if (store.currentImageId === img.id) {
-                clearSubmitting();
-              }
-            }
-          } catch (err) {
-            console.error("Polling error for", img.id, err);
-            const message = err instanceof Error ? err.message : String(err);
-            if (message.includes("404") || message.toLowerCase().includes("job not found")) {
-              useImagesStore.getState().updateImageStatus(img.id, "error", {
-                error: "Job no longer exists on the worker",
-                progress: 0,
-              });
-
-              const existingInterval = pollingIntervalsRef.current.get(img.id);
-              if (existingInterval) {
-                clearInterval(existingInterval);
-                pollingIntervalsRef.current.delete(img.id);
-              }
-
-              const store = useProcessingStore.getState();
-              if (store.currentImageId === img.id) {
-                clearSubmitting();
-              }
-            }
-          }
+        const intervalId = setInterval(() => {
+          void refreshImageFromWorker(img);
         }, 500);
         pollingIntervalsRef.current.set(img.id, intervalId);
       }
@@ -233,10 +338,14 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         pollingIntervalsRef.current.delete(imageId);
       }
     });
-  }, [images, clearSubmitting]);
+  }, [images, clearSubmitting, isHydrated, refreshImageFromWorker]);
 
   // Auto-process images - ONE AT A TIME
   useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
     // Don't run if already processing
     if (processingRef.current) {
       return;
@@ -344,7 +453,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           clearSubmitting();
         }
       });
-  }, [images, currentImageId, retryTick, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
+  }, [images, currentImageId, retryTick, isHydrated, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
 
   const addImages = useCallback((files: File[]) => {
     const validFiles: File[] = [];
