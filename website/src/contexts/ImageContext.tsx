@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
-import { submitImage, getJobStatus, getQueueStatus, WorkerApiError } from "@/lib/worker-api";
+import { submitImage, getJobStatus, getQueueStatus, getJobResult, WorkerApiError } from "@/lib/worker-api";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
 import { useProcessingStore } from "@/store/processing";
@@ -133,15 +133,37 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
             });
 
             if (status.status === "completed") {
-              const resultResp = await fetch(`/api/result/${img.jobId}`, { cache: "no-store" });
-              if (resultResp.ok) {
-                const blob = await resultResp.blob();
+              // Try to fetch the result directly from the worker API in the browser.
+              // This avoids an extra server relay and ensures the object URL is
+              // created client-side as soon as the worker has the blob.
+              try {
+                const blob = await getJobResult(img.jobId!);
                 const url = URL.createObjectURL(blob);
                 useImagesStore.getState().updateImageStatus(img.id, "completed", {
                   result: url,
                   duration: img.startTime ? Date.now() - img.startTime : undefined,
                   progress: 100,
                 });
+              } catch (workerErr) {
+                // If direct worker fetch fails (CORS, network, or worker URL not configured),
+                // fall back to the server-side proxy route.
+                try {
+                  const resultResp = await fetch(`/api/result/${img.jobId}`, { cache: "no-store" });
+                  if (resultResp.ok) {
+                    const blob = await resultResp.blob();
+                    const url = URL.createObjectURL(blob);
+                    useImagesStore.getState().updateImageStatus(img.id, "completed", {
+                      result: url,
+                      duration: img.startTime ? Date.now() - img.startTime : undefined,
+                      progress: 100,
+                    });
+                  } else {
+                    console.warn("Result proxy returned non-ok status", resultResp.status);
+                  }
+                } catch (proxyErr) {
+                  console.error("Failed to retrieve result from worker and proxy:", workerErr, proxyErr);
+                }
+              } finally {
                 const existingInterval = pollingIntervalsRef.current.get(img.id);
                 if (existingInterval) {
                   clearInterval(existingInterval);

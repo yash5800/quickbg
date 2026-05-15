@@ -78,9 +78,11 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
       images: state.images.map((img) => {
         if (img.id !== id) return img;
         if (data && "result" in data && data.result !== img.result) {
+          console.debug(`[ImagesStore] updateImageStatus result set for ${id}`, data.result);
           revokeObjectUrl(img.result);
         }
-        return { ...img, status, ...data };
+        const updated = { ...img, status, ...data };
+        return updated;
       }),
     })),
 
@@ -94,6 +96,7 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
       images: state.images.map((img) => {
         if (img.id !== id) return img;
         if (result !== img.result) {
+          console.debug(`[ImagesStore] updateImageResult for ${id}`, result);
           revokeObjectUrl(img.result);
         }
         return { ...img, result };

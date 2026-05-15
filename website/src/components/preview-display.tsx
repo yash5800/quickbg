@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { ImageItem } from "@/types/image";
@@ -31,6 +32,10 @@ export function PreviewDisplay({
 }: PreviewDisplayProps) {
   const isCompleted = !!resultUrl;
 
+  React.useEffect(() => {
+    console.debug(`[PreviewDisplay] image=${image.id} resultUrl=${resultUrl} isCompleted=${isCompleted}`);
+  }, [image.id, resultUrl, isCompleted]);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -56,6 +61,7 @@ export function PreviewDisplay({
                 className="w-full h-full"
               >
                 <ComparisonSlider
+                  key={resultUrl || image.id}
                   beforeImage={image.preview}
                   afterImage={resultUrl!}
                   beforeLabel="Original"
