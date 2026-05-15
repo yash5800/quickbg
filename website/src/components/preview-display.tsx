@@ -43,7 +43,7 @@ export function PreviewDisplay({
           className={
             isCompleted
               ? "relative w-full aspect-video sm:aspect-square lg:aspect-auto lg:h-[500px] bg-muted flex items-center justify-center"
-              : "relative w-full bg-muted flex items-center justify-center"
+              : "relative w-full max-h-[70vh] bg-muted flex items-center justify-center overflow-hidden"
           }
         >
           <AnimatePresence mode="wait">
@@ -69,12 +69,12 @@ export function PreviewDisplay({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="relative w-full flex items-center justify-center"
+                className="relative w-full max-h-[70vh] flex items-center justify-center overflow-hidden"
               >
                 <img
                   src={image.preview}
                   alt="Preview"
-                  className="w-full h-auto object-contain"
+                  className="max-h-[70vh] max-w-full w-auto h-auto object-contain"
                   draggable={false}
                 />
 

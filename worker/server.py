@@ -124,7 +124,7 @@ def ensure_database() -> Collection:
     if not MONGO_URI:
         raise RuntimeError("NEXT_MONGODB_URI not configured")
 
-    mongo_client = MongoClient(MONGO_URI)
+    mongo_client = MongoClient(MONGO_URI, tz_aware=True)
     db = mongo_client.get_database(MONGO_DB_NAME)
     jobs_collection = db["jobs"]
     # analytics collection stores aggregated counts per day and hourly breakdowns
@@ -388,8 +388,8 @@ async def process_job(job_id: str) -> None:
         logger.info(f"[Job {job_id}] Processing started")
 
         if not input_path.exists():
-            logger.warning(f"[Job {job_id}] Input file not found, deleting job")
-            await asyncio.to_thread(collection.delete_one, {"jobId": job_id})
+            logger.warning(f"[Job {job_id}] Input file not found, marking failed")
+            await update_job(job_id, {"status": "failed", "error": "Input file not found"})
             return
 
         image_bytes = input_path.read_bytes()
@@ -440,6 +440,33 @@ def can_run_job(job: dict) -> bool:
 
 def claim_next_job() -> Optional[dict]:
     collection = get_job_store()
+    now = utcnow()
+
+    # Clean up stale "starting" jobs that have been stuck for >2 minutes
+    # These could be from crashed workers or hung processes
+    stale_starting = list(collection.find({
+        "status": "starting",
+        "startedAt": {"$lt": now - timedelta(minutes=2)}
+    }))
+    for job in stale_starting:
+        logger.warning(f"[Job {job['jobId']}] Stale starting job, resetting to queued")
+        collection.update_one(
+            {"jobId": job["jobId"]},
+            {"$set": {"status": "queued", "updatedAt": now}},
+        )
+
+    # Clean up stale "running" jobs that have been stuck for >5 minutes
+    stale_running = list(collection.find({
+        "status": "running",
+        "startedAt": {"$lt": now - timedelta(minutes=5)}
+    }))
+    for job in stale_running:
+        logger.warning(f"[Job {job['jobId']}] Stale running job, marking failed")
+        collection.update_one(
+            {"jobId": job["jobId"]},
+            {"$set": {"status": "failed", "error": "Job timed out", "updatedAt": now}},
+        )
+
     candidates = list(
         collection.find({"status": "queued"}).sort("createdAt", 1).limit(100)
     )
@@ -448,8 +475,17 @@ def claim_next_job() -> Optional[dict]:
     for job in candidates:
         input_path = Path(job.get("inputPath", ""))
         if input_path and not input_path.exists():
-            logger.warning(f"[Job {job['jobId']}] Queued job has missing input file, deleting")
-            collection.delete_one({"jobId": job["jobId"]})
+            logger.warning(f"[Job {job['jobId']}] Queued job has missing input file, marking failed")
+            collection.update_one(
+                {"jobId": job["jobId"]},
+                {
+                    "$set": {
+                        "status": "failed",
+                        "error": "Queued job input file is missing",
+                        "updatedAt": now,
+                    }
+                },
+            )
 
     # Re-fetch candidates after cleanup
     candidates = list(
@@ -465,8 +501,8 @@ def claim_next_job() -> Optional[dict]:
             {
                 "$set": {
                     "status": "starting",
-                    "updatedAt": utcnow(),
-                    "startedAt": utcnow(),
+                    "updatedAt": now,
+                    "startedAt": now,
                 }
             },
             return_document=ReturnDocument.AFTER,
@@ -483,28 +519,37 @@ async def dispatcher_loop() -> None:
     assert dispatcher_wakeup is not None
 
     while True:
+        # Claim and process as many jobs as we can
         while True:
+            # Check current concurrency
             async with active_tasks_lock:
                 active_count = len(active_tasks)
 
             current_concurrency = get_dynamic_concurrency()
+
             if active_count >= current_concurrency:
                 break
 
+            # claim_next_job handles cleanup and returns an already-claimed job
             job = await asyncio.to_thread(claim_next_job)
             if not job:
                 break
 
+            logger.info(f"[Dispatcher] Processing job {job['jobId']}")
             task = asyncio.create_task(process_job(job["jobId"]))
             async with active_tasks_lock:
                 active_tasks.add(task)
 
+        # No more jobs to claim, wait for work
         try:
             await asyncio.wait_for(dispatcher_wakeup.wait(), timeout=QUEUE_POLL_SECONDS)
         except asyncio.TimeoutError:
             pass
 
         dispatcher_wakeup.clear()
+
+        dispatcher_wakeup.clear()
+        logger.debug(f"[Dispatcher] Woke up, checking for new jobs")
 
 
 async def cleanup_loop() -> None:

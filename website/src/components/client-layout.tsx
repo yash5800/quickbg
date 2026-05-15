@@ -11,6 +11,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
+import { CookieConsentBanner } from "@/components/cookie-consent";
 import { Menu, X, Home, Sparkles, Zap, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
@@ -92,6 +93,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               </main>
               {!isAdminArea && <FloatingCredits />}
               {!isAdminArea && <Footer />}
+              {!isAdminArea && <CookieConsentBanner />}
             </div>
           </ToastProvider>
         </ImageProvider>

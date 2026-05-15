@@ -96,7 +96,25 @@ export default function ReplaceBgPage() {
         bgImg.onload = () => resolve();
         bgImg.src = backgroundImage;
       });
-      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+      const canvasAspect = canvas.width / canvas.height;
+      const bgAspect = bgImg.width / bgImg.height;
+      let drawWidth = canvas.width;
+      let drawHeight = canvas.height;
+      let drawX = 0;
+      let drawY = 0;
+
+      if (bgAspect > canvasAspect) {
+        drawHeight = canvas.height;
+        drawWidth = drawHeight * bgAspect;
+        drawX = (canvas.width - drawWidth) / 2;
+      } else {
+        drawWidth = canvas.width;
+        drawHeight = drawWidth / bgAspect;
+        drawY = (canvas.height - drawHeight) / 2;
+      }
+
+      ctx.drawImage(bgImg, drawX, drawY, drawWidth, drawHeight);
     }
 
     if (processedImage) {
@@ -258,7 +276,7 @@ export default function ReplaceBgPage() {
                 <h3 className="font-semibold mb-4">Background Image</h3>
                 {backgroundImage ? (
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-muted">
-                    <img src={backgroundImage} alt="" className="w-full h-full object-cover" />
+                    <img src={backgroundImage} alt="" className="w-full h-full object-contain" />
                     <button
                       onClick={() => {
                         setBackgroundImage(null);

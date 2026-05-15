@@ -21,6 +21,20 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) {
+    return `${bytes} B`;
+  }
+
+  const kilobytes = bytes / 1024;
+  if (kilobytes < 1024) {
+    return `${kilobytes.toFixed(kilobytes < 10 ? 1 : 0)} KB`;
+  }
+
+  const megabytes = kilobytes / 1024;
+  return `${megabytes.toFixed(megabytes < 10 ? 1 : 0)} MB`;
+}
+
 interface PreviewInfoProps {
   image: ImageItem;
   isProcessing: boolean;
@@ -84,7 +98,7 @@ export function PreviewInfo({
               {image.file.name}
             </h3>
             <p className="text-xs text-muted-foreground mt-1">
-              {(image.file.size / 1024).toFixed(0)} KB
+              {formatFileSize(image.file.size)}
             </p>
           </div>
           <Button
@@ -108,7 +122,7 @@ export function PreviewInfo({
           {statusConfig.label}
         </Badge>
 
-              </Card>
+            </Card>
 
       {/* Waiting states */}
       <AnimatePresence>

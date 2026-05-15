@@ -1,5 +1,6 @@
 const WORKER_API_BASE = process.env.NEXT_PUBLIC_WORKER_API_URL?.replace(/\/+$/, "") || null;
-const API_BASE = WORKER_API_BASE || "/api";
+const APP_API_BASE = "/api";
+const WORKER_API_BASE_OR_FALLBACK = WORKER_API_BASE || APP_API_BASE;
 
 export type JobStatus =
   | "queued"
@@ -53,7 +54,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   const formData = new FormData();
   formData.append("file", file);
 
-  const uploadPath = WORKER_API_BASE ? `${API_BASE}/remove` : `${API_BASE}/remove-background`;
+  const uploadPath = `${APP_API_BASE}/remove-background`;
   const response = await fetch(uploadPath, {
     method: "POST",
     body: formData,
@@ -75,7 +76,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
 }
 
 export async function getJobStatus(jobId: string): Promise<JobStatusResponse> {
-  const response = await fetch(`${API_BASE}/status/${jobId}`, { cache: "no-store" });
+  const response = await fetch(`${WORKER_API_BASE_OR_FALLBACK}/status/${jobId}`, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Status check failed: ${response.status}`);
   }
@@ -85,7 +86,7 @@ export async function getJobStatus(jobId: string): Promise<JobStatusResponse> {
 }
 
 export async function getJobResult(jobId: string): Promise<Blob> {
-  const response = await fetch(`${API_BASE}/result/${jobId}`, { cache: "no-store" });
+  const response = await fetch(`${WORKER_API_BASE_OR_FALLBACK}/result/${jobId}`, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Result retrieval failed: ${response.status}`);
   }
@@ -93,7 +94,7 @@ export async function getJobResult(jobId: string): Promise<Blob> {
 }
 
 export async function getQueueStatus(): Promise<QueueStatus> {
-  const response = await fetch(`${API_BASE}/queue-status`, { cache: "no-store" });
+  const response = await fetch(`${APP_API_BASE}/queue-status`, { cache: "no-store" });
   if (!response.ok) {
     throw new Error("Failed to get queue status");
   }

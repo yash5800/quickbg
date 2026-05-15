@@ -96,6 +96,16 @@ export default function BlurBgPage() {
       });
   }, [processedImage, originalImage, loadImage]);
 
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      renderCanvas();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [isLoaded, blurStrength, renderCanvas]);
+
   const handleDownload = () => {
     if (!canvasRef.current) return;
     const dataUrl = canvasRef.current.toDataURL("image/png");

@@ -33,6 +33,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const clearWaitingState = useImagesStore((state) => state.clearWaitingState);
 
   const setCredits = useCreditsStore((state) => state.setCredits);
+  const consumeCredit = useCreditsStore((state) => state.consumeCredit);
   const { currentImageId, setSubmitting, clearSubmitting } = useProcessingStore();
   const { addToast } = useToast();
   const processingRef = useRef(false);
@@ -179,6 +180,24 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
             }
           } catch (err) {
             console.error("Polling error for", img.id, err);
+            const message = err instanceof Error ? err.message : String(err);
+            if (message.includes("404") || message.toLowerCase().includes("job not found")) {
+              useImagesStore.getState().updateImageStatus(img.id, "error", {
+                error: "Job no longer exists on the worker",
+                progress: 0,
+              });
+
+              const existingInterval = pollingIntervalsRef.current.get(img.id);
+              if (existingInterval) {
+                clearInterval(existingInterval);
+                pollingIntervalsRef.current.delete(img.id);
+              }
+
+              const store = useProcessingStore.getState();
+              if (store.currentImageId === img.id) {
+                clearSubmitting();
+              }
+            }
           }
         }, 2000);
         pollingIntervalsRef.current.set(img.id, intervalId);
@@ -242,6 +261,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         // Update status to uploading
         clearWaitingState(pendingImage.id);
         useImagesStore.getState().updateImageStatus(pendingImage.id, "uploading", { startTime: Date.now() });
+        consumeCredit();
 
         // Submit to server
         return submitImage(pendingImage.file);
@@ -250,6 +270,14 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         if (!response) return;
 
         console.log("[ImageContext] Submit response:", response);
+
+        getQueueStatus()
+          .then((status) => {
+            setCredits(status.remaining, status.reset_in_seconds ?? 3600);
+          })
+          .catch((error) => {
+            console.warn("[ImageContext] Failed to refresh credits after submit:", error);
+          });
 
         if (response.status === "completed" && response.imageBlob) {
           const url = URL.createObjectURL(response.imageBlob);
@@ -292,7 +320,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           clearSubmitting();
         }
       });
-  }, [images, currentImageId, retryTick, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
+  }, [images, currentImageId, retryTick, setCredits, consumeCredit, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
 
   const addImages = useCallback((files: File[]) => {
     const validFiles: File[] = [];

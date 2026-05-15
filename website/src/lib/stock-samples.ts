@@ -14,10 +14,10 @@ export interface StockSample {
 
 export const stockSamples: StockSample[] = [
   {
-    id: "birds",
-    label: "Birds",
+    id: "african-monkey",
+    label: "African Monkey",
     description: "Fine edges",
-    fileName: "sample-birds.jpg",
+    fileName: "sample-african-monkey.jpg",
     image: st1,
   },
   {
@@ -28,17 +28,17 @@ export const stockSamples: StockSample[] = [
     image: st2,
   },
   {
-    id: "matcha-cup",
+    id: "sports-car",
     label: "Product",
     description: "Object shot",
-    fileName: "sample-matcha-cup.jpg",
+    fileName: "sample-sports-car.jpg",
     image: st3,
   },
   {
-    id: "event-people",
-    label: "People",
-    description: "Busy scene",
-    fileName: "sample-event-people.jpg",
+    id: "anime-girl",
+    label: "Anime Girl",
+    description: "Anime style",
+    fileName: "sample-anime-girl.jpg",
     image: st4,
   },
 ];
