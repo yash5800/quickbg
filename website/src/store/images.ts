@@ -94,11 +94,8 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
           ...img,
           status,
           ...data,
-          terminalAt,
+          ...(terminalAt != null ? { terminalAt } : {}),
         };
-        if (!isTerminalStatus(status)) {
-          delete updated.terminalAt;
-        }
         return updated;
       }),
     })),
