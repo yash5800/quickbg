@@ -43,6 +43,8 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const processingRef = useRef(false);
   const [retryTick, setRetryTick] = React.useState(0);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const resultFetchAttemptsRef = useRef<Map<string, number>>(new Map());
+  const MAX_RESULT_FETCH_RETRIES = 12; // number of polling attempts before giving up
   const [isHydrated, setIsHydrated] = React.useState(false);
 
   const pausePending = useCallback((reason: ImageWaitingReason, retryInSeconds: number) => {
@@ -112,12 +114,36 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
               duration: img.startTime ? Date.now() - img.startTime : undefined,
               progress: 100,
             });
+            // Success - clear retry counter and stop polling
+            resultFetchAttemptsRef.current.delete(img.id);
+            stopPollingForImage(img.id);
           } catch (resultErr) {
             console.error("[ImageContext] Failed to recover completed result:", resultErr);
-          }
-        }
+            const prev = resultFetchAttemptsRef.current.get(img.id) || 0;
+            const next = prev + 1;
+            resultFetchAttemptsRef.current.set(img.id, next);
 
-        stopPollingForImage(img.id);
+            // If we've retried enough times, surface an error and stop polling.
+            if (next >= MAX_RESULT_FETCH_RETRIES) {
+              console.error(`[ImageContext] Giving up fetching result for ${img.id} after ${next} attempts`);
+              updateImageStatusStore(img.id, "error", {
+                error: "Failed to fetch processed image",
+                progress: 0,
+              });
+              resultFetchAttemptsRef.current.delete(img.id);
+              stopPollingForImage(img.id);
+
+              const store = useProcessingStore.getState();
+              if (store.currentImageId === img.id) {
+                clearSubmitting();
+              }
+            }
+            // otherwise retain polling so the next interval will retry
+          }
+        } else {
+          // already have a result, nothing more to do
+          stopPollingForImage(img.id);
+        }
       } else if (
         status.status === "failed" ||
         status.status === "expired" ||
