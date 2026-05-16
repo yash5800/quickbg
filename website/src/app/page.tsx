@@ -18,6 +18,7 @@ import { AppLayout } from "@/components/app-layout";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { StockSample, stockSamples } from "@/lib/stock-samples";
+import { DemoRevealSlider } from "@/components/demo-reveal-slider";
 
 const tools = [
   {
@@ -169,11 +170,12 @@ export default function Home() {
         className="hidden"
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="flex flex-col items-center justify-center min-h-[60vh]">
-          {/* Hero Content */}
-          <div className="text-center mb-8 max-w-3xl space-y-4">
+        <div className="space-y-10 flex flex-col justify-center items-center">
+          <div className="grid min-h-[60vh] items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+            {/* Hero Content */}
+            <div className="text-center max-w-3xl space-y-4 lg:text-left lg:max-w-none">
             {/* Free Unlimited Ultimate Badges - Visual Shapes */}
-            <div className="flex flex-wrap justify-center gap-2 mb-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-4 lg:justify-start">
               <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-white text-sm font-bold shadow-lg shadow-green-500/25 transform hover:scale-105 transition-transform">
                 <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                 100% FREE
@@ -213,6 +215,13 @@ export default function Home() {
             </div>
           </div>
 
+            <div className="w-full max-w-2xl justify-self-center lg:max-w-none lg:justify-self-end">
+              <DemoRevealSlider />
+            </div>
+          </div>
+
+          {/* Page Content */}
+
           {/* Drop Zone */}
           <div
             onClick={() => fileInputRef.current?.click()}
@@ -220,7 +229,7 @@ export default function Home() {
             onDragLeave={handleDropZoneDragLeave}
             onDragOver={handleDropZoneDragOver}
             onDrop={handleDropZoneDrop}
-            className="w-full max-w-2xl cursor-pointer group"
+            className="w-full max-w-2xl cursor-pointer group mx-auto"
           >
             <div className="relative overflow-hidden rounded-2xl border-2 border-dashed border-border bg-card p-8 shadow-sm transition-all duration-200 group-hover:border-primary/60 group-hover:bg-primary/5 sm:p-10">
               <div
