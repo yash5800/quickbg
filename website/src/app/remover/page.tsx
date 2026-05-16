@@ -326,12 +326,14 @@ function SelectedPreview({
     "running",
     "processing",
   ].includes(image.status);
+  const isResultFetching = image.status === "completed" && !image.result;
 
   return (
     <PreviewDisplay
       image={image}
       resultUrl={image.result || null}
       isProcessing={isProcessing}
+      isResultFetching={isResultFetching}
     />
   );
 }
@@ -353,6 +355,7 @@ function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: Image
   };
 
   const isCompleted = image.status === "completed" && !!image.result;
+  const isResultFetching = image.status === "completed" && !image.result;
   const isError = image.status === "error" || image.status === "failed";
   const isProcessing = [
     "queued",
@@ -372,6 +375,7 @@ function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: Image
       <PreviewInfo
         image={image}
         isProcessing={isProcessing}
+        isResultFetching={isResultFetching}
         isCompleted={isCompleted}
         isError={isError}
         onRemove={onRemove}

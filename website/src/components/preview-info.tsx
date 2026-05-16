@@ -38,6 +38,7 @@ function formatFileSize(bytes: number): string {
 interface PreviewInfoProps {
   image: ImageItem;
   isProcessing: boolean;
+  isResultFetching: boolean;
   isCompleted: boolean;
   isError: boolean;
   onRemove: () => void;
@@ -51,6 +52,7 @@ interface PreviewInfoProps {
 export function PreviewInfo({
   image,
   isProcessing,
+  isResultFetching,
   isCompleted,
   isError,
   onRemove,
@@ -62,6 +64,7 @@ export function PreviewInfo({
 }: PreviewInfoProps) {
   const router = useRouter();
   const status = liveStatus !== "unknown" ? liveStatus : image.status;
+  const displayStatus = isResultFetching ? "fetching_result" : status;
 
   const statusConfig = {
     pending: { label: "Waiting", icon: Clock, color: "bg-slate-500/10 text-slate-600" },
@@ -71,12 +74,13 @@ export function PreviewInfo({
     processing: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
     running: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
     uploading_result: { label: "Finalizing", icon: Loader2, color: "bg-primary/10 text-primary" },
+    fetching_result: { label: "Fetching processed image", icon: Loader2, color: "bg-amber-500/10 text-amber-600" },
     completed: { label: "Done", icon: CheckCircle2, color: "bg-green-500/10 text-green-600" },
     error: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
     failed: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
     expired: { label: "Expired", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
     cancelled: { label: "Cancelled", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
-  }[status as string] || { label: status, icon: Clock, color: "bg-slate-500/10 text-slate-600" };
+  }[displayStatus as string] || { label: displayStatus, icon: Clock, color: "bg-slate-500/10 text-slate-600" };
 
   const StatusIcon = statusConfig.icon;
 
@@ -113,8 +117,8 @@ export function PreviewInfo({
         </div>
 
         {/* Status Badge */}
-        <Badge variant={isError ? "destructive" : isCompleted ? "success" : isProcessing ? "warning" : "outline"} className={cn("gap-2", statusConfig.color)}>
-          {status === "processing" || status === "queued" || status === "running" || status === "uploading" || status === "starting" || status === "uploading_result" ? (
+        <Badge variant={isError ? "destructive" : isCompleted ? "success" : isProcessing || isResultFetching ? "warning" : "outline"} className={cn("gap-2", statusConfig.color)}>
+          {status === "processing" || status === "queued" || status === "running" || status === "uploading" || status === "starting" || status === "uploading_result" || isResultFetching ? (
             <StatusIcon className="h-3.5 w-3.5 animate-spin" />
           ) : (
             <StatusIcon className="h-3.5 w-3.5" />

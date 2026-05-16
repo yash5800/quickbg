@@ -58,14 +58,15 @@ function ThumbnailItem({
   onSelect: () => void;
   onRemove: () => void;
 }) {
-  const isCompleted = image.status === "completed";
+  const isCompleted = image.status === "completed" && !!image.result;
+  const isFetchingResult = image.status === "completed" && !image.result;
   const isError = image.status === "error" || image.status === "failed";
   const isProcessing = [
     "queued",
     "uploading",
     "running",
     "processing",
-  ].includes(image.status);
+  ].includes(image.status) || isFetchingResult;
 
   return (
     <motion.div

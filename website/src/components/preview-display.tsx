@@ -16,6 +16,7 @@ interface PreviewDisplayProps {
   image: ImageItem;
   resultUrl: string | null;
   isProcessing: boolean;
+  isResultFetching: boolean;
 }
 
 function formatWait(seconds: number): string {
@@ -29,12 +30,16 @@ export function PreviewDisplay({
   image,
   resultUrl,
   isProcessing,
+  isResultFetching,
 }: PreviewDisplayProps) {
   const isCompleted = !!resultUrl;
+  const showLoadingOverlay = isProcessing || isResultFetching;
 
   React.useEffect(() => {
-    console.debug(`[PreviewDisplay] image=${image.id} resultUrl=${resultUrl} isCompleted=${isCompleted}`);
-  }, [image.id, resultUrl, isCompleted]);
+    console.debug(
+      `[PreviewDisplay] image=${image.id} resultUrl=${resultUrl} isCompleted=${isCompleted} isResultFetching=${isResultFetching}`
+    );
+  }, [image.id, resultUrl, isCompleted, isResultFetching]);
 
   return (
     <motion.div
@@ -86,7 +91,7 @@ export function PreviewDisplay({
 
                 {/* Processing Overlay */}
                 <AnimatePresence>
-                  {isProcessing && (
+                  {showLoadingOverlay && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -101,7 +106,9 @@ export function PreviewDisplay({
                       </motion.div>
                       <div className="text-center">
                         <p className="text-white font-semibold text-lg">
-                          {image.status === "uploading"
+                          {isResultFetching
+                            ? "Fetching processed image..."
+                            : image.status === "uploading"
                             ? "Uploading..."
                             : image.status === "queued"
                             ? image.queuePosition != null && image.queuePosition > 0
@@ -110,7 +117,9 @@ export function PreviewDisplay({
                             : "Processing..."}
                         </p>
                         <p className="text-white/70 text-sm mt-1">
-                          {image.status === "queued" && image.estimatedWaitSeconds
+                          {isResultFetching
+                            ? "Almost there, preparing the final preview"
+                            : image.status === "queued" && image.estimatedWaitSeconds
                             ? `Est. wait: ${formatWait(image.estimatedWaitSeconds)}`
                             : "Please wait, this may take a moment"}
                         </p>
