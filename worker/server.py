@@ -49,15 +49,17 @@ MAX_UPLOAD_SIZE_BYTES = int(os.getenv("WORKER_MAX_UPLOAD_SIZE_BYTES", str(20 * 1
 MAX_CONCURRENCY = max(1, int(os.getenv("WORKER_MAX_CONCURRENCY", "2")))
 MAX_JOBS_PER_CLIENT = max(1, int(os.getenv("WORKER_MAX_JOBS_PER_CLIENT", "1")))
 # Support both WORKER_JOB_RETENTION_MINUTES (new) and WORKER_JOB_RETENTION_HOURS (legacy for backward compatibility)
-# Minimum of 1 minute for testing. Default: 24 hours = 1440 minutes
+# Minimum of 1 minute for testing. Default: 10 minutes
 if "WORKER_JOB_RETENTION_MINUTES" in os.environ:
     JOB_RETENTION_MINUTES = max(1, int(os.getenv("WORKER_JOB_RETENTION_MINUTES")))
 else:
-    # Legacy: convert hours to minutes
-    JOB_RETENTION_HOURS = max(1, int(os.getenv("WORKER_JOB_RETENTION_HOURS", "24")))
-    JOB_RETENTION_MINUTES = JOB_RETENTION_HOURS * 60
+    legacy_retention_hours = os.getenv("WORKER_JOB_RETENTION_HOURS")
+    if legacy_retention_hours is not None:
+        JOB_RETENTION_MINUTES = max(1, int(legacy_retention_hours)) * 60
+    else:
+        JOB_RETENTION_MINUTES = 10
 QUEUE_POLL_SECONDS = float(os.getenv("WORKER_QUEUE_POLL_SECONDS", "1.0"))
-CLEANUP_INTERVAL_SECONDS = int(os.getenv("WORKER_CLEANUP_INTERVAL_SECONDS", "1800"))
+CLEANUP_INTERVAL_SECONDS = int(os.getenv("WORKER_CLEANUP_INTERVAL_SECONDS", "60"))
 CPU_THRESHOLD_PERCENT = int(os.getenv("WORKER_CPU_THRESHOLD_PERCENT", "80"))
 MEMORY_THRESHOLD_PERCENT = int(os.getenv("WORKER_MEMORY_THRESHOLD_PERCENT", "80"))
 

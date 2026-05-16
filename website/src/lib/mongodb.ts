@@ -65,7 +65,7 @@ export async function createJob(fileName: string, sessionId: string) {
   
   const jobs = getJobsCollection(db!);
   const now = new Date();
-  const expiresAt = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 days from now
+  const expiresAt = new Date(now.getTime() + 10 * 60 * 1000); // 10 minutes from now
   
   const jobId = uuidv4();
   const job: JobDocument = {

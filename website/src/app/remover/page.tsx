@@ -47,13 +47,18 @@ export default function EditorPage() {
 
   // Update selectedId when images change (new images added)
   React.useEffect(() => {
-    if (images.length > 0 && !selectedId) {
-      const pendingImage = images.find((img) => img.status === "pending");
-      if (pendingImage) {
-        setSelectedId(pendingImage.id);
-      } else {
-        setSelectedId(images[0].id);
+    if (images.length === 0) {
+      if (selectedId) {
+        setSelectedId(null);
       }
+      return;
+    }
+
+    const selectedExists = selectedId ? images.some((img) => img.id === selectedId) : false;
+
+    if (!selectedExists) {
+      const pendingImage = images.find((img) => img.status === "pending");
+      setSelectedId(pendingImage?.id ?? images[0].id);
     }
   }, [images, selectedId]);
 

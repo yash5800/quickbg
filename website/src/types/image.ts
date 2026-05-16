@@ -28,4 +28,5 @@ export interface ImageItem {
   waitingReason?: ImageWaitingReason | null;
   creditResetAt?: number | null;
   queueRetryAt?: number | null;
+  terminalAt?: number | null;
 }

@@ -1,5 +1,7 @@
 import { ImageItem } from "@/types/image";
 
+const TERMINAL_STATUSES: Array<ImageItem["status"]> = ["completed", "failed", "error"];
+
 const DB_NAME = "quickbg-image-state";
 const DB_VERSION = 1;
 const STORE_NAME = "images";
@@ -24,6 +26,7 @@ interface PersistedImageRecord {
   waitingReason?: ImageItem["waitingReason"] | null;
   creditResetAt?: number | null;
   queueRetryAt?: number | null;
+  terminalAt?: number | null;
 }
 
 let dbPromise: Promise<IDBDatabase> | null = null;
@@ -96,7 +99,12 @@ function toPersistedRecord(image: ImageItem, order: number): PersistedImageRecor
     waitingReason: image.waitingReason ?? null,
     creditResetAt: image.creditResetAt ?? null,
     queueRetryAt: image.queueRetryAt ?? null,
+    terminalAt: image.terminalAt ?? null,
   };
+}
+
+function isTerminalStatus(status: ImageItem["status"]): boolean {
+  return TERMINAL_STATUSES.includes(status);
 }
 
 async function withStore<T>(mode: IDBTransactionMode, handler: (store: IDBObjectStore) => T | Promise<T>): Promise<T> {
@@ -171,6 +179,13 @@ export async function restoreImageState(): Promise<ImageItem[]> {
       waitingReason: record.waitingReason ?? null,
       creditResetAt: record.creditResetAt ?? null,
       queueRetryAt: record.queueRetryAt ?? null,
+      terminalAt:
+        record.terminalAt ??
+        (isTerminalStatus(record.status)
+          ? record.startTime != null && record.duration != null
+            ? record.startTime + record.duration
+            : Date.now()
+          : null),
     };
 
     if (record.result) {

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
 
@@ -11,9 +12,7 @@ export function Footer() {
       <div className="mx-auto max-w-2xl px-4 sm:px-6 py-6">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-xs font-bold text-white">
-              <Sparkles className="h-3.5 w-3.5" />
-            </div>
+            <Image src="/icon.png" alt="QuickBG" width={28} height={28} className="rounded-md" />
             <span className="text-sm font-semibold">QuickBG</span>
           </div>
 

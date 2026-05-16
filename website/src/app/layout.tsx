@@ -49,6 +49,15 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
           crossOrigin="anonymous"
         />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+        <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+        <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128.png" />
+        <link rel="icon" type="image/png" sizes="180x180" href="/favicon-180.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+        <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={`${manrope.variable} ${spaceGrotesk.variable} font-sans`}>
         <ClientLayout>{children}</ClientLayout>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -12,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
-import { Menu, X, Home, Sparkles, Zap, Package } from "lucide-react";
+import { Menu, X, Info, Sparkles, Zap, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
 import { useCreditsSync } from "@/store/useCreditsSync";
@@ -108,7 +109,7 @@ function Header() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: "/", label: "Home", icon: Home },
+    { href: "/", label: "Home", icon: Info },
     { href: "/tools", label: "Tools", icon: Package },
     { href: "/remover", label: images.length > 0 ? `Remover (${images.length})` : "Remover", icon: Sparkles },
   ];
@@ -117,13 +118,12 @@ function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-sm font-bold text-white shadow-lg">
-              <Sparkles className="h-4 w-4" />
-            </div>
-            <span className="text-base font-semibold tracking-tight">QuickBG</span>
-          </Link>
-
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center ">
+              <Image src="/icon.png" alt="QuickBG" width={80} height={80} className="rounded-md" />
+              <span className="hidden sm:inline font-semibold">QuickBG</span>
+            </Link>
+          </div>
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <Button

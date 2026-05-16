@@ -11,6 +11,8 @@ import { useToast } from "@/components/ui/toast";
 
 const MAX_FILE_SIZE_MB = 20;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const TERMINAL_RETENTION_MS = 10 * 60 * 1000;
+const PRUNE_INTERVAL_MS = 60 * 1000;
 
 const ImageContext = createContext<{
   images: ImageItem[];
@@ -33,6 +35,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const updateImageResultStore = useImagesStore((state) => state.updateImageResult);
   const pausePendingImages = useImagesStore((state) => state.pausePendingImages);
   const clearWaitingState = useImagesStore((state) => state.clearWaitingState);
+  const pruneExpiredTerminalImages = useImagesStore((state) => state.pruneExpiredTerminalImages);
 
   const setCredits = useCreditsStore((state) => state.setCredits);
   const { currentImageId, setSubmitting, clearSubmitting } = useProcessingStore();
@@ -211,6 +214,8 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           setImagesStore(restoredImages);
         }
 
+        pruneExpiredTerminalImages(TERMINAL_RETENTION_MS);
+
         clearSubmitting();
         setIsHydrated(true);
 
@@ -230,12 +235,23 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [clearSubmitting, setImagesStore, syncActiveJobs]);
+  }, [clearSubmitting, pruneExpiredTerminalImages, setImagesStore, syncActiveJobs]);
 
   useEffect(() => {
     if (!isHydrated) {
       return;
     }
+
+    const pruneTimer = window.setInterval(() => {
+      const removedCount = pruneExpiredTerminalImages(TERMINAL_RETENTION_MS);
+      if (removedCount > 0) {
+        const store = useProcessingStore.getState();
+        const currentImageId = store.currentImageId;
+        if (currentImageId && !useImagesStore.getState().images.some((image) => image.id === currentImageId)) {
+          clearSubmitting();
+        }
+      }
+    }, PRUNE_INTERVAL_MS);
 
     const timer = window.setTimeout(() => {
       void persistImageState(images).catch((error) => {
@@ -243,8 +259,11 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       });
     }, 250);
 
-    return () => window.clearTimeout(timer);
-  }, [images, isHydrated]);
+    return () => {
+      window.clearTimeout(timer);
+      window.clearInterval(pruneTimer);
+    };
+  }, [clearSubmitting, images, isHydrated, pruneExpiredTerminalImages]);
 
   useEffect(() => {
     const handleVisible = () => {

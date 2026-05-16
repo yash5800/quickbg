@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { ImageItem, ImageWaitingReason } from "@/types/image";
 
+const TERMINAL_STATUSES: Array<ImageItem["status"]> = ["completed", "failed", "error"];
+const DEFAULT_TERMINAL_RETENTION_MS = 10 * 60 * 1000;
+
 interface ImagesState {
   images: ImageItem[];
   setImages: (images: ImageItem[]) => void;
@@ -12,6 +15,7 @@ interface ImagesState {
   updateImageResult: (id: string, result: string) => void;
   pausePendingImages: (reason: ImageWaitingReason, retryAt: number) => void;
   clearWaitingState: (id: string) => void;
+  pruneExpiredTerminalImages: (retentionMs?: number, now?: number) => number;
 }
 
 // Helper to create preview URL
@@ -22,6 +26,8 @@ const revokeObjectUrl = (url?: string | null) => {
     URL.revokeObjectURL(url);
   }
 };
+
+const isTerminalStatus = (status: ImageItem["status"]) => TERMINAL_STATUSES.includes(status);
 
 // Generate unique ID
 const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -81,7 +87,18 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
           console.debug(`[ImagesStore] updateImageStatus result set for ${id}`, data.result);
           revokeObjectUrl(img.result);
         }
-        const updated = { ...img, status, ...data };
+        const terminalAt = isTerminalStatus(status)
+          ? data?.terminalAt ?? img.terminalAt ?? Date.now()
+          : null;
+        const updated = {
+          ...img,
+          status,
+          ...data,
+          terminalAt,
+        };
+        if (!isTerminalStatus(status)) {
+          delete updated.terminalAt;
+        }
         return updated;
       }),
     })),
@@ -99,7 +116,11 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
           console.debug(`[ImagesStore] updateImageResult for ${id}`, result);
           revokeObjectUrl(img.result);
         }
-        return { ...img, result };
+        return {
+          ...img,
+          result,
+          terminalAt: isTerminalStatus(img.status) ? img.terminalAt ?? Date.now() : img.terminalAt,
+        };
       }),
     })),
 
@@ -131,4 +152,29 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
           : img
       ),
     })),
+
+  pruneExpiredTerminalImages: (retentionMs = DEFAULT_TERMINAL_RETENTION_MS, now = Date.now()) => {
+    const cutoff = now - retentionMs;
+    let removedCount = 0;
+
+    set((state) => {
+      const nextImages = state.images.filter((img) => {
+        const terminalAt = img.terminalAt ?? null;
+        const shouldRemove = isTerminalStatus(img.status) && terminalAt != null && terminalAt <= cutoff;
+
+        if (shouldRemove) {
+          revokeObjectUrl(img.preview);
+          revokeObjectUrl(img.result);
+          removedCount += 1;
+          return false;
+        }
+
+        return true;
+      });
+
+      return { images: nextImages };
+    });
+
+    return removedCount;
+  },
 }));
