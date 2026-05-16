@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Space_Grotesk } from "next/font/google";
+import { ClientLayout } from "@/components/client-layout";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
@@ -34,8 +35,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-import { ClientLayout } from "@/components/client-layout";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,6 +42,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Standard raw script tag to prevent data-nscript warnings */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className={`${manrope.variable} ${spaceGrotesk.variable} font-sans`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
