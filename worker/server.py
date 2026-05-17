@@ -44,7 +44,7 @@ PROCESSED_DIR = UPLOADS_DIR / "processed"
 ORG_DIR.mkdir(parents=True, exist_ok=True)
 PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 
-ALLOWED_CONTENT_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/webp"}
+ALLOWED_CONTENT_TYPES = {"image/png", "image/jpeg", "image/jpg", "image/webp", "image/tiff", "image/tif", "image/heif", "image/heic", "image/avif"}
 MAX_UPLOAD_SIZE_BYTES = int(os.getenv("WORKER_MAX_UPLOAD_SIZE_BYTES", str(20 * 1024 * 1024)))
 MAX_CONCURRENCY = max(1, int(os.getenv("WORKER_MAX_CONCURRENCY", "2")))
 MAX_JOBS_PER_CLIENT = max(1, int(os.getenv("WORKER_MAX_JOBS_PER_CLIENT", "1")))
@@ -727,8 +727,46 @@ async def remove_background(
 
     job_id = str(uuid.uuid4())
     input_path, output_path = build_job_paths(job_id)
-    input_path.write_bytes(file_bytes)
-    logger.info(f"Job {job_id} created, file saved to {input_path}")
+
+    # Try to decode and normalize to PNG where possible so downstream model
+    # processing reliably receives a PNG/RGBA image. If decoding fails, fall
+    # back to saving the original bytes and let downstream report errors.
+    normalized_saved = False
+    try:
+        img = Image.open(io.BytesIO(file_bytes))
+        img = img.convert("RGBA")
+        normalized_buf = io.BytesIO()
+        img.save(normalized_buf, format="PNG")
+        normalized_buf.seek(0)
+        png_bytes = normalized_buf.read()
+        input_path = input_path.with_suffix(".png")
+        input_path.write_bytes(png_bytes)
+        logger.info(f"Job {job_id} created, normalized PNG saved to {input_path}")
+        normalized_saved = True
+    except Exception:
+        logger.debug("PIL failed to decode; attempting format-specific decoders if available")
+        # Try pillow_heif for HEIF/HEIC
+        try:
+            import pillow_heif
+
+            heif = pillow_heif.read_heif(file_bytes)
+            img = Image.frombytes(heif.mode, heif.size, heif.data)
+            img = img.convert("RGBA")
+            normalized_buf = io.BytesIO()
+            img.save(normalized_buf, format="PNG")
+            normalized_buf.seek(0)
+            png_bytes = normalized_buf.read()
+            input_path = input_path.with_suffix(".png")
+            input_path.write_bytes(png_bytes)
+            logger.info(f"Job {job_id} created, decoded HEIF/HEIC and saved PNG to {input_path}")
+            normalized_saved = True
+        except Exception:
+            logger.debug("pillow_heif not available or failed to decode")
+
+    if not normalized_saved:
+        # Final fallback: write original upload bytes
+        input_path.write_bytes(file_bytes)
+        logger.info(f"Job {job_id} created, original file saved to {input_path}")
 
     client_key = request.headers.get("x-client-ip")
     if not client_key and request.client is not None:
