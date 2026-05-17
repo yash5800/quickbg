@@ -7,9 +7,8 @@ const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
 
 export const metadata: Metadata = {
-  title: "QuickBG - Unlimited Free AI Background Remover & Image Tools | Ultimate Free Tool",
-  description:
-    "Ultimate free unlimited background remover, image resizer, background replacer, blur tool, crop & adjust. 100% free, no limits, AI-powered. Remove background instantly, resize to 4K, replace backgrounds, blur effects, smart crop - all free forever!",
+  title: "Free AI Background Remover - Unlimited Images, 100% Original Quality",
+    description: "quickbg.dev offers free AI background remover that preserves 100% of your image's original quality. Instantly detect and remove subjects, process unlimited images quickly, and get professional-quality cutouts with no signup required. Ideal for product photos, social posts, and bulk processing.",
   keywords: [
     "background remover", "remove background", "free background remover", "free bg remover", "unlimited background removal", "unlimited free bg remover", "AI background removal",
     "transparent background", "image background remover", "product photo background removal", "free background eraser",
@@ -23,8 +22,8 @@ export const metadata: Metadata = {
   authors: [{ name: "QuickBG Team" }],
   robots: "index, follow",
   openGraph: {
-    title: "QuickBG - Unlimited Free AI Background Remover & All Image Tools",
-    description: "100% FREE unlimited background remover, resizer, replacer, blur, crop & adjust. No limits, no signup required. Remove backgrounds in seconds!",
+    title: "Free AI Background Remover - Unlimited Images, 100% Original Quality",
+      description: "quickbg.dev offers free AI background remover that preserves 100% of your image's original quality. Instantly detect and remove subjects, process unlimited images quickly, and get professional-quality cutouts with no signup required. Ideal for product photos, social posts, and bulk processing.",
     type: "website",
     locale: "en_US",
   },
