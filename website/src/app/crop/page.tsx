@@ -227,7 +227,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
 
   return (
     <AppLayout>
-      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileSelect} className="hidden" />
+      <input ref={fileInputRef} type="file" accept="image/*,.tif,.tiff,.heif,.heic,.avif" onChange={handleFileSelect} className="hidden" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center gap-3 mb-8">

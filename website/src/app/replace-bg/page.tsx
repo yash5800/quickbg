@@ -299,7 +299,7 @@ export default function ReplaceBgPage() {
                 <input
                   id="bg-image-input"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,.tif,.tiff,.heif,.heic,.avif"
                   onChange={handleBgImageSelect}
                   className="hidden"
                 />

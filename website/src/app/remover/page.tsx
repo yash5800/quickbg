@@ -162,7 +162,7 @@ export default function EditorPage() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,.tif,.tiff,.heif,.heic,.avif"
           multiple
           onChange={handleFileSelect}
           className="hidden"
@@ -198,7 +198,7 @@ export default function EditorPage() {
             </div>
             <h2 className="text-2xl font-semibold mb-2">Drop images here</h2>
             <p className="text-muted-foreground mb-4">or click to browse</p>
-            <p className="text-sm text-muted-foreground">Supports PNG, JPG, WebP</p>
+            <p className="text-sm text-muted-foreground">Supports PNG, JPG, WebP, TIFF, HEIF/HEIC, AVIF</p>
           </motion.div>
         </div>
       </AppLayout>

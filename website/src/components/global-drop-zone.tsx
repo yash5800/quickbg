@@ -123,7 +123,7 @@ function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
               </div>
               <div>
                 <h2 className="text-xl font-semibold">Drop images to upload</h2>
-                <p className="text-muted-foreground text-sm mt-1">Supports PNG, JPG, WebP</p>
+                <p className="text-muted-foreground text-sm mt-1">Supports PNG, JPG, WebP, TIFF, HEIF/HEIC, AVIF</p>
               </div>
             </div>
           </motion.div>

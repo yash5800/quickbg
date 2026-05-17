@@ -11,7 +11,7 @@ export function Footer() {
       <div className="mx-auto max-w-2xl px-4 sm:px-6 py-6">
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="flex items-center gap-2">
-            <Image src="/icon.png" alt="QuickBG" width={28} height={28} className="rounded-md" />
+            <Image src="/icon.jpeg" alt="QuickBG" width={28} height={28} className="rounded-md" />
             <span className="text-sm font-semibold">QuickBG</span>
           </div>
 
