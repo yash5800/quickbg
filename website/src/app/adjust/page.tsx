@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Download, RefreshCw, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft } from "lucide-react";
+import { Download, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
@@ -27,6 +28,11 @@ export default function AdjustPage() {
   const [targetSizeValue, setTargetSizeValue] = useState<number | null>(null);
   const [targetSizeUnit, setTargetSizeUnit] = useState<"KB" | "MB">("KB");
   const [finalSize, setFinalSize] = useState<string | null>(null);
+  const [isSourceReady, setIsSourceReady] = useState(false);
+  const sourceImageRef = useRef<HTMLImageElement | null>(null);
+  const resultUrlRef = useRef<string | null>(null);
+  const autoApplyTimeoutRef = useRef<number | null>(null);
+  const processRunIdRef = useRef(0);
 
   // Load image from sessionStorage
   useEffect(() => {
@@ -40,30 +46,76 @@ export default function AdjustPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!image) {
+      sourceImageRef.current = null;
+      setIsSourceReady(false);
+      return;
+    }
+
+    let cancelled = false;
+    setIsSourceReady(false);
+
+    const imgEl = new window.Image();
+    imgEl.crossOrigin = "anonymous";
+    imgEl.onload = () => {
+      if (cancelled) return;
+      sourceImageRef.current = imgEl;
+      setIsSourceReady(true);
+    };
+    imgEl.src = image.preview;
+
+    return () => {
+      cancelled = true;
+    };
+  }, [image]);
+
+  useEffect(() => {
+    return () => {
+      if (resultUrlRef.current) {
+        URL.revokeObjectURL(resultUrlRef.current);
+      }
+      if (autoApplyTimeoutRef.current !== null) {
+        window.clearTimeout(autoApplyTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const setPreviewResult = useCallback((url: string) => {
+    if (resultUrlRef.current) {
+      URL.revokeObjectURL(resultUrlRef.current);
+    }
+    resultUrlRef.current = url;
+    setResult(url);
+  }, []);
+
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage({ preview: URL.createObjectURL(file), name: file.name });
       setResult(null);
+      setFinalSize(null);
       setBrightness(100);
       setContrast(100);
       setSaturation(100);
+      setResizeEnabled(false);
+      setResizeWidth(null);
+      setTargetEnabled(false);
+      setTargetSizeValue(null);
+      setTargetSizeUnit("KB");
+      setFormat("jpeg");
+      setQuality(90);
     }
     e.target.value = "";
   }, []);
 
-  const processImage = async () => {
-    if (!image) return;
+  const processImage = useCallback(async () => {
+    if (!image || !sourceImageRef.current) return;
+
+    const runId = ++processRunIdRef.current;
     setIsProcessing(true);
 
-    const imgEl = new window.Image();
-    imgEl.crossOrigin = "anonymous";
-
-    await new Promise<void>((resolve) => {
-      imgEl.onload = () => resolve();
-      imgEl.src = image.preview;
-    });
-
+    const imgEl = sourceImageRef.current;
     let finalWidth = imgEl.width;
     let finalHeight = imgEl.height;
 
@@ -129,23 +181,54 @@ export default function AdjustPage() {
     const targetBytes = targetEnabled && targetSizeValue ? (targetSizeUnit === "KB" ? targetSizeValue * 1024 : targetSizeValue * 1024 * 1024) : null;
 
     const blob = await compressByQuality(canvas, mimeType, targetBytes);
+
+    if (processRunIdRef.current !== runId) {
+      return;
+    }
+
     if (blob) {
       const url = URL.createObjectURL(blob);
-      setResult(url);
+      setPreviewResult(url);
       setFinalSize(`${(blob.size / 1024).toFixed(1)} KB`);
     } else {
       // fallback: export with requested quality
       await new Promise<void>((resolve) => {
         canvas.toBlob((b) => {
+          if (processRunIdRef.current !== runId) {
+            resolve();
+            return;
+          }
+
           const url = URL.createObjectURL(b!);
-          setResult(url);
+          setPreviewResult(url);
           setFinalSize(b ? `${(b.size / 1024).toFixed(1)} KB` : null);
           resolve();
         }, mimeType, quality / 100);
       });
     }
-    setIsProcessing(false);
-  };
+    if (processRunIdRef.current === runId) {
+      setIsProcessing(false);
+    }
+  }, [image, resizeEnabled, resizeWidth, brightness, contrast, saturation, format, quality, targetEnabled, targetSizeValue, targetSizeUnit, setPreviewResult]);
+
+  useEffect(() => {
+    if (!image || !isSourceReady) return;
+
+    if (autoApplyTimeoutRef.current !== null) {
+      window.clearTimeout(autoApplyTimeoutRef.current);
+    }
+
+    autoApplyTimeoutRef.current = window.setTimeout(() => {
+      void processImage();
+    }, 140);
+
+    return () => {
+      if (autoApplyTimeoutRef.current !== null) {
+        window.clearTimeout(autoApplyTimeoutRef.current);
+        autoApplyTimeoutRef.current = null;
+      }
+    };
+  }, [image, isSourceReady, brightness, contrast, saturation, resizeEnabled, resizeWidth, format, quality, targetEnabled, targetSizeValue, targetSizeUnit, processImage]);
 
   const getFileExtension = () => format === "png" ? "png" : format === "jpeg" ? "jpg" : "webp";
 
@@ -172,7 +255,7 @@ export default function AdjustPage() {
             {!image ? (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-border/50 rounded-2xl p-12 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+                className="premium-dashed rounded-[1.75rem] p-12 text-center cursor-pointer transition-all"
                 aria-hidden
               >
                 <div className="flex flex-col items-center justify-center">
@@ -187,15 +270,15 @@ export default function AdjustPage() {
             ) : (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="rounded-xl overflow-hidden bg-card border border-border shadow-sm">
-                    <div className="px-4 py-3 bg-muted/10 border-b border-border/50 text-sm font-medium">Original</div>
+                  <div className="rounded-xl overflow-hidden premium-surface">
+                    <div className="px-4 py-3 bg-white/[0.035] border-b border-white/10 text-sm font-medium">Original</div>
                     <div className="p-6 flex items-center justify-center bg-gradient-to-b from-white/3 via-transparent to-transparent">
                       <img src={image.preview} alt="original" className="max-w-full max-h-80 object-contain" />
                     </div>
                   </div>
 
-                  <div className="rounded-xl overflow-hidden bg-card border border-border shadow-sm relative">
-                    <div className="flex items-center justify-between px-4 py-3 bg-muted/10 border-b border-border/50">
+                  <div className="rounded-xl overflow-hidden premium-surface relative">
+                    <div className="flex items-center justify-between px-4 py-3 bg-white/[0.035] border-b border-white/10">
                       <div className="text-sm font-medium text-primary">Processed</div>
                       <div className="flex items-center gap-2">
                         {result && (
@@ -213,7 +296,14 @@ export default function AdjustPage() {
                         <img src={result} alt="processed" className="max-w-full max-h-80 object-contain" />
                       ) : (
                         <div className="text-muted-foreground text-sm text-center max-w-sm">
-                          Adjust the sliders, then click Apply Changes to render the preview.
+                          The preview updates automatically after you release a control.
+                        </div>
+                      )}
+                      {isProcessing && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-background/25 backdrop-blur-[1px]">
+                          <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-xs font-medium text-white/80 shadow-xl">
+                            Updating preview...
+                          </div>
                         </div>
                       )}
                     </div>
@@ -233,7 +323,7 @@ export default function AdjustPage() {
 
           {/* Controls */}
           <aside className="lg:col-span-4 space-y-6 sticky top-24 self-start">
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold">Image Adjustments</h3>
               </div>
@@ -247,13 +337,13 @@ export default function AdjustPage() {
                     </label>
                     <span className="text-sm text-muted-foreground">{brightness}%</span>
                   </div>
-                  <input
+                  <Slider
                     type="range"
                     min="0"
                     max="200"
                     value={brightness}
                     onChange={(e) => setBrightness(Number(e.target.value))}
-                    className="w-full accent-primary cursor-pointer"
+                    className="w-full cursor-pointer"
                   />
                 </div>
 
@@ -265,13 +355,13 @@ export default function AdjustPage() {
                     </label>
                     <span className="text-sm text-muted-foreground">{contrast}%</span>
                   </div>
-                  <input
+                  <Slider
                     type="range"
                     min="0"
                     max="200"
                     value={contrast}
                     onChange={(e) => setContrast(Number(e.target.value))}
-                    className="w-full accent-primary cursor-pointer"
+                    className="w-full cursor-pointer"
                   />
                 </div>
 
@@ -283,19 +373,19 @@ export default function AdjustPage() {
                     </label>
                     <span className="text-sm text-muted-foreground">{saturation}%</span>
                   </div>
-                  <input
+                  <Slider
                     type="range"
                     min="0"
                     max="200"
                     value={saturation}
                     onChange={(e) => setSaturation(Number(e.target.value))}
-                    className="w-full accent-primary cursor-pointer"
+                    className="w-full cursor-pointer"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold flex items-center gap-2"><Minimize2 className="h-4 w-4" /> Resize</h3>
                 <label className="flex items-center gap-2 text-sm cursor-pointer">
@@ -315,14 +405,14 @@ export default function AdjustPage() {
                     value={resizeWidth || ""}
                     onChange={(e) => setResizeWidth(e.target.value ? Number(e.target.value) : null)}
                     placeholder="Width (px)"
-                    className="flex-1 px-3 py-2 rounded-lg border border-border bg-background"
+                    className="flex-1 px-3 py-2 rounded-lg border border-white/10 bg-black/30"
                   />
                   <span className="text-sm text-muted-foreground">px</span>
                 </div>
               )}
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <h3 className="font-semibold mb-3 flex items-center gap-2"><FileImage className="h-4 w-4" /> Output</h3>
               <div className="grid grid-cols-3 gap-2 mb-3">
                 {(["png", "jpeg", "webp"] as const).map((f) => (
@@ -331,7 +421,7 @@ export default function AdjustPage() {
                     onClick={() => setFormat(f)}
                     className={cn(
                       "p-2 rounded-lg text-sm transition-all uppercase",
-                      format === f ? "ring-2 ring-primary/30 bg-primary/5" : "border border-border/50 hover:border-primary/30"
+                      format === f ? "ring-2 ring-primary/30 bg-primary/5" : "premium-surface hover:border-primary/30"
                     )}
                   >
                     <div className="font-medium">.{f}</div>
@@ -345,17 +435,17 @@ export default function AdjustPage() {
               </p>
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold">Quality <span className="text-sm text-muted-foreground">({quality}%)</span></h3>
               </div>
-              <input
+              <Slider
                 type="range"
                 min="10"
                 max="100"
                 value={quality}
                 onChange={(e) => setQuality(Number(e.target.value))}
-                className="w-full accent-primary cursor-pointer"
+                className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-3">
                 <span>Smaller file</span>
@@ -363,7 +453,7 @@ export default function AdjustPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold">Target Size</h3>
                 <label className="flex items-center gap-2 text-sm cursor-pointer">
@@ -385,9 +475,9 @@ export default function AdjustPage() {
                     value={targetSizeValue ?? ""}
                     onChange={(e) => setTargetSizeValue(e.target.value ? Number(e.target.value) : null)}
                     placeholder="Size"
-                    className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-border bg-background"
+                    className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-white/10 bg-black/30"
                   />
-                  <select className="w-20 px-2 py-2 rounded-lg border border-border bg-background" value={targetSizeUnit} onChange={(e) => setTargetSizeUnit(e.target.value as "KB" | "MB")}>
+                  <select className="w-20 px-2 py-2 rounded-lg border border-white/10 bg-black/30" value={targetSizeUnit} onChange={(e) => setTargetSizeUnit(e.target.value as "KB" | "MB")}>
                     <option value="KB">KB</option>
                     <option value="MB">MB</option>
                   </select>
@@ -398,20 +488,8 @@ export default function AdjustPage() {
               {finalSize && <div className="text-xs text-muted-foreground mt-2">Last export: {finalSize}</div>}
             </div>
 
-            <div className="mt-4">
-              <Button onClick={processImage} disabled={!image || isProcessing} className="w-full" size="lg">
-                {isProcessing ? (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Settings className="h-4 w-4 mr-2" />
-                    Apply Changes
-                  </>
-                )}
-              </Button>
+            <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-xs text-muted-foreground">
+              Preview updates automatically after you release a control.
             </div>
           </aside>
         </div>

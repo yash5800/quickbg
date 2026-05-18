@@ -168,7 +168,7 @@ export default function EditorPage() {
           className="hidden"
         />
         <div
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+          className="remover-shell mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
           onDragEnter={handleDropZoneDragEnter}
           onDragLeave={handleDropZoneDragLeave}
           onDragOver={handleDropZoneDragOver}
@@ -185,12 +185,12 @@ export default function EditorPage() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             onClick={() => fileInputRef.current?.click()}
             className={cn(
-              "flex flex-col items-center justify-center min-h-[60vh] border-2 border-dashed border-border/50 rounded-3xl cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all",
-              isDropActive && "border-primary/70 bg-primary/10"
+              "premium-dashed flex min-h-[60vh] cursor-pointer flex-col items-center justify-center rounded-[2rem] text-center transition-all",
+              isDropActive && "border-lime-300/70 bg-lime-300/10"
             )}
           >
             <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
@@ -216,20 +216,20 @@ export default function EditorPage() {
         className="hidden"
       />
       <div
-        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+        className="remover-shell mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
         onDragEnter={handleDropZoneDragEnter}
         onDragLeave={handleDropZoneDragLeave}
         onDragOver={handleDropZoneDragOver}
         onDrop={handleDropZoneDrop}
       >
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="space-y-8"
         >
           {/* Header */}
-          <div className="pb-6 border-b border-border/50">
+          <div className="border-b border-border/70 pb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="h-9 w-9">

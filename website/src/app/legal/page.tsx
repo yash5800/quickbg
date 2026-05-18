@@ -13,11 +13,11 @@ export default function LegalPage() {
   return (
     <AppLayout>
       <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="text-3xl font-bold mb-8">Copyright & Legal</h1>
+        <h1 className="mb-8 text-3xl font-semibold tracking-normal text-white">Copyright & Legal</h1>
 
-        <Card className="p-6 space-y-6 text-sm text-muted-foreground">
+        <Card className="premium-surface p-6 space-y-6 text-sm text-white/60">
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-2">Ownership</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">Ownership</h2>
             <p>
               QuickBG, including the website, logo, branding, and underlying AI technology,
               is the intellectual property of QuickBG.
@@ -25,7 +25,7 @@ export default function LegalPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-2">Your Content</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">Your Content</h2>
             <p>
               You retain full ownership of images you upload. We do not claim any rights
               to your original or processed images.
@@ -33,7 +33,7 @@ export default function LegalPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-2">Processed Images</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">Processed Images</h2>
             <p>
               Once processed, you are free to use the output images for any purpose,
               including commercial use, without attribution.
@@ -41,7 +41,7 @@ export default function LegalPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-2">Trademark</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">Trademark</h2>
             <p>
               &ldquo;QuickBG&rdquo; and the QuickBG logo are trademarks. You may not use our
               branding without explicit permission.
@@ -49,7 +49,7 @@ export default function LegalPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-2">AI Model</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">AI Model</h2>
             <p>
               The AI model used for background removal is based on BiRefNet technology.
               Model weights are downloaded from Hugging Face and remain their property.
@@ -57,14 +57,14 @@ export default function LegalPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-foreground mb-2">DMCA</h2>
+            <h2 className="text-lg font-semibold text-white mb-2">DMCA</h2>
             <p>
               We respect intellectual property rights. If you believe your copyrighted
               work has been infringed, please contact us through the feedback form.
             </p>
           </div>
 
-          <div className="pt-4 border-t">
+          <div className="pt-4 border-t border-white/10">
             <p className="text-center text-sm">
               © {currentYear} QuickBG. All rights reserved.
             </p>

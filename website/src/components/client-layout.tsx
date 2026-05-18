@@ -81,7 +81,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="system"
       enableSystem
     >
       <QueryProvider>

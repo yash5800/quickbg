@@ -25,7 +25,7 @@ export function FeedbackSection() {
 
 function FeedbackCard() {
   return (
-    <Card className="p-8 sm:p-10 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+    <Card className="premium-surface p-8 sm:p-10">
       <NoticeSection />
       <div className="text-center space-y-4 mt-6">
         <div className="flex justify-center">
@@ -35,7 +35,7 @@ function FeedbackCard() {
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold text-foreground">
+          <h3 className="text-2xl font-bold text-white">
             Love QuickBG?
           </h3>
           <p className="text-muted-foreground mt-2">
@@ -171,7 +171,7 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mt-6 p-6 bg-background/80 backdrop-blur-sm rounded-lg border max-w-md mx-auto"
+      className="mt-6 premium-surface rounded-lg p-6 max-w-md mx-auto"
     >
       <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
         <div>

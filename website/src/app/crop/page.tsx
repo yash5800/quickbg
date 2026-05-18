@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Download, RefreshCw, Crop, ZoomIn, ZoomOut, Settings } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -246,7 +247,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
             {!image ? (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-border/50 rounded-2xl p-12 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+                className="premium-dashed rounded-[1.75rem] p-12 text-center cursor-pointer transition-all"
                 aria-hidden
               >
                 <div className="flex flex-col items-center justify-center">
@@ -259,7 +260,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                 </div>
               </div>
             ) : (
-              <div className="relative rounded-2xl overflow-hidden bg-black border border-border/50">
+              <div className="relative rounded-2xl overflow-hidden bg-black premium-surface">
                 <div
                   ref={containerRef}
                   className="relative select-none overflow-hidden"
@@ -340,7 +341,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
 
                 {/* Preview result */}
                 {result && (
-                  <div className="mt-4 border-t border-border/50 pt-4">
+                  <div className="mt-4 border-t border-white/10 pt-4">
                     <h3 className="text-sm font-semibold mb-2">Preview</h3>
                     <div className="relative rounded-lg overflow-hidden bg-muted">
                       <img src={result} alt="" className="w-full h-auto" />
@@ -359,7 +360,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
 
           {/* Settings */}
           <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Aspect Ratio</h3>
               <div className="grid grid-cols-3 gap-2">
                 {aspectRatios.map((ratio) => (
@@ -370,7 +371,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                       "p-3 rounded-xl border text-center transition-all",
                       aspectRatio === ratio.value
                         ? "border-primary bg-primary/10"
-                        : "border-border/50 hover:border-primary/30"
+                        : "border-white/10 hover:border-white/20"
                     )}
                   >
                     <div className="font-semibold text-sm">{ratio.label}</div>
@@ -379,15 +380,15 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Rotation ({rotation}°)</h3>
-              <input
+              <Slider
                 type="range"
                 min="-180"
                 max="180"
                 value={rotation}
                 onChange={(e) => setRotation(Number(e.target.value))}
-                className="w-full accent-primary cursor-pointer"
+                className="w-full cursor-pointer"
               />
               <p className="mt-3 text-xs text-muted-foreground">Rotate freely, then click Apply Crop to render the result.</p>
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
@@ -397,7 +398,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Zoom</h3>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="icon" onClick={() => setZoom(Math.max(0.5, zoom - 0.25))}>

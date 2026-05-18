@@ -115,17 +115,41 @@ function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/78 backdrop-blur-md"
           >
-            <div className="flex flex-col items-center gap-4 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-white">
-                <Upload className="h-8 w-8" />
+            <motion.div
+              initial={{ scale: 0.94, y: 18 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.94, y: 18 }}
+              className="premium-surface relative mx-4 flex w-full max-w-lg flex-col items-center gap-5 overflow-hidden rounded-[2rem] p-10 text-center"
+            >
+              <motion.div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent"
+                animate={{ x: ["-100%", "100%"] }}
+                transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white text-black shadow-[0_22px_80px_-32px_rgba(255,255,255,0.75)]">
+                <motion.span
+                  aria-hidden
+                  className="absolute inset-0 rounded-3xl border border-sky-300/45"
+                  animate={{ scale: [1, 1.35, 1], opacity: [0.8, 0, 0.8] }}
+                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                />
+                <Upload className="h-9 w-9" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold">Drop images to upload</h2>
-                <p className="text-muted-foreground text-sm mt-1">Supports PNG, JPG, WebP, TIFF, HEIF/HEIC, AVIF</p>
+                <h2 className="text-2xl font-semibold text-white">Drop images to start</h2>
+                <p className="mt-2 text-sm leading-6 text-white/55">QuickBG will upload, queue, process, and open the remover workspace automatically.</p>
               </div>
-            </div>
+              <div className="flex flex-wrap justify-center gap-2 text-xs text-white/55">
+                {["PNG", "JPG", "WebP", "TIFF", "HEIC", "AVIF"].map((format) => (
+                  <span key={format} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1">
+                    {format}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

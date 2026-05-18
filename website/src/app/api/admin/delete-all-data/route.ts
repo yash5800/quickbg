@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 
+export const dynamic = "force-dynamic";
+
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
 
 export async function DELETE(request: NextRequest) {

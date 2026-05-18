@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Upload, Download, Maximize2, RefreshCw } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -142,7 +143,7 @@ export default function ResizePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Settings Panel */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Aspect Ratio</h3>
               <div className="grid grid-cols-2 gap-2">
                 {presets.map((preset) => (
@@ -153,7 +154,7 @@ export default function ResizePage() {
                       "p-3 rounded-xl border text-left transition-all",
                       selectedPreset === preset.label
                         ? "border-primary bg-primary/10 text-primary"
-                        : "border-border/50 hover:border-primary/30"
+                        : "border-white/10 hover:border-white/20"
                     )}
                   >
                     <div className="font-semibold">{preset.label}</div>
@@ -164,14 +165,14 @@ export default function ResizePage() {
             </div>
 
             {selectedPreset === "Custom" && (
-              <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="p-6 rounded-2xl premium-surface">
                 <h3 className="font-semibold mb-4">Custom Dimensions</h3>
                 <div className="flex items-center gap-3">
                   <input
                     type="number"
                     value={customWidth}
                     onChange={(e) => setCustomWidth(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background"
+                    className="w-full px-3 py-2 rounded-lg border border-white/10 bg-black/30"
                     placeholder="Width"
                   />
                   <span className="text-muted-foreground">×</span>
@@ -179,22 +180,22 @@ export default function ResizePage() {
                     type="number"
                     value={customHeight}
                     onChange={(e) => setCustomHeight(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-lg border border-border bg-background"
+                    className="w-full px-3 py-2 rounded-lg border border-white/10 bg-black/30"
                     placeholder="Height"
                   />
                 </div>
               </div>
             )}
 
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Scale ({scale}%)</h3>
-              <input
+              <Slider
                 type="range"
                 min="10"
                 max="400"
                 value={scale}
                 onChange={(e) => setScale(Number(e.target.value))}
-                className="w-full accent-primary"
+                className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>10%</span>
@@ -225,7 +226,7 @@ export default function ResizePage() {
               onClick={() => fileInputRef.current?.click()}
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
-              className="border-2 border-dashed border-border/50 rounded-2xl p-12 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+              className="premium-dashed rounded-[1.75rem] p-12 text-center cursor-pointer transition-all"
             >
               <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p className="text-lg font-semibold">Click or drag images here</p>
@@ -235,7 +236,7 @@ export default function ResizePage() {
             {images.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {images.map((img) => (
-                  <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden bg-muted border border-border/50">
+                  <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden premium-surface">
                     <img src={img.preview} alt="" className="w-full h-full object-cover" />
                     <button
                       onClick={() => setImages((prev) => prev.filter((i) => i.id !== img.id))}
@@ -259,7 +260,7 @@ export default function ResizePage() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {results.map((result) => (
-                    <div key={result.id} className="relative aspect-square rounded-xl overflow-hidden bg-muted border border-border/50">
+                    <div key={result.id} className="relative aspect-square rounded-xl overflow-hidden premium-surface">
                       <img src={result.url} alt="" className="w-full h-full object-cover" />
                       <a
                         href={result.url}

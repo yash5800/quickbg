@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Download, RefreshCw, Circle, ArrowLeft } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { useRouter } from "next/navigation";
 import { canvasRGB } from "stackblur-canvas";
 
@@ -14,9 +15,11 @@ export default function BlurBgPage() {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
   const [blurStrength, setBlurStrength] = useState(20);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isRendering, setIsRendering] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const origImgRef = useRef<HTMLImageElement | null>(null);
   const procImgRef = useRef<HTMLImageElement | null>(null);
+  const renderTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     const orig = sessionStorage.getItem("originalImage");
@@ -99,11 +102,24 @@ export default function BlurBgPage() {
   useEffect(() => {
     if (!isLoaded) return;
 
-    const frame = window.requestAnimationFrame(() => {
-      renderCanvas();
-    });
+    setIsRendering(true);
 
-    return () => window.cancelAnimationFrame(frame);
+    if (renderTimeoutRef.current !== null) {
+      window.clearTimeout(renderTimeoutRef.current);
+    }
+
+    renderTimeoutRef.current = window.setTimeout(() => {
+      renderCanvas();
+      setIsRendering(false);
+      renderTimeoutRef.current = null;
+    }, 120);
+
+    return () => {
+      if (renderTimeoutRef.current !== null) {
+        window.clearTimeout(renderTimeoutRef.current);
+        renderTimeoutRef.current = null;
+      }
+    };
   }, [isLoaded, blurStrength, renderCanvas]);
 
   const handleDownload = () => {
@@ -161,7 +177,7 @@ export default function BlurBgPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="relative aspect-video rounded-2xl overflow-hidden bg-muted border border-border/50 flex items-center justify-center">
+            <div className="relative aspect-video rounded-2xl overflow-hidden premium-surface flex items-center justify-center">
               {error ? (
                 <div className="text-center text-red-500">
                   <p>Error: {error}</p>
@@ -173,6 +189,13 @@ export default function BlurBgPage() {
                 </div>
               ) : (
                 <canvas ref={canvasRef} className="max-w-full max-h-full object-contain" />
+              )}
+              {isLoaded && isRendering && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
+                  <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-xs font-medium text-white/80 shadow-xl">
+                    Updating preview...
+                  </div>
+                </div>
               )}
               {isLoaded && (
                 <Button
@@ -192,26 +215,22 @@ export default function BlurBgPage() {
           </div>
 
           <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Blur Strength ({blurStrength}px)</h3>
-              <input
+              <Slider
                 type="range"
                 min="0"
                 max="50"
                 value={blurStrength}
                 onChange={(e) => setBlurStrength(Number(e.target.value))}
-                className="w-full accent-primary cursor-pointer"
+                className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>Sharp</span>
                 <span>Blurred</span>
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">Move the slider freely, then click Apply Changes to update the preview.</p>
+              <p className="mt-3 text-xs text-muted-foreground">The preview updates automatically after you release the slider.</p>
             </div>
-            <Button onClick={renderCanvas} disabled={!isLoaded} className="w-full" size="lg">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Apply Changes
-            </Button>
           </div>
         </div>
       </div>

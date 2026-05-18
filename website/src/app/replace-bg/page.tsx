@@ -182,7 +182,7 @@ export default function ReplaceBgPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="relative aspect-video rounded-2xl overflow-hidden bg-muted border border-border/50">
+            <div className="relative aspect-video rounded-2xl overflow-hidden premium-surface">
               {result ? (
                 <img src={result} alt="" className="w-full h-full object-contain" />
               ) : (
@@ -204,7 +204,7 @@ export default function ReplaceBgPage() {
           </div>
 
           <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Background Type</h3>
               <div className="flex gap-2">
                 {(["color", "gradient", "image"] as const).map((type) => (
@@ -226,7 +226,7 @@ export default function ReplaceBgPage() {
             </div>
 
             {selectedBg === "color" && (
-              <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="p-6 rounded-2xl premium-surface">
                 <h3 className="font-semibold mb-4">Choose Color</h3>
                 <div className="flex flex-wrap gap-3">
                   {backgroundColors.map((color) => (
@@ -239,7 +239,7 @@ export default function ReplaceBgPage() {
                       style={{ backgroundColor: color.value }}
                       className={cn(
                         "w-12 h-12 rounded-xl border-2 transition-all",
-                        selectedColor === color.value ? "border-primary ring-2 ring-primary/30" : "border-border"
+                        selectedColor === color.value ? "border-primary ring-2 ring-primary/30" : "border-white/20"
                       )}
                       title={color.name}
                     />
@@ -249,7 +249,7 @@ export default function ReplaceBgPage() {
             )}
 
             {selectedBg === "gradient" && (
-              <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="p-6 rounded-2xl premium-surface">
                 <h3 className="font-semibold mb-4">Choose Gradient</h3>
                 <div className="flex flex-wrap gap-3">
                   {gradients.map((grad, idx) => (
@@ -272,7 +272,7 @@ export default function ReplaceBgPage() {
             )}
 
             {selectedBg === "image" && (
-              <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+              <div className="p-6 rounded-2xl premium-surface">
                 <h3 className="font-semibold mb-4">Background Image</h3>
                 {backgroundImage ? (
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-muted">
@@ -290,7 +290,7 @@ export default function ReplaceBgPage() {
                 ) : (
                   <div
                     onClick={() => document.getElementById("bg-image-input")?.click()}
-                    className="aspect-video border-2 border-dashed border-border/50 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 transition-all"
+                    className="premium-dashed aspect-video rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all"
                   >
                     <Plus className="h-8 w-8 mb-2 text-muted-foreground" />
                     <p className="text-sm text-muted-foreground">Click to upload background</p>

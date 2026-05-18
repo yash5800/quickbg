@@ -71,7 +71,7 @@ async function getMongoDB() {
     try {
       await db.collection<UserUpload>("user_uploads").createIndex(
         { uploadedAt: 1 },
-        { expireAfterSeconds: 3600 }
+        { expireAfterSeconds: 600 }
       );
     } catch (e) {
       // Ignore index option conflicts (e.g., existing TTL with different seconds)
