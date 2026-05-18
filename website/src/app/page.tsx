@@ -226,15 +226,15 @@ export default function Home() {
               Free AI background removal for clean product-ready images
             </div>
 
-            <h1 className="text-3xl font-semibold leading-[1.1] tracking-normal text-white sm:text-4xl lg:text-5xl xl:text-6xl min-h-[6rem] sm:min-h-[7rem] lg:min-h-[8.5rem]">
+            <h1 className="text-3xl font-semibold leading-[1.1] tracking-normal text-white sm:text-4xl lg:text-5xl xl:text-7xl min-h-[6rem] sm:min-h-[7rem] lg:min-h-[8.5rem]">
               <Typewriter
-                staticText="Remove backgrounds "
+                staticText="Remove backgrounds with "
                 phrases={[
-                  { text: "with high precision", color: "#7C4DFF", speed: 80 },
-                  { text: "with studio speed", color: "#FF6B6B", speed: 75 },
-                  { text: "with no limit", color: "#00C853", speed: 80 },
-                  { text: "with AI tools", color: "#00B4D8", speed: 80 },
-                  { text: "with privacy-first", color: "#1976D2", speed: 85 },
+                  { text: "high precision", color: "#7C4DFF", speed: 80 },
+                  { text: "studio speed", color: "#FF6B6B", speed: 75 },
+                  { text: "no limit", color: "#00C853", speed: 80 },
+                  { text: "AI tools", color: "#00B4D8", speed: 80 },
+                  { text: "privacy-first", color: "#1976D2", speed: 85 },
                 ]}
                 loopDelay={2500}
               />
