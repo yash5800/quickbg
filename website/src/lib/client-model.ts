@@ -5,7 +5,7 @@ import "@tensorflow/tfjs-backend-webgl";
 
 const MODEL_URL = "";
 
-const CACHE_NAME = "bgremover-model-cache";
+const CACHE_NAME = "testbgremover-model-cache";
 const CACHE_VERSION = "v1";
 
 let model: tf.LayersModel | null = null;

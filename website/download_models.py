@@ -9,7 +9,7 @@ models = [
     "ZhengPeng7/BiRefNet",
 ]
 
-base_dir = "/home/yash/Documents/projects/bgremover/public/models"
+base_dir = "/home/yash/Documents/projects/testbgremover/public/models"
 worker_requirements_path = "/home/yash/Documents/projects/quickbg/worker/requirements.txt"
 
 def parse_requirements(req_file):

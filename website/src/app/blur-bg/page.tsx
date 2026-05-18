@@ -161,7 +161,7 @@ export default function BlurBgPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-4">
-            <div className="relative aspect-video rounded-2xl overflow-hidden bg-muted border border-border/50 flex items-center justify-center">
+            <div className="relative aspect-video rounded-2xl overflow-hidden premium-surface flex items-center justify-center">
               {error ? (
                 <div className="text-center text-red-500">
                   <p>Error: {error}</p>
@@ -192,7 +192,7 @@ export default function BlurBgPage() {
           </div>
 
           <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-muted/30 border border-border/50">
+            <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Blur Strength ({blurStrength}px)</h3>
               <input
                 type="range"

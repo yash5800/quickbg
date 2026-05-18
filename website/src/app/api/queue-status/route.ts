@@ -61,7 +61,7 @@ async function getMongoDB() {
       await mongoClient.connect();
     }
 
-    db = mongoClient.db("bgremover");
+    db = mongoClient.db("testbgremover");
   }
 
   if (!db) {

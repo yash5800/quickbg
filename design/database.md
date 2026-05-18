@@ -7,7 +7,7 @@ The project uses **MongoDB** as its primary database for job management and queu
 ## Database Name
 
 ```
-bgremover
+testbgremover
 ```
 
 ## Collections
@@ -137,25 +137,25 @@ db.jobs.aggregate([
 ### Website (.env.local)
 ```
 NEXT_MONGODB_URI=mongodb://username:password@host:port/database
-NEXT_MONGODB_DB=bgremover
+NEXT_MONGODB_DB=testbgremover
 ```
 
 ### Worker (.env)
 ```
 NEXT_MONGODB_URI=mongodb://username:password@host:port/database
-NEXT_MONGODB_DB=bgremover
+NEXT_MONGODB_DB=testbgremover
 ```
 
 ## Connection
 
 ### Website Connection
 Location: [website/src/lib/mongodb.ts](website/src/lib/mongodb.ts)
-- Database: `bgremover`
+- Database: `testbgremover`
 - Collection: `jobs`
 
 ### Worker Connection
 Location: [worker/server.py](worker/server.py)
-- Database: `bgremover` (or custom via `NEXT_MONGODB_DB`)
+- Database: `testbgremover` (or custom via `NEXT_MONGODB_DB`)
 - Collection: `jobs`
 - TTL Auto-Deletion: Configured via `expiresAt` index
 

@@ -10,4 +10,4 @@ images:
   - ${_IMAGE_URI}
 
 substitutions:
-  _IMAGE_URI: us-central1-docker.pkg.dev/$PROJECT_ID/bgremover/bgremover-worker:latest
+  _IMAGE_URI: us-central1-docker.pkg.dev/$PROJECT_ID/testbgremover/testbgremover-worker:latest

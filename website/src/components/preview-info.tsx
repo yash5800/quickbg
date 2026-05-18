@@ -35,6 +35,26 @@ function formatFileSize(bytes: number): string {
   return `${megabytes.toFixed(megabytes < 10 ? 1 : 0)} MB`;
 }
 
+function getPanelProgress(image: ImageItem, isResultFetching: boolean): number {
+  if (isResultFetching) return 96;
+  if (image.status === "completed") return 100;
+  if (image.status === "error" || image.status === "failed") return 0;
+  if (typeof image.progress === "number") return Math.max(4, Math.min(98, image.progress));
+
+  const fallback: Record<ImageItem["status"], number> = {
+    pending: 8,
+    uploading: 24,
+    queued: 42,
+    running: 68,
+    processing: 72,
+    completed: 100,
+    failed: 0,
+    error: 0,
+  };
+
+  return fallback[image.status] ?? 12;
+}
+
 interface PreviewInfoProps {
   image: ImageItem;
   isProcessing: boolean;
@@ -82,7 +102,14 @@ export function PreviewInfo({
     cancelled: { label: "Cancelled", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
   }[displayStatus as string] || { label: displayStatus, icon: Clock, color: "bg-slate-500/10 text-slate-600" };
 
-  const StatusIcon = statusConfig.icon;
+const StatusIcon = statusConfig.icon;
+  const progress = getPanelProgress(image, isResultFetching);
+  const timeline = [
+    { label: "Upload", active: ["uploading"].includes(image.status), done: progress >= 24 },
+    { label: "Queue", active: image.status === "queued", done: progress >= 42 },
+    { label: "Mask", active: isProcessing && image.status !== "uploading" && image.status !== "queued", done: progress >= 72 },
+    { label: "Ready", active: isResultFetching, done: isCompleted },
+  ];
 
   return (
     <motion.div
@@ -92,11 +119,11 @@ export function PreviewInfo({
       className="space-y-4"
     >
       {/* File Info Card */}
-      <Card className="p-4 space-y-3">
+      <Card className="premium-surface p-4 space-y-4">
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
             <h3
-              className="font-semibold text-sm truncate text-foreground"
+              className="font-semibold text-sm truncate text-white"
               title={image.file.name}
             >
               {image.file.name}
@@ -117,16 +144,52 @@ export function PreviewInfo({
         </div>
 
         {/* Status Badge */}
-        <Badge variant={isError ? "destructive" : isCompleted ? "success" : isProcessing || isResultFetching ? "warning" : "outline"} className={cn("gap-2", statusConfig.color)}>
-          {status === "processing" || status === "queued" || status === "running" || status === "uploading" || status === "starting" || status === "uploading_result" || isResultFetching ? (
-            <StatusIcon className="h-3.5 w-3.5 animate-spin" />
-          ) : (
-            <StatusIcon className="h-3.5 w-3.5" />
-          )}
-          {statusConfig.label}
-        </Badge>
+        <div className="flex items-center justify-between gap-3">
+          <Badge variant={isError ? "destructive" : isCompleted ? "success" : isProcessing || isResultFetching ? "warning" : "outline"} className={cn("gap-2", statusConfig.color)}>
+            {status === "processing" || status === "queued" || status === "running" || status === "uploading" || status === "starting" || status === "uploading_result" || isResultFetching ? (
+              <StatusIcon className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <StatusIcon className="h-3.5 w-3.5" />
+            )}
+            {statusConfig.label}
+          </Badge>
+          <span className="text-xs tabular-nums text-white/45">{Math.round(progress)}%</span>
+        </div>
 
-            </Card>
+        <div className="space-y-3">
+          <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-sky-300 via-cyan-200 to-lime-300"
+              initial={false}
+              animate={{ width: `${progress}%` }}
+              transition={{ type: "spring", stiffness: 95, damping: 20 }}
+            />
+          </div>
+
+          <div className="grid grid-cols-4 gap-1.5">
+            {timeline.map((step) => (
+              <motion.div
+                key={step.label}
+                initial={false}
+                animate={{
+                  opacity: step.done || step.active ? 1 : 0.46,
+                  y: step.active ? -1 : 0,
+                }}
+                className={cn(
+                  "rounded-lg border px-1.5 py-1.5 text-center text-[10px] font-medium",
+                  step.done
+                    ? "border-lime-300/40 bg-lime-300/10 text-lime-100"
+                    : step.active
+                      ? "border-sky-300/40 bg-sky-300/10 text-sky-100"
+                      : "border-white/10 bg-white/[0.025] text-white/45"
+                )}
+              >
+                {step.label}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </Card>
 
       {/* Waiting states */}
       <AnimatePresence>
@@ -194,7 +257,7 @@ export function PreviewInfo({
                       <Clock className="h-4 w-4" />
                       <span>Est. Wait</span>
                     </div>
-                    <span className="font-semibold text-foreground">
+                    <span className="font-semibold text-white">
                       ~{image.estimatedWaitSeconds}s
                     </span>
                   </div>
@@ -224,7 +287,7 @@ export function PreviewInfo({
                     <Clock className="h-4 w-4" />
                     <span>Processing Time</span>
                   </div>
-                  <span className="font-semibold text-foreground">
+                  <span className="font-semibold text-white">
                     {(image.duration / 1000).toFixed(2)}s
                   </span>
                 </div>
@@ -235,7 +298,7 @@ export function PreviewInfo({
                       <Monitor className="h-4 w-4" />
                       <span>Resolution</span>
                     </div>
-                    <span className="font-semibold text-foreground">
+                    <span className="font-semibold text-white">
                       {image.dimensions.width} × {image.dimensions.height}
                     </span>
                   </div>

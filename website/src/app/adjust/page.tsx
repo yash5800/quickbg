@@ -172,7 +172,7 @@ export default function AdjustPage() {
             {!image ? (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-border/50 rounded-2xl p-12 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/20 transition-all"
+                className="premium-dashed rounded-[1.75rem] p-12 text-center cursor-pointer transition-all"
                 aria-hidden
               >
                 <div className="flex flex-col items-center justify-center">
@@ -187,15 +187,15 @@ export default function AdjustPage() {
             ) : (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="rounded-xl overflow-hidden bg-card border border-border shadow-sm">
-                    <div className="px-4 py-3 bg-muted/10 border-b border-border/50 text-sm font-medium">Original</div>
+                  <div className="rounded-xl overflow-hidden premium-surface">
+                    <div className="px-4 py-3 bg-white/[0.035] border-b border-white/10 text-sm font-medium">Original</div>
                     <div className="p-6 flex items-center justify-center bg-gradient-to-b from-white/3 via-transparent to-transparent">
                       <img src={image.preview} alt="original" className="max-w-full max-h-80 object-contain" />
                     </div>
                   </div>
 
-                  <div className="rounded-xl overflow-hidden bg-card border border-border shadow-sm relative">
-                    <div className="flex items-center justify-between px-4 py-3 bg-muted/10 border-b border-border/50">
+                  <div className="rounded-xl overflow-hidden premium-surface relative">
+                    <div className="flex items-center justify-between px-4 py-3 bg-white/[0.035] border-b border-white/10">
                       <div className="text-sm font-medium text-primary">Processed</div>
                       <div className="flex items-center gap-2">
                         {result && (
@@ -233,7 +233,7 @@ export default function AdjustPage() {
 
           {/* Controls */}
           <aside className="lg:col-span-4 space-y-6 sticky top-24 self-start">
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold">Image Adjustments</h3>
               </div>
@@ -295,7 +295,7 @@ export default function AdjustPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold flex items-center gap-2"><Minimize2 className="h-4 w-4" /> Resize</h3>
                 <label className="flex items-center gap-2 text-sm cursor-pointer">
@@ -315,14 +315,14 @@ export default function AdjustPage() {
                     value={resizeWidth || ""}
                     onChange={(e) => setResizeWidth(e.target.value ? Number(e.target.value) : null)}
                     placeholder="Width (px)"
-                    className="flex-1 px-3 py-2 rounded-lg border border-border bg-background"
+                    className="flex-1 px-3 py-2 rounded-lg border border-white/10 bg-black/30"
                   />
                   <span className="text-sm text-muted-foreground">px</span>
                 </div>
               )}
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <h3 className="font-semibold mb-3 flex items-center gap-2"><FileImage className="h-4 w-4" /> Output</h3>
               <div className="grid grid-cols-3 gap-2 mb-3">
                 {(["png", "jpeg", "webp"] as const).map((f) => (
@@ -331,7 +331,7 @@ export default function AdjustPage() {
                     onClick={() => setFormat(f)}
                     className={cn(
                       "p-2 rounded-lg text-sm transition-all uppercase",
-                      format === f ? "ring-2 ring-primary/30 bg-primary/5" : "border border-border/50 hover:border-primary/30"
+                      format === f ? "ring-2 ring-primary/30 bg-primary/5" : "premium-surface hover:border-primary/30"
                     )}
                   >
                     <div className="font-medium">.{f}</div>
@@ -345,7 +345,7 @@ export default function AdjustPage() {
               </p>
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold">Quality <span className="text-sm text-muted-foreground">({quality}%)</span></h3>
               </div>
@@ -363,7 +363,7 @@ export default function AdjustPage() {
               </div>
             </div>
 
-            <div className="p-5 rounded-xl bg-card border border-border shadow-sm">
+            <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold">Target Size</h3>
                 <label className="flex items-center gap-2 text-sm cursor-pointer">
@@ -385,9 +385,9 @@ export default function AdjustPage() {
                     value={targetSizeValue ?? ""}
                     onChange={(e) => setTargetSizeValue(e.target.value ? Number(e.target.value) : null)}
                     placeholder="Size"
-                    className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-border bg-background"
+                    className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-white/10 bg-black/30"
                   />
-                  <select className="w-20 px-2 py-2 rounded-lg border border-border bg-background" value={targetSizeUnit} onChange={(e) => setTargetSizeUnit(e.target.value as "KB" | "MB")}>
+                  <select className="w-20 px-2 py-2 rounded-lg border border-white/10 bg-black/30" value={targetSizeUnit} onChange={(e) => setTargetSizeUnit(e.target.value as "KB" | "MB")}>
                     <option value="KB">KB</option>
                     <option value="MB">MB</option>
                   </select>

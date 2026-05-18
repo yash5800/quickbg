@@ -16,9 +16,9 @@ This project can be deployed to Cloud Run using the included `Dockerfile`.
 ```bash
 export PROJECT_ID="YOUR_PROJECT_ID"
 export REGION="us-central1"
-export REPO="bgremover"
-export IMAGE="bgremover-worker"
-export SERVICE="bgremover-worker"
+export REPO="testbgremover"
+export IMAGE="testbgremover-worker"
+export SERVICE="testbgremover-worker"
 
 gcloud config set project "$PROJECT_ID"
 ```

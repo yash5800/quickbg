@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ImageItem } from "@/types/image";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, AlertCircle, Loader2, X } from "lucide-react";
@@ -27,7 +27,7 @@ export function ThumbnailGallery({
       className="space-y-3"
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-foreground">
+        <h3 className="text-sm font-semibold text-white">
           Uploaded Images ({images.length})
         </h3>
       </div>
@@ -67,6 +67,7 @@ function ThumbnailItem({
     "running",
     "processing",
   ].includes(image.status) || isFetchingResult;
+  const progress = getThumbnailProgress(image, isFetchingResult);
 
   return (
     <motion.div
@@ -81,7 +82,7 @@ function ThumbnailItem({
           "hover:border-primary/50 hover:shadow-md",
           isSelected
             ? "border-primary ring-2 ring-primary/30 shadow-lg"
-            : "border-border/40 hover:border-border"
+            : "border-white/10 hover:border-white/20"
         )}
       >
         <img
@@ -89,6 +90,38 @@ function ThumbnailItem({
           alt={image.file.name}
           className="w-full h-full object-cover"
         />
+
+        <AnimatePresence>
+          {isProcessing && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+            >
+              <motion.div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-sky-300/30 to-transparent"
+                animate={{ y: ["-100%", "340%"] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <div className="absolute inset-x-2 bottom-2">
+                <div className="mb-1 flex items-center justify-between text-[10px] font-medium text-white/80">
+                  <span>{image.status === "queued" ? "Queued" : isFetchingResult ? "Fetching" : "Processing"}</span>
+                  <span>{Math.round(progress)}%</span>
+                </div>
+                <div className="h-1 overflow-hidden rounded-full bg-white/20">
+                  <motion.div
+                    className="h-full rounded-full bg-gradient-to-r from-sky-300 to-lime-300"
+                    initial={false}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ type: "spring", stiffness: 110, damping: 20 }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Overlay on hover */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
@@ -131,10 +164,30 @@ function ThumbnailItem({
       </motion.button>
 
       {/* File name tooltip */}
-      <p className="text-xs text-muted-foreground mt-1 truncate group-hover:text-foreground transition-colors">
+      <p className="text-xs text-muted-foreground mt-1 truncate group-hover:text-white transition-colors">
         {image.file.name.substring(0, 15)}
         {image.file.name.length > 15 ? "..." : ""}
       </p>
     </motion.div>
   );
+}
+
+function getThumbnailProgress(image: ImageItem, isFetchingResult: boolean): number {
+  if (isFetchingResult) return 96;
+  if (image.status === "completed") return 100;
+  if (image.status === "error" || image.status === "failed") return 0;
+  if (typeof image.progress === "number") return Math.max(4, Math.min(98, image.progress));
+
+  const fallback: Record<ImageItem["status"], number> = {
+    pending: 8,
+    uploading: 24,
+    queued: 42,
+    running: 68,
+    processing: 72,
+    completed: 100,
+    failed: 0,
+    error: 0,
+  };
+
+  return fallback[image.status] ?? 12;
 }

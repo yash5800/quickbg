@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 
+export const dynamic = "force-dynamic";
+
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
 
 // Rate limiting for admin routes
@@ -55,7 +57,7 @@ export async function GET(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db("testbgremover");
 
     const analytics = db.collection("analytics");
 
@@ -137,7 +139,7 @@ export async function DELETE(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db("testbgremover");
 
     const analytics = db.collection("analytics");
     const analyticsSeen = db.collection("analytics_seen");

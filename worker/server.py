@@ -64,7 +64,7 @@ CPU_THRESHOLD_PERCENT = int(os.getenv("WORKER_CPU_THRESHOLD_PERCENT", "80"))
 MEMORY_THRESHOLD_PERCENT = int(os.getenv("WORKER_MEMORY_THRESHOLD_PERCENT", "80"))
 
 MONGO_URI = os.getenv("NEXT_MONGODB_URI")
-MONGO_DB_NAME = os.getenv("NEXT_MONGODB_DB", "bgremover")
+MONGO_DB_NAME = os.getenv("NEXT_MONGODB_DB", "testbgremover")
 WORKER_INTERNAL_TOKEN = os.getenv("WORKER_INTERNAL_TOKEN")
 ALLOWED_ORIGINS = [
     origin.strip().rstrip("/")
@@ -76,7 +76,7 @@ ALLOWED_ORIGINS = [
 ]
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(name)s %(message)s")
-logger = logging.getLogger("bgremover.worker")
+logger = logging.getLogger("testbgremover.worker")
 
 MODEL_REPO_ID = os.getenv("WORKER_MODEL_REPO_ID", "Joker5800/ZhengPeng7_BiRefNet_lite")
 MODEL_LOCAL_DIR = Path(
