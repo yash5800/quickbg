@@ -13,7 +13,6 @@ import {
   Palette,
   Scissors,
   ShieldCheck,
-  Sparkles,
   Upload,
   Wand2,
   Zap,
