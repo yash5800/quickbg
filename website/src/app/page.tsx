@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   Contrast,
   Crop,
+  Globe,
   Layers,
   Loader2,
   Maximize2,
@@ -24,6 +25,7 @@ import Link from "next/link";
 
 import { AppLayout } from "@/components/app-layout";
 import { DemoRevealSlider } from "@/components/demo-reveal-slider";
+import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { StockSample, stockSamples } from "@/lib/stock-samples";
@@ -225,8 +227,18 @@ export default function Home() {
               Free AI background removal for clean product-ready images
             </div>
 
-            <h1 className="text-5xl font-semibold leading-[0.96] tracking-normal text-white sm:text-6xl lg:text-7xl xl:text-[5rem]">
-              Remove backgrounds with studio speed.
+            <h1 className="text-3xl font-semibold leading-[1.1] tracking-normal text-white sm:text-4xl lg:text-5xl xl:text-6xl min-h-[6rem] sm:min-h-[7rem] lg:min-h-[8.5rem]">
+              <Typewriter
+                staticText="Remove backgrounds "
+                phrases={[
+                  { text: "with high precision", color: "#7C4DFF", speed: 80 },
+                  { text: "with studio speed", color: "#FF6B6B", speed: 75 },
+                  { text: "with no limit", color: "#00C853", speed: 80 },
+                  { text: "with AI tools", color: "#00B4D8", speed: 80 },
+                  { text: "with privacy-first", color: "#1976D2", speed: 85 },
+                ]}
+                loopDelay={2500}
+              />
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg lg:mx-0">
@@ -249,7 +261,7 @@ export default function Home() {
                 className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 text-sm font-semibold text-white/80 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08] sm:w-auto"
               >
                 Browse tools
-                <Sparkles className="h-4 w-4 text-sky-300" />
+                <Globe className="h-4 w-4 text-sky-300" />
               </Link>
             </div>
 
