@@ -65,10 +65,10 @@ export function ComparisonSlider({
   return (
     <div className={cn("relative w-full h-full rounded-xl overflow-hidden", className)}>
       {!bothLoaded && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-muted/70">
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/75 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-2">
-            <Loader2 className="h-10 w-10 animate-spin text-white/90" />
-            <div className="text-sm text-white/90">Preparing preview…</div>
+            <Loader2 className="h-10 w-10 animate-spin text-foreground" />
+            <div className="text-sm text-foreground">Preparing preview…</div>
           </div>
         </div>
       )}
@@ -81,10 +81,10 @@ export function ComparisonSlider({
         />
       )}
 
-      <div className="absolute bottom-0 left-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+      <div className="absolute bottom-0 left-4 rounded-full border border-border bg-background/80 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
         {beforeLabel}
       </div>
-      <div className="absolute bottom-0 right-4 rounded-full bg-black/70 px-3 py-1 text-xs font-medium text-white">
+      <div className="absolute bottom-0 right-4 rounded-full border border-border bg-background/80 px-3 py-1 text-xs font-medium text-foreground backdrop-blur">
         {afterLabel}
       </div>
     </div>

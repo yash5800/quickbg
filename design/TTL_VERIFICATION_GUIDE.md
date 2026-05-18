@@ -118,7 +118,7 @@ or
 
 ```javascript
 // Connect to your MongoDB
-use testbgremover
+use bgremover
 
 // Check documents with expiresAt in the past
 db.jobs.find({"expiresAt": {"$lt": new Date()}})
@@ -215,7 +215,7 @@ WORKER_CLEANUP_INTERVAL_SECONDS=1800  # Check every 30 minutes
 
 # MongoDB connection
 NEXT_MONGODB_URI=mongodb://...
-NEXT_MONGODB_DB=testbgremover
+NEXT_MONGODB_DB=bgremover
 
 # Logging
 LOG_LEVEL=INFO  # Set to DEBUG for more detailed logs

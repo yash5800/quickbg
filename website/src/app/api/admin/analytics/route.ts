@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("testbgremover");
+    const db = client.db("bgremover");
 
     const analytics = db.collection("analytics");
 
@@ -139,7 +139,7 @@ export async function DELETE(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("testbgremover");
+    const db = client.db("bgremover");
 
     const analytics = db.collection("analytics");
     const analyticsSeen = db.collection("analytics_seen");

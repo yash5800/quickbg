@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Download, RefreshCw, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft } from "lucide-react";
+import { Download, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
@@ -27,6 +28,11 @@ export default function AdjustPage() {
   const [targetSizeValue, setTargetSizeValue] = useState<number | null>(null);
   const [targetSizeUnit, setTargetSizeUnit] = useState<"KB" | "MB">("KB");
   const [finalSize, setFinalSize] = useState<string | null>(null);
+  const [isSourceReady, setIsSourceReady] = useState(false);
+  const sourceImageRef = useRef<HTMLImageElement | null>(null);
+  const resultUrlRef = useRef<string | null>(null);
+  const autoApplyTimeoutRef = useRef<number | null>(null);
+  const processRunIdRef = useRef(0);
 
   // Load image from sessionStorage
   useEffect(() => {
@@ -40,30 +46,76 @@ export default function AdjustPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!image) {
+      sourceImageRef.current = null;
+      setIsSourceReady(false);
+      return;
+    }
+
+    let cancelled = false;
+    setIsSourceReady(false);
+
+    const imgEl = new window.Image();
+    imgEl.crossOrigin = "anonymous";
+    imgEl.onload = () => {
+      if (cancelled) return;
+      sourceImageRef.current = imgEl;
+      setIsSourceReady(true);
+    };
+    imgEl.src = image.preview;
+
+    return () => {
+      cancelled = true;
+    };
+  }, [image]);
+
+  useEffect(() => {
+    return () => {
+      if (resultUrlRef.current) {
+        URL.revokeObjectURL(resultUrlRef.current);
+      }
+      if (autoApplyTimeoutRef.current !== null) {
+        window.clearTimeout(autoApplyTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const setPreviewResult = useCallback((url: string) => {
+    if (resultUrlRef.current) {
+      URL.revokeObjectURL(resultUrlRef.current);
+    }
+    resultUrlRef.current = url;
+    setResult(url);
+  }, []);
+
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setImage({ preview: URL.createObjectURL(file), name: file.name });
       setResult(null);
+      setFinalSize(null);
       setBrightness(100);
       setContrast(100);
       setSaturation(100);
+      setResizeEnabled(false);
+      setResizeWidth(null);
+      setTargetEnabled(false);
+      setTargetSizeValue(null);
+      setTargetSizeUnit("KB");
+      setFormat("jpeg");
+      setQuality(90);
     }
     e.target.value = "";
   }, []);
 
-  const processImage = async () => {
-    if (!image) return;
+  const processImage = useCallback(async () => {
+    if (!image || !sourceImageRef.current) return;
+
+    const runId = ++processRunIdRef.current;
     setIsProcessing(true);
 
-    const imgEl = new window.Image();
-    imgEl.crossOrigin = "anonymous";
-
-    await new Promise<void>((resolve) => {
-      imgEl.onload = () => resolve();
-      imgEl.src = image.preview;
-    });
-
+    const imgEl = sourceImageRef.current;
     let finalWidth = imgEl.width;
     let finalHeight = imgEl.height;
 
@@ -129,23 +181,54 @@ export default function AdjustPage() {
     const targetBytes = targetEnabled && targetSizeValue ? (targetSizeUnit === "KB" ? targetSizeValue * 1024 : targetSizeValue * 1024 * 1024) : null;
 
     const blob = await compressByQuality(canvas, mimeType, targetBytes);
+
+    if (processRunIdRef.current !== runId) {
+      return;
+    }
+
     if (blob) {
       const url = URL.createObjectURL(blob);
-      setResult(url);
+      setPreviewResult(url);
       setFinalSize(`${(blob.size / 1024).toFixed(1)} KB`);
     } else {
       // fallback: export with requested quality
       await new Promise<void>((resolve) => {
         canvas.toBlob((b) => {
+          if (processRunIdRef.current !== runId) {
+            resolve();
+            return;
+          }
+
           const url = URL.createObjectURL(b!);
-          setResult(url);
+          setPreviewResult(url);
           setFinalSize(b ? `${(b.size / 1024).toFixed(1)} KB` : null);
           resolve();
         }, mimeType, quality / 100);
       });
     }
-    setIsProcessing(false);
-  };
+    if (processRunIdRef.current === runId) {
+      setIsProcessing(false);
+    }
+  }, [image, resizeEnabled, resizeWidth, brightness, contrast, saturation, format, quality, targetEnabled, targetSizeValue, targetSizeUnit, setPreviewResult]);
+
+  useEffect(() => {
+    if (!image || !isSourceReady) return;
+
+    if (autoApplyTimeoutRef.current !== null) {
+      window.clearTimeout(autoApplyTimeoutRef.current);
+    }
+
+    autoApplyTimeoutRef.current = window.setTimeout(() => {
+      void processImage();
+    }, 140);
+
+    return () => {
+      if (autoApplyTimeoutRef.current !== null) {
+        window.clearTimeout(autoApplyTimeoutRef.current);
+        autoApplyTimeoutRef.current = null;
+      }
+    };
+  }, [image, isSourceReady, brightness, contrast, saturation, resizeEnabled, resizeWidth, format, quality, targetEnabled, targetSizeValue, targetSizeUnit, processImage]);
 
   const getFileExtension = () => format === "png" ? "png" : format === "jpeg" ? "jpg" : "webp";
 
@@ -213,7 +296,14 @@ export default function AdjustPage() {
                         <img src={result} alt="processed" className="max-w-full max-h-80 object-contain" />
                       ) : (
                         <div className="text-muted-foreground text-sm text-center max-w-sm">
-                          Adjust the sliders, then click Apply Changes to render the preview.
+                          The preview updates automatically after you release a control.
+                        </div>
+                      )}
+                      {isProcessing && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-background/25 backdrop-blur-[1px]">
+                          <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-xs font-medium text-white/80 shadow-xl">
+                            Updating preview...
+                          </div>
                         </div>
                       )}
                     </div>
@@ -247,13 +337,13 @@ export default function AdjustPage() {
                     </label>
                     <span className="text-sm text-muted-foreground">{brightness}%</span>
                   </div>
-                  <input
+                  <Slider
                     type="range"
                     min="0"
                     max="200"
                     value={brightness}
                     onChange={(e) => setBrightness(Number(e.target.value))}
-                    className="w-full accent-primary cursor-pointer"
+                    className="w-full cursor-pointer"
                   />
                 </div>
 
@@ -265,13 +355,13 @@ export default function AdjustPage() {
                     </label>
                     <span className="text-sm text-muted-foreground">{contrast}%</span>
                   </div>
-                  <input
+                  <Slider
                     type="range"
                     min="0"
                     max="200"
                     value={contrast}
                     onChange={(e) => setContrast(Number(e.target.value))}
-                    className="w-full accent-primary cursor-pointer"
+                    className="w-full cursor-pointer"
                   />
                 </div>
 
@@ -283,13 +373,13 @@ export default function AdjustPage() {
                     </label>
                     <span className="text-sm text-muted-foreground">{saturation}%</span>
                   </div>
-                  <input
+                  <Slider
                     type="range"
                     min="0"
                     max="200"
                     value={saturation}
                     onChange={(e) => setSaturation(Number(e.target.value))}
-                    className="w-full accent-primary cursor-pointer"
+                    className="w-full cursor-pointer"
                   />
                 </div>
               </div>
@@ -349,13 +439,13 @@ export default function AdjustPage() {
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold">Quality <span className="text-sm text-muted-foreground">({quality}%)</span></h3>
               </div>
-              <input
+              <Slider
                 type="range"
                 min="10"
                 max="100"
                 value={quality}
                 onChange={(e) => setQuality(Number(e.target.value))}
-                className="w-full accent-primary cursor-pointer"
+                className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-3">
                 <span>Smaller file</span>
@@ -398,20 +488,8 @@ export default function AdjustPage() {
               {finalSize && <div className="text-xs text-muted-foreground mt-2">Last export: {finalSize}</div>}
             </div>
 
-            <div className="mt-4">
-              <Button onClick={processImage} disabled={!image || isProcessing} className="w-full" size="lg">
-                {isProcessing ? (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  <>
-                    <Settings className="h-4 w-4 mr-2" />
-                    Apply Changes
-                  </>
-                )}
-              </Button>
+            <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-xs text-muted-foreground">
+              Preview updates automatically after you release a control.
             </div>
           </aside>
         </div>

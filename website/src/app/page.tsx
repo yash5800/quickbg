@@ -208,7 +208,7 @@ export default function Home() {
         className="hidden"
       />
 
-      <div className="premium-grid relative isolate overflow-hidden bg-[#050506] text-white">
+      <div className="landing-shell premium-grid relative isolate overflow-hidden bg-background text-foreground">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_18%,rgba(56,189,248,0.2),transparent_28%),radial-gradient(circle_at_78%_10%,rgba(167,139,250,0.18),transparent_26%),radial-gradient(circle_at_70%_82%,rgba(132,204,22,0.12),transparent_24%)]" />
         <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         <div className="absolute left-1/2 top-0 -z-10 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full bg-white/[0.03] blur-3xl" />

@@ -27,7 +27,7 @@ export function ThumbnailGallery({
       className="space-y-3"
     >
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-white">
+        <h3 className="text-sm font-semibold text-foreground">
           Uploaded Images ({images.length})
         </h3>
       </div>
@@ -82,7 +82,7 @@ function ThumbnailItem({
           "hover:border-primary/50 hover:shadow-md",
           isSelected
             ? "border-primary ring-2 ring-primary/30 shadow-lg"
-            : "border-white/10 hover:border-white/20"
+            : "border-border/70 hover:border-border"
         )}
       >
         <img
@@ -97,7 +97,7 @@ function ThumbnailItem({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
+              className="absolute inset-0 bg-gradient-to-t from-background/72 via-background/20 to-transparent"
             >
               <motion.div
                 aria-hidden
@@ -106,11 +106,11 @@ function ThumbnailItem({
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
               />
               <div className="absolute inset-x-2 bottom-2">
-                <div className="mb-1 flex items-center justify-between text-[10px] font-medium text-white/80">
+                <div className="mb-1 flex items-center justify-between text-[10px] font-medium text-foreground/80">
                   <span>{image.status === "queued" ? "Queued" : isFetchingResult ? "Fetching" : "Processing"}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
-                <div className="h-1 overflow-hidden rounded-full bg-white/20">
+                <div className="h-1 overflow-hidden rounded-full bg-border/60">
                   <motion.div
                     className="h-full rounded-full bg-gradient-to-r from-sky-300 to-lime-300"
                     initial={false}
@@ -124,7 +124,7 @@ function ThumbnailItem({
         </AnimatePresence>
 
         {/* Overlay on hover */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
+        <div className="absolute inset-0 bg-background/0 group-hover:bg-background/20 transition-colors duration-200" />
 
         {/* Status Badge */}
         <div className="absolute top-1 right-1 z-10">
@@ -164,7 +164,7 @@ function ThumbnailItem({
       </motion.button>
 
       {/* File name tooltip */}
-      <p className="text-xs text-muted-foreground mt-1 truncate group-hover:text-white transition-colors">
+      <p className="text-xs text-muted-foreground mt-1 truncate group-hover:text-foreground transition-colors">
         {image.file.name.substring(0, 15)}
         {image.file.name.length > 15 ? "..." : ""}
       </p>

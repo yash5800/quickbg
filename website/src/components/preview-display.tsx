@@ -94,7 +94,7 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 overflow-hidden bg-gradient-to-t from-black/72 via-black/48 to-black/32"
+      className="absolute inset-0 overflow-hidden bg-gradient-to-t from-background/72 via-background/48 to-background/24"
     >
       <motion.div
         aria-hidden
@@ -107,10 +107,10 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
           initial={{ scale: 0.96, y: 12 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.96, y: 12 }}
-          className="premium-surface w-full max-w-md rounded-[1.6rem] p-5 text-white"
+          className="premium-surface w-full max-w-md rounded-[1.6rem] p-5 text-foreground"
         >
           <div className="flex items-start gap-4">
-            <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05]">
+            <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/60">
               <motion.span
                 aria-hidden
                 className="absolute inset-0 rounded-2xl border border-sky-300/40"
@@ -130,20 +130,20 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
                   transition={{ duration: 0.2 }}
                 >
                   <p className="text-lg font-semibold">{statusCopy.title}</p>
-                  <p className="mt-1 text-sm leading-6 text-white/58">{statusCopy.description}</p>
+                  <p className="mt-1 text-sm leading-6 text-muted-foreground">{statusCopy.description}</p>
                 </motion.div>
               </AnimatePresence>
             </div>
           </div>
 
           <div className="mt-5">
-            <div className="mb-2 flex items-center justify-between text-xs text-white/50">
+            <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
               <span>Progress</span>
               <motion.span key={progress} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="tabular-nums">
                 {Math.round(progress)}%
               </motion.span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <div className="h-2 overflow-hidden rounded-full bg-border/60">
               <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-sky-300 via-cyan-200 to-lime-300"
                 initial={false}
@@ -163,10 +163,10 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
                   backgroundColor: step.done ? "rgba(190,242,100,0.1)" : "rgba(255,255,255,0.035)",
                 }}
                 transition={{ delay: index * 0.04 }}
-                className="rounded-xl border px-2 py-2 text-center text-[11px] font-medium text-white/70"
+                className="rounded-xl border px-2 py-2 text-center text-[11px] font-medium text-foreground/75"
               >
-                <div className="mx-auto mb-1 flex h-4 w-4 items-center justify-center rounded-full bg-black/25">
-                  {step.done ? <CheckCircle2 className="h-3 w-3 text-lime-300" /> : <span className="h-1.5 w-1.5 rounded-full bg-white/30" />}
+                <div className="mx-auto mb-1 flex h-4 w-4 items-center justify-center rounded-full bg-background/40">
+                  {step.done ? <CheckCircle2 className="h-3 w-3 text-lime-500" /> : <span className="h-1.5 w-1.5 rounded-full bg-foreground/30" />}
                 </div>
                 {step.label}
               </motion.div>
@@ -204,8 +204,8 @@ export function PreviewDisplay({
         <div
           className={
             isCompleted
-              ? "relative w-full aspect-video sm:aspect-square lg:aspect-auto lg:h-[500px] bg-black/20 flex items-center justify-center"
-              : "relative w-full max-h-[70vh] bg-black/20 flex items-center justify-center overflow-hidden"
+              ? "relative w-full aspect-video sm:aspect-square lg:aspect-auto lg:h-[500px] bg-background/40 flex items-center justify-center"
+              : "relative w-full max-h-[70vh] bg-background/40 flex items-center justify-center overflow-hidden"
           }
         >
           <AnimatePresence mode="wait">
@@ -235,7 +235,7 @@ export function PreviewDisplay({
                     initial={{ scale: 0.82, y: 8 }}
                     animate={{ scale: 1, y: 0 }}
                     transition={{ type: "spring", stiffness: 220, damping: 18 }}
-                    className="rounded-full border border-lime-300/40 bg-black/70 px-4 py-2 text-sm font-semibold text-lime-100 backdrop-blur"
+                    className="rounded-full border border-lime-300/40 bg-background/80 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur"
                   >
                     Background removed
                   </motion.div>

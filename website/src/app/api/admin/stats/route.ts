@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
   try {
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("testbgremover");
+    const db = client.db("bgremover");
 
     const jobs = db.collection<JobDocument>("jobs");
     const hourlyUsage = db.collection<HourlyUsage>("hourly_usage");

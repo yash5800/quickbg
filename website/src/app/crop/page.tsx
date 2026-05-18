@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Download, RefreshCw, Crop, ZoomIn, ZoomOut, Settings } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -381,13 +382,13 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
 
             <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Rotation ({rotation}°)</h3>
-              <input
+              <Slider
                 type="range"
                 min="-180"
                 max="180"
                 value={rotation}
                 onChange={(e) => setRotation(Number(e.target.value))}
-                className="w-full accent-primary cursor-pointer"
+                className="w-full cursor-pointer"
               />
               <p className="mt-3 text-xs text-muted-foreground">Rotate freely, then click Apply Crop to render the result.</p>
               <div className="flex justify-between text-xs text-muted-foreground mt-2">

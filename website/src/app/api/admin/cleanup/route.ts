@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   try {
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("testbgremover");
+    const db = client.db("bgremover");
     const jobs = db.collection<JobDocument>("jobs");
 
     // Delete jobs older than 7 days that are completed or failed

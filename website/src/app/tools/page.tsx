@@ -80,7 +80,7 @@ export default function ToolsPage() {
 
   return (
     <AppLayout>
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="tools-shell mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-10 flex items-center gap-3">
           <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]">
             <ArrowLeft className="h-5 w-5" />

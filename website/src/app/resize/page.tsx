@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Upload, Download, Maximize2, RefreshCw } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -188,13 +189,13 @@ export default function ResizePage() {
 
             <div className="p-6 rounded-2xl premium-surface">
               <h3 className="font-semibold mb-4">Scale ({scale}%)</h3>
-              <input
+              <Slider
                 type="range"
                 min="10"
                 max="400"
                 value={scale}
                 onChange={(e) => setScale(Number(e.target.value))}
-                className="w-full accent-primary"
+                className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
                 <span>10%</span>

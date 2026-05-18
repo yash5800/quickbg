@@ -123,7 +123,7 @@ const StatusIcon = statusConfig.icon;
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
             <h3
-              className="font-semibold text-sm truncate text-white"
+              className="font-semibold text-sm truncate text-foreground"
               title={image.file.name}
             >
               {image.file.name}
@@ -153,11 +153,11 @@ const StatusIcon = statusConfig.icon;
             )}
             {statusConfig.label}
           </Badge>
-          <span className="text-xs tabular-nums text-white/45">{Math.round(progress)}%</span>
+          <span className="text-xs tabular-nums text-muted-foreground">{Math.round(progress)}%</span>
         </div>
 
         <div className="space-y-3">
-          <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+          <div className="h-1.5 overflow-hidden rounded-full bg-border/60">
             <motion.div
               className="h-full rounded-full bg-gradient-to-r from-sky-300 via-cyan-200 to-lime-300"
               initial={false}
@@ -178,10 +178,10 @@ const StatusIcon = statusConfig.icon;
                 className={cn(
                   "rounded-lg border px-1.5 py-1.5 text-center text-[10px] font-medium",
                   step.done
-                    ? "border-lime-300/40 bg-lime-300/10 text-lime-100"
+                    ? "border-lime-300/40 bg-lime-300/10 text-lime-800 dark:text-lime-100"
                     : step.active
-                      ? "border-sky-300/40 bg-sky-300/10 text-sky-100"
-                      : "border-white/10 bg-white/[0.025] text-white/45"
+                      ? "border-sky-300/40 bg-sky-300/10 text-sky-800 dark:text-sky-100"
+                      : "border-border/70 bg-background/30 text-muted-foreground"
                 )}
               >
                 {step.label}
@@ -257,7 +257,7 @@ const StatusIcon = statusConfig.icon;
                       <Clock className="h-4 w-4" />
                       <span>Est. Wait</span>
                     </div>
-                    <span className="font-semibold text-white">
+                    <span className="font-semibold text-foreground">
                       ~{image.estimatedWaitSeconds}s
                     </span>
                   </div>
@@ -287,7 +287,7 @@ const StatusIcon = statusConfig.icon;
                     <Clock className="h-4 w-4" />
                     <span>Processing Time</span>
                   </div>
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-foreground">
                     {(image.duration / 1000).toFixed(2)}s
                   </span>
                 </div>
@@ -298,7 +298,7 @@ const StatusIcon = statusConfig.icon;
                       <Monitor className="h-4 w-4" />
                       <span>Resolution</span>
                     </div>
-                    <span className="font-semibold text-white">
+                    <span className="font-semibold text-foreground">
                       {image.dimensions.width} × {image.dimensions.height}
                     </span>
                   </div>

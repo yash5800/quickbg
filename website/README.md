@@ -110,7 +110,7 @@ NEXT_PUBLIC_WORKER_API_URL=http://localhost:8000
 
 # MongoDB (required for persistence)
 NEXT_MONGODB_URI=mongodb://...
-NEXT_MONGODB_DB=testbgremover
+NEXT_MONGODB_DB=bgremover
 
 # Internal token for worker communication from server-side routes only
 WORKER_INTERNAL_TOKEN=your-secret-token

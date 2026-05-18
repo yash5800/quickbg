@@ -23,7 +23,7 @@ export async function connectDB() {
   if (!mongoClient && uri) {
     mongoClient = new MongoClient(uri);
     await mongoClient.connect();
-    db = mongoClient.db("testbgremover");
+    db = mongoClient.db("bgremover");
     
     const jobs = db.collection<JobDocument>("jobs");
     

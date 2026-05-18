@@ -168,7 +168,7 @@ export default function EditorPage() {
           className="hidden"
         />
         <div
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+          className="remover-shell mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
           onDragEnter={handleDropZoneDragEnter}
           onDragLeave={handleDropZoneDragLeave}
           onDragOver={handleDropZoneDragOver}
@@ -216,7 +216,7 @@ export default function EditorPage() {
         className="hidden"
       />
       <div
-        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+        className="remover-shell mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
         onDragEnter={handleDropZoneDragEnter}
         onDragLeave={handleDropZoneDragLeave}
         onDragOver={handleDropZoneDragOver}
@@ -229,14 +229,14 @@ export default function EditorPage() {
           className="space-y-8"
         >
           {/* Header */}
-          <div className="border-b border-white/10 pb-6">
+          <div className="border-b border-border/70 pb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="h-9 w-9">
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
                 <div>
-                  <h1 className="text-2xl font-bold text-white">Processing</h1>
+                  <h1 className="text-2xl font-bold text-foreground">Processing</h1>
                   <p className="text-muted-foreground text-sm mt-0.5">
                     {images.length} {images.length === 1 ? "image" : "images"} selected
                     <span className="ml-2 text-amber-600 tabular-nums">

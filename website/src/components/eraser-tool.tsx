@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Eraser, Undo2, RotateCcw, Download, X, Loader2 } from "lucide-react";
 import getStroke from "perfect-freehand";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 
 interface Point {
@@ -37,6 +38,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
   const undoStackRef = useRef<ImageData[]>([]);
   const isDrawingRef = useRef(false);
   const canvasInitializedRef = useRef(false);
+  const previewFrameRef = useRef<number | null>(null);
 
   const getOptions = useCallback((size: number) => ({
     size: size,
@@ -67,6 +69,8 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
       }),
       new Promise<HTMLImageElement>((resolve) => {
         const img = new Image();
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
         img.crossOrigin = "anonymous";
         img.onload = () => resolve(img);
         img.src = processedImage;
@@ -164,6 +168,15 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     ctx.restore();
   }, [mode, brushSize, getOptions]);
 
+  const schedulePreviewDraw = useCallback(() => {
+    if (previewFrameRef.current !== null) return;
+
+    previewFrameRef.current = window.requestAnimationFrame(() => {
+      previewFrameRef.current = null;
+      drawPreviewStroke(currentPathRef.current);
+    });
+  }, [drawPreviewStroke]);
+
   // Apply stroke to canvas
   const applyStroke = useCallback(async (path: Point[]) => {
     const canvas = canvasRef.current;
@@ -173,9 +186,6 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     if (!ctx) return;
 
     setIsProcessing(true);
-
-    // Small delay for UX
-    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const stroke = getStroke(path, getOptions(brushSize));
     if (stroke.length < 2) {
@@ -251,13 +261,18 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     const lastPoint = currentPathRef.current[currentPathRef.current.length - 1];
     const dist = Math.hypot(pos.x - lastPoint.x, pos.y - lastPoint.y);
 
-    if (dist > 3) {
+    if (dist > 1.5) {
       currentPathRef.current.push({ x: pos.x, y: pos.y, pressure: 0.5 });
-      drawPreviewStroke(currentPathRef.current);
+      schedulePreviewDraw();
     }
-  }, [getCanvasPos, drawPreviewStroke]);
+  }, [getCanvasPos, schedulePreviewDraw]);
 
   const handlePointerUp = useCallback(async () => {
+    if (previewFrameRef.current !== null) {
+      window.cancelAnimationFrame(previewFrameRef.current);
+      previewFrameRef.current = null;
+    }
+
     if (currentPathRef.current.length > 1) {
       // Clear preview
       const previewCanvas = previewCanvasRef.current;
@@ -354,13 +369,13 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
 
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:w-auto sm:flex-none">
             <span className="text-sm text-muted-foreground font-medium shrink-0">Size:</span>
-            <input
+            <Slider
               type="range"
               min="10"
               max="300"
               value={brushSize}
               onChange={(e) => setBrushSize(Number(e.target.value))}
-              className="w-full sm:w-48 accent-primary"
+              className="w-full sm:w-48 cursor-pointer"
             />
             <span className="text-sm font-semibold w-14 shrink-0 text-center bg-muted px-2 py-1 rounded-md">
               {brushSize}px
@@ -384,14 +399,14 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
 
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:min-w-[280px] sm:flex-none">
             <span className="text-sm text-muted-foreground font-medium shrink-0">Zoom:</span>
-            <input
+            <Slider
               type="range"
               min="0.5"
               max="3"
               step="0.1"
               value={zoom}
               onChange={(e) => handleZoomChange(Number(e.target.value))}
-              className="w-full sm:w-40 accent-primary"
+              className="w-full sm:w-40 cursor-pointer"
             />
             <span className="text-sm font-semibold w-14 shrink-0 text-center bg-muted px-2 py-1 rounded-md">
               {Math.round(zoom * 100)}%

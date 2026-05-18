@@ -8,7 +8,7 @@ export function Slider({
   return (
     <input
       type="range"
-      className={cn("w-full accent-primary", className)}
+      className={cn("premium-slider w-full cursor-pointer touch-none", className)}
       {...props}
     />
   );

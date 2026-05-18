@@ -18,7 +18,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("testbgremover");
+    const db = client.db("bgremover");
 
     // Delete all user uploads
     const uploadsResult = await db.collection("user_uploads").deleteMany({});
