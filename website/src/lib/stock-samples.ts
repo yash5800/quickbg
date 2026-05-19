@@ -3,7 +3,7 @@ import st1 from "../../assets/stock_images/st1.jpg";
 import st2 from "../../assets/stock_images/st2.jpg";
 import st3 from "../../assets/stock_images/st3.jpg";
 import st4 from "../../assets/stock_images/st4.jpg";
-import st5 from "../../assets/stock_images/st5.jpg";
+import st5 from "../../assets/stock_images/st5.jpeg";
 import st6 from "../../assets/stock_images/st6.jpg";
 import st7 from "../../assets/stock_images/st7.jpg";
 import st8 from "../../assets/stock_images/st8.jpg";
@@ -49,10 +49,10 @@ export const stockSamples: StockSample[] = [
 
 export const stocksamples2: StockSample[] = [
   {
-    id: "car",
-    label: "Car",
+    id: "meme",
+    label: "Meme",
     description: "Fine edges",
-    fileName: "st5.jpg",
+    fileName: "st5.jpeg",
     image: st5,
   },
   {

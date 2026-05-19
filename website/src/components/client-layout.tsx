@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
-import { Menu, X, Info, Sparkles, Zap, Package } from "lucide-react";
+import { Menu, X, Info, Sparkles, Zap, Package, MessageSquare, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
 import { useCreditsSync } from "@/store/useCreditsSync";
@@ -109,9 +109,10 @@ function Header() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: "/", label: "Home", icon: Info },
+    { href: "/", label: "Home", icon: Home },
     { href: "/tools", label: "Tools", icon: Package },
     { href: "/remover", label: images.length > 0 ? `Remover (${images.length})` : "Remover", icon: Sparkles },
+    { href: "/contact", label: "Contact", icon: MessageSquare },
   ];
 
   return (

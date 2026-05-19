@@ -5,6 +5,7 @@ import Link from "next/link";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const contactEmail = process.env.NEXT_PUBLIC_FEEDBACK_TO_EMAIL?.trim();
 
   return (
     <footer className="border-t border-border/60 bg-background/80 backdrop-blur-md">
@@ -30,7 +31,7 @@ export function Footer() {
             </Button>
           )} */}
 
-          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground transition-colors">
               Privacy
             </Link>
@@ -47,7 +48,9 @@ export function Footer() {
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span>© {currentYear} QuickBG</span>
             <span className="text-border">•</span>
-            <span>Made with precision</span>
+            <Link href="/contact" className="hover:text-foreground transition-colors">
+              Contact
+            </Link>
           </div>
         </div>
       </div>

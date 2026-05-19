@@ -114,6 +114,9 @@ NEXT_MONGODB_DB=bgremover
 
 # Internal token for worker communication from server-side routes only
 WORKER_INTERNAL_TOKEN=your-secret-token
+
+# Feedback form recipient email
+NEXT_PUBLIC_FEEDBACK_TO_EMAIL=owner@example.com
 ```
 
 ## Build

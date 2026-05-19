@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare, Clock, Send, Loader2 } from "lucide-react";
 import emailjs from "emailjs-com";
 import { useToast } from "@/components/ui/toast";
+import Link from "next/link";
 
 export function FeedbackSection() {
   return (
@@ -73,41 +74,21 @@ function NoticeSection() {
 }
 
 function ActionButtons() {
-  const [showForm, setShowForm] = useState(false);
-
   return (
     <>
       <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-        <Button size="lg" className="gap-2" onClick={() => setShowForm(true)}>
-          <MessageSquare className="h-4 w-4" />
-          Share Feedback
-        </Button>
-        {/* <SupportButton /> */}
+        <Link href={"/contact"} className="flex items-center gap-2">
+          <Button size="lg" className="gap-2">
+            <MessageSquare className="h-4 w-4" />
+            Share Feedback
+          </Button>
+        </Link>
       </div>
-
-      {showForm && <FeedbackForm onClose={() => setShowForm(false)} />}
     </>
   );
 }
 
-// function SupportButton() {
-//   const donateUrl = process.env.NEXT_PUBLIC_DONATE_URL;
-
-//   if (!donateUrl) return null;
-
-//   return (
-//     <Button
-//       size="lg"
-//       className="gap-2 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 hover:from-rose-600 hover:via-pink-600 hover:to-purple-600 text-white border-0"
-//       onClick={() => window.open(donateUrl, "_blank")}
-//     >
-//       <Heart className="h-4 w-4" />
-//       Support Us
-//     </Button>
-//   );
-// }
-
-function FeedbackForm({ onClose }: { onClose: () => void }) {
+export function FeedbackForm({ onClose }: { onClose?: () => void }) {
   const { addToast } = useToast();
   const [isSending, setIsSending] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -115,12 +96,12 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-  const fallbackRecipientEmail = process.env.NEXT_PUBLIC_FEEDBACK_TO_EMAIL?.trim();
+  const recipientEmail = process.env.NEXT_PUBLIC_FEEDBACK_TO_EMAIL?.trim();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!publicKey || !serviceId || !templateId) {
+    if (!publicKey || !serviceId || !templateId || !recipientEmail) {
       addToast({
         type: "error",
         title: "Feedback service not configured",
@@ -143,14 +124,16 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
         email,
         message,
         title: "QuickBG Feedback",
-        client_email: fallbackRecipientEmail || email,
+        client_email: recipientEmail,
+        to_email: recipientEmail,
+        reply_to: email,
       }, publicKey);
       addToast({
         type: "success",
         title: "Feedback sent!",
         description: "Thank you for your message.",
       });
-      onClose();
+      onClose?.();
     } catch (error) {
       const description =
         typeof error === "object" && error !== null && "text" in error
@@ -208,9 +191,11 @@ function FeedbackForm({ onClose }: { onClose: () => void }) {
           />
         </div>
         <div className="flex gap-2 justify-end">
-          <Button type="button" variant="outline" onClick={onClose} size="sm">
-            Cancel
-          </Button>
+          {onClose && (
+            <Button type="button" variant="outline" onClick={onClose} size="sm">
+              Cancel
+            </Button>
+          )}
           <Button type="submit" disabled={isSending} size="sm" className="gap-2">
             {isSending ? (
               <Loader2 className="h-4 w-4 animate-spin" />
