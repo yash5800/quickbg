@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
-import { Menu, X, Info, Sparkles, Zap, Package, MessageSquare, Home } from "lucide-react";
+import { Menu, X, Sparkles, Zap, Package, MessageSquare, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
 import { useCreditsSync } from "@/store/useCreditsSync";

@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  const contactEmail = process.env.NEXT_PUBLIC_FEEDBACK_TO_EMAIL?.trim();
 
   return (
     <footer className="border-t border-border/60 bg-background/80 backdrop-blur-md">
@@ -19,17 +18,6 @@ export function Footer() {
           <p className="text-xs text-muted-foreground max-w-md">
             AI-powered background removal. Results may vary, please review before use.
           </p>
-
-          {/* {donateUrl && (
-            <Button
-              size="sm"
-              className="gap-2 text-xs h-8 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 hover:from-rose-600 hover:via-pink-600 hover:to-purple-600 text-white border-0"
-              onClick={() => window.open(donateUrl, "_blank")}
-            >
-              <Heart className="h-3.5 w-3.5" />
-              Support Us
-            </Button>
-          )} */}
 
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-foreground transition-colors">
