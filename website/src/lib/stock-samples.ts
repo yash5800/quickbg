@@ -3,10 +3,13 @@ import st1 from "../../assets/stock_images/st1.jpg";
 import st2 from "../../assets/stock_images/st2.jpg";
 import st3 from "../../assets/stock_images/st3.jpg";
 import st4 from "../../assets/stock_images/st4.jpg";
-import st5 from "../../assets/stock_images/st5.jpeg";
-import st6 from "../../assets/stock_images/st6.jpg";
+import st5 from "../../assets/stock_images/st5.png";
+import st6 from "../../assets/stock_images/st6.png";
 import st7 from "../../assets/stock_images/st7.jpg";
 import st8 from "../../assets/stock_images/st8.jpg";
+import st9 from "../../assets/stock_images/st9.png";
+import st10 from "../../assets/stock_images/st10.png";
+import st11 from "../../assets/stock_images/st11.png";
 
 export interface StockSample {
   id: string;
@@ -52,28 +55,52 @@ export const stocksamples2: StockSample[] = [
     id: "meme",
     label: "Meme",
     description: "Fine edges",
-    fileName: "st5.jpeg",
+    fileName: "st5.png",
     image: st5,
   },
   {
     id: "girl",
     label: "Portrait",
     description: "Outdoor light",
-    fileName: "st6.jpg",
+    fileName: "st6.png",
     image: st6,
   },
   {
-    id: "bug",
-    label: "Bug",
-    description: "Animal shot",
-    fileName: "st7.jpg",
-    image: st7,
+    id: "spider man",
+    label: "Spider Man",
+    description: "Super man",
+    fileName: "st10.jpg",
+    image: st10,
   },
   {
-    id: "boy",
-    label: "Boy",
-    description: "Outdoor style",
+    id: "salt boy",
+    label: "salt Boy",
+    description: "Salt boy",
+    fileName: "st9.png",
+    image: st9,
+  },
+]
+
+export const mainsample = [
+  {
+    id: "salt boy",
+    label: "salt Boy",
+    description: "Salt boy",
     fileName: "st8.jpg",
     image: st8,
   },
-]
+  {
+    id: "bug",
+    label: "bug",
+    description: "bug",
+    fileName: "st7.png",
+    image: st7,
+  },
+  {
+    id: "modi",
+    label: "Modi",
+    description: "Political leader",
+    fileName: "st11.png",
+    image: st11,
+  },
+] 

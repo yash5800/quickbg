@@ -27,7 +27,7 @@ import { DemoRevealSlider } from "@/components/demo-reveal-slider";
 import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
-import { StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
+import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
 
 const tools = [
   {
@@ -230,11 +230,11 @@ export default function Home() {
               <Typewriter
                 staticText="Remove backgrounds with "
                 phrases={[
-                  { text: "high precision", color: "#7C4DFF", speed: 80 },
-                  { text: "studio speed", color: "#FF6B6B", speed: 75 },
-                  { text: "no limit", color: "#00C853", speed: 80 },
-                  { text: "AI tools", color: "#00B4D8", speed: 80 },
-                  { text: "privacy-first", color: "#1976D2", speed: 85 },
+                  { text: "high precision.", color: "#7C4DFF", speed: 80 },
+                  { text: "studio speed.", color: "#FF6B6B", speed: 75 },
+                  { text: "no limit.", color: "#00C853", speed: 80 },
+                  { text: "AI tools.", color: "#00B4D8", speed: 80 },
+                  { text: "full privacy.", color: "#1976D2", speed: 85 },
                 ]}
                 loopDelay={2500}
               />
@@ -292,7 +292,7 @@ export default function Home() {
             <div className="absolute -left-4 bottom-14 z-20 hidden -rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur md:block">
               <div className="relative h-28 w-40 overflow-hidden rounded-2xl">
                 <Image
-                  src={stocksamples2[0].image}
+                  src={mainsample[2].image}
                   alt="Photo Shot"
                   fill
                   sizes="160px"
@@ -300,8 +300,8 @@ export default function Home() {
                   placeholder="blur"
                 />
               </div>
-              <div className="mt-3 text-xs font-semibold text-white">Photo Shot</div>
-              <div className="text-[11px] text-white/50">Ready for storefronts</div>
+              <div className="mt-3 text-xs font-semibold text-white">Memes Ready Images</div>
+              <div className="text-[11px] text-white/50">Maza nahi aa raha hai</div>
             </div>
             <div className="absolute bottom-6 right-0 z-20 hidden rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur sm:block">
               <div className="grid grid-cols-2 gap-2">
