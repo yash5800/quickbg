@@ -117,7 +117,7 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
                 animate={{ scale: [1, 1.35, 1], opacity: [0.7, 0, 0.7] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
               />
-              <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-amber-300" : "h-6 w-6 text-sky-300"} />
+              <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-amber-300 animate-spin" : "h-6 w-6 text-sky-300"} />
             </div>
 
             <div className="min-w-0 flex-1">
@@ -258,7 +258,9 @@ export function PreviewDisplay({
 
                 <AnimatePresence>
                   {showLoadingOverlay && (
-                    <ProcessingOverlay image={image} isResultFetching={isResultFetching} />
+                    <div className="hidden sm:block">
+                      <ProcessingOverlay image={image} isResultFetching={isResultFetching} />
+                    </div>
                   )}
                 </AnimatePresence>
               </motion.div>

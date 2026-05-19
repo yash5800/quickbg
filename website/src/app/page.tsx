@@ -27,7 +27,7 @@ import { DemoRevealSlider } from "@/components/demo-reveal-slider";
 import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
-import { StockSample, stockSamples } from "@/lib/stock-samples";
+import { StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
 
 const tools = [
   {
@@ -292,20 +292,20 @@ export default function Home() {
             <div className="absolute -left-4 bottom-14 z-20 hidden -rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur md:block">
               <div className="relative h-28 w-40 overflow-hidden rounded-2xl">
                 <Image
-                  src={stockSamples[2].image}
-                  alt="Product sample"
+                  src={stocksamples2[0].image}
+                  alt="Photo Shot"
                   fill
                   sizes="160px"
                   className="object-cover"
                   placeholder="blur"
                 />
               </div>
-              <div className="mt-3 text-xs font-semibold text-white">Product photos</div>
+              <div className="mt-3 text-xs font-semibold text-white">Photo Shot</div>
               <div className="text-[11px] text-white/50">Ready for storefronts</div>
             </div>
             <div className="absolute bottom-6 right-0 z-20 hidden rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur sm:block">
               <div className="grid grid-cols-2 gap-2">
-                {stockSamples.slice(0, 4).map((sample) => (
+                {stocksamples2.slice(0, 4).map((sample) => (
                   <div key={sample.id} className="relative h-16 w-16 overflow-hidden rounded-xl bg-white/5">
                     <Image
                       src={sample.image}
