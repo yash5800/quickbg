@@ -21,6 +21,17 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "QuickBG Team" }],
   robots: "index, follow",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png" },
+      { url: "/apple-touch-icon-180x180.png", sizes: "180x180" },
+    ],
+  },
   openGraph: {
     title: "Free AI Background Remover - Unlimited Images, 100% Original Quality",
       description: "quickbg.dev offers free AI background remover that preserves 100% of your image's original quality. Instantly detect and remove subjects, process unlimited images quickly, and get professional-quality cutouts with no signup required. Ideal for product photos, social posts, and bulk processing.",
@@ -47,13 +58,6 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
           crossOrigin="anonymous"
         />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png" />
-        <link rel="android-chrome" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
-        <link rel="android-chrome" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
-        <link rel="icon" href="/favicon.ico" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
