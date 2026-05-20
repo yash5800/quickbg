@@ -22,8 +22,9 @@ export default function CropPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement | null>(null);
   const [image, setImage] = useState<{ preview: string; width: number; height: number } | null>(null);
-  const [aspectRatio, setAspectRatio] = useState<number | null>(1);
+  const [aspectRatio, setAspectRatio] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<string | null>(null);
@@ -44,8 +45,10 @@ export default function CropPage() {
         const img = data[0];
         const imgEl = new Image();
         imgEl.onload = () => {
+          // Ensure a newly-loaded image defaults to Free (full-frame) crop
+          setAspectRatio(null);
           setImage({ preview: img.preview, width: imgEl.width, height: imgEl.height });
-          updateCropBoxForAspectRatio(imgEl.width, imgEl.height, 1);
+          updateCropBoxForAspectRatio(imgEl.width, imgEl.height, null);
         };
         imgEl.src = img.preview;
       }
@@ -53,9 +56,24 @@ export default function CropPage() {
     }
   }, []);
 
+  // When an image is set or aspect ratio/zoom changes, measure the displayed container
+  // and update the crop box so it is centered on the visible image area.
+  useEffect(() => {
+    if (!image) return;
+    // Measure after paint
+    requestAnimationFrame(() => {
+      const el = containerRef.current as HTMLDivElement | null;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const displayW = rect.width || image.width;
+      const displayH = rect.height || image.height;
+      updateCropBoxForAspectRatio(displayW, displayH, aspectRatio);
+    });
+  }, [image, aspectRatio, zoom]);
+
   const updateCropBoxForAspectRatio = (imgW: number, imgH: number, ratio: number | null) => {
     if (ratio === null) {
-      setCropBox({ x: 5, y: 5, w: 90, h: 90 });
+      setCropBox({ x: 0, y: 0, w: 100, h: 100 });
       return;
     }
 
@@ -79,21 +97,34 @@ export default function CropPage() {
   };
 
   useEffect(() => {
-    if (image && aspectRatio !== null) {
-      updateCropBoxForAspectRatio(image.width, image.height, aspectRatio);
+    const stored = sessionStorage.getItem("toolImages");
+    if (stored) {
+      const data = JSON.parse(stored);
+      if (data.length > 0) {
+        const img = data[0];
+        const imgEl = new Image();
+        imgEl.onload = () => {
+          setImage({ preview: img.preview, width: imgEl.width, height: imgEl.height });
+          updateCropBoxForAspectRatio(imgEl.width, imgEl.height, aspectRatio);
+        };
+        imgEl.src = img.preview;
+      }
+      sessionStorage.removeItem("toolImages");
     }
-  }, [aspectRatio, image]);
+  }, [aspectRatio]);
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const img = new window.Image();
       img.onload = () => {
+        // Reset to Free crop on new upload
+        setAspectRatio(null);
         setImage({ preview: URL.createObjectURL(file), width: img.width, height: img.height });
         setResult(null);
         setRotation(0);
         setZoom(1);
-        updateCropBoxForAspectRatio(img.width, img.height, aspectRatio);
+        updateCropBoxForAspectRatio(img.width, img.height, null);
       };
       img.src = URL.createObjectURL(file);
     }
@@ -174,47 +205,65 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
   const processImage = async () => {
     if (!image) return;
     setIsProcessing(true);
+    // Compute crop box in container coordinates, then map into the displayed image coordinates
+    const containerEl = containerRef.current;
+    const imgEl = imageRef.current;
+    if (!containerEl || !imgEl) {
+      setIsProcessing(false);
+      return;
+    }
 
-    const imgEl = new window.Image();
-    imgEl.crossOrigin = "anonymous";
-    imgEl.onload = async () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d")!;
+    const containerRect = containerEl.getBoundingClientRect();
+    const imageRect = imgEl.getBoundingClientRect();
 
-      // Apply zoom
-      const zoomedW = imgEl.width / zoom;
-      const zoomedH = imgEl.height / zoom;
-      const zoomOffsetX = (imgEl.width - zoomedW) / 2;
-      const zoomOffsetY = (imgEl.height - zoomedH) / 2;
+    // Crop box in container pixels
+    const cropLeft = containerRect.left + (cropBox.x / 100) * containerRect.width;
+    const cropTop = containerRect.top + (cropBox.y / 100) * containerRect.height;
+    const cropWpxDisplayed = (cropBox.w / 100) * containerRect.width;
+    const cropHpxDisplayed = (cropBox.h / 100) * containerRect.height;
 
-      // Calculate crop area in actual pixels
-      const cropX = ((cropBox.x / 100) * zoomedW) + zoomOffsetX;
-      const cropY = ((cropBox.y / 100) * zoomedH) + zoomOffsetY;
-      const cropW = (cropBox.w / 100) * zoomedW;
-      const cropH = (cropBox.h / 100) * zoomedH;
+    // Compute intersection relative to the displayed image
+    const relLeft = cropLeft - imageRect.left;
+    const relTop = cropTop - imageRect.top;
+
+    // Convert to fractions of the displayed image (clamped)
+    const fracX = Math.max(0, Math.min(1, relLeft / imageRect.width));
+    const fracY = Math.max(0, Math.min(1, relTop / imageRect.height));
+    const fracW = Math.max(0, Math.min(1, cropWpxDisplayed / imageRect.width));
+    const fracH = Math.max(0, Math.min(1, cropHpxDisplayed / imageRect.height));
+
+    // Map to natural image pixels
+    const natImg = new window.Image();
+    natImg.crossOrigin = "anonymous";
+    natImg.onload = () => {
+      const natW = natImg.width;
+      const natH = natImg.height;
+
+      const cropXpx = fracX * natW;
+      const cropYpx = fracY * natH;
+      const cropWpx = fracW * natW;
+      const cropHpx = fracH * natH;
 
       // Calculate rotated dimensions
-      let finalW = cropW;
-      let finalH = cropH;
-
+      let finalW = cropWpx;
+      let finalH = cropHpx;
       if (rotation !== 0) {
         const rad = (rotation * Math.PI) / 180;
         const cos = Math.abs(Math.cos(rad));
         const sin = Math.abs(Math.sin(rad));
-        finalW = cropW * cos + cropH * sin;
-        finalH = cropW * sin + cropH * cos;
+        finalW = cropWpx * cos + cropHpx * sin;
+        finalH = cropWpx * sin + cropHpx * cos;
       }
 
-      canvas.width = finalW;
-      canvas.height = finalH;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d")!;
+      canvas.width = Math.max(1, Math.round(finalW));
+      canvas.height = Math.max(1, Math.round(finalH));
 
       ctx.save();
-      ctx.translate(finalW / 2, finalH / 2);
+      ctx.translate(canvas.width / 2, canvas.height / 2);
       ctx.rotate((rotation * Math.PI) / 180);
-      ctx.drawImage(imgEl,
-        cropX, cropY, cropW, cropH,
-        -finalW / 2, -finalH / 2, finalW, finalH
-      );
+      ctx.drawImage(natImg, cropXpx, cropYpx, cropWpx, cropHpx, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
       ctx.restore();
 
       canvas.toBlob((blob) => {
@@ -223,7 +272,7 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
         setIsProcessing(false);
       }, "image/png");
     };
-    imgEl.src = image.preview;
+    natImg.src = image.preview;
   };
 
   return (
@@ -260,19 +309,19 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                 </div>
               </div>
             ) : (
-              <div className="relative rounded-2xl overflow-hidden bg-black premium-surface">
+              <div className="relative rounded-2xl overflow-hidden bg-black premium-surface flex items-center justify-center">
                 <div
                   ref={containerRef}
-                  className="relative select-none overflow-hidden"
-                  style={{ maxHeight: "60vh" }}
+                  className="relative inline-block select-none overflow-hidden w-full"
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMouseLeave={handleMouseUp}
                 >
                   <img
+                    ref={(el) => { imageRef.current = el; }}
                     src={image.preview}
                     alt=""
-                    className="w-full h-auto"
+                    className="block max-w-full max-h-[60vh] w-auto h-auto mx-auto"
                     draggable={false}
                     style={{ transform: `scale(${zoom})` }}
                   />
@@ -302,14 +351,12 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                     }}
                     onMouseDown={(e) => handleMouseDown(e, "move")}
                   >
-                    {/* Grid lines */}
                     <div className="absolute inset-0 grid grid-cols-3 grid-rows-3">
                       {[...Array(9)].map((_, i) => (
                         <div key={i} className="border border-white/30" />
                       ))}
                     </div>
 
-                    {/* Corner handles */}
                     {["nw", "ne", "sw", "se"].map((pos) => (
                       <div
                         key={pos}
@@ -323,7 +370,6 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                       />
                     ))}
 
-                    {/* Edge handles */}
                     {["n", "s", "e", "w"].map((pos) => (
                       <div
                         key={pos}
@@ -337,23 +383,24 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                       />
                     ))}
                   </div>
-                </div>
 
-                {/* Preview result */}
-                {result && (
-                  <div className="mt-4 border-t border-white/10 pt-4">
-                    <h3 className="text-sm font-semibold mb-2">Preview</h3>
-                    <div className="relative rounded-lg overflow-hidden bg-muted">
-                      <img src={result} alt="" className="w-full h-auto" />
-                      <a href={result} download="cropped.png" className="absolute top-4 right-4">
-                        <Button size="sm">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
-                )}
+                </div>
+              </div>
+            )}
+
+            {/* Render result preview below the main image so it doesn't compress the original */}
+            {result && (
+              <div className="mt-4 border-t border-white/10 pt-4">
+                <h3 className="text-sm font-semibold mb-2">Preview</h3>
+                <div className="relative rounded-lg overflow-hidden bg-muted">
+                  <img src={result} alt="" className="w-full h-auto" />
+                  <a href={result} download="cropped.png" className="absolute top-4 right-4">
+                    <Button size="sm">
+                      <Download className="h-4 w-4 mr-2" />
+                      Download
+                    </Button>
+                  </a>
+                </div>
               </div>
             )}
           </div>

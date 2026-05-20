@@ -13,19 +13,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         aria-hidden="true"
         className="pointer-events-none absolute left-0 top-24 h-56 w-56 rounded-full bg-sky-300/10 blur-3xl"
         animate={prefersReducedMotion ? undefined : { x: [0, 24, 0], y: [0, -18, 0] }}
-        transition={prefersReducedMotion ? undefined : { duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        transition={prefersReducedMotion ? undefined : { duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute right-0 top-1/3 h-72 w-72 rounded-full bg-fuchsia-400/10 blur-3xl"
         animate={prefersReducedMotion ? undefined : { x: [0, -26, 0], y: [0, 22, 0] }}
-        transition={prefersReducedMotion ? undefined : { duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        transition={prefersReducedMotion ? undefined : { duration: 20, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="pointer-events-none absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-lime-400/8 blur-3xl"
         animate={prefersReducedMotion ? undefined : { scale: [1, 1.08, 1] }}
-        transition={prefersReducedMotion ? undefined : { duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        transition={prefersReducedMotion ? undefined : { duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
       <div className="relative z-10">
         {children}

@@ -31,19 +31,22 @@ export function DemoRevealSlider() {
         aria-hidden="true"
         className="absolute -left-6 top-16 h-20 w-20 rounded-[1.4rem] border border-white/10 bg-lime-300/90 shadow-[0_24px_90px_-28px_rgba(190,242,100,0.8)]"
         animate={prefersReducedMotion ? undefined : { y: [0, -10, 0], rotate: [-8, -2, -8] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute -right-3 bottom-24 h-16 w-16 rounded-full border border-white/10 bg-sky-300/20 backdrop-blur"
         animate={prefersReducedMotion ? undefined : { y: [0, 12, 0], x: [0, -8, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <motion.section
         className="premium-glass relative z-10 overflow-hidden rounded-[2rem] border border-white/10 p-3 shadow-[0_42px_120px_-48px_rgba(0,0,0,0.95)] sm:rounded-[2.4rem] sm:p-4"
         animate={prefersReducedMotion ? undefined : { y: [0, -8, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        style={{ willChange: "transform" }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
       >
         <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
         <div className="relative overflow-hidden rounded-[1.55rem] border border-white/10 bg-[#070707] sm:rounded-[2rem]">
@@ -105,7 +108,6 @@ export function DemoRevealSlider() {
                     alt="Processed demo image with background removed"
                     fill
                     priority
-                    sizes="(max-width: 768px) 100vw, 520px"
                     className="object-cover"
                   />
                 </div>
@@ -120,7 +122,6 @@ export function DemoRevealSlider() {
                     alt="Original demo image"
                     fill
                     priority
-                    sizes="(max-width: 768px) 100vw, 520px"
                     className="object-cover"
                   />
                 </motion.div>
