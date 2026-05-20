@@ -544,7 +544,7 @@ export default function Home() {
                     )}
                   </div>
                   <h3 className="relative mt-5 text-base font-semibold text-white">{tool.title}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-white/50 max-w-[200px] max-md:max-w-[180px]">{tool.description}</p>
+                  <p className="relative mt-2 text-sm leading-6 text-white/50 max-w-[200px] max-md:w-[130px]">{tool.description}</p>
                   <div className="relative mt-5 inline-flex items-center gap-2 text-xs font-medium text-white/60 transition group-hover:text-white">
                     Open tool
                     <ArrowUpRight className="h-3.5 w-3.5" />
@@ -679,7 +679,7 @@ export default function Home() {
                     </motion.div>
                   </AnimatePresence>
                   {/* Fixed caption panel: stays visually anchored while inner text updates */}
-                  <div className="absolute bottom-2 p-4 sm:p-5 z-20">
+                  <div className="absolute bottom-2 left-4 right-4 p-4 sm:p-5 z-20">
                     <div className="max-w-md rounded-[1.2rem] border border-white/10 bg-black/55 p-4 backdrop-blur">
                       <div className="flex items-start justify-between gap-3">
                         <AnimatePresence mode="wait">
