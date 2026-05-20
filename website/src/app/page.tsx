@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -17,7 +17,7 @@ import {
   Wand2,
   Zap,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,6 +28,7 @@ import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
+import { adjust, bgblur, bgremove, bgreplace, crop, resize } from "@/lib/demo-smaples";
 
 const tools = [
   {
@@ -39,6 +40,7 @@ const tools = [
     href: "/remover",
     accent: "text-sky-300",
     glow: "from-sky-500/20",
+    demo_image: bgremove
   },
   {
     id: "resize",
@@ -49,6 +51,7 @@ const tools = [
     href: "/resize",
     accent: "text-violet-300",
     glow: "from-violet-500/20",
+    demo_image: resize
   },
   {
     id: "replace-bg",
@@ -59,6 +62,7 @@ const tools = [
     href: "/replace-bg",
     accent: "text-emerald-300",
     glow: "from-emerald-500/20",
+    demo_image: bgreplace
   },
   {
     id: "blur-bg",
@@ -69,6 +73,7 @@ const tools = [
     href: "/blur-bg",
     accent: "text-rose-300",
     glow: "from-rose-500/20",
+    demo_image: bgblur
   },
   {
     id: "crop",
@@ -79,6 +84,7 @@ const tools = [
     href: "/crop",
     accent: "text-lime-300",
     glow: "from-lime-500/20",
+    demo_image: crop
   },
   {
     id: "adjust",
@@ -89,6 +95,7 @@ const tools = [
     href: "/adjust",
     accent: "text-cyan-300",
     glow: "from-cyan-500/20",
+    demo_image: adjust
   },
 ];
 
@@ -97,6 +104,77 @@ const trustStats = [
   { label: "Batch ready", value: "Multi" },
   { label: "Export format", value: "PNG" },
   { label: "Resolution", value: "Full" },
+];
+
+const launchTags = [
+  "Ecommerce",
+  "Marketplace",
+  "Ads",
+  "Social",
+  "Portfolio",
+  "Agency",
+  "Bulk Workflows",
+];
+
+const launchCards = [
+  {
+    id: "catalog-stack",
+    title: "Catalog Pack",
+    description: "Remove, crop, and resize in one clean flow.",
+    href: "/tools",
+    image: stockSamples[2].image,
+    rotate: "-rotate-[7deg]",
+    layout: "left-0 top-10",
+  },
+  {
+    id: "portrait-social",
+    title: "Social Portrait",
+    description: "Create profile-ready images in a single upload.",
+    href: "/remover",
+    image: stockSamples[1].image,
+    rotate: "rotate-[4deg]",
+    layout: "left-20 top-2",
+  },
+  {
+    id: "quick-export",
+    title: "Quick Export",
+    description: "Transparent PNG output ready for publishing.",
+    href: "/resize",
+    image: mainsample[0].image,
+    rotate: "-rotate-[1deg]",
+    layout: "left-36 top-16",
+  },
+];
+
+const showcaseSlides = [
+  {
+    id: "product-shot",
+    title: "Catalog Pack",
+    description: "Clean marketplace-ready product imagery with fast cutouts.",
+    tag: "Ecommerce",
+    image: mainsample[0].image,
+  },
+  {
+    id: "portrait-shot",
+    title: "Social Portrait",
+    description: "Creator and profile imagery that feels polished on every upload.",
+    tag: "Social",
+    image: mainsample[2].image,
+  },
+  {
+    id: "creative-shot",
+    title: "Quick Export",
+    description: "Transparent PNGs ready for branding, ads, and thumbnails.",
+    tag: "Branding",
+    image: mainsample[4].image,
+  },
+  {
+    id: "anime-shot",
+    title: "Creative Cutout",
+    description: "Stylized samples for portfolios and creative campaigns.",
+    tag: "Portfolio",
+    image: mainsample[3].image,
+  },
 ];
 
 const heroNotes = [
@@ -117,10 +195,23 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
   const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
   const [isDropActive, setIsDropActive] = useState(false);
+  const [activeShowcaseIndex, setActiveShowcaseIndex] = useState(0);
 
   const motionTransition = prefersReducedMotion
     ? { duration: 0 }
-    : { duration: 0.65, ease: "easeOut" as const };
+    : { duration: 0.72, ease: "easeOut" as const };
+
+  useEffect(() => {
+    if (prefersReducedMotion || showcaseSlides.length < 2) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setActiveShowcaseIndex((current) => (current + 1) % showcaseSlides.length);
+    }, 3200);
+
+    return () => window.clearInterval(intervalId);
+  }, [prefersReducedMotion]);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -292,7 +383,7 @@ export default function Home() {
             <div className="absolute -left-4 bottom-14 z-20 hidden -rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur md:block">
               <div className="relative h-28 w-40 overflow-hidden rounded-2xl">
                 <Image
-                  src={mainsample[2].image}
+                  src={mainsample[1].image}
                   alt="Photo Shot"
                   fill
                   sizes="160px"
@@ -421,7 +512,6 @@ export default function Home() {
                       src={sample.image}
                       alt={`${sample.label} sample`}
                       fill
-                      sizes="(max-width: 640px) 50vw, 240px"
                       className="object-cover transition duration-500 group-hover:scale-105"
                       placeholder="blur"
                     />
@@ -459,7 +549,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 relative">
               {tools.map((tool) => (
                 <Link
                   key={tool.id}
@@ -484,10 +574,20 @@ export default function Home() {
                     )}
                   </div>
                   <h3 className="relative mt-5 text-base font-semibold text-white">{tool.title}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-white/50">{tool.description}</p>
+                  <p className="relative mt-2 text-sm leading-6 text-white/50 max-w-[200px] max-md:max-w-[180px]">{tool.description}</p>
                   <div className="relative mt-5 inline-flex items-center gap-2 text-xs font-medium text-white/60 transition group-hover:text-white">
                     Open tool
                     <ArrowUpRight className="h-3.5 w-3.5" />
+                  </div>
+                  <div className="hover:-bottom-2 hover:-right-4 absolute -right-5 -bottom-3 z-20 -rotate-12 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-1 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur transition-all">
+                    <div className="relative h-44 w-44 overflow-hidden rounded-2xl">
+                      <Image
+                        src={tool.demo_image}
+                        alt="Photo Shot"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -507,6 +607,151 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          <section className="relative mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-black/35 px-6 py-10 sm:px-8 lg:px-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_15%,rgba(56,189,248,0.14),transparent_42%),radial-gradient(circle_at_78%_80%,rgba(163,230,53,0.1),transparent_36%)]" />
+            <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">Website ideas your users can see</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
+                  Showcase real use cases without repeating the main upload CTA.
+                </h2>
+                <p className="mt-5 max-w-2xl text-base leading-8 text-white/60">
+                  This section works as a visual examples block for storefronts, agencies, creators, and ecommerce workflows. It adds context after the user has already seen the main action.
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {launchTags.map((tag, index) => (
+                    <span
+                      key={tag}
+                      className={cn(
+                        "rounded-full border px-3 py-1.5 text-xs font-medium",
+                        index % 3 === 0 && "border-sky-300/35 bg-sky-300/10 text-sky-200",
+                        index % 3 === 1 && "border-lime-300/30 bg-lime-300/10 text-lime-200",
+                        index % 3 === 2 && "border-white/15 bg-white/5 text-white/70"
+                      )}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-lime-200 sm:w-auto"
+                  >
+                    Upload and start
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </button>
+                  <Link
+                    href="/tools"
+                    className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-5 text-sm font-semibold text-white/80 transition duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.08]"
+                  >
+                    Explore all tools
+                    <ArrowUpRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="relative mx-auto w-full max-w-[32rem] sm:h-[25rem]">
+                <div className="relative h-[23rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-black/60 p-3 shadow-[0_28px_90px_-45px_rgba(0,0,0,0.95)] backdrop-blur sm:h-[25rem]">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(56,189,248,0.15),transparent_38%),radial-gradient(circle_at_80%_80%,rgba(163,230,53,0.08),transparent_36%)]" />
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={showcaseSlides[activeShowcaseIndex].id}
+                      initial={prefersReducedMotion ? false : { opacity: 0, y: 14, scale: 0.98 }}
+                      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+                      exit={prefersReducedMotion ? undefined : { opacity: 0, y: -10, scale: 0.985 }}
+                      transition={{ duration: 0.55, ease: "easeOut" }}
+                      className="relative z-10 h-full"
+                    >
+                      <div className="relative h-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/5">
+                        <Image
+                          src={showcaseSlides[activeShowcaseIndex].image}
+                          alt={showcaseSlides[activeShowcaseIndex].title}
+                          fill
+                          className="object-cover"
+                          placeholder="blur"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+                        <div className="absolute left-4 right-4 top-4 flex items-center justify-between gap-3">
+                          <AnimatePresence mode="wait">
+                            <motion.span
+                              key={showcaseSlides[activeShowcaseIndex].tag}
+                              initial={prefersReducedMotion ? false : { opacity: 0, x: -8 }}
+                              animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                              exit={prefersReducedMotion ? undefined : { opacity: 0, x: 8 }}
+                              transition={{ duration: 0.25, ease: "easeOut" }}
+                              className="rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/70 backdrop-blur"
+                            >
+                              {showcaseSlides[activeShowcaseIndex].tag}
+                            </motion.span>
+                          </AnimatePresence>
+                          <AnimatePresence mode="wait">
+                            <motion.span
+                              key={showcaseSlides[activeShowcaseIndex].title}
+                              initial={prefersReducedMotion ? false : { opacity: 0, x: 8 }}
+                              animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                              exit={prefersReducedMotion ? undefined : { opacity: 0, x: -8 }}
+                              transition={{ duration: 0.25, ease: "easeOut" }}
+                              className="rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[11px] font-medium text-white/65 backdrop-blur"
+                            >
+                              {showcaseSlides[activeShowcaseIndex].title}
+                            </motion.span>
+                          </AnimatePresence>
+                        </div>
+
+                        {/* caption moved outside the animated image div so the outer card stays fixed */}
+                      </div>
+                    </motion.div>
+                  </AnimatePresence>
+                  {/* Fixed caption panel: stays visually anchored while inner text updates */}
+                  <div className="absolute bottom-2 p-4 sm:p-5 z-20">
+                    <div className="max-w-md rounded-[1.2rem] border border-white/10 bg-black/55 p-4 backdrop-blur">
+                      <div className="flex items-start justify-between gap-3">
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={showcaseSlides[activeShowcaseIndex].id}
+                            initial={prefersReducedMotion ? false : { opacity: 0, x: 14 }}
+                            animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                            exit={prefersReducedMotion ? undefined : { opacity: 0, x: -14 }}
+                            transition={{ duration: 0.35, ease: "easeOut" }}
+                            className="min-w-0"
+                          >
+                            <h3 className="text-lg font-semibold text-white sm:text-xl">
+                              {showcaseSlides[activeShowcaseIndex].title}
+                            </h3>
+                            <p className="mt-1 text-sm leading-6 text-white/60">
+                              {showcaseSlides[activeShowcaseIndex].description}
+                            </p>
+                          </motion.div>
+                        </AnimatePresence>
+                      </div>
+
+                      <div className="mt-4 flex gap-2">
+                        {showcaseSlides.map((slide, index) => (
+                          <button
+                            key={slide.id}
+                            type="button"
+                            onClick={() => setActiveShowcaseIndex(index)}
+                            className={cn(
+                              "h-2.5 rounded-full transition-all duration-300",
+                              index === activeShowcaseIndex ? "w-8 bg-white" : "w-2.5 bg-white/35 hover:bg-white/60"
+                            )}
+                            aria-label={`Show ${slide.title}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
         </section>
       </div>
     </AppLayout>

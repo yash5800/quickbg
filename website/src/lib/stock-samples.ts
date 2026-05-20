@@ -5,11 +5,13 @@ import st3 from "../../assets/stock_images/st3.jpg";
 import st4 from "../../assets/stock_images/st4.jpg";
 import st5 from "../../assets/stock_images/st5.png";
 import st6 from "../../assets/stock_images/st6.png";
-import st7 from "../../assets/stock_images/st7.jpg";
 import st8 from "../../assets/stock_images/st8.jpg";
 import st9 from "../../assets/stock_images/st9.png";
 import st10 from "../../assets/stock_images/st10.png";
 import st11 from "../../assets/stock_images/st11.png";
+import st13 from "../../assets/stock_images/st13.jpg";
+import st14 from "../../assets/stock_images/st14.jpg";
+import st15 from "../../assets/stock_images/st15.jpg";
 
 export interface StockSample {
   id: string;
@@ -90,17 +92,31 @@ export const mainsample = [
     image: st8,
   },
   {
-    id: "bug",
-    label: "bug",
-    description: "bug",
-    fileName: "st7.png",
-    image: st7,
-  },
-  {
     id: "modi",
     label: "Modi",
     description: "Political leader",
     fileName: "st11.png",
     image: st11,
   },
+  {
+    id: "sports car",
+    label: "Sports Car",
+    description: "Sports car",
+    fileName: "st15.png",
+    image: st15,
+  },
+  {
+    id: "animal lady",
+    label: "Animal Lady",
+    description: "Animal lady",
+    fileName: "st14.jpg",
+    image: st14,
+  },
+  {
+    id: "highking boy",
+    label: "Highking Boy",
+    description: "Highking boy",
+    fileName: "st13.png",
+    image: st13,
+  }
 ] 
