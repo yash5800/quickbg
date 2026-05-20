@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/components/query-provider";
 import { ImageProvider, useImages } from "@/contexts/ImageContext";
@@ -13,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
-import { Menu, X, Sparkles, Zap, Package, MessageSquare, Home } from "lucide-react";
+import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
 import { useCreditsSync } from "@/store/useCreditsSync";
@@ -74,6 +75,56 @@ function FloatingCredits() {
   );
 }
 
+function ScrollToTopButton() {
+  const prefersReducedMotion = useReducedMotion();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      setIsVisible(window.scrollY > 320);
+    };
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
+    };
+  }, []);
+
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+  };
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: 16, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.96 }}
+          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
+          className="fixed bottom-4 right-4 z-[75] md:bottom-6 md:right-6"
+        >
+          <Button
+            type="button"
+            onClick={handleClick}
+            aria-label="Scroll to top"
+            className={cn(
+              "group h-12 w-12 rounded-full border border-border/70 bg-background/90 p-0 shadow-lg backdrop-blur-md hover:bg-primary hover:text-primary-foreground hover:shadow-xl",
+              "focus-visible:ring-2 focus-visible:ring-ring/80"
+            )}
+          >
+            <ArrowUp className="h-5 w-5 transition-transform duration-200 group-hover:-translate-y-0.5" />
+          </Button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdminArea = pathname.startsWith("/admin");
@@ -93,6 +144,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                 <GlobalDropZone>{children}</GlobalDropZone>
               </main>
               {!isAdminArea && <FloatingCredits />}
+              <ScrollToTopButton />
               {!isAdminArea && <Footer />}
               {!isAdminArea && <CookieConsentBanner />}
             </div>
