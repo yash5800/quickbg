@@ -107,42 +107,42 @@ const trustStats = [
 ];
 
 const launchTags = [
-  "Ecommerce",
-  "Marketplace",
-  "Ads",
-  "Social",
-  "Portfolio",
-  "Agency",
-  "Bulk Workflows",
+  "Background removal",
+  "Batch exports",
+  "Smart resize",
+  "Background replace",
+  "Blur effects",
+  "Crop cleanup",
+  "Quick edits",
 ];
 
 const showcaseSlides = [
   {
     id: "product-shot",
-    title: "Catalog Pack",
-    description: "Clean marketplace-ready product imagery with fast cutouts.",
-    tag: "Ecommerce",
+    title: "Product cutout",
+    description: "Clean product photos for marketplace listings and storefront uploads.",
+    tag: "Remover",
     image: mainsample[0].image,
   },
   {
     id: "portrait-shot",
-    title: "Social Portrait",
-    description: "Creator and profile imagery that feels polished on every upload.",
-    tag: "Social",
+    title: "Portrait cleanup",
+    description: "Refine portraits for profile images, creator assets, and social posts.",
+    tag: "Profiles",
     image: mainsample[2].image,
   },
   {
     id: "creative-shot",
-    title: "Quick Export",
-    description: "Transparent PNGs ready for branding, ads, and thumbnails.",
-    tag: "Branding",
+    title: "PNG export",
+    description: "Export transparent images ready for ads, thumbnails, and brand kits.",
+    tag: "Export",
     image: mainsample[4].image,
   },
   {
     id: "anime-shot",
-    title: "Creative Cutout",
-    description: "Stylized samples for portfolios and creative campaigns.",
-    tag: "Portfolio",
+    title: "Style edit",
+    description: "Use blur, crop, resize, and replace tools to finish the image.",
+    tag: "Editor",
     image: mainsample[3].image,
   },
 ];
@@ -582,12 +582,12 @@ export default function Home() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_15%,rgba(56,189,248,0.14),transparent_42%),radial-gradient(circle_at_78%_80%,rgba(163,230,53,0.1),transparent_36%)]" />
             <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">Website ideas your users can see</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">QuickBG in action</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-                  Showcase real use cases without repeating the main upload CTA.
+                  Built for product cutouts, transparent exports, and fast image prep.
                 </h2>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-white/60">
-                  This section works as a visual examples block for storefronts, agencies, creators, and ecommerce workflows. It adds context after the user has already seen the main action.
+                  Show users how QuickBG handles removals, resizing, replacement, blur, and crop edits in one workflow.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
@@ -612,14 +612,14 @@ export default function Home() {
                     onClick={() => fileInputRef.current?.click()}
                     className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-lime-200 sm:w-auto"
                   >
-                    Upload and start
+                    Upload and remove
                     <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                   <Link
                     href="/tools"
                     className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-5 text-sm font-semibold text-white/80 transition duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.08]"
                   >
-                    Explore all tools
+                    Explore QuickBG tools
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
                 </div>
