@@ -116,36 +116,6 @@ const launchTags = [
   "Bulk Workflows",
 ];
 
-const launchCards = [
-  {
-    id: "catalog-stack",
-    title: "Catalog Pack",
-    description: "Remove, crop, and resize in one clean flow.",
-    href: "/tools",
-    image: stockSamples[2].image,
-    rotate: "-rotate-[7deg]",
-    layout: "left-0 top-10",
-  },
-  {
-    id: "portrait-social",
-    title: "Social Portrait",
-    description: "Create profile-ready images in a single upload.",
-    href: "/remover",
-    image: stockSamples[1].image,
-    rotate: "rotate-[4deg]",
-    layout: "left-20 top-2",
-  },
-  {
-    id: "quick-export",
-    title: "Quick Export",
-    description: "Transparent PNG output ready for publishing.",
-    href: "/resize",
-    image: mainsample[0].image,
-    rotate: "-rotate-[1deg]",
-    layout: "left-36 top-16",
-  },
-];
-
 const showcaseSlides = [
   {
     id: "product-shot",
