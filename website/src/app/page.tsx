@@ -356,7 +356,6 @@ export default function Home() {
                   src={mainsample[1].image}
                   alt="Photo Shot"
                   fill
-                  sizes="160px"
                   className="object-cover"
                   placeholder="blur"
                 />
@@ -372,7 +371,6 @@ export default function Home() {
                       src={sample.image}
                       alt={`${sample.label} preview`}
                       fill
-                      sizes="64px"
                       className="object-cover"
                       placeholder="blur"
                     />
