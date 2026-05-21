@@ -52,7 +52,7 @@ export class WorkerApiError extends Error {
 }
 
 export async function submitImage(file: File): Promise<JobQueuedResponse> {
-  console.log("[Worker API] submitImage called:", file.name, file.size);
+  console.log("[submitImage] 📤 Starting upload:", file.name, `(${(file.size / 1024).toFixed(2)}KB)`);
 
   if (!WORKER_API_BASE) {
     throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
@@ -61,6 +61,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   const reservationFormData = new FormData();
   reservationFormData.append("reserveOnly", "true");
 
+  console.log("[submitImage] 🔐 Reserving upload slot via server...");
   const reservationResponse = await fetch(`${APP_API_BASE}/remove-background`, {
     method: "POST",
     body: reservationFormData,
@@ -69,15 +70,19 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   if (!reservationResponse.ok) {
     const error = await reservationResponse.json().catch(() => ({ message: "Failed to reserve upload slot" }));
     const message = error.message || error.detail || `HTTP ${reservationResponse.status}`;
+    console.error("[submitImage] ❌ Reservation failed:", message);
     throw new WorkerApiError(message, reservationResponse.status, error);
   }
 
   const reservation = await reservationResponse.json().catch(() => ({} as Partial<JobQueuedResponse>));
+  console.log("[submitImage] ✅ Slot reserved. Credits remaining:", reservation.remaining);
 
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch(`${WORKER_API_BASE}/remove`, {
+  const workerUrl = `${WORKER_API_BASE}/remove`;
+  console.log(`[submitImage] 📨 Uploading to WORKER at: ${workerUrl}`);
+  const response = await fetch(workerUrl, {
     method: "POST",
     body: formData,
   });
@@ -85,6 +90,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: "Upload failed" }));
     const message = error.message || error.detail || `HTTP ${response.status}`;
+    console.error("[submitImage] ❌ Upload to worker failed:", message);
     throw new WorkerApiError(message, response.status, error);
   }
 
@@ -92,6 +98,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
 
   if (contentType.includes("image")) {
     const blob = await response.blob();
+    console.log(`[submitImage] ⚡ Result received immediately (synchronous processing): ${blob.size} bytes`);
     return {
       job_id: "direct",
       status: "completed",
@@ -102,6 +109,7 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
   }
 
   const queuedResponse = await response.json();
+  console.log(`[submitImage] ✅ Job queued with ID: ${queuedResponse.job_id}, Status: ${queuedResponse.status}`);
   return {
     ...queuedResponse,
     remaining: reservation.remaining,
@@ -110,20 +118,26 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
 }
 
 export async function getJobStatus(jobId: string): Promise<JobStatusResponse> {
-  const response = await fetch(`${WORKER_API_BASE_OR_FALLBACK}/status/${jobId}`, { cache: "no-store" });
+  const url = `${WORKER_API_BASE_OR_FALLBACK}/status/${jobId}`;
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
+    console.error(`[getJobStatus] HTTP ${response.status} from ${url}`);
     throw new Error(`Status check failed: ${response.status}`);
   }
   const data = await response.json();
-  console.log("[Worker API] Job status:", jobId, data);
+  console.log(`[getJobStatus] Job ${jobId}: ${data.status} (${data.progress}% complete, queue pos: ${data.queue_position ?? 'N/A'})`);
   return data;
 }
 
 export async function getJobResult(jobId: string): Promise<Blob> {
-  const response = await fetch(`${WORKER_API_BASE_OR_FALLBACK}/result/${jobId}`, { cache: "no-store" });
+  const url = `${WORKER_API_BASE_OR_FALLBACK}/result/${jobId}`;
+  console.log(`[getJobResult] Fetching result from: ${url}`);
+  const response = await fetch(url, { cache: "no-store" });
   if (!response.ok) {
+    console.error(`[getJobResult] HTTP ${response.status} from ${url}`);
     throw new Error(`Result retrieval failed: ${response.status}`);
   }
+  console.log(`[getJobResult] ✅ Received blob (${response.headers.get('content-length')} bytes) from ${url}`);
   return response.blob();
 }
 

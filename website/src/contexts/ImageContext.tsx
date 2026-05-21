@@ -61,15 +61,28 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
   const fetchWorkerResult = useCallback(async (jobId: string) => {
     try {
-      return await getJobResult(jobId);
+      console.log(`[fetchWorkerResult] Attempting to fetch from WORKER directly: ${jobId}`);
+      const result = await getJobResult(jobId);
+      console.log(`[fetchWorkerResult] ✅ SUCCESS - Image fetched from WORKER directly for job ${jobId}`);
+      return result;
     } catch (workerErr) {
+      console.warn(`[fetchWorkerResult] ❌ Worker fetch failed for job ${jobId}:`, workerErr);
+      console.log(`[fetchWorkerResult] Attempting FALLBACK - Fetching from server proxy...`);
+      
       try {
         const resultResp = await fetch(`/api/result/${jobId}`, { cache: "no-store" });
         if (resultResp.ok) {
-          return await resultResp.blob();
+          const blob = await resultResp.blob();
+          console.log(`[fetchWorkerResult] ✅ SUCCESS - Image fetched from FALLBACK SERVER for job ${jobId}`);
+          return blob;
+        } else {
+          console.error(`[fetchWorkerResult] ❌ Fallback server returned HTTP ${resultResp.status} for job ${jobId}`);
         }
       } catch (proxyErr) {
-        console.error("Failed to retrieve result from worker and proxy:", workerErr, proxyErr);
+        console.error(`[fetchWorkerResult] ❌ FALLBACK FAILED - Both worker and server proxy failed for job ${jobId}`);
+        console.error("  Worker error:", workerErr);
+        console.error("  Proxy error:", proxyErr);
+        console.error("  (Possible CORS error if worker fetch shows 'fetch failed' or 'blocked by CORS')");
       }
 
       throw workerErr;
@@ -107,8 +120,10 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       if (status.status === "completed") {
         if (!img.result) {
           try {
+            console.log(`[refreshImageFromWorker] Job ${img.jobId} completed. Fetching result blob...`);
             const blob = await fetchWorkerResult(img.jobId);
             const url = URL.createObjectURL(blob);
+            console.log(`[refreshImageFromWorker] 📥 Result URL created (blob size: ${blob.size} bytes) for job ${img.jobId}`);
             updateImageStatusStore(img.id, "completed", {
               result: url,
               duration: img.startTime ? Date.now() - img.startTime : undefined,
@@ -118,14 +133,15 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
             resultFetchAttemptsRef.current.delete(img.id);
             stopPollingForImage(img.id);
           } catch (resultErr) {
-            console.error("[ImageContext] Failed to recover completed result:", resultErr);
+            console.error(`[refreshImageFromWorker] ❌ Failed to fetch result for job ${img.jobId}:`, resultErr);
             const prev = resultFetchAttemptsRef.current.get(img.id) || 0;
             const next = prev + 1;
             resultFetchAttemptsRef.current.set(img.id, next);
+            console.warn(`[refreshImageFromWorker] Retry attempt ${next}/${MAX_RESULT_FETCH_RETRIES} for job ${img.jobId}`);
 
             // If we've retried enough times, surface an error and stop polling.
             if (next >= MAX_RESULT_FETCH_RETRIES) {
-              console.error(`[ImageContext] Giving up fetching result for ${img.id} after ${next} attempts`);
+              console.error(`[refreshImageFromWorker] ⚠️ GIVING UP - Max retries (${next}) reached for job ${img.jobId}. Check CORS settings or worker connectivity.`);
               updateImageStatusStore(img.id, "error", {
                 error: "Failed to fetch processed image",
                 progress: 0,
