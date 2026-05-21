@@ -327,7 +327,12 @@ def process_image_bytes(image_bytes: bytes) -> bytes:
     image.putalpha(mask)
 
     output_buffer = io.BytesIO()
-    image.save(output_buffer, format="PNG")
+    image.save( 
+        output_buffer, 
+        format="PNG",
+        optimize=True, # Compresses the PNG structure
+        compress_level=6 # Standard balance between speed and file size (0-9)
+    )
     return output_buffer.getvalue()
 
 
