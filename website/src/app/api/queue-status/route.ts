@@ -30,8 +30,12 @@ declare global {
   var __bgremover_mongo_db: Db | undefined;
 }
 
-let mongoClient: MongoClient | null = (global as any).__bgremover_mongo_client ?? null;
-let db: Db | null = (global as any).__bgremover_mongo_db ?? null;
+type MongoGlobal = typeof globalThis & {
+  __bgremover_mongo_client?: MongoClient;
+  __bgremover_mongo_db?: Db;
+};
+
+const mongoGlobal = globalThis as MongoGlobal;
 
 const HOURLY_LIMIT = 25;
 const HOUR_WINDOW_MS = 60 * 60 * 1000;
@@ -64,25 +68,18 @@ async function getMongoDB() {
     throw new Error("NEXT_MONGODB_URI not configured");
   }
 
-  const g = global as any;
-
   // If there's an existing client, verify it's alive with a ping.
-  if (g.__bgremover_mongo_client && g.__bgremover_mongo_db) {
+  if (mongoGlobal.__bgremover_mongo_client && mongoGlobal.__bgremover_mongo_db) {
     try {
-      await g.__bgremover_mongo_client.db("admin").command({ ping: 1 });
-      // assign local vars in case they were null
-      mongoClient = g.__bgremover_mongo_client;
-      db = g.__bgremover_mongo_db;
-      return db;
-    } catch (err) {
+      await mongoGlobal.__bgremover_mongo_client.db("admin").command({ ping: 1 });
+      return mongoGlobal.__bgremover_mongo_db;
+    } catch {
       // existing client appears dead; close and recreate below
       try {
-        await g.__bgremover_mongo_client.close();
+        await mongoGlobal.__bgremover_mongo_client.close();
       } catch {}
-      g.__bgremover_mongo_client = undefined;
-      g.__bgremover_mongo_db = undefined;
-      mongoClient = null;
-      db = null;
+      mongoGlobal.__bgremover_mongo_client = undefined;
+      mongoGlobal.__bgremover_mongo_db = undefined;
     }
   }
 
@@ -92,13 +89,10 @@ async function getMongoDB() {
   const database = client.db("bgremover");
 
   // persist on global to survive module reloads in dev
-  g.__bgremover_mongo_client = client;
-  g.__bgremover_mongo_db = database;
+  mongoGlobal.__bgremover_mongo_client = client;
+  mongoGlobal.__bgremover_mongo_db = database;
 
-  mongoClient = client;
-  db = database;
-
-  return db;
+  return database;
 }
 
 function getUserUploadsCollection(database: Db): Collection<UserUpload> {
