@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Space_Grotesk } from "next/font/google";
 import { ClientLayout } from "@/components/client-layout";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
@@ -81,6 +82,7 @@ export default function RootLayout({
       </head>
       <body className={`${manrope.variable} ${spaceGrotesk.variable} font-sans`}>
         <ClientLayout>{children}</ClientLayout>
+        <Analytics />
       </body>
     </html>
   );
