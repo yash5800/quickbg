@@ -23,10 +23,10 @@ export interface StockSample {
 
 export const stockSamples: StockSample[] = [
   {
-    id: "african-monkey",
-    label: "African Monkey",
+    id: "lechwe",
+    label: "Lechwe",
     description: "Fine edges",
-    fileName: "sample-african-monkey.jpg",
+    fileName: "sample-lechwe.jpg",
     image: st1,
   },
   {

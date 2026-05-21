@@ -1,9 +1,9 @@
-import crop from '../../assets/demo/crop.png'
-import resize from '../../assets/demo/resize.png'
-import bgremove from '../../assets/demo/bgremover.png'
-import bgreplace from '../../assets/demo/bgreplace.png'
-import bgblur from '../../assets/demo/bgblur.png'
-import adjust from '../../assets/demo/adjust.png'
+import crop from '../../assets/demo/crop.jpg'
+import resize from '../../assets/demo/resize.jpg'
+import bgremove from '../../assets/demo/bgremover.jpg'
+import bgreplace from '../../assets/demo/bgreplace.jpg'
+import bgblur from '../../assets/demo/bgblur.jpg'
+import adjust from '../../assets/demo/adjust.jpg'
 
 export {
   crop,

@@ -22,8 +22,16 @@ interface HourlyUsage {
   expiresAt: Date;
 }
 
-let mongoClient: MongoClient | null = null;
-let db: Db | null = null;
+// Persist client across hot reloads in dev by storing on global
+declare global {
+  // eslint-disable-next-line no-var
+  var __bgremover_mongo_client: MongoClient | undefined;
+  // eslint-disable-next-line no-var
+  var __bgremover_mongo_db: Db | undefined;
+}
+
+let mongoClient: MongoClient | null = (global as any).__bgremover_mongo_client ?? null;
+let db: Db | null = (global as any).__bgremover_mongo_db ?? null;
 
 const HOURLY_LIMIT = 25;
 const HOUR_WINDOW_MS = 60 * 60 * 1000;
@@ -51,22 +59,44 @@ function getSecondsUntilReset(resetAtMs: number, nowMs: number = Date.now()): nu
 }
 
 async function getMongoDB() {
-  if (!mongoClient || !db) {
-    const uri = process.env.NEXT_MONGODB_URI;
-    if (!uri) {
-      throw new Error("NEXT_MONGODB_URI not configured");
-    }
-    if (!mongoClient) {
-      mongoClient = new MongoClient(uri);
-      await mongoClient.connect();
-    }
-
-    db = mongoClient.db("bgremover");
+  const uri = process.env.NEXT_MONGODB_URI;
+  if (!uri) {
+    throw new Error("NEXT_MONGODB_URI not configured");
   }
 
-  if (!db) {
-    throw new Error("Failed to initialize MongoDB connection");
+  const g = global as any;
+
+  // If there's an existing client, verify it's alive with a ping.
+  if (g.__bgremover_mongo_client && g.__bgremover_mongo_db) {
+    try {
+      await g.__bgremover_mongo_client.db("admin").command({ ping: 1 });
+      // assign local vars in case they were null
+      mongoClient = g.__bgremover_mongo_client;
+      db = g.__bgremover_mongo_db;
+      return db;
+    } catch (err) {
+      // existing client appears dead; close and recreate below
+      try {
+        await g.__bgremover_mongo_client.close();
+      } catch {}
+      g.__bgremover_mongo_client = undefined;
+      g.__bgremover_mongo_db = undefined;
+      mongoClient = null;
+      db = null;
+    }
   }
+
+  // Create and connect a new client
+  const client = new MongoClient(uri);
+  await client.connect();
+  const database = client.db("bgremover");
+
+  // persist on global to survive module reloads in dev
+  g.__bgremover_mongo_client = client;
+  g.__bgremover_mongo_db = database;
+
+  mongoClient = client;
+  db = database;
 
   return db;
 }
