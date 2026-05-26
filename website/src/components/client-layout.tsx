@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
-import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home } from "lucide-react";
+import { PwaInstallPrompt } from "@/components/pwa-install";
+import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
 import { useCreditsSync } from "@/store/useCreditsSync";
@@ -147,6 +148,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               <ScrollToTopButton />
               {!isAdminArea && <Footer />}
               {!isAdminArea && <CookieConsentBanner />}
+              {!isAdminArea && <PwaInstallPrompt />}
             </div>
           </ToastProvider>
         </ImageProvider>
@@ -164,6 +166,7 @@ function Header() {
     { href: "/", label: "Home", icon: Home },
     { href: "/tools", label: "Tools", icon: Package },
     { href: "/remover", label: images.length > 0 ? `Remover (${images.length})` : "Remover", icon: Sparkles },
+    { href: "/about", label: "About", icon: Info },
     { href: "/contact", label: "Contact", icon: MessageSquare },
   ];
 

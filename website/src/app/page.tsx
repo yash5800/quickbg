@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -16,8 +16,9 @@ import {
   Upload,
   Wand2,
   Zap,
+  FileImage,
 } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +29,7 @@ import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
-import { adjust, bgblur, bgremove, bgreplace, crop, resize } from "@/lib/demo-smaples";
+import { adjust, bgblur, bgremove, bgreplace, convert, crop, resize, sharpness } from "@/lib/demo-smaples";
 
 const tools = [
   {
@@ -87,6 +88,17 @@ const tools = [
     demo_image: crop
   },
   {
+    id: "sharpness",
+    icon: Wand2,
+    title: "Sharpness",
+    description: "Sharpen the subject or background independently for crisp final exports.",
+    badge: "New",
+    href: "/sharpness",
+    accent: "text-amber-300",
+    glow: "from-amber-500/20",
+    demo_image: sharpness
+  },
+  {
     id: "adjust",
     icon: Contrast,
     title: "Adjust Image",
@@ -97,6 +109,17 @@ const tools = [
     glow: "from-cyan-500/20",
     demo_image: adjust
   },
+  {
+    id: "converter",
+    icon: FileImage,
+    title: "Format Converter",
+    description: "Convert PNG, JPG, WebP, AVIF, and TIFF with quality controls.",
+    badge: "New",
+    href: "/converter",
+    accent: "text-indigo-300",
+    glow: "from-indigo-500/20",
+    demo_image: convert
+  },
 ];
 
 const trustStats = [
@@ -104,47 +127,6 @@ const trustStats = [
   { label: "Batch ready", value: "Multi" },
   { label: "Export format", value: "PNG" },
   { label: "Resolution", value: "Full" },
-];
-
-const launchTags = [
-  "Background removal",
-  "Batch exports",
-  "Smart resize",
-  "Background replace",
-  "Blur effects",
-  "Crop cleanup",
-  "Quick edits",
-];
-
-const showcaseSlides = [
-  {
-    id: "product-shot",
-    title: "Product cutout",
-    description: "Clean product photos for marketplace listings and storefront uploads.",
-    tag: "Remover",
-    image: mainsample[0].image,
-  },
-  {
-    id: "portrait-shot",
-    title: "Portrait cleanup",
-    description: "Refine portraits for profile images, creator assets, and social posts.",
-    tag: "Profiles",
-    image: mainsample[2].image,
-  },
-  {
-    id: "creative-shot",
-    title: "PNG export",
-    description: "Export transparent images ready for ads, thumbnails, and brand kits.",
-    tag: "Export",
-    image: mainsample[4].image,
-  },
-  {
-    id: "anime-shot",
-    title: "Style edit",
-    description: "Use blur, crop, resize, and replace tools to finish the image.",
-    tag: "Editor",
-    image: mainsample[3].image,
-  },
 ];
 
 const heroNotes = [
@@ -165,23 +147,10 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
   const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
   const [isDropActive, setIsDropActive] = useState(false);
-  const [activeShowcaseIndex, setActiveShowcaseIndex] = useState(0);
 
   const motionTransition = prefersReducedMotion
     ? { duration: 0 }
     : { duration: 0.72, ease: "easeOut" as const };
-
-  useEffect(() => {
-    if (prefersReducedMotion || showcaseSlides.length < 2) {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      setActiveShowcaseIndex((current) => (current + 1) % showcaseSlides.length);
-    }, 3200);
-
-    return () => window.clearInterval(intervalId);
-  }, [prefersReducedMotion]);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -576,150 +545,66 @@ export default function Home() {
             ))}
           </div>
 
-          <section className="relative mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-black/35 px-6 py-10 sm:px-8 lg:px-10">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_15%,rgba(56,189,248,0.14),transparent_42%),radial-gradient(circle_at_78%_80%,rgba(163,230,53,0.1),transparent_36%)]" />
-            <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24 rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 sm:p-8 lg:p-10"
+          >
+            <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-start">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">QuickBG in action</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">SEO explainer</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-                  Built for product cutouts, transparent exports, and fast image prep.
+                  A better background remover starts with a clear workflow.
                 </h2>
-                <p className="mt-5 max-w-2xl text-base leading-8 text-white/60">
-                  Show users how QuickBG handles removals, resizing, replacement, blur, and crop edits in one workflow.
+                <p className="mt-4 max-w-xl text-sm leading-7 text-white/55 sm:text-base">
+                  QuickBG is built for people who need fast cutouts, clean transparent exports, and a
+                  practical editing path for product images, social posts, and design work. The page below
+                  explains how the tool works so users and crawlers can understand the full experience.
                 </p>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {launchTags.map((tag, index) => (
-                    <span
-                      key={tag}
-                      className={cn(
-                        "rounded-full border px-3 py-1.5 text-xs font-medium",
-                        index % 3 === 0 && "border-sky-300/35 bg-sky-300/10 text-sky-200",
-                        index % 3 === 1 && "border-lime-300/30 bg-lime-300/10 text-lime-200",
-                        index % 3 === 2 && "border-white/15 bg-white/5 text-white/70"
-                      )}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-lime-200 sm:w-auto"
-                  >
-                    Upload and remove
-                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </button>
-                  <Link
-                    href="/tools"
-                    className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-5 text-sm font-semibold text-white/80 transition duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.08]"
-                  >
-                    Explore QuickBG tools
-                    <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                </div>
               </div>
 
-              <div className="relative mx-auto w-full max-w-[32rem] sm:h-[25rem]">
-                <div className="relative h-[23rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-black/60 p-3 shadow-[0_28px_90px_-45px_rgba(0,0,0,0.95)] backdrop-blur sm:h-[25rem]">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(56,189,248,0.15),transparent_38%),radial-gradient(circle_at_80%_80%,rgba(163,230,53,0.08),transparent_36%)]" />
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={showcaseSlides[activeShowcaseIndex].id}
-                      initial={prefersReducedMotion ? false : { opacity: 0, y: 14, scale: 0.98 }}
-                      animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
-                      exit={prefersReducedMotion ? undefined : { opacity: 0, y: -10, scale: 0.985 }}
-                      transition={{ duration: 0.55, ease: "easeOut" }}
-                      className="relative z-10 h-full"
-                    >
-                      <div className="relative h-full overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/5">
-                        <Image
-                          src={showcaseSlides[activeShowcaseIndex].image}
-                          alt={showcaseSlides[activeShowcaseIndex].title}
-                          fill
-                          className="object-cover"
-                          placeholder="blur"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">How the tool works</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Upload a photo, let the background remover detect the subject, and move straight into
+                    export or refinement. The workflow keeps the important part in view: a subject cutout
+                    that is ready for transparent PNG delivery.
+                  </p>
+                </div>
 
-                        <div className="absolute left-4 right-4 top-4 flex items-center justify-between gap-3">
-                          <AnimatePresence mode="wait">
-                            <motion.span
-                              key={showcaseSlides[activeShowcaseIndex].tag}
-                              initial={prefersReducedMotion ? false : { opacity: 0, x: -8 }}
-                              animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
-                              exit={prefersReducedMotion ? undefined : { opacity: 0, x: 8 }}
-                              transition={{ duration: 0.25, ease: "easeOut" }}
-                              className="rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/70 backdrop-blur"
-                            >
-                              {showcaseSlides[activeShowcaseIndex].tag}
-                            </motion.span>
-                          </AnimatePresence>
-                          <AnimatePresence mode="wait">
-                            <motion.span
-                              key={showcaseSlides[activeShowcaseIndex].title}
-                              initial={prefersReducedMotion ? false : { opacity: 0, x: 8 }}
-                              animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
-                              exit={prefersReducedMotion ? undefined : { opacity: 0, x: -8 }}
-                              transition={{ duration: 0.25, ease: "easeOut" }}
-                              className="rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[11px] font-medium text-white/65 backdrop-blur"
-                            >
-                              {showcaseSlides[activeShowcaseIndex].title}
-                            </motion.span>
-                          </AnimatePresence>
-                        </div>
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">Why PNGs matter</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Transparent PNGs make it easy to place a product on a marketplace, a banner, a social
+                    post, or a new background without visible boxes or rough edges. That keeps the output
+                    reusable across marketing and design workflows.
+                  </p>
+                </div>
 
-                        {/* caption moved outside the animated image div so the outer card stays fixed */}
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                  {/* Fixed caption panel: stays visually anchored while inner text updates */}
-                  <div className="absolute bottom-2 left-4 right-4 p-4 sm:p-5 z-20">
-                    <div className="max-w-md rounded-[1.2rem] border border-white/10 bg-black/55 p-4 backdrop-blur">
-                      <div className="flex items-start justify-between gap-3">
-                        <AnimatePresence mode="wait">
-                          <motion.div
-                            key={showcaseSlides[activeShowcaseIndex].id}
-                            initial={prefersReducedMotion ? false : { opacity: 0, x: 14 }}
-                            animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
-                            exit={prefersReducedMotion ? undefined : { opacity: 0, x: -14 }}
-                            transition={{ duration: 0.35, ease: "easeOut" }}
-                            className="min-w-0"
-                          >
-                            <h3 className="text-lg font-semibold text-white sm:text-xl">
-                              {showcaseSlides[activeShowcaseIndex].title}
-                            </h3>
-                            <p className="mt-1 text-sm leading-6 text-white/60">
-                              {showcaseSlides[activeShowcaseIndex].description}
-                            </p>
-                          </motion.div>
-                        </AnimatePresence>
-                      </div>
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">What QuickBG handles</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    The app is designed for portraits, products, pets, artwork, and everyday images with
+                    busy or uneven edges. It also supports follow-up tools like resize, crop, blur, replace,
+                    and adjust, so users can finish the job in one place.
+                  </p>
+                </div>
 
-                      <div className="mt-4 flex gap-2">
-                        {showcaseSlides.map((slide, index) => (
-                          <button
-                            key={slide.id}
-                            type="button"
-                            onClick={() => setActiveShowcaseIndex(index)}
-                            className={cn(
-                              "h-2.5 rounded-full transition-all duration-300",
-                              index === activeShowcaseIndex ? "w-8 bg-white" : "w-2.5 bg-white/35 hover:bg-white/60"
-                            )}
-                            aria-label={`Show ${slide.title}`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">When to refine manually</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Complex hair, smoke, shadows, or transparent objects can sometimes need a quick final
+                    check. If the subject edge needs polish, users can rerun the image, crop tighter, or use
+                    the adjacent tools to make the result cleaner before download.
+                  </p>
                 </div>
               </div>
             </div>
-          </section>
-
+          </motion.section>
         </section>
       </div>
     </AppLayout>

@@ -28,6 +28,10 @@ export function Footer() {
               Terms
             </Link>
             <span className="text-border">•</span>
+            <Link href="/about" className="hover:text-foreground transition-colors">
+              About
+            </Link>
+            <span className="text-border">•</span>
             <Link href="/legal" className="hover:text-foreground transition-colors">
               Copyright
             </Link>

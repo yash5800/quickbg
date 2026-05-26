@@ -8,14 +8,12 @@ import {
   AlertTriangle,
   BarChart3,
   Briefcase,
-  Clock,
   Gauge,
   ImageIcon,
   LayoutDashboard,
   LogOut,
   RefreshCw,
   Search,
-  Server,
   Shield,
   ShieldCheck,
   Trash2,
@@ -59,10 +57,20 @@ interface Stats {
   failedJobs: number;
   queuedJobs: number;
   runningJobs: number;
+  pendingJobs?: number;
   totalUploads: number;
   hourlyLimit: number;
   remaining: number;
   resetInSeconds: number;
+  totalUsers?: number;
+  uploadsPerUser?: { average: number; max: number; users: number };
+  failureRate?: number;
+  toolUsage?: Array<{ tool: string; count: number }>;
+  ratingSummary?: Array<{ tool: string; average: number; count: number }>;
+  trends?: {
+    jobs: Array<{ date: string; total: number; completed: number; failed: number; pending: number }>;
+    uploads: Array<{ date: string; uploads: number }>;
+  };
 }
 
 interface AnalyticsDay {
@@ -107,12 +115,6 @@ function formatRelativeTime(isoTime: string): string {
   if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
   if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
   return `${Math.floor(diffSec / 86400)}d ago`;
-}
-
-function formatReset(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
 function statusVariant(status: string): "success" | "warning" | "destructive" | "outline" {
@@ -394,10 +396,10 @@ function OverviewPanel({
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <MetricCard title="Total Users" value={stats?.totalUsers ?? analytics?.totals.totalUniqueUsers ?? 0} icon={Users} />
         <MetricCard title="Total Jobs" value={total} icon={Briefcase} />
         <MetricCard title="Completion Rate" value={`${completionRate}%`} icon={Gauge} />
-        <MetricCard title="Queue" value={`${stats?.queuedJobs ?? 0} queued`} subtitle={`${stats?.runningJobs ?? 0} running`} icon={Server} />
-        <MetricCard title="Uploads Left" value={stats?.remaining ?? 0} subtitle={`Resets in ${formatReset(stats?.resetInSeconds ?? 0)}`} icon={Clock} />
+        <MetricCard title="Failure Rate" value={`${Math.round((stats?.failureRate ?? 0) * 100)}%`} subtitle={`${stats?.failedJobs ?? 0} failed`} icon={AlertTriangle} />
       </div>
 
       <Card>
@@ -546,8 +548,8 @@ function UsagePanel({
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard title="Total Uploads" value={stats?.totalUploads ?? 0} icon={ImageIcon} />
         <MetricCard title="Failed Jobs" value={stats?.failedJobs ?? 0} icon={AlertTriangle} />
-        <MetricCard title="Unique Users" value={analytics?.totals.totalUniqueUsers ?? 0} icon={Users} />
-        <MetricCard title="Hourly Limit" value={stats?.hourlyLimit ?? 25} icon={Gauge} />
+        <MetricCard title="Unique Users" value={stats?.totalUsers ?? analytics?.totals.totalUniqueUsers ?? 0} icon={Users} />
+        <MetricCard title="Uploads / User" value={stats?.uploadsPerUser?.average ?? 0} subtitle={`Max ${stats?.uploadsPerUser?.max ?? 0}`} icon={Gauge} />
       </div>
 
       <Card>
@@ -577,6 +579,43 @@ function UsagePanel({
           </div>
         </CardContent>
       </Card>
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Tool Usage</CardTitle>
+            <CardDescription>Usage counts from jobs and tool feedback events.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {(stats?.toolUsage ?? []).map((item) => (
+              <div key={item.tool} className="flex items-center justify-between rounded-lg border border-border p-3">
+                <span className="text-sm font-medium capitalize">{item.tool.replace("-", " ")}</span>
+                <Badge variant="outline">{item.count}</Badge>
+              </div>
+            ))}
+            {(stats?.toolUsage ?? []).length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">No tool usage yet</p>}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Ratings</CardTitle>
+            <CardDescription>Average post-processing satisfaction by tool.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {(stats?.ratingSummary ?? []).map((item) => (
+              <div key={item.tool} className="flex items-center justify-between rounded-lg border border-border p-3">
+                <div>
+                  <p className="text-sm font-medium capitalize">{item.tool.replace("-", " ")}</p>
+                  <p className="text-xs text-muted-foreground">{item.count} rating{item.count === 1 ? "" : "s"}</p>
+                </div>
+                <Badge variant="success">{item.average.toFixed(1)} / 5</Badge>
+              </div>
+            ))}
+            {(stats?.ratingSummary ?? []).length === 0 && <p className="py-6 text-center text-sm text-muted-foreground">No ratings yet</p>}
+          </CardContent>
+        </Card>
+      </div>
 
       <Card>
         <CardHeader>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Eraser, Undo2, RotateCcw, Download, X, Loader2 } from "lucide-react";
+import { Eraser, Undo2, RotateCcw, Download, X } from "lucide-react";
 import getStroke from "perfect-freehand";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -30,7 +30,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
   const [cursorPos, setCursorPos] = useState<{ x: number; y: number } | null>(null);
   const [fitScale, setFitScale] = useState(1);
   const [zoom, setZoom] = useState(1);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [undoDepth, setUndoDepth] = useState(1);
 
   const originalImgRef = useRef<HTMLImageElement | null>(null);
   const processedImgRef = useRef<HTMLImageElement | null>(null);
@@ -39,12 +39,14 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
   const isDrawingRef = useRef(false);
   const canvasInitializedRef = useRef(false);
   const previewFrameRef = useRef<number | null>(null);
+  const activePointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const pinchStartRef = useRef<{ distance: number; zoom: number } | null>(null);
 
   const getOptions = useCallback((size: number) => ({
     size: size,
     thinning: 0,
-    smoothing: 0.5,
-    streamline: 0.5,
+    smoothing: 0.28,
+    streamline: 0.22,
     easing: (t: number) => t,
     simulatePressure: true,
     last: true,
@@ -103,6 +105,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
       ctx.drawImage(procImg, 0, 0);
       canvasInitializedRef.current = true;
       undoStackRef.current = [ctx.getImageData(0, 0, canvas.width, canvas.height)];
+      setUndoDepth(1);
     });
   }, [processedImage, originalImage]);
 
@@ -178,26 +181,22 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
   }, [drawPreviewStroke]);
 
   // Apply stroke to canvas
-  const applyStroke = useCallback(async (path: Point[]) => {
+  const applyStroke = useCallback((path: Point[]) => {
     const canvas = canvasRef.current;
     if (!canvas || path.length < 2) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    setIsProcessing(true);
-
     const stroke = getStroke(path, getOptions(brushSize));
-    if (stroke.length < 2) {
-      setIsProcessing(false);
-      return;
-    }
+    if (stroke.length < 2) return;
 
     // Save undo state
     undoStackRef.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
     if (undoStackRef.current.length > 30) {
       undoStackRef.current.shift();
     }
+    setUndoDepth(undoStackRef.current.length);
     setHasChanges(true);
 
     ctx.save();
@@ -229,22 +228,55 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     }
 
     ctx.restore();
-    setIsProcessing(false);
   }, [mode, brushSize, getOptions]);
 
   // Pointer handlers
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     if (!canvasInitializedRef.current) return;
     e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    if (activePointersRef.current.size === 2) {
+      const [first, second] = Array.from(activePointersRef.current.values());
+      pinchStartRef.current = {
+        distance: Math.hypot(first.x - second.x, first.y - second.y),
+        zoom,
+      };
+      isDrawingRef.current = false;
+      currentPathRef.current = [];
+      return;
+    }
 
     const pos = getCanvasPos(e.clientX, e.clientY);
     if (!pos) return;
 
     isDrawingRef.current = true;
     currentPathRef.current = [{ x: pos.x, y: pos.y, pressure: 0.5 }];
-  }, [getCanvasPos]);
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (rect) {
+      setCursorPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+  }, [getCanvasPos, zoom]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (activePointersRef.current.has(e.pointerId)) {
+      activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    }
+
+    if (activePointersRef.current.size >= 2 && pinchStartRef.current) {
+      e.preventDefault();
+      const [first, second] = Array.from(activePointersRef.current.values());
+      const distance = Math.hypot(first.x - second.x, first.y - second.y);
+      if (pinchStartRef.current.distance > 0) {
+        handleZoomChange(pinchStartRef.current.zoom * (distance / pinchStartRef.current.distance));
+      }
+      return;
+    }
+
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
 
@@ -261,13 +293,23 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     const lastPoint = currentPathRef.current[currentPathRef.current.length - 1];
     const dist = Math.hypot(pos.x - lastPoint.x, pos.y - lastPoint.y);
 
-    if (dist > 1.5) {
+    if (dist > 0.75) {
       currentPathRef.current.push({ x: pos.x, y: pos.y, pressure: 0.5 });
       schedulePreviewDraw();
     }
   }, [getCanvasPos, schedulePreviewDraw]);
 
-  const handlePointerUp = useCallback(async () => {
+  const handlePointerUp = useCallback((e?: React.PointerEvent) => {
+    if (e?.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+    if (e) {
+      activePointersRef.current.delete(e.pointerId);
+    }
+    if (activePointersRef.current.size < 2) {
+      pinchStartRef.current = null;
+    }
+
     if (previewFrameRef.current !== null) {
       window.cancelAnimationFrame(previewFrameRef.current);
       previewFrameRef.current = null;
@@ -282,17 +324,17 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
       }
 
       // Apply the stroke
-      await applyStroke(currentPathRef.current);
+      applyStroke(currentPathRef.current);
     }
 
     isDrawingRef.current = false;
     currentPathRef.current = [];
   }, [applyStroke]);
 
-  const handlePointerLeave = useCallback(() => {
+  const handlePointerLeave = useCallback((e: React.PointerEvent) => {
     setCursorPos(null);
     if (isDrawingRef.current) {
-      handlePointerUp();
+      handlePointerUp(e);
     }
   }, [handlePointerUp]);
 
@@ -307,6 +349,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
         ctx.putImageData(lastState, 0, 0);
       }
     }
+    setUndoDepth(undoStackRef.current.length);
   };
 
   const handleReset = () => {
@@ -315,6 +358,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     if (!ctx) return;
     ctx.drawImage(processedImgRef.current, 0, 0);
     undoStackRef.current = [ctx.getImageData(0, 0, canvasRef.current.width, canvasRef.current.height)];
+    setUndoDepth(1);
     setHasChanges(false);
   };
 
@@ -328,6 +372,22 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     const dataUrl = canvas.toDataURL("image/png");
     onSave(dataUrl);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const modifier = event.ctrlKey || event.metaKey;
+      if (modifier && event.key.toLowerCase() === "z") {
+        event.preventDefault();
+        handleUndo();
+      }
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  });
 
   const displayScale = fitScale * zoom;
 
@@ -360,6 +420,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
               variant={mode === "restore" ? "default" : "outline"}
               size="sm"
               onClick={() => setMode("restore")}
+              className={mode === "restore" ? "bg-green-600 hover:bg-green-700" : ""}
             >
               Restore
             </Button>
@@ -385,7 +446,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
           <div className="hidden sm:block h-8 w-px bg-border" />
 
           <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
-            <Button variant="outline" size="sm" onClick={handleUndo} disabled={undoStackRef.current.length <= 1}>
+            <Button variant="outline" size="sm" onClick={handleUndo} disabled={undoDepth <= 1}>
               <Undo2 className="h-4 w-4 mr-2" />
               Undo
             </Button>
@@ -424,6 +485,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
             onPointerLeave={handlePointerLeave}
           >
             <canvas ref={canvasRef} className="rounded-lg shadow-xl" />
@@ -431,16 +493,6 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
               ref={previewCanvasRef}
               className="absolute top-0 left-0 rounded-lg pointer-events-none"
             />
-
-            {/* Processing overlay */}
-            {isProcessing && (
-              <div className="absolute inset-0 bg-black/30 rounded-lg flex items-center justify-center">
-                <div className="bg-background/90 rounded-xl px-6 py-4 flex items-center gap-3">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  <span className="font-medium">Applying changes...</span>
-                </div>
-              </div>
-            )}
 
             {/* Brush cursor */}
             {cursorPos && (
@@ -465,7 +517,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
           <div className="flex items-center gap-3 min-w-0">
             <div className={cn("w-5 h-5 rounded-full", mode === "erase" ? "bg-red-500" : "bg-green-500")} />
             <p className="text-sm text-muted-foreground">
-              {mode === "erase" ? "Draw to remove pixels (make transparent)" : "Draw to restore original background"}
+              {mode === "erase" ? "Draw to remove pixels (make transparent)" : "Draw over missing areas to restore from the original image"}
             </p>
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto">

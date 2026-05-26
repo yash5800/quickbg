@@ -9,7 +9,7 @@ export interface ResizeOptions {
 
 export interface CompressOptions {
   quality?: number;
-  format?: "png" | "jpeg" | "webp" | "avif";
+  format?: "png" | "jpeg" | "jpg" | "webp" | "avif" | "tiff";
 }
 
 export interface FiltersOptions {
@@ -95,7 +95,7 @@ export async function addBorder(file: File, options: BorderOptions): Promise<Blo
 
 export async function convertFormat(
   file: File,
-  format: "png" | "jpeg" | "webp" | "avif",
+  format: "png" | "jpeg" | "jpg" | "webp" | "avif" | "tiff",
   quality: number = 80
 ): Promise<Blob> {
   return processImage("convert", file, { format, quality });
