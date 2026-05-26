@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Scissors, Maximize2, Palette, Layers, Crop, Contrast, ArrowLeft, ArrowUpRight, Sparkles } from "lucide-react";
+import { Scissors, Maximize2, Palette, Layers, Crop, Contrast, ArrowLeft, ArrowUpRight, Sparkles, FileImage } from "lucide-react";
 
 const tools = [
   {
@@ -52,6 +52,17 @@ const tools = [
     glow: "from-rose-500/20",
   },
   {
+    id: "sharpness",
+    icon: Sparkles,
+    title: "Sharpness",
+    description: "Sharpen the subject or background separately.",
+    bestFor: "Product edges, portraits, final detail",
+    badge: "New",
+    href: "/sharpness",
+    accent: "text-amber-300",
+    glow: "from-amber-500/20",
+  },
+  {
     id: "crop",
     icon: Crop,
     title: "Smart Crop",
@@ -72,6 +83,17 @@ const tools = [
     href: "/adjust",
     accent: "text-cyan-300",
     glow: "from-cyan-500/20",
+  },
+  {
+    id: "converter",
+    icon: FileImage,
+    title: "Format Converter",
+    description: "Convert PNG, JPG, WebP, AVIF, and TIFF.",
+    bestFor: "Exports, compatibility, archive files",
+    badge: "New",
+    href: "/converter",
+    accent: "text-indigo-300",
+    glow: "from-indigo-500/20",
   },
 ];
 

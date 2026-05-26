@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { ImageItem } from "@/types/image";
 import {
   Download,
@@ -14,12 +14,19 @@ import {
   Layers,
   Palette,
   Eraser,
+  Copy,
+  BadgeInfo,
+  Frame,
+  Sparkles,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { RatingWidget } from "@/components/rating-widget";
+import { addBorder, addWatermark, blobToDataUrl } from "@/lib/image-operations";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) {
@@ -64,6 +71,8 @@ interface PreviewInfoProps {
   onRemove: () => void;
   onRetry: () => void;
   onDownload: () => void;
+  onCopy?: () => void;
+  onUpdateResult?: (dataUrl: string) => void;
   isDownloading: boolean;
   liveStatus: string;
   onOpenEraser?: () => void;
@@ -78,13 +87,45 @@ export function PreviewInfo({
   onRemove,
   onRetry,
   onDownload,
+  onCopy,
+  onUpdateResult,
   isDownloading,
   liveStatus,
   onOpenEraser,
 }: PreviewInfoProps) {
   const router = useRouter();
+  const prefersReducedMotion = useReducedMotion();
+  const watermarkSectionRef = useRef<HTMLDivElement | null>(null);
+  const [showWatermarkHint, setShowWatermarkHint] = useState(false);
+  const [processedDimensions, setProcessedDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [watermarkText, setWatermarkText] = useState("");
+  const [watermarkOpacity, setWatermarkOpacity] = useState(0.55);
+  const [watermarkSize, setWatermarkSize] = useState(28);
+  const [watermarkColor, setWatermarkColor] = useState("#ffffff");
+  const [watermarkPosition, setWatermarkPosition] = useState<"center" | "bottom-right" | "bottom-left" | "top-right" | "top-left">("bottom-right");
+  const [borderWidth, setBorderWidth] = useState(0);
+  const [borderColor, setBorderColor] = useState("#84cc16");
+  const [isApplyingTool, setIsApplyingTool] = useState(false);
   const status = liveStatus !== "unknown" ? liveStatus : image.status;
   const displayStatus = isResultFetching ? "fetching_result" : status;
+
+  useEffect(() => {
+    setShowWatermarkHint(isCompleted && Boolean(image.result));
+  }, [isCompleted, image.id, image.result]);
+
+  useEffect(() => {
+    if (!showWatermarkHint) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setShowWatermarkHint(false);
+      }
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [showWatermarkHint]);
 
   const statusConfig = {
     pending: { label: "Waiting", icon: Clock, color: "bg-slate-500/10 text-slate-600" },
@@ -111,6 +152,65 @@ const StatusIcon = statusConfig.icon;
     { label: "Ready", active: isResultFetching, done: isCompleted },
   ];
 
+  useEffect(() => {
+    if (!image.result) {
+      setProcessedDimensions(null);
+      return;
+    }
+
+    let cancelled = false;
+    const img = new Image();
+    img.onload = () => {
+      if (!cancelled) {
+        setProcessedDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+      }
+    };
+    img.src = image.result;
+
+    return () => {
+      cancelled = true;
+    };
+  }, [image.result]);
+
+  const fileFormat = image.file.type?.split("/")[1]?.toUpperCase() || image.file.name.split(".").pop()?.toUpperCase() || "IMAGE";
+
+  const resultToFile = async () => {
+    if (!image.result) throw new Error("No processed image");
+    const response = await fetch(image.result);
+    const blob = await response.blob();
+    return new File([blob], `${image.file.name.split(".")[0]}-quickbg.png`, { type: blob.type || "image/png" });
+  };
+
+  const applyWatermark = async () => {
+    if (!onUpdateResult || !watermarkText.trim()) return;
+    setIsApplyingTool(true);
+    try {
+      const file = await resultToFile();
+      const blob = await addWatermark(file, {
+        text: watermarkText.trim(),
+        fontSize: watermarkSize,
+        color: watermarkColor,
+        opacity: watermarkOpacity,
+        position: watermarkPosition,
+      });
+      onUpdateResult(await blobToDataUrl(blob));
+    } finally {
+      setIsApplyingTool(false);
+    }
+  };
+
+  const applyBorder = async () => {
+    if (!onUpdateResult || borderWidth <= 0) return;
+    setIsApplyingTool(true);
+    try {
+      const file = await resultToFile();
+      const blob = await addBorder(file, { width: borderWidth, color: borderColor });
+      onUpdateResult(await blobToDataUrl(blob));
+    } finally {
+      setIsApplyingTool(false);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -118,6 +218,32 @@ const StatusIcon = statusConfig.icon;
       exit={{ opacity: 0, x: 20 }}
       className="space-y-4"
     >
+      <AnimatePresence>
+        {showWatermarkHint && (
+          <motion.button
+            type="button"
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
+            onClick={() => watermarkSectionRef.current?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" })}
+            className="fixed bottom-4 right-6 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-primary/30 bg-background/95 px-4 py-2 text-sm font-medium text-foreground shadow-lg shadow-black/10 backdrop-blur-md"
+          >
+            <span>watermark tools</span>
+            {!prefersReducedMotion && (
+              <motion.span
+                aria-hidden="true"
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+                className="text-primary"
+              >
+                <ChevronDown className="h-4 w-4" />
+              </motion.span>
+            )}
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       {/* File Info Card */}
       <Card className="premium-surface p-4 space-y-4">
         <div className="flex items-start justify-between">
@@ -303,6 +429,24 @@ const StatusIcon = statusConfig.icon;
                     </span>
                   </div>
                 )}
+                {processedDimensions && (
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <BadgeInfo className="h-4 w-4" />
+                      <span>Processed</span>
+                    </div>
+                    <span className="font-semibold text-foreground">
+                      {processedDimensions.width} × {processedDimensions.height}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <FileBadgeIcon />
+                    <span>Format</span>
+                  </div>
+                  <Badge variant="outline">{fileFormat}</Badge>
+                </div>
               </div>
             </Card>
           </motion.div>
@@ -347,6 +491,17 @@ const StatusIcon = statusConfig.icon;
               <Download className="h-4 w-4 mr-2" />
               {isDownloading ? "Downloading..." : "Download"}
             </Button>
+            {onCopy && (
+              <Button
+                onClick={onCopy}
+                variant="outline"
+                className="w-full"
+                size="sm"
+              >
+                <Copy className="h-4 w-4 mr-2" />
+                Copy PNG
+              </Button>
+            )}
             <Button
               onClick={onRemove}
               variant="outline"
@@ -431,6 +586,32 @@ const StatusIcon = statusConfig.icon;
               onClick={() => {
                 sessionStorage.setItem("originalImage", image.preview);
                 sessionStorage.setItem("processedImage", image.result!);
+                sessionStorage.setItem("toolSourceFileName", image.file.name);
+                router.push("/sharpness");
+              }}
+            >
+              <Sparkles className="h-3 w-3 mr-1" />
+              Sharpness
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs"
+              onClick={() => {
+                sessionStorage.setItem("toolImages", JSON.stringify([{ preview: image.result!, name: image.file.name }]));
+                router.push("/converter");
+              }}
+            >
+              <Frame className="h-3 w-3 mr-1" />
+              Convert
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs"
+              onClick={() => {
+                sessionStorage.setItem("originalImage", image.preview);
+                sessionStorage.setItem("processedImage", image.result!);
                 router.push("/blur-bg");
               }}
             >
@@ -451,10 +632,97 @@ const StatusIcon = statusConfig.icon;
               Replace BG
             </Button>
           </div>
+          <motion.div
+            ref={watermarkSectionRef}
+            initial={false}
+            animate={isCompleted ? { opacity: 1, y: 0 } : { opacity: 0.98, y: 0 }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut" }}
+            className="mt-3 space-y-3 rounded-lg border border-border/70 p-3"
+          >
+            <div className="relative overflow-hidden rounded-lg bg-muted/40 p-2">
+              <img
+                src={image.result}
+                alt="Watermark preview"
+                className="mx-auto max-h-32 max-w-full object-contain"
+                style={{ border: borderWidth > 0 ? `${Math.max(1, borderWidth / 4)}px solid ${borderColor}` : undefined }}
+              />
+              {watermarkText.trim() && (
+                <span
+                  className={cn(
+                    "pointer-events-none absolute rounded bg-black/20 px-1 font-semibold text-white",
+                    watermarkPosition === "top-left" && "left-3 top-3",
+                    watermarkPosition === "top-right" && "right-3 top-3",
+                    watermarkPosition === "bottom-left" && "bottom-3 left-3",
+                    watermarkPosition === "bottom-right" && "bottom-3 right-3",
+                    watermarkPosition === "center" && "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                  )}
+                  style={{ color: watermarkColor, opacity: watermarkOpacity, fontSize: `${Math.max(10, watermarkSize / 2)}px` }}
+                >
+                  {watermarkText}
+                </span>
+              )}
+            </div>
+
+            <motion.div
+              initial={false}
+              animate={isCompleted ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
+              className="space-y-2"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Watermark</p>
+              <input
+                value={watermarkText}
+                onChange={(event) => setWatermarkText(event.target.value)}
+                placeholder="Watermark text"
+                className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm"
+              />
+              <div className="grid grid-cols-2 gap-2">
+                <input type="color" value={watermarkColor} onChange={(event) => setWatermarkColor(event.target.value)} className="h-9 w-full rounded-lg border border-input bg-background" />
+                <select value={watermarkPosition} onChange={(event) => setWatermarkPosition(event.target.value as typeof watermarkPosition)} className="h-9 rounded-lg border border-input bg-background px-2 text-xs">
+                  <option value="bottom-right">Bottom right</option>
+                  <option value="bottom-left">Bottom left</option>
+                  <option value="top-right">Top right</option>
+                  <option value="top-left">Top left</option>
+                  <option value="center">Center</option>
+                </select>
+              </div>
+              <label className="block text-xs text-muted-foreground">
+                Size {watermarkSize}px
+                <input type="range" min="12" max="96" value={watermarkSize} onChange={(event) => setWatermarkSize(Number(event.target.value))} className="mt-1 w-full" />
+              </label>
+              <label className="block text-xs text-muted-foreground">
+                Opacity {Math.round(watermarkOpacity * 100)}%
+                <input type="range" min="0.1" max="1" step="0.05" value={watermarkOpacity} onChange={(event) => setWatermarkOpacity(Number(event.target.value))} className="mt-1 w-full" />
+              </label>
+              <Button size="sm" className="w-full" disabled={isApplyingTool || !watermarkText.trim()} onClick={() => void applyWatermark()}>
+                Apply Watermark
+              </Button>
+            </motion.div>
+
+            <div className="space-y-2 border-t border-border/70 pt-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Border</p>
+              <div className="grid grid-cols-[1fr_auto] gap-2">
+                <label className="text-xs text-muted-foreground">
+                  Width {borderWidth}px
+                  <input type="range" min="0" max="80" value={borderWidth} onChange={(event) => setBorderWidth(Number(event.target.value))} className="mt-1 w-full" />
+                </label>
+                <input type="color" value={borderColor} onChange={(event) => setBorderColor(event.target.value)} className="mt-4 h-9 w-12 rounded-lg border border-input bg-background" />
+              </div>
+              <Button size="sm" variant="outline" className="w-full" disabled={isApplyingTool || borderWidth <= 0} onClick={() => void applyBorder()}>
+                Apply Border
+              </Button>
+            </div>
+          </motion.div>
         </div>
       )}
+
+      {isCompleted && <RatingWidget tool="remover" imageId={image.id} jobId={image.jobId} />}
     </motion.div>
   );
+}
+
+function FileBadgeIcon() {
+  return <BadgeInfo className="h-4 w-4" />;
 }
 
 // Live timer component for credit reset countdown

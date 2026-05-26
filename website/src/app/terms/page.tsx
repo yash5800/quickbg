@@ -38,6 +38,14 @@ export default function TermsPage() {
           </div>
 
           <div>
+            <h2 className="text-lg font-semibold text-white mb-2">Advertising</h2>
+            <p>
+              QuickBG may show Google AdSense advertisements on public pages. Those ads are served by Google
+              and may be subject to Google&apos;s own review, targeting, and policy controls.
+            </p>
+          </div>
+
+          <div>
             <h2 className="text-lg font-semibold text-white mb-2">Prohibited Use</h2>
             <ul className="list-disc list-inside space-y-1 mt-2">
               <li>Processing illegal or harmful content</li>

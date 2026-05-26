@@ -55,6 +55,14 @@ export default function PrivacyPage() {
           </div>
 
           <div>
+            <h2 className="text-lg font-semibold text-white mb-2">Advertising</h2>
+            <p>
+              QuickBG may display Google AdSense advertisements on public pages.
+              Ad serving and measurement are handled by Google in accordance with its own policies and controls.
+            </p>
+          </div>
+
+          <div>
             <h2 className="text-lg font-semibold text-white mb-2">Contact</h2>
             <p>
               If you have any questions about this privacy policy, please contact us through our feedback form.

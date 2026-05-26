@@ -10,6 +10,7 @@ interface ThumbnailGalleryProps {
   selectedId: string | null;
   onSelect: (id: string) => void;
   onRemove: (id: string) => void;
+  layout?: "grid" | "strip";
 }
 
 export function ThumbnailGallery({
@@ -17,6 +18,7 @@ export function ThumbnailGallery({
   selectedId,
   onSelect,
   onRemove,
+  layout = "grid",
 }: ThumbnailGalleryProps) {
   if (images.length === 0) return null;
 
@@ -32,7 +34,13 @@ export function ThumbnailGallery({
         </h3>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+      <div
+        className={cn(
+          layout === "strip"
+            ? "flex gap-3 overflow-x-auto pb-1"
+            : "grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+        )}
+      >
         {images.map((image) => (
           <ThumbnailItem
             key={image.id}
@@ -40,6 +48,7 @@ export function ThumbnailGallery({
             isSelected={image.id === selectedId}
             onSelect={() => onSelect(image.id)}
             onRemove={() => onRemove(image.id)}
+            layout={layout}
           />
         ))}
       </div>
@@ -52,11 +61,13 @@ function ThumbnailItem({
   isSelected,
   onSelect,
   onRemove,
+  layout,
 }: {
   image: ImageItem;
   isSelected: boolean;
   onSelect: () => void;
   onRemove: () => void;
+  layout: "grid" | "strip";
 }) {
   const isCompleted = image.status === "completed" && !!image.result;
   const isFetchingResult = image.status === "completed" && !image.result;
@@ -73,7 +84,7 @@ function ThumbnailItem({
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="relative group"
+      className={cn("group relative", layout === "strip" && "w-24 shrink-0 sm:w-28")}
     >
       <button
         onClick={onSelect}
@@ -164,7 +175,7 @@ function ThumbnailItem({
       </motion.button>
 
       {/* File name tooltip */}
-      <p className="text-xs text-muted-foreground mt-1 truncate group-hover:text-foreground transition-colors">
+      <p className={cn("mt-1 truncate text-xs text-muted-foreground transition-colors group-hover:text-foreground", layout === "strip" && "text-[11px]")}>
         {image.file.name.substring(0, 15)}
         {image.file.name.length > 15 ? "..." : ""}
       </p>

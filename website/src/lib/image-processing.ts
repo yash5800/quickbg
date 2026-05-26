@@ -157,6 +157,12 @@ export async function addWatermark(
   const width = metadata.width || 800;
   const height = metadata.height || 600;
 
+  const safeText = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
   const svgText = `
     <svg width="${width}" height="${height}">
       <style>
@@ -171,7 +177,7 @@ export async function addWatermark(
         x="${getXPosition(position, width, margin)}" 
         y="${getYPosition(position, height, margin, fontSize)}"
         class="watermark"
-      >${text}</text>
+      >${safeText}</text>
     </svg>
   `;
 

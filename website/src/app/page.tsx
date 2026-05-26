@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -16,8 +16,9 @@ import {
   Upload,
   Wand2,
   Zap,
+  FileImage,
 } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +29,7 @@ import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
-import { adjust, bgblur, bgremove, bgreplace, crop, resize } from "@/lib/demo-smaples";
+import { adjust, bgblur, bgremove, bgreplace, convert, crop, resize, sharpness } from "@/lib/demo-smaples";
 
 const tools = [
   {
@@ -87,6 +88,17 @@ const tools = [
     demo_image: crop
   },
   {
+    id: "sharpness",
+    icon: Wand2,
+    title: "Sharpness",
+    description: "Sharpen the subject or background independently for crisp final exports.",
+    badge: "New",
+    href: "/sharpness",
+    accent: "text-amber-300",
+    glow: "from-amber-500/20",
+    demo_image: sharpness
+  },
+  {
     id: "adjust",
     icon: Contrast,
     title: "Adjust Image",
@@ -96,6 +108,17 @@ const tools = [
     accent: "text-cyan-300",
     glow: "from-cyan-500/20",
     demo_image: adjust
+  },
+  {
+    id: "converter",
+    icon: FileImage,
+    title: "Format Converter",
+    description: "Convert PNG, JPG, WebP, AVIF, and TIFF with quality controls.",
+    badge: "New",
+    href: "/converter",
+    accent: "text-indigo-300",
+    glow: "from-indigo-500/20",
+    demo_image: convert
   },
 ];
 
@@ -521,6 +544,67 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24 rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 sm:p-8 lg:p-10"
+          >
+            <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-start">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">SEO explainer</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
+                  A better background remover starts with a clear workflow.
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-white/55 sm:text-base">
+                  QuickBG is built for people who need fast cutouts, clean transparent exports, and a
+                  practical editing path for product images, social posts, and design work. The page below
+                  explains how the tool works so users and crawlers can understand the full experience.
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">How the tool works</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Upload a photo, let the background remover detect the subject, and move straight into
+                    export or refinement. The workflow keeps the important part in view: a subject cutout
+                    that is ready for transparent PNG delivery.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">Why PNGs matter</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Transparent PNGs make it easy to place a product on a marketplace, a banner, a social
+                    post, or a new background without visible boxes or rough edges. That keeps the output
+                    reusable across marketing and design workflows.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">What QuickBG handles</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    The app is designed for portraits, products, pets, artwork, and everyday images with
+                    busy or uneven edges. It also supports follow-up tools like resize, crop, blur, replace,
+                    and adjust, so users can finish the job in one place.
+                  </p>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">When to refine manually</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    Complex hair, smoke, shadows, or transparent objects can sometimes need a quick final
+                    check. If the subject edge needs polish, users can rerun the image, crop tighter, or use
+                    the adjacent tools to make the result cleaner before download.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.section>
         </section>
       </div>
     </AppLayout>

@@ -12,11 +12,11 @@ import { AppLayout } from "@/components/app-layout";
 import { PreviewDisplay } from "@/components/preview-display";
 import { PreviewInfo } from "@/components/preview-info";
 import { ThumbnailGallery } from "@/components/thumbnail-gallery";
-import { FeedbackSection } from "@/components/feedback-section";
 import { EraserTool } from "@/components/eraser-tool";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ImageItem } from "@/types/image";
+import { useProcessingCompleteNotification } from "@/hooks/use-processing-complete-notification";
 
 export default function EditorPage() {
   const images = useImagesStore((state) => state.images);
@@ -33,6 +33,7 @@ export default function EditorPage() {
   const { addToast } = useToast();
   const prevCompletedCount = useRef(0);
   const router = useRouter();
+  useProcessingCompleteNotification(images);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +125,43 @@ export default function EditorPage() {
   }, [updateImageStatus]);
 
   const selectedImage = images.find((img: ImageItem) => img.id === selectedId);
+  const selectByOffset = useCallback((offset: number) => {
+    if (images.length === 0) return;
+    const currentIndex = Math.max(0, images.findIndex((img) => img.id === selectedId));
+    const nextIndex = Math.min(images.length - 1, Math.max(0, currentIndex + offset));
+    setSelectedId(images[nextIndex]?.id ?? images[0].id);
+  }, [images, selectedId]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (showEraser) return;
+      const modifier = event.ctrlKey || event.metaKey;
+      if (modifier && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        const current = useImagesStore.getState().images.find((img) => img.id === selectedId);
+        if (current?.result) {
+          const a = document.createElement("a");
+          a.href = current.result;
+          a.download = `${current.file.name.split(".")[0]}-nobg.png`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      }
+      if (event.key === "ArrowLeft") {
+        selectByOffset(-1);
+      }
+      if (event.key === "ArrowRight") {
+        selectByOffset(1);
+      }
+      if (event.key === "Escape") {
+        setShowEraser(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectByOffset, selectedId, showEraser]);
 
   const handleDropZoneDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -216,7 +254,7 @@ export default function EditorPage() {
         className="hidden"
       />
       <div
-        className="remover-shell mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12"
+        className="remover-shell mx-auto flex min-h-[calc(100dvh-4rem)] max-w-[1500px] flex-col px-3 py-4 sm:px-5 lg:px-6"
         onDragEnter={handleDropZoneDragEnter}
         onDragLeave={handleDropZoneDragLeave}
         onDragOver={handleDropZoneDragOver}
@@ -226,11 +264,11 @@ export default function EditorPage() {
           initial={false}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="space-y-8"
+          className="flex min-h-0 flex-1 flex-col gap-4"
         >
           {/* Header */}
-          <div className="border-b border-border/70 pb-6">
-            <div className="flex items-center justify-between mb-4">
+          <div className="rounded-xl border border-border/70 bg-background/60 px-3 py-3 shadow-sm backdrop-blur sm:px-4">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="h-9 w-9">
                   <ArrowLeft className="h-5 w-5" />
@@ -258,22 +296,48 @@ export default function EditorPage() {
             </div>
           </div>
 
-          {/* Main Preview Section - 2 columns on desktop */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left side - Preview (2 columns) */}
-            <div className="lg:col-span-2">
-              <AnimatePresence mode="wait">
-                {selectedImage && (
-                  <SelectedPreview
-                    key={selectedImage.id}
-                    image={selectedImage}
-                  />
-                )}
-              </AnimatePresence>
+          <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_370px]">
+            <div className="flex min-h-0 flex-col gap-3">
+              <div
+                className="min-h-0 flex-1"
+                onTouchStart={(event) => {
+                  const touch = event.changedTouches[0];
+                  if (touch) {
+                    (event.currentTarget as HTMLDivElement).dataset.touchStartX = String(touch.clientX);
+                  }
+                }}
+                onTouchEnd={(event) => {
+                  const startX = Number((event.currentTarget as HTMLDivElement).dataset.touchStartX || 0);
+                  const touch = event.changedTouches[0];
+                  if (!touch || !startX) return;
+                  const delta = touch.clientX - startX;
+                  if (Math.abs(delta) > 60) {
+                    selectByOffset(delta > 0 ? -1 : 1);
+                  }
+                }}
+              >
+                <AnimatePresence mode="wait">
+                  {selectedImage && (
+                    <SelectedPreview
+                      key={selectedImage.id}
+                      image={selectedImage}
+                    />
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <div className="rounded-xl border border-border/70 bg-background/55 p-3 backdrop-blur">
+                <ThumbnailGallery
+                  images={images}
+                  selectedId={selectedId}
+                  onSelect={setSelectedId}
+                  onRemove={handleRemove}
+                  layout="strip"
+                />
+              </div>
             </div>
 
-            {/* Right side - Info Panel (1 column) */}
-            <div>
+            <aside className="min-h-0">
               <AnimatePresence mode="wait">
                 {selectedImage && (
                   <SelectedInfo
@@ -282,24 +346,12 @@ export default function EditorPage() {
                     onRemove={() => handleRemove(selectedImage.id)}
                     onRetry={() => handleRetry(selectedImage.id)}
                     onOpenEraser={() => setShowEraser(true)}
+                    onUpdateResult={(dataUrl) => updateImageResult(selectedImage.id, dataUrl)}
                   />
                 )}
               </AnimatePresence>
-            </div>
+            </aside>
           </div>
-
-          {/* Thumbnail Gallery */}
-          <div className="space-y-4">
-            <ThumbnailGallery
-              images={images}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-              onRemove={handleRemove}
-            />
-          </div>
-
-          {/* Feedback Section */}
-          <FeedbackSection />
 
           {/* Eraser Tool Modal */}
           {showEraser && selectedImage && selectedImage.result && (
@@ -343,8 +395,21 @@ function SelectedPreview({
   );
 }
 
-function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: ImageItem; onRemove: () => void; onRetry: () => void; onOpenEraser?: () => void }) {
+function SelectedInfo({
+  image,
+  onRemove,
+  onRetry,
+  onOpenEraser,
+  onUpdateResult,
+}: {
+  image: ImageItem;
+  onRemove: () => void;
+  onRetry: () => void;
+  onOpenEraser?: () => void;
+  onUpdateResult: (dataUrl: string) => void;
+}) {
   const [isDownloading, setIsDownloading] = useState(false);
+  const { addToast } = useToast();
 
   const downloadResult = async () => {
     const url = image.result;
@@ -375,7 +440,7 @@ function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: Image
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="sticky top-24"
+      className="xl:sticky xl:top-20 xl:max-h-[calc(100dvh-5.75rem)] xl:overflow-y-auto xl:pr-1"
     >
       <PreviewInfo
         image={image}
@@ -386,6 +451,27 @@ function SelectedInfo({ image, onRemove, onRetry, onOpenEraser }: { image: Image
         onRemove={onRemove}
         onRetry={onRetry}
         onDownload={downloadResult}
+        onCopy={async () => {
+          if (!image.result) return;
+          try {
+            const response = await fetch(image.result);
+            const sourceBlob = await response.blob();
+            const blob = sourceBlob.type === "image/png" ? sourceBlob : new Blob([sourceBlob], { type: "image/png" });
+            if (!navigator.clipboard || !("ClipboardItem" in window)) {
+              throw new Error("Clipboard image copy is not supported in this browser");
+            }
+            await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+            addToast({ type: "success", title: "Copied image", duration: 2500 });
+          } catch (error) {
+            addToast({
+              type: "error",
+              title: "Copy failed",
+              description: error instanceof Error ? error.message : "Your browser blocked image clipboard access.",
+              duration: 3500,
+            });
+          }
+        }}
+        onUpdateResult={onUpdateResult}
         isDownloading={isDownloading}
         liveStatus="unknown"
         onOpenEraser={onOpenEraser}

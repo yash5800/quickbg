@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Download, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft } from "lucide-react";
+import { Download, Settings, Sun, Contrast, Palette, FileImage, Minimize2, ArrowLeft, Undo2, Redo2 } from "lucide-react";
 import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -33,6 +33,70 @@ export default function AdjustPage() {
   const resultUrlRef = useRef<string | null>(null);
   const autoApplyTimeoutRef = useRef<number | null>(null);
   const processRunIdRef = useRef(0);
+  type AdjustState = {
+    brightness: number;
+    contrast: number;
+    saturation: number;
+    quality: number;
+    format: "png" | "jpeg" | "webp";
+    resizeWidth: number | null;
+    resizeEnabled: boolean;
+    targetEnabled: boolean;
+    targetSizeValue: number | null;
+    targetSizeUnit: "KB" | "MB";
+  };
+  const undoStackRef = useRef<AdjustState[]>([]);
+  const redoStackRef = useRef<AdjustState[]>([]);
+  const lastStateRef = useRef<AdjustState | null>(null);
+  const isApplyingHistoryRef = useRef(false);
+  const [, setHistoryTick] = useState(0);
+
+  const currentAdjustState = useCallback((): AdjustState => ({
+    brightness,
+    contrast,
+    saturation,
+    quality,
+    format,
+    resizeWidth,
+    resizeEnabled,
+    targetEnabled,
+    targetSizeValue,
+    targetSizeUnit,
+  }), [brightness, contrast, saturation, quality, format, resizeWidth, resizeEnabled, targetEnabled, targetSizeValue, targetSizeUnit]);
+
+  const applyAdjustState = useCallback((state: AdjustState) => {
+    isApplyingHistoryRef.current = true;
+    setBrightness(state.brightness);
+    setContrast(state.contrast);
+    setSaturation(state.saturation);
+    setQuality(state.quality);
+    setFormat(state.format);
+    setResizeWidth(state.resizeWidth);
+    setResizeEnabled(state.resizeEnabled);
+    setTargetEnabled(state.targetEnabled);
+    setTargetSizeValue(state.targetSizeValue);
+    setTargetSizeUnit(state.targetSizeUnit);
+    window.setTimeout(() => {
+      isApplyingHistoryRef.current = false;
+      lastStateRef.current = state;
+    }, 0);
+  }, []);
+
+  const undo = useCallback(() => {
+    const previous = undoStackRef.current.pop();
+    if (!previous) return;
+    redoStackRef.current.push(currentAdjustState());
+    applyAdjustState(previous);
+    setHistoryTick((tick) => tick + 1);
+  }, [applyAdjustState, currentAdjustState]);
+
+  const redo = useCallback(() => {
+    const next = redoStackRef.current.pop();
+    if (!next) return;
+    undoStackRef.current.push(currentAdjustState());
+    applyAdjustState(next);
+    setHistoryTick((tick) => tick + 1);
+  }, [applyAdjustState, currentAdjustState]);
 
   // Load image from sessionStorage
   useEffect(() => {
@@ -45,6 +109,50 @@ export default function AdjustPage() {
       sessionStorage.removeItem("toolImages");
     }
   }, []);
+
+  useEffect(() => {
+    if (!image) {
+      lastStateRef.current = null;
+      undoStackRef.current = [];
+      redoStackRef.current = [];
+      setHistoryTick((tick) => tick + 1);
+      return;
+    }
+
+    const snapshot = currentAdjustState();
+    if (!lastStateRef.current) {
+      lastStateRef.current = snapshot;
+      return;
+    }
+
+    if (isApplyingHistoryRef.current) {
+      return;
+    }
+
+    undoStackRef.current.push(lastStateRef.current);
+    if (undoStackRef.current.length > 80) {
+      undoStackRef.current.shift();
+    }
+    redoStackRef.current = [];
+    lastStateRef.current = snapshot;
+    setHistoryTick((tick) => tick + 1);
+  }, [image, currentAdjustState]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const modifier = event.ctrlKey || event.metaKey;
+      if (!modifier || event.key.toLowerCase() !== "z") return;
+      event.preventDefault();
+      if (event.shiftKey) {
+        redo();
+      } else {
+        undo();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [redo, undo]);
 
   useEffect(() => {
     if (!image) {
@@ -105,6 +213,10 @@ export default function AdjustPage() {
       setTargetSizeUnit("KB");
       setFormat("jpeg");
       setQuality(90);
+      undoStackRef.current = [];
+      redoStackRef.current = [];
+      lastStateRef.current = null;
+      setHistoryTick((tick) => tick + 1);
     }
     e.target.value = "";
   }, []);
@@ -326,7 +438,16 @@ export default function AdjustPage() {
             <div className="p-5 rounded-xl premium-surface">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold">Image Adjustments</h3>
+                <div className="flex items-center gap-1">
+                  <Button variant="outline" size="icon" className="h-8 w-8" onClick={undo} disabled={undoStackRef.current.length === 0} title="Undo">
+                    <Undo2 className="h-4 w-4" />
+                  </Button>
+                  <Button variant="outline" size="icon" className="h-8 w-8" onClick={redo} disabled={redoStackRef.current.length === 0} title="Redo">
+                    <Redo2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
+              <p className="mb-4 text-xs text-muted-foreground">History: {undoStackRef.current.length} undo / {redoStackRef.current.length} redo</p>
 
               <div className="space-y-4">
                 <div>

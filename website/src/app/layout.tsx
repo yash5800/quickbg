@@ -1,10 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Space_Grotesk } from "next/font/google";
 import { ClientLayout } from "@/components/client-layout";
 import "./globals.css";
-
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
-const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
 
 export const metadata: Metadata = {
   title: "Free AI Background Remover - Unlimited Images, 100% Original Quality",
@@ -21,6 +17,13 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "QuickBG Team" }],
   robots: "index, follow",
+  manifest: "/manifest.json",
+  applicationName: "QuickBG",
+  appleWebApp: {
+    capable: true,
+    title: "QuickBG",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -79,7 +82,7 @@ export default function RootLayout({
           ]
         }) }} />
       </head>
-      <body className={`${manrope.variable} ${spaceGrotesk.variable} font-sans`}>
+      <body className="font-sans">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

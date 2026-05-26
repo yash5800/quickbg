@@ -204,8 +204,8 @@ export function PreviewDisplay({
         <div
           className={
             isCompleted
-              ? "relative w-full aspect-video sm:aspect-square lg:aspect-auto lg:h-[500px] bg-background/40 flex items-center justify-center"
-              : "relative w-full max-h-[70vh] bg-background/40 flex items-center justify-center overflow-hidden"
+              ? "relative flex h-[52dvh] min-h-[360px] w-full items-center justify-center bg-background/40 sm:h-[58dvh] xl:h-[calc(100dvh-15rem)] xl:max-h-[760px]"
+              : "relative flex h-[52dvh] min-h-[360px] w-full items-center justify-center overflow-hidden bg-background/40 sm:h-[58dvh] xl:h-[calc(100dvh-15rem)] xl:max-h-[760px]"
           }
         >
           <AnimatePresence mode="wait">
