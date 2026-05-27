@@ -22,6 +22,26 @@ export function getOrCreateSessionId(request: NextRequest): {
   };
 }
 
+export function getClientIp(request: NextRequest): string {
+  const forwardedFor = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || request.headers.get("cf-connecting-ip") || request.headers.get("x-vercel-forwarded-for") || "";
+
+  const firstForwardedIp = forwardedFor
+    .split(",")
+    .map((entry) => entry.trim())
+    .find(Boolean);
+
+  if (firstForwardedIp) {
+    return firstForwardedIp;
+  }
+
+  const directIp = request.headers.get("x-client-ip")?.trim();
+  if (directIp) {
+    return directIp;
+  }
+
+  return request.ip?.trim() || "unknown";
+}
+
 export function attachSessionCookie(response: NextResponse, sessionId: string): void {
   response.cookies.set({
     name: SESSION_COOKIE_NAME,

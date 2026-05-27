@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
+import { getClientIp } from "@/lib/request-session";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Security: Rate limiting
-  const clientIP = request.headers.get("x-forwarded-for") || "unknown";
+  const clientIP = getClientIp(request);
   if (!checkRateLimit(clientIP)) {
     return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
   }

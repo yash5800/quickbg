@@ -25,6 +25,7 @@ export default function EditorPage() {
   const updateImageStatus = useImagesStore((state) => state.updateImageStatus);
   const updateImageResult = useImagesStore((state) => state.updateImageResult);
   const remaining = useCreditsStore((state) => state.remaining);
+  const isCreditsInitialized = useCreditsStore((state) => state.isInitialized);
   const creditsLeft = Number.isFinite(remaining) ? remaining : 0;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -32,6 +33,7 @@ export default function EditorPage() {
   const [isDropActive, setIsDropActive] = useState(false);
   const { addToast } = useToast();
   const prevCompletedCount = useRef(0);
+  const prevImagesLength = useRef(0);
   const router = useRouter();
   useProcessingCompleteNotification(images);
 
@@ -52,15 +54,22 @@ export default function EditorPage() {
       if (selectedId) {
         setSelectedId(null);
       }
+      prevImagesLength.current = 0;
       return;
     }
 
     const selectedExists = selectedId ? images.some((img) => img.id === selectedId) : false;
+    const imagesGrew = images.length > prevImagesLength.current;
 
-    if (!selectedExists) {
+    if (imagesGrew) {
+      const pendingImage = images.find((img) => img.status === "pending");
+      setSelectedId(pendingImage?.id ?? images[0].id);
+    } else if (!selectedExists) {
       const pendingImage = images.find((img) => img.status === "pending");
       setSelectedId(pendingImage?.id ?? images[0].id);
     }
+
+    prevImagesLength.current = images.length;
   }, [images, selectedId]);
 
   // Track completion and show toast when all done
@@ -278,7 +287,7 @@ export default function EditorPage() {
                   <p className="text-muted-foreground text-sm mt-0.5">
                     {images.length} {images.length === 1 ? "image" : "images"} selected
                     <span className="ml-2 text-amber-600 tabular-nums">
-                      ({creditsLeft} credits left)
+                      ({isCreditsInitialized ? creditsLeft : "…"} credits left)
                     </span>
                   </p>
                 </div>

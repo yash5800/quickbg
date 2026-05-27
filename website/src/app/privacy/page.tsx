@@ -41,8 +41,9 @@ export default function PrivacyPage() {
           <div>
             <h2 className="text-lg font-semibold text-white mb-2">Cookies</h2>
             <p>
-              QuickBG uses minimal cookies necessary for service functionality. We do not use
-              tracking cookies or share data with third-party advertisers.
+              QuickBG uses only essential cookies necessary for service functionality, including sessions,
+              credits, queue tracking, and remembering that this notice was shown. We do not use tracking
+              cookies or share data with third-party advertisers.
             </p>
           </div>
 

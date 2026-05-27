@@ -5,6 +5,7 @@ interface CreditsState {
   resetInSeconds: number;
   resetAt: number;
   lastUpdated: number;
+  isInitialized: boolean;
   setCredits: (remaining: number, resetInSeconds: number) => void;
   consumeCredit: () => void;
 }
@@ -14,6 +15,7 @@ export const useCreditsStore = create<CreditsState>((set) => ({
   resetInSeconds: 3600,
   resetAt: Date.now() + 3600 * 1000,
   lastUpdated: Date.now(),
+  isInitialized: false,
   setCredits: (remaining, resetInSeconds) => {
     const now = Date.now();
     set((state) => {
@@ -25,6 +27,7 @@ export const useCreditsStore = create<CreditsState>((set) => ({
         resetInSeconds: safeResetInSeconds,
         resetAt: now + safeResetInSeconds * 1000,
         lastUpdated: now,
+        isInitialized: true,
       };
     });
   },
@@ -33,6 +36,7 @@ export const useCreditsStore = create<CreditsState>((set) => ({
     set((state) => ({
       remaining: Math.max(0, state.remaining - 1),
       lastUpdated: now,
+      isInitialized: true,
     }));
   },
 }));

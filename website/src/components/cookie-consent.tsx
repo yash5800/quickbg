@@ -3,33 +3,33 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldCheck, Cookie, X } from "lucide-react";
+import { ShieldCheck, Cookie } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const CONSENT_COOKIE = "qb_cookie_consent";
-const CONSENT_MAX_AGE = 60 * 60 * 24 * 365;
+const NOTICE_COOKIE = "qb_cookie_notice";
+const NOTICE_MAX_AGE = 60 * 60 * 24 * 365;
 
-type ConsentState = "accepted" | "rejected" | null;
+type NoticeState = "seen" | null;
 
-function readConsentCookie(): ConsentState {
+function readNoticeCookie(): NoticeState {
   if (typeof document === "undefined") return null;
 
   const match = document.cookie
     .split("; ")
-    .find((entry) => entry.startsWith(`${CONSENT_COOKIE}=`));
+    .find((entry) => entry.startsWith(`${NOTICE_COOKIE}=`));
 
   if (!match) return null;
 
   const value = decodeURIComponent(match.split("=")[1] || "");
-  return value === "accepted" || value === "rejected" ? value : null;
+  return value === "seen" ? value : null;
 }
 
-function writeConsentCookie(value: "accepted" | "rejected") {
+function writeNoticeCookie() {
   const isSecure = typeof window !== "undefined" && window.location.protocol === "https:";
   document.cookie = [
-    `${CONSENT_COOKIE}=${encodeURIComponent(value)}`,
-    `Max-Age=${CONSENT_MAX_AGE}`,
+    `${NOTICE_COOKIE}=seen`,
+    `Max-Age=${NOTICE_MAX_AGE}`,
     "Path=/",
     "SameSite=Lax",
     isSecure ? "Secure" : "",
@@ -39,20 +39,20 @@ function writeConsentCookie(value: "accepted" | "rejected") {
 }
 
 export function CookieConsentBanner() {
-  const [consent, setConsent] = useState<ConsentState>(null);
+  const [seen, setSeen] = useState<NoticeState>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setConsent(readConsentCookie());
+    setSeen(readNoticeCookie());
     setMounted(true);
   }, []);
 
-  const handleConsent = (value: "accepted" | "rejected") => {
-    writeConsentCookie(value);
-    setConsent(value);
+  const handleDismiss = () => {
+    writeNoticeCookie();
+    setSeen("seen");
   };
 
-  if (!mounted || consent) {
+  if (!mounted || seen) {
     return null;
   }
 
@@ -64,7 +64,7 @@ export function CookieConsentBanner() {
         exit={{ opacity: 0, y: 24 }}
         className="fixed bottom-4 left-4 right-4 z-[70] mx-auto max-w-2xl"
       >
-        <div className={cn("rounded-2xl border border-border/70 bg-background/95 p-4 shadow-2xl backdrop-blur-xl") }>
+        <div className={cn("rounded-2xl border border-border/70 bg-background/95 p-4 shadow-2xl backdrop-blur-xl")}>
           <div className="flex items-start gap-3 sm:gap-4">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <Cookie className="h-5 w-5" />
@@ -72,9 +72,9 @@ export function CookieConsentBanner() {
 
             <div className="min-w-0 flex-1 space-y-3">
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-foreground">Cookies and privacy choices</p>
+                <p className="text-sm font-semibold text-foreground">Cookies in use</p>
                 <p className="text-sm text-muted-foreground">
-                  We use essential cookies for sessions, credits, and queue tracking. Choose whether to allow non-essential cookies.
+                  QuickBG uses only essential cookies for sessions, credits, and queue tracking. No tracking cookies are used.
                 </p>
               </div>
 
@@ -84,16 +84,10 @@ export function CookieConsentBanner() {
                   View privacy policy
                 </Link>
 
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => handleConsent("rejected")} className="gap-2">
-                    <X className="h-4 w-4" />
-                    Reject
-                  </Button>
-                  <Button size="sm" onClick={() => handleConsent("accepted")} className="gap-2">
-                    <ShieldCheck className="h-4 w-4" />
-                    Accept all
-                  </Button>
-                </div>
+                <Button size="sm" onClick={handleDismiss} className="gap-2">
+                  <ShieldCheck className="h-4 w-4" />
+                  Got it
+                </Button>
               </div>
             </div>
           </div>

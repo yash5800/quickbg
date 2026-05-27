@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient, Db, Collection, ObjectId } from "mongodb";
-import { attachSessionCookie, getOrCreateSessionId } from "@/lib/request-session";
+import { attachSessionCookie, getClientIp, getOrCreateSessionId } from "@/lib/request-session";
 
 const WORKER_API_BASE = (process.env.NEXT_PUBLIC_WORKER_API_URL || "http://localhost:8000").replace(/\/+$/, "");
 
@@ -105,7 +105,7 @@ function getHourlyUsageCollection(database: Db): Collection<HourlyUsage> {
 
 export async function GET(request: NextRequest) {
   const { sessionId, isNewSession } = getOrCreateSessionId(request);
-  const clientKey = sessionId;
+  const clientKey = getClientIp(request) || sessionId;
   
   try {
     // Get worker status

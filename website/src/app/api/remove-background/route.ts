@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MongoClient, Db, Collection, ObjectId } from "mongodb";
-import { attachSessionCookie, getOrCreateSessionId } from "@/lib/request-session";
+import { attachSessionCookie, getClientIp, getOrCreateSessionId } from "@/lib/request-session";
 
 export const dynamic = "force-dynamic";
 
@@ -290,7 +290,7 @@ async function releaseHourlyUploadSlot(
 
 export async function POST(request: NextRequest) {
   const { sessionId, isNewSession } = getOrCreateSessionId(request);
-  const clientKey = sessionId;
+  const clientKey = getClientIp(request) || sessionId;
 
   try {
     const formData = await request.formData();

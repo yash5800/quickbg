@@ -23,6 +23,7 @@ import { useCreditsSync } from "@/store/useCreditsSync";
 function FloatingCredits() {
   const remaining = useCreditsStore((state) => state.remaining);
   const resetAt = useCreditsStore((state) => state.resetAt);
+  const isInitialized = useCreditsStore((state) => state.isInitialized);
   const creditsLeft = Number.isFinite(remaining) ? remaining : 0;
   const [liveResetInSeconds, setLiveResetInSeconds] = useState(() =>
     Math.max(0, Math.ceil((resetAt - Date.now()) / 1000))
@@ -32,6 +33,10 @@ function FloatingCredits() {
   useCreditsSync();
 
   useEffect(() => {
+    if (!isInitialized) {
+      return;
+    }
+
     const update = () => {
       setLiveResetInSeconds(Math.max(0, Math.ceil((resetAt - Date.now()) / 1000)));
     };
@@ -39,7 +44,7 @@ function FloatingCredits() {
     update();
     const interval = window.setInterval(update, 1000);
     return () => window.clearInterval(interval);
-  }, [resetAt]);
+  }, [isInitialized, resetAt]);
 
   const formatResetTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -47,7 +52,7 @@ function FloatingCredits() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const isExhausted = remaining === 0;
+  const isExhausted = isInitialized && remaining === 0;
 
   return (
     <div className="fixed top-20 right-3 z-40 md:right-6">
@@ -64,10 +69,10 @@ function FloatingCredits() {
         <Zap
           className={cn(
             "h-3.5 w-3.5",
-            remaining === 0 ? "text-destructive" : remaining < 10 ? "text-amber-500" : "text-primary"
+            !isInitialized ? "text-muted-foreground" : remaining === 0 ? "text-destructive" : remaining < 10 ? "text-amber-500" : "text-primary"
           )}
         />
-        <span className={cn("font-semibold tabular-nums", remaining === 0 ? "text-destructive" : "")}>{creditsLeft}</span>
+        <span className={cn("font-semibold tabular-nums", isInitialized && remaining === 0 ? "text-destructive" : "")}>{isInitialized ? creditsLeft : "…"}</span>
         {isExhausted && (
           <span className="font-semibold tabular-nums text-destructive animate-pulse">{formatResetTime(liveResetInSeconds)}</span>
         )}
