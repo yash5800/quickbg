@@ -29,7 +29,7 @@ import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
-import { adjust, bgblur, bgremove, bgreplace, convert, crop, resize, sharpness } from "@/lib/demo-smaples";
+import { adjust, bgblur, bgremovep, bgreplace, convert, crop, resize, sharpness } from "@/lib/demo-smaples";
 
 const tools = [
   {
@@ -41,7 +41,7 @@ const tools = [
     href: "/remover",
     accent: "text-sky-300",
     glow: "from-sky-500/20",
-    demo_image: bgremove
+    demo_image: bgremovep
   },
   {
     id: "resize",

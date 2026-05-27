@@ -106,7 +106,7 @@ export default function AboutPage() {
         </Card>
 
         <Card className="premium-surface mt-4 p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-white/60">
-          <div>
+          <div className="flex-1">
             <h2 className="text-lg font-semibold text-white">Need help or want to report an edge case?</h2>
             <p className="mt-2 leading-6">
               Reach out if you have questions about image handling, policy details, or a difficult file that
