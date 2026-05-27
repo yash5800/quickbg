@@ -21,6 +21,14 @@ export interface JobQueuedResponse {
   reset_in_seconds?: number;
 }
 
+export interface UploadSlotResponse {
+  uploads_used: number;
+  uploads_limit: number;
+  remaining: number;
+  retry_after?: number;
+  reset_in_seconds?: number;
+}
+
 export interface JobStatusResponse {
   job_id: string;
   status: JobStatus;
@@ -51,13 +59,7 @@ export class WorkerApiError extends Error {
   }
 }
 
-export async function submitImage(file: File): Promise<JobQueuedResponse> {
-  console.log("[Worker API] submitImage called:", file.name, file.size);
-
-  if (!WORKER_API_BASE) {
-    throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
-  }
-
+export async function reserveUploadSlot(): Promise<UploadSlotResponse> {
   const reservationFormData = new FormData();
   reservationFormData.append("reserveOnly", "true");
 
@@ -72,7 +74,31 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
     throw new WorkerApiError(message, reservationResponse.status, error);
   }
 
-  const reservation = await reservationResponse.json().catch(() => ({} as Partial<JobQueuedResponse>));
+  return reservationResponse.json();
+}
+
+export async function releaseUploadSlot(): Promise<UploadSlotResponse> {
+  const releaseFormData = new FormData();
+  releaseFormData.append("releaseOnly", "true");
+
+  const releaseResponse = await fetch(`${APP_API_BASE}/remove-background`, {
+    method: "POST",
+    body: releaseFormData,
+  });
+
+  if (!releaseResponse.ok) {
+    const error = await releaseResponse.json().catch(() => ({ message: "Failed to release upload slot" }));
+    const message = error.message || error.detail || `HTTP ${releaseResponse.status}`;
+    throw new WorkerApiError(message, releaseResponse.status, error);
+  }
+
+  return releaseResponse.json();
+}
+
+export async function uploadImage(file: File): Promise<JobQueuedResponse> {
+  if (!WORKER_API_BASE) {
+    throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
+  }
 
   const formData = new FormData();
   formData.append("file", file);
@@ -96,14 +122,24 @@ export async function submitImage(file: File): Promise<JobQueuedResponse> {
       job_id: "direct",
       status: "completed",
       imageBlob: blob,
-      remaining: reservation.remaining,
-      reset_in_seconds: reservation.reset_in_seconds,
     };
   }
 
-  const queuedResponse = await response.json();
+  return response.json();
+}
+
+export async function submitImage(file: File): Promise<JobQueuedResponse> {
+  console.log("[Worker API] submitImage called:", file.name, file.size);
+
+  if (!WORKER_API_BASE) {
+    throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
+  }
+
+  const reservation = await reserveUploadSlot();
+  const response = await uploadImage(file);
+
   return {
-    ...queuedResponse,
+    ...response,
     remaining: reservation.remaining,
     reset_in_seconds: reservation.reset_in_seconds,
   };

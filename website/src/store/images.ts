@@ -8,6 +8,7 @@ interface ImagesState {
   images: ImageItem[];
   setImages: (images: ImageItem[]) => void;
   addImages: (files: File[]) => void;
+  addImage: (file: File, data?: Partial<ImageItem>) => ImageItem;
   removeImage: (id: string) => void;
   clearImages: () => void;
   updateImageStatus: (id: string, status: ImageItem["status"], data?: Partial<ImageItem>) => void;
@@ -37,28 +38,35 @@ export const useImagesStore = create<ImagesState>((set, get) => ({
 
   setImages: (images) => set({ images }),
 
-  addImages: (files) => {
-    const newImages: ImageItem[] = files.map((file) => ({
+  addImage: (file, data) => {
+    const image: ImageItem = {
       id: generateId(),
       file,
       preview: createPreview(file),
       status: "pending" as const,
-    }));
-    set((state) => ({ images: [...newImages, ...state.images] }));
+      ...data,
+    };
 
-    // Load dimensions
-    newImages.forEach((image) => {
-      const loader = new Image();
-      loader.onload = () => {
-        set((state) => ({
-          images: state.images.map((item) =>
-            item.id === image.id
-              ? { ...item, dimensions: { width: loader.naturalWidth, height: loader.naturalHeight } }
-              : item
-          ),
-        }));
-      };
-      loader.src = image.preview;
+    set((state) => ({ images: [image, ...state.images] }));
+
+    const loader = new Image();
+    loader.onload = () => {
+      set((state) => ({
+        images: state.images.map((item) =>
+          item.id === image.id
+            ? { ...item, dimensions: { width: loader.naturalWidth, height: loader.naturalHeight } }
+            : item
+        ),
+      }));
+    };
+    loader.src = image.preview;
+
+    return image;
+  },
+
+  addImages: (files) => {
+    files.forEach((file) => {
+      get().addImage(file);
     });
   },
 

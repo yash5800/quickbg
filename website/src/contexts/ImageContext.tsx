@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
-import { submitImage, getJobStatus, getQueueStatus, getJobResult, WorkerApiError } from "@/lib/worker-api";
+import { getJobStatus, getQueueStatus, getJobResult, WorkerApiError, reserveUploadSlot, releaseUploadSlot, uploadImage } from "@/lib/worker-api";
 import { persistImageState, restoreImageState } from "@/lib/image-state-persistence";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
@@ -27,7 +27,7 @@ const ImageContext = createContext<{
 export function ImageProvider({ children }: { children: React.ReactNode }) {
   const images = useImagesStore((state) => state.images);
   const setImagesStore = useImagesStore((state) => state.setImages);
-  const addImagesStore = useImagesStore((state) => state.addImages);
+  const addImageStore = useImagesStore((state) => state.addImage);
   const removeImageStore = useImagesStore((state) => state.removeImage);
   const clearImagesStore = useImagesStore((state) => state.clearImages);
   const updateImageStatusStore = useImagesStore((state) => state.updateImageStatus);
@@ -419,43 +419,23 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     processingRef.current = true;
     setSubmitting(pendingImage.id);
 
-    // Check queue status and submit
-    getQueueStatus()
-      .then((status) => {
-        // Update credits store
-        setCredits(status.remaining, status.reset_in_seconds ?? 3600);
+    // Update status to uploading
+    clearWaitingState(pendingImage.id);
+    useImagesStore.getState().updateImageStatus(pendingImage.id, "uploading", { startTime: Date.now() });
 
-        if (status.remaining === 0) {
-          processingRef.current = false;
-          clearSubmitting();
-          pausePending("credits_exhausted", status.reset_in_seconds ?? 3600);
-          console.log("[ImageContext] Paused - credits exhausted");
-          return;
-        }
-
-        // Update status to uploading
-        clearWaitingState(pendingImage.id);
-        useImagesStore.getState().updateImageStatus(pendingImage.id, "uploading", { startTime: Date.now() });
-
-        // Submit to server
-        return submitImage(pendingImage.file);
-      })
+    // Submit to server
+    Promise.resolve(
+      pendingImage.creditReserved
+        ? uploadImage(pendingImage.file)
+        : reserveUploadSlot().then((reservation) => {
+            setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+            return uploadImage(pendingImage.file);
+          })
+    )
       .then((response) => {
         if (!response) return;
 
         console.log("[ImageContext] Submit response:", response);
-
-        if (Number.isFinite(response.remaining)) {
-          setCredits(response.remaining ?? 0, response.reset_in_seconds ?? 3600);
-        }
-
-        getQueueStatus()
-          .then((status) => {
-            setCredits(status.remaining, status.reset_in_seconds ?? 3600);
-          })
-          .catch((error) => {
-            console.warn("[ImageContext] Failed to refresh credits after submit:", error);
-          });
 
         if (response.status === "completed" && response.imageBlob) {
           const url = URL.createObjectURL(response.imageBlob);
@@ -483,6 +463,16 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
           pausePending("credits_exhausted", details?.reset_in_seconds ?? 3600);
           return;
+        }
+        const currentImage = useImagesStore.getState().images.find((item) => item.id === pendingImage.id);
+        if (currentImage?.creditReserved) {
+          void releaseUploadSlot()
+            .then((reservation) => {
+              setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+            })
+            .catch((releaseErr) => {
+              console.warn("[ImageContext] Failed to release reserved credit after upload error:", releaseErr);
+            });
         }
         useImagesStore.getState().updateImageStatus(pendingImage.id, "error", {
           error: err.message || "Unknown error",
@@ -524,14 +514,72 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       });
     }
 
-    if (validFiles.length > 0) {
-      addImagesStore(validFiles);
+    if (validFiles.length === 0) {
+      return;
     }
-  }, [addImagesStore, addToast]);
+
+    void (async () => {
+      let reservationFailed = false;
+      let deferredRetryAt: number | null = null;
+
+      for (const file of [...validFiles].reverse()) {
+        if (reservationFailed) {
+          addImageStore(file, {
+            creditReserved: false,
+            waitingReason: deferredRetryAt ? "credits_exhausted" : null,
+            creditResetAt: deferredRetryAt,
+          });
+          continue;
+        }
+
+        try {
+          const reservation = await reserveUploadSlot();
+          setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+          addImageStore(file, { creditReserved: true });
+        } catch (error) {
+          reservationFailed = true;
+
+          if (error instanceof WorkerApiError && error.status === 403) {
+            const details = error.details as { reset_in_seconds?: number; remaining?: number } | null;
+            deferredRetryAt = Date.now() + (details?.reset_in_seconds ?? 3600) * 1000;
+            setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
+            addImageStore(file, {
+              creditReserved: false,
+              waitingReason: "credits_exhausted",
+              creditResetAt: deferredRetryAt,
+            });
+            continue;
+          }
+
+          console.warn("[ImageContext] Failed to reserve upload slot, deferring reservation for queued files:", error);
+          addImageStore(file, { creditReserved: false });
+        }
+      }
+
+      getQueueStatus()
+        .then((status) => {
+          setCredits(status.remaining, status.reset_in_seconds ?? 3600);
+        })
+        .catch((error) => {
+          console.warn("[ImageContext] Failed to refresh credits after queue reservation:", error);
+        });
+    })();
+  }, [addImageStore, addToast, setCredits]);
 
   const removeImage = useCallback((id: string) => {
+    const image = useImagesStore.getState().images.find((item) => item.id === id);
     removeImageStore(id);
-  }, [removeImageStore]);
+
+    if (image?.creditReserved) {
+      void releaseUploadSlot()
+        .then((reservation) => {
+          setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+        })
+        .catch((error) => {
+          console.warn("[ImageContext] Failed to release credit after removal:", error);
+        });
+    }
+  }, [removeImageStore, setCredits]);
 
   const clearImages = useCallback(() => {
     clearImagesStore();

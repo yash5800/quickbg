@@ -226,6 +226,68 @@ async function reserveHourlyUploadSlot(
   };
 }
 
+async function releaseHourlyUploadSlot(
+  collection: Collection<HourlyUsage>,
+  clientKey: string,
+): Promise<{ allowed: boolean; used: number; resetAt: number; hourKey: string }> {
+  const now = Date.now();
+  const nowDate = new Date(now);
+
+  const activeUsage = await collection.findOne(
+    { ip: clientKey, expiresAt: { $gt: nowDate } },
+    { projection: { count: 1, expiresAt: 1, hourKey: 1 } }
+  );
+
+  if (!activeUsage) {
+    return {
+      allowed: true,
+      used: 0,
+      resetAt: now + HOUR_WINDOW_MS,
+      hourKey: getWindowKey(now),
+    };
+  }
+
+  if (activeUsage.count <= 0) {
+    return {
+      allowed: true,
+      used: 0,
+      resetAt: activeUsage.expiresAt.getTime(),
+      hourKey: activeUsage.hourKey,
+    };
+  }
+
+  const updated = await collection.findOneAndUpdate(
+    {
+      _id: activeUsage._id,
+      expiresAt: { $gt: nowDate },
+      count: { $gt: 0 },
+    },
+    {
+      $inc: { count: -1 },
+      $set: { updatedAt: nowDate },
+    },
+    {
+      returnDocument: "after",
+    }
+  );
+
+  if (updated) {
+    return {
+      allowed: true,
+      used: updated.count,
+      resetAt: updated.expiresAt.getTime(),
+      hourKey: updated.hourKey,
+    };
+  }
+
+  return {
+    allowed: true,
+    used: activeUsage.count,
+    resetAt: activeUsage.expiresAt.getTime(),
+    hourKey: activeUsage.hourKey,
+  };
+}
+
 export async function POST(request: NextRequest) {
   const { sessionId, isNewSession } = getOrCreateSessionId(request);
   const clientKey = sessionId;
@@ -233,10 +295,11 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const reserveOnly = formData.get("reserveOnly") === "true";
+    const releaseOnly = formData.get("releaseOnly") === "true";
 
-    if (!reserveOnly) {
+    if (!reserveOnly && !releaseOnly) {
       return NextResponse.json(
-        { error: "_reserve_only_required", message: "This endpoint only reserves upload credits" },
+        { error: "_reserve_or_release_required", message: "This endpoint only reserves or releases upload credits" },
         { status: 400 }
       );
     }
@@ -244,10 +307,12 @@ export async function POST(request: NextRequest) {
     const db = await getMongoDB();
     const userUploads = getUserUploadsCollection(db);
     const hourlyUsage = getHourlyUsageCollection(db);
-    const slotReservation = await reserveHourlyUploadSlot(hourlyUsage, clientKey);
+    const slotReservation = releaseOnly
+      ? await releaseHourlyUploadSlot(hourlyUsage, clientKey)
+      : await reserveHourlyUploadSlot(hourlyUsage, clientKey);
     const resetInSeconds = getSecondsUntilReset(slotReservation.resetAt);
 
-    if (!slotReservation.allowed) {
+    if (reserveOnly && !slotReservation.allowed) {
       return NextResponse.json({
         error: "_hourly_limit",
         message: `Hourly limit reached (${slotReservation.used}/${HOURLY_LIMIT}). Visit after 1 hour from your first upload.`,
@@ -261,12 +326,23 @@ export async function POST(request: NextRequest) {
 
     const remaining = Math.max(0, HOURLY_LIMIT - slotReservation.used);
 
-    await userUploads.insertOne({
-      ip: clientKey,
-      fileName: "direct-worker-upload",
-      uploadedAt: new Date(),
-      hourKey: slotReservation.hourKey,
-    });
+    if (reserveOnly) {
+      await userUploads.insertOne({
+        ip: clientKey,
+        fileName: "direct-worker-upload",
+        uploadedAt: new Date(),
+        hourKey: slotReservation.hourKey,
+      });
+    } else {
+      try {
+        await userUploads.findOneAndDelete(
+          { ip: clientKey, fileName: "direct-worker-upload" },
+          { sort: { uploadedAt: -1 } }
+        );
+      } catch (cleanupError) {
+        console.warn("release reservation cleanup warning", cleanupError);
+      }
+    }
 
     const response = NextResponse.json({
       uploads_used: slotReservation.used,
