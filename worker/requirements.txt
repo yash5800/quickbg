@@ -1,0 +1,30 @@
+# PyTorch CPU-only - smaller and faster to install than GPU version
+torch>=2.1.0
+torchvision>=0.16.0
+
+# Image processing
+pillow>=10.0.0
+# Optional decoders for HEIF/HEIC and AVIF formats. Install if system supports libheif/libavif.
+pillow-heif>=1.3.0
+pillow-avif-plugin>=1.5.5
+
+# Model loading
+transformers>=4.36.0
+huggingface-hub>=0.20.0
+einops>=0.7.0
+kornia>=0.7.0
+timm>=0.9.12
+
+# FastAPI server
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+
+# Utilities
+psutil>=5.9.0
+python-dotenv>=1.0.0
+pymongo>=4.6.0
+aiofiles>=23.0.0
+
+# Optimizations for HuggingFace Spaces
+safetensors>=0.4.0
