@@ -230,6 +230,81 @@ export default function Home() {
 
   return (
     <AppLayout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the best free background remover?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "QuickBG offers a free AI background remover that preserves original resolution and does not require signup."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I remove background from a video?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use QuickBG's video background remover tool or export frames to process images and reassemble as a video."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How to blur background in Zoom?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use Zoom's built-in background blur or export your portrait from QuickBG and apply a soft blur in the editor before sharing."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How to use Canva background remover?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "In Canva, select the image, open Effects, and choose Background Remover. If it fails, try a higher-contrast image or use QuickBG for a robust free alternative."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Canva have a background remover?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, Canva includes a Background Remover in its Effects panel; QuickBG is a free alternative that preserves full resolution."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is bg blur?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Background blur softens the backdrop of an image to emphasize the subject. QuickBG includes a Blur Background tool for this effect."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How to blur background in Photoshop?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use selection tools or the Select Subject feature, create a layer mask, and apply a Gaussian Blur to the background layer."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Where is the background remover in Canva?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Open the image in Canva, then select Effects → Background Remover. If unavailable, it may be gated by your plan."
+                }
+              }
+            ]
+          })
+        }}
+      />
       <input
         ref={fileInputRef}
         type="file"
