@@ -81,7 +81,7 @@ export default function FAQPage() {
       <h1 className="text-3xl font-semibold mb-4">Frequently Asked Questions</h1>
 
       <p className="text-lg text-muted-foreground mb-6">
-        Answers to common questions about QuickBG's background remover and image tools.
+        Answers to common questions about QuickBG&apos;s background remover and image tools.
       </p>
 
       <section className="space-y-6">
@@ -89,7 +89,7 @@ export default function FAQPage() {
           <h2 className="text-xl font-medium">What is the best free background remover?</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             QuickBG provides a free AI-based background remover that keeps full resolution,
-            processes unlimited images, and doesn't require signup for basic usage.
+            processes unlimited images, and doesn&apos;t require signup for basic usage.
           </p>
         </article>
 
@@ -104,7 +104,7 @@ export default function FAQPage() {
         <article>
           <h2 className="text-xl font-medium">How to blur background in Zoom?</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Use Zoom's blur feature or blur your portrait in QuickBG before sharing your camera
+            Use Zoom&apos;s blur feature or blur your portrait in QuickBG before sharing your camera
             feed.
           </p>
         </article>
@@ -112,7 +112,7 @@ export default function FAQPage() {
         <article>
           <h2 className="text-xl font-medium">Does Canva have a background remover?</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Yes — Canva has a Background Remover in Effects. If it doesn't meet your needs,
+            Yes — Canva has a Background Remover in Effects. If it doesn&apos;t meet your needs,
             try QuickBG for a free, high-resolution alternative.
           </p>
         </article>

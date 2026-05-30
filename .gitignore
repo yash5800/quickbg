@@ -52,6 +52,7 @@ uploads/
 worker/uploads/
 worker/processed/
 website/uploads/
+studio-workspace/
 
 # Test / coverage
 coverage/
