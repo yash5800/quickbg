@@ -487,6 +487,35 @@ function SelectedInfo({
         liveStatus="unknown"
         onOpenEraser={onOpenEraser}
       />
+
+      <section className="mx-auto mb-20 mt-16 w-full max-w-4xl border-t border-white/10 pt-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Guide</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Background Remover</h2>
+        </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Upload your image</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Drag and drop or click to upload. Supports PNG, JPG, WebP, HEIC.</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">AI removes background</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">BiRefNet detects edges, hair, and complex boundaries automatically.</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Refine with brush</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Use the Eraser/Restore brush for manual touch-ups on tricky edges.</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Download transparent PNG</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Export at full resolution with no watermark or quality loss.</p>
+          </div>
+        </div>
+      </section>
     </motion.div>
   );
 }

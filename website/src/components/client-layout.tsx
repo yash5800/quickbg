@@ -15,7 +15,7 @@ import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
 import { PwaInstallPrompt } from "@/components/pwa-install";
-import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home, Info } from "lucide-react";
+import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home, Info, Newspaper, MessageCircleQuestion } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
 import { useCreditsSync } from "@/store/useCreditsSync";
@@ -172,6 +172,8 @@ function Header() {
     { href: "/tools", label: "Tools", icon: Package },
     { href: "/remover", label: images.length > 0 ? `Remover (${images.length})` : "Remover", icon: Sparkles },
     { href: "/about", label: "About", icon: Info },
+    { href: "/blog", label: "Blog", icon: Newspaper },
+    { href: "/faq", label: "FAQ", icon: MessageCircleQuestion },
     { href: "/contact", label: "Contact", icon: MessageSquare },
   ];
 
