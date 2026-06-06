@@ -615,6 +615,35 @@ export default function AdjustPage() {
           </aside>
         </div>
       </div>
+
+      <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Guide</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Adjust Image</h2>
+        </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Upload your image</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Open any image for brightness, contrast, and saturation adjustments.</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Adjust brightness</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Drag the brightness slider to lighten or darken the image.</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Fine-tune contrast and saturation</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Adjust contrast and saturation to your preference.</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">Export with compression</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">Download at your chosen quality and format settings.</p>
+          </div>
+        </div>
+      </section>
     </AppLayout>
   );
 }
