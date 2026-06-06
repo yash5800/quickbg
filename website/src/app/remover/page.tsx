@@ -237,7 +237,7 @@ export default function EditorPage() {
             onClick={() => fileInputRef.current?.click()}
             className={cn(
               "premium-dashed flex min-h-[60vh] cursor-pointer flex-col items-center justify-center rounded-[2rem] text-center transition-all",
-              isDropActive && "border-lime-300/70 bg-lime-300/10"
+              isDropActive && "border-secondary/70 bg-secondary/10"
             )}
           >
             <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
@@ -490,7 +490,7 @@ function SelectedInfo({
 
       <section className="mx-auto mb-20 mt-16 w-full max-w-4xl border-t border-white/10 pt-12 px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Guide</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Guide</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Background Remover</h2>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

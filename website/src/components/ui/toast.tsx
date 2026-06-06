@@ -37,7 +37,7 @@ const toastConfig = {
     icon: Info,
     bg: "bg-blue-50 dark:bg-blue-900/30",
     border: "border-blue-200 dark:border-blue-800",
-    iconColor: "text-blue-600 dark:text-blue-400",
+    iconColor: "text-primary",
   },
   warning: {
     icon: AlertTriangle,

@@ -29,12 +29,12 @@ const stats: Stat[] = [
 ];
 
 const floatingIconData: IconData[] = [
-  { Icon: Zap, color: "text-sky-400", size: "h-8 w-8", x: "15%", y: "10%", driftX: 40, driftY: -30 },
-  { Icon: ShieldCheck, color: "text-emerald-400", size: "h-6 w-6", x: "82%", y: "15%", driftX: -35, driftY: 25 },
-  { Icon: Sparkles, color: "text-amber-400", size: "h-7 w-7", x: "10%", y: "72%", driftX: 30, driftY: 35 },
-  { Icon: Globe, color: "text-violet-400", size: "h-9 w-9", x: "88%", y: "78%", driftX: -25, driftY: -40 },
-  { Icon: Layers, color: "text-rose-400", size: "h-5 w-5", x: "50%", y: "5%", driftX: -20, driftY: 20 },
-  { Icon: Clock, color: "text-cyan-400", size: "h-6 w-6", x: "5%", y: "45%", driftX: 25, driftY: -25 },
+  { Icon: Zap, color: "text-secondary/80", size: "h-8 w-8", x: "15%", y: "10%", driftX: 40, driftY: -30 },
+  { Icon: ShieldCheck, color: "text-secondary/80", size: "h-6 w-6", x: "82%", y: "15%", driftX: -35, driftY: 25 },
+  { Icon: Sparkles, color: "text-secondary/80", size: "h-7 w-7", x: "10%", y: "72%", driftX: 30, driftY: 35 },
+  { Icon: Globe, color: "text-primary/80", size: "h-9 w-9", x: "88%", y: "78%", driftX: -25, driftY: -40 },
+  { Icon: Layers, color: "text-primary/80", size: "h-5 w-5", x: "50%", y: "5%", driftX: -20, driftY: 20 },
+  { Icon: Clock, color: "text-primary/80", size: "h-6 w-6", x: "5%", y: "45%", driftX: 25, driftY: -25 },
 ];
 
 interface ScrollLinkedParallaxProps {
@@ -86,7 +86,7 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
     return (
       <div ref={sectionRef} className="p-8 sm:p-10">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Impact</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Impact</p>
           <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">QuickBG by the numbers</h2>
           <p className="mt-3 text-sm leading-6 text-white/50">Real usage stats from people removing backgrounds every day.</p>
         </div>
@@ -136,7 +136,7 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80"
+            className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80"
           >
             Impact
           </motion.p>

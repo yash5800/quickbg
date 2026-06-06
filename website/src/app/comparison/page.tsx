@@ -35,8 +35,8 @@ const features = [
   },
   {
     feature: "Signup Required",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> No</>,
-    removebg: <><Check className="inline h-4 w-4 text-lime-300" /> Optional</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> No</>,
+    removebg: <><Check className="inline h-4 w-4 text-secondary" /> Optional</>,
     photoshop: <><X className="inline h-4 w-4 text-red-400" /> Yes</>,
     canva: <><X className="inline h-4 w-4 text-red-400" /> Yes</>,
   },
@@ -56,38 +56,38 @@ const features = [
   },
   {
     feature: "Batch Processing",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
     removebg: <><X className="inline h-4 w-4 text-red-400" /> No free</>,
-    photoshop: <><Check className="inline h-4 w-4 text-lime-300" /> Yes (actions)</>,
+    photoshop: <><Check className="inline h-4 w-4 text-secondary" /> Yes (actions)</>,
     canva: <><X className="inline h-4 w-4 text-red-400" /> No free</>,
   },
   {
     feature: "Watermark",
-    quickbg: <><Minus className="inline h-4 w-4 text-lime-300" /> None</>,
+    quickbg: <><Minus className="inline h-4 w-4 text-secondary" /> None</>,
     removebg: <><X className="inline h-4 w-4 text-red-400" /> Free previews</>,
-    photoshop: <><Minus className="inline h-4 w-4 text-lime-300" /> None</>,
+    photoshop: <><Minus className="inline h-4 w-4 text-secondary" /> None</>,
     canva: <><X className="inline h-4 w-4 text-red-400" /> Free exports</>,
   },
   {
     feature: "Background Replace",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
-    removebg: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
-    photoshop: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
-    canva: <><Check className="inline h-4 w-4 text-lime-300" /> Yes (Pro)</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
+    removebg: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
+    photoshop: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
+    canva: <><Check className="inline h-4 w-4 text-secondary" /> Yes (Pro)</>,
   },
   {
     feature: "Background Blur",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
     removebg: <><X className="inline h-4 w-4 text-red-400" /> No</>,
-    photoshop: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
-    canva: <><Check className="inline h-4 w-4 text-lime-300" /> Yes (Pro)</>,
+    photoshop: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
+    canva: <><Check className="inline h-4 w-4 text-secondary" /> Yes (Pro)</>,
   },
   {
     feature: "Resize/Crop Tools",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
     removebg: <><X className="inline h-4 w-4 text-red-400" /> No</>,
-    photoshop: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
-    canva: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
+    photoshop: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
+    canva: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
   },
   {
     feature: "Processing Speed",
@@ -105,17 +105,17 @@ const features = [
   },
   {
     feature: "Commercial Use",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> Yes, no attribution</>,
-    removebg: <><HelpCircle className="inline h-4 w-4 text-amber-400" /> Paid tier</>,
-    photoshop: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
-    canva: <><HelpCircle className="inline h-4 w-4 text-amber-400" /> With license</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> Yes, no attribution</>,
+    removebg: <><HelpCircle className="inline h-4 w-4 text-secondary/80" /> Paid tier</>,
+    photoshop: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
+    canva: <><HelpCircle className="inline h-4 w-4 text-secondary/80" /> With license</>,
   },
   {
     feature: "Mobile Support",
-    quickbg: <><Check className="inline h-4 w-4 text-lime-300" /> Browser-based</>,
-    removebg: <><Check className="inline h-4 w-4 text-lime-300" /> App available</>,
-    photoshop: <><Check className="inline h-4 w-4 text-lime-300" /> Express app</>,
-    canva: <><Check className="inline h-4 w-4 text-lime-300" /> Yes</>,
+    quickbg: <><Check className="inline h-4 w-4 text-secondary" /> Browser-based</>,
+    removebg: <><Check className="inline h-4 w-4 text-secondary" /> App available</>,
+    photoshop: <><Check className="inline h-4 w-4 text-secondary" /> Express app</>,
+    canva: <><Check className="inline h-4 w-4 text-secondary" /> Yes</>,
   },
 ];
 
@@ -159,7 +159,7 @@ export default function ComparisonPage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
         <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Comparison</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Comparison</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl lg:text-5xl">
             QuickBG vs Remove.bg vs Photoshop — Which Background Remover Is Best?
           </h1>
@@ -174,7 +174,7 @@ export default function ComparisonPage() {
               <TableHeader>
                 <TableRow className="border-white/10">
                   <TableHead className="text-white/80 font-semibold w-44">Feature</TableHead>
-                  <TableHead className="text-lime-300 font-semibold">QuickBG</TableHead>
+                  <TableHead className="text-secondary font-semibold">QuickBG</TableHead>
                   <TableHead className="text-white/80 font-semibold">Remove.bg</TableHead>
                   <TableHead className="text-white/80 font-semibold">Adobe Photoshop</TableHead>
                   <TableHead className="text-white/80 font-semibold">Canva</TableHead>
@@ -206,7 +206,7 @@ export default function ComparisonPage() {
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             <Card className="premium-surface p-6 space-y-4">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-lime-500/20 bg-lime-500/10 text-sm font-bold text-lime-300">Q</span>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-secondary/20 bg-secondary/10 text-sm font-bold text-secondary">Q</span>
                 <h3 className="text-lg font-semibold text-white">QuickBG</h3>
               </div>
               <p className="text-sm leading-6 text-white/50">
@@ -275,46 +275,46 @@ export default function ComparisonPage() {
         <section className="mt-16">
           <Card className="premium-surface overflow-hidden">
             <div className="bg-gradient-to-br from-lime-500/10 via-transparent to-transparent p-6 sm:p-8 lg:p-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Why QuickBG Wins</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Why QuickBG Wins</p>
               <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">The best free background remover for most people</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <Check className="h-5 w-5 text-lime-300" />
+                  <Check className="h-5 w-5 text-secondary" />
                   <h3 className="mt-3 text-sm font-semibold text-white">Truly Free, No Catch</h3>
                   <p className="mt-1 text-sm leading-6 text-white/50">
                     Unlike Remove.bg and Canva Pro, QuickBG doesn&apos;t charge for HD exports or hide features behind a paywall.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <Check className="h-5 w-5 text-lime-300" />
+                  <Check className="h-5 w-5 text-secondary" />
                   <h3 className="mt-3 text-sm font-semibold text-white">Full Resolution Always</h3>
                   <p className="mt-1 text-sm leading-6 text-white/50">
                     No compression, no resolution caps, no watermarks. What you upload is what you download at full quality.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <Check className="h-5 w-5 text-lime-300" />
+                  <Check className="h-5 w-5 text-secondary" />
                   <h3 className="mt-3 text-sm font-semibold text-white">Complete Toolchain</h3>
                   <p className="mt-1 text-sm leading-6 text-white/50">
                     Blur, replace, resize, crop, adjust — eight tools in one place. No need to switch between apps.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <Check className="h-5 w-5 text-lime-300" />
+                  <Check className="h-5 w-5 text-secondary" />
                   <h3 className="mt-3 text-sm font-semibold text-white">No Signup Required</h3>
                   <p className="mt-1 text-sm leading-6 text-white/50">
                     Start removing backgrounds immediately. No account creation, no email verification, no onboarding friction.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <Check className="h-5 w-5 text-lime-300" />
+                  <Check className="h-5 w-5 text-secondary" />
                   <h3 className="mt-3 text-sm font-semibold text-white">Privacy First</h3>
                   <p className="mt-1 text-sm leading-6 text-white/50">
                     Images are auto-deleted after processing. We don&apos;t train on your uploads or share them with third parties.
                   </p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-                  <Check className="h-5 w-5 text-lime-300" />
+                  <Check className="h-5 w-5 text-secondary" />
                   <h3 className="mt-3 text-sm font-semibold text-white">AI-Powered Precision</h3>
                   <p className="mt-1 text-sm leading-6 text-white/50">
                     BiRefNet model handles hair, fur, glass, and complex edges with the same accuracy as paid services.
@@ -324,7 +324,7 @@ export default function ComparisonPage() {
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/remover"
-                  className="inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-black transition hover:bg-lime-200"
+                  className="inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-black transition hover:bg-secondary"
                 >
                   Try QuickBG Free
                 </Link>

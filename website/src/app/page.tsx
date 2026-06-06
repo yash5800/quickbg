@@ -55,7 +55,7 @@ const tools = [
     description: "Instantly remove backgrounds from any image with AI precision. Works on portraits, products, pets, and more.",
     badge: "Core",
     href: "/remover",
-    accent: "text-sky-300",
+    accent: "text-secondary",
     glow: "from-sky-500/20",
     demo_image: bgremovep,
     tips: "Best for e-commerce product photos and portraits"
@@ -67,7 +67,7 @@ const tools = [
     description: "Resize images for storefronts, socials, and profiles without extra setup. Preset ratios included.",
     badge: "Popular",
     href: "/resize",
-    accent: "text-violet-300",
+    accent: "text-primary",
     glow: "from-violet-500/20",
     demo_image: resize,
     tips: "Perfect for Amazon, Etsy, and social media"
@@ -79,7 +79,7 @@ const tools = [
     description: "Swap transparent cutouts onto clean colors, gradients, or custom images instantly.",
     badge: "New",
     href: "/replace-bg",
-    accent: "text-emerald-300",
+    accent: "text-secondary",
     glow: "from-emerald-500/20",
     demo_image: bgreplace,
     tips: "Create branded product shots in seconds"
@@ -91,7 +91,7 @@ const tools = [
     description: "Create depth and focus with soft, realistic background blur. Adjustable intensity.",
     badge: null,
     href: "/blur-bg",
-    accent: "text-rose-300",
+    accent: "text-primary",
     glow: "from-rose-500/20",
     demo_image: bgblur,
     tips: "Great for profile photos and portraits"
@@ -103,8 +103,8 @@ const tools = [
     description: "Frame images for ads, marketplaces, and social ratios in seconds. Custom aspect ratios.",
     badge: null,
     href: "/crop",
-    accent: "text-lime-300",
-    glow: "from-lime-500/20",
+    accent: "text-secondary",
+    glow: "from-secondary/20",
     demo_image: crop,
     tips: "Ideal for thumbnails and banner ads"
   },
@@ -115,7 +115,7 @@ const tools = [
     description: "Sharpen the subject or background independently for crisp final exports.",
     badge: "New",
     href: "/sharpness",
-    accent: "text-amber-300",
+    accent: "text-secondary",
     glow: "from-amber-500/20",
     demo_image: sharpness,
     tips: "Polish product edges before listing"
@@ -127,7 +127,7 @@ const tools = [
     description: "Fine-tune brightness, contrast, and saturation before export. Quality compression included.",
     badge: null,
     href: "/adjust",
-    accent: "text-cyan-300",
+    accent: "text-primary",
     glow: "from-cyan-500/20",
     demo_image: adjust,
     tips: "Final touch-ups before download"
@@ -139,7 +139,7 @@ const tools = [
     description: "Convert between PNG, JPG, WebP, AVIF, and TIFF with quality controls and batch support.",
     badge: "New",
     href: "/converter",
-    accent: "text-indigo-300",
+    accent: "text-primary",
     glow: "from-indigo-500/20",
     demo_image: convert,
     tips: "Convert bulk images in one go"
@@ -164,33 +164,33 @@ const howItWorks = [
     icon: Upload,
     title: "Upload your image",
     description: "Drag and drop or click to upload. Supports PNG, JPG, WebP, HEIC, and AVIF. Batch upload works too.",
-    color: "text-sky-400",
-    bg: "bg-sky-500/10",
-    border: "border-sky-500/20",
+    color: "text-secondary/80",
+    bg: "bg-secondary/10",
+    border: "border-secondary/20",
   },
   {
     icon: Wand2,
     title: "AI removes the background",
     description: "Our BiRefNet-powered engine detects edges, hair, fur, and complex boundaries automatically. No manual selection needed.",
-    color: "text-violet-400",
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
+    color: "text-primary/80",
+    bg: "bg-primary/10",
+    border: "border-primary/20",
   },
   {
     icon: Palette,
     title: "Refine or replace",
     description: "Use the erase/restore brush for touch-ups, then blur, replace, resize, crop, or adjust your image.",
-    color: "text-emerald-400",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
+    color: "text-secondary/80",
+    bg: "bg-secondary/10",
+    border: "border-secondary/20",
   },
   {
     icon: Download,
     title: "Download transparent PNG",
     description: "Export your cutout as a high-quality transparent PNG. Full resolution preserved, no watermark, no limits.",
-    color: "text-amber-400",
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
+    color: "text-secondary/80",
+    bg: "bg-secondary/10",
+    border: "border-secondary/20",
   },
 ];
 
@@ -199,7 +199,7 @@ const useCases = [
     icon: ShoppingCart,
     title: "E-commerce",
     description: "Clean product cutouts for Amazon, Etsy, Shopify, and eBay listings. White backgrounds increase conversion rates by up to 30%.",
-    color: "text-sky-400",
+    color: "text-secondary/80",
     gradient: "from-sky-500/10 to-transparent",
     link: "/remover",
     stat: "30% higher conversion",
@@ -208,7 +208,7 @@ const useCases = [
     icon: Smartphone,
     title: "Social Media",
     description: "Profile pictures, story covers, reel thumbnails, and branded content. Remove backgrounds for consistent visual branding.",
-    color: "text-pink-400",
+    color: "text-primary/80",
     gradient: "from-pink-500/10 to-transparent",
     link: "/blur-bg",
     stat: "2x engagement rate",
@@ -217,7 +217,7 @@ const useCases = [
     icon: PaletteIcon,
     title: "Graphic Design",
     description: "Transparent PNG assets for posters, flyers, presentations, and layered compositions. No more clipping masks.",
-    color: "text-violet-400",
+    color: "text-primary/80",
     gradient: "from-violet-500/10 to-transparent",
     link: "/resize",
     stat: "5x faster workflow",
@@ -226,7 +226,7 @@ const useCases = [
     icon: Camera,
     title: "Photography",
     description: "Remove busy backgrounds, add blur for depth, and export clean cutouts. Perfect for portfolio images and client proofs.",
-    color: "text-amber-400",
+    color: "text-secondary/80",
     gradient: "from-amber-500/10 to-transparent",
     link: "/sharpness",
     stat: "Studio quality at home",
@@ -506,7 +506,7 @@ export default function Home() {
             className="relative z-10 max-w-3xl text-center lg:text-left"
           >
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur lg:mx-0">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-300 shadow-[0_0_18px_rgba(190,242,100,0.75)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_18px_hsl(var(--secondary)_/_0.75)]" />
               Free AI background removal — no signup, no watermark
             </div>
 
@@ -532,7 +532,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-lime-200 sm:w-auto"
+                className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-secondary sm:w-auto"
               >
                 <Upload className="h-4 w-4" />
                 Upload image
@@ -544,14 +544,14 @@ export default function Home() {
                 className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 text-sm font-semibold text-white/80 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08] sm:w-auto"
               >
                 Browse tools
-                <Globe className="h-4 w-4 text-sky-300" />
+                <Globe className="h-4 w-4 text-secondary" />
               </Link>
             </div>
 
             <div className="mt-7 grid gap-2 text-left sm:grid-cols-3">
               {heroNotes.map((note) => (
                 <div key={note} className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs text-white/60 backdrop-blur">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-lime-300" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-secondary" />
                   <span>{note}</span>
                 </div>
               ))}
@@ -569,7 +569,7 @@ export default function Home() {
             </div>
             <div className="absolute right-6 top-2 z-20 hidden rotate-3 rounded-3xl border border-white/10 bg-white/[0.07] p-3 shadow-[0_30px_90px_-40px_rgba(0,0,0,0.8)] backdrop-blur md:block">
               <div className="flex items-center gap-2 text-xs font-medium text-white/70">
-                <ShieldCheck className="h-4 w-4 text-lime-300" />
+                <ShieldCheck className="h-4 w-4 text-secondary" />
                 Full resolution
               </div>
             </div>
@@ -628,7 +628,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Simple workflow</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Simple workflow</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">How it works</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">
                 Four steps from upload to export. No tutorials needed — the interface guides you through.
@@ -674,7 +674,7 @@ export default function Home() {
               className={cn(
                 "relative overflow-hidden rounded-[2rem] border border-dashed p-1 transition duration-300",
                 isDropActive
-                  ? "border-lime-300/70 bg-lime-300/10"
+                  ? "border-secondary/70 bg-secondary/10"
                   : "border-white/20 bg-white/[0.04] hover:border-white/30 hover:bg-white/[0.06]"
               )}
               data-drop-zone
@@ -703,7 +703,7 @@ export default function Home() {
 
           {hasImages && (
             <div className="mt-8 text-center">
-              <Link href="/remover" className="inline-flex items-center gap-2 text-sm font-medium text-sky-300 hover:text-sky-200">
+              <Link href="/remover" className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-secondary">
                 View {images.length} processing image{images.length !== 1 ? "s" : ""}
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
@@ -721,11 +721,11 @@ export default function Home() {
           >
             <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Live samples</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Live samples</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Try the real remover flow.</h2>
               </div>
               {loadingSampleId && (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-300">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-secondary">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                   Loading sample
                 </span>
@@ -760,7 +760,7 @@ export default function Home() {
                       <p className="truncate text-sm font-semibold text-white">{sample.label}</p>
                       <p className="truncate text-xs text-white/50">{sample.description}</p>
                     </div>
-                    <span className="shrink-0 rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-sky-300">
+                    <span className="shrink-0 rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-secondary">
                       Try
                     </span>
                   </div>
@@ -780,7 +780,7 @@ export default function Home() {
           >
             <div className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">Image toolkit</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Image toolkit</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
                   Everything stays close to the upload.
                 </h2>
@@ -853,7 +853,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Use cases</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Use cases</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Who uses QuickBG?</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">
                 From Amazon sellers to graphic designers — QuickBG fits into real workflows.
@@ -900,7 +900,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Why QuickBG</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Why QuickBG</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Built different from the rest</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">
                 No signups, no watermarks, no resolution limits. QuickBG is designed to be the fastest path from image to transparent PNG.
@@ -917,7 +917,7 @@ export default function Home() {
                 { icon: Star, label: "100% Free, No Limits", value: "Process up to 25 images per hour with no credit card, no signup, and no hidden paywalls." },
               ].map((item) => (
                 <div key={item.label} className="rounded-[1.35rem] border border-white/10 bg-black/20 p-5 transition duration-300 hover:border-white/20 hover:bg-black/30">
-                  <item.icon className="h-5 w-5 text-lime-300" />
+                  <item.icon className="h-5 w-5 text-secondary" />
                   <div className="mt-4 text-sm font-semibold text-white">{item.label}</div>
                   <div className="mt-1 text-sm leading-6 text-white/50">{item.value}</div>
                 </div>
@@ -940,7 +940,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">See the difference</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">See the difference</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Before & after</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">
                 Real results from QuickBG. Drag the slider to compare original vs processed.
@@ -974,7 +974,7 @@ export default function Home() {
           >
             <div className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Blog & guides</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Blog & guides</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Latest articles</h2>
                 <p className="mt-3 text-sm leading-6 text-white/50">
                   Tips, tutorials, and deep dives into AI background removal and image editing.
@@ -1003,7 +1003,7 @@ export default function Home() {
                     <span>·</span>
                     <span>{post.readTime}</span>
                   </div>
-                  <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-sky-200">{post.title}</h3>
+                  <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{post.title}</h3>
                   <p className="relative mt-2 text-sm leading-6 text-white/50">{post.excerpt}</p>
                   <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                     Read article <ArrowRight className="h-3 w-3" />
@@ -1023,7 +1023,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Testimonials</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Testimonials</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">What users say</h2>
             </div>
 
@@ -1041,7 +1041,7 @@ export default function Home() {
                   <p className="mt-3 text-sm leading-7 text-white/70">{t.content}</p>
                   <div className="mt-4 flex items-center gap-1">
                     {Array.from({ length: t.rating }).map((_, j) => (
-                      <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                      <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-secondary/80" />
                     ))}
                   </div>
                   <div className="mt-4 border-t border-white/10 pt-4">
@@ -1062,7 +1062,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Performance</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Performance</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Built for speed and scale</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">Every millisecond counts when you are processing hundreds of product images.</p>
             </div>
@@ -1137,7 +1137,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">FAQ</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">FAQ</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Common questions</h2>
             </div>
 
@@ -1180,7 +1180,7 @@ export default function Home() {
           >
             <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-start">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">SEO explainer</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">SEO explainer</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
                   A better background remover starts with a clear workflow.
                 </h2>
@@ -1197,7 +1197,7 @@ export default function Home() {
                     Upload a photo, let the AI background remover detect the subject, and move straight into
                     export or refinement. The workflow keeps the subject cutout ready for transparent PNG delivery.
                   </p>
-                  <Link href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-sky-300 hover:text-sky-200">
+                  <Link href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     Try the remover <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
@@ -1208,7 +1208,7 @@ export default function Home() {
                     Transparent PNGs make it easy to place a product on a marketplace, a banner, a social
                     post, or a new background without visible boxes or rough edges.
                   </p>
-                  <Link href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-sky-300 hover:text-sky-200">
+                  <Link href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     Read our guide <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
@@ -1220,7 +1220,7 @@ export default function Home() {
                     busy or uneven edges. Includes follow-up tools like resize, crop, blur, replace,
                     and adjust.
                   </p>
-                  <Link href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-sky-300 hover:text-sky-200">
+                  <Link href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     View all tools <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
@@ -1231,7 +1231,7 @@ export default function Home() {
                     Complex hair, smoke, shadows, or transparent objects can sometimes need a quick final
                     check. Use the erase/restore brush or retry with a tighter crop for cleaner results.
                   </p>
-                  <Link href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-sky-300 hover:text-sky-200">
+                  <Link href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     Visit FAQ <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
@@ -1249,7 +1249,7 @@ export default function Home() {
             className="mt-24"
           >
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Compatibility</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Compatibility</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Works with every format you need</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">
                 Upload anything. QuickBG handles all major image formats and preserves full quality on export.
@@ -1273,10 +1273,10 @@ export default function Home() {
                   whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.05 }}
-                  className="group rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4 text-center transition duration-300 hover:-translate-y-1 hover:border-lime-300/30 hover:bg-lime-300/[0.04]"
+                  className="group rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4 text-center transition duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-secondary/[0.04]"
                 >
-                  <fmt.icon className="mx-auto h-6 w-6 text-white/40 transition duration-300 group-hover:text-lime-300" />
-                  <div className="mt-2 text-sm font-semibold text-white transition duration-300 group-hover:text-lime-200">{fmt.name}</div>
+                  <fmt.icon className="mx-auto h-6 w-6 text-white/40 transition duration-300 group-hover:text-secondary" />
+                  <div className="mt-2 text-sm font-semibold text-white transition duration-300 group-hover:text-secondary">{fmt.name}</div>
                   <div className="mt-0.5 text-[11px] text-white/40">{fmt.desc}</div>
                 </motion.div>
               ))}
@@ -1309,7 +1309,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-lime-200"
+                className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-secondary"
               >
                 <Upload className="h-4 w-4" />
                 Upload your first image
