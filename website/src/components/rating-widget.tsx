@@ -76,7 +76,7 @@ export function RatingWidget({ tool, imageId, jobId }: RatingWidgetProps) {
                       disabled={isSubmitting}
                       aria-label={`Rate ${value} stars`}
                     >
-                      <Star className={cn("h-5 w-5", active ? "fill-amber-400 text-amber-400" : "text-muted-foreground")} />
+                      <Star className={cn("h-5 w-5", active ? "fill-amber-400 text-secondary/80" : "text-muted-foreground")} />
                     </button>
                   );
                 })}

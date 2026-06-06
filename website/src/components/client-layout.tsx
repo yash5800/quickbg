@@ -62,7 +62,7 @@ function FloatingCredits() {
           remaining === 0
             ? "border-destructive/60 bg-destructive/10"
             : remaining < 10
-              ? "border-amber-500/50 bg-amber-500/10"
+              ? "border-amber-500/50 bg-secondary/10"
               : "border-border/60"
         )}
       >

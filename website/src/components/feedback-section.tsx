@@ -56,11 +56,11 @@ function FeedbackCard() {
 
 function NoticeSection() {
   return (
-    <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+    <div className="p-4 bg-secondary/10 border border-secondary/20 rounded-lg">
       <div className="flex items-start gap-3">
         <Clock className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
         <div>
-          <p className="font-semibold text-amber-700 dark:text-amber-400 text-sm">
+          <p className="font-semibold text-amber-700 dark:text-secondary/80 text-sm">
             Why does it take longer?
           </p>
           <p className="text-sm text-muted-foreground mt-1">

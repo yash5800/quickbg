@@ -29,14 +29,14 @@ export function DemoRevealSlider() {
     <div className="relative mx-auto w-full max-w-[42rem]">
       <motion.div
         aria-hidden="true"
-        className="absolute -left-6 top-16 h-20 w-20 rounded-[1.4rem] border border-white/10 bg-lime-300/90 shadow-[0_24px_90px_-28px_rgba(190,242,100,0.8)]"
+        className="absolute -left-6 top-16 h-20 w-20 rounded-[1.4rem] border border-white/10 bg-secondary/90 shadow-[0_24px_90px_-28px_hsl(var(--secondary)_/_0.8)]"
         animate={prefersReducedMotion ? undefined : { y: [0, -10, 0], rotate: [-8, -2, -8] }}
         style={{ willChange: "transform" }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
-        className="absolute -right-3 bottom-24 h-16 w-16 rounded-full border border-white/10 bg-sky-300/20 backdrop-blur"
+        className="absolute -right-3 bottom-24 h-16 w-16 rounded-full border border-white/10 bg-secondary/20 backdrop-blur"
         animate={prefersReducedMotion ? undefined : { y: [0, 12, 0], x: [0, -8, 0] }}
         style={{ willChange: "transform" }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -57,7 +57,7 @@ export function DemoRevealSlider() {
               <span className="h-2.5 w-2.5 rounded-full bg-[#7bd88f]" />
             </div>
             <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] font-medium text-white/60 sm:flex">
-              <Sparkles className="h-3.5 w-3.5 text-sky-300" />
+              <Sparkles className="h-3.5 w-3.5 text-secondary" />
               QuickBG preview
             </div>
           </div>
@@ -75,7 +75,7 @@ export function DemoRevealSlider() {
                     <div key={label} className="flex items-center justify-between rounded-xl bg-black/30 px-3 py-2.5">
                       <div className="flex items-center gap-2 text-xs font-medium text-white/70">
                         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-black">
-                          {index === 1 ? <span className="h-1.5 w-1.5 rounded-full bg-sky-500" /> : <Check className="h-3 w-3" />}
+                          {index === 1 ? <span className="h-1.5 w-1.5 rounded-full bg-secondary" /> : <Check className="h-3 w-3" />}
                         </span>
                         {label}
                       </div>

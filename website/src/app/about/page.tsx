@@ -82,48 +82,48 @@ const techStack = [
     title: "Next.js (App Router)",
     description:
       "The frontend is built on Next.js 14 with the App Router, leveraging React Server Components for fast initial loads, streaming SSR for the processing pipeline, and a fully typed TypeScript codebase. The edge runtime handles static assets and metadata generation for SEO.",
-    accent: "text-sky-300",
-    border: "border-sky-500/20",
+    accent: "text-secondary",
+    border: "border-secondary/20",
   },
   {
     icon: Cpu,
     title: "FastAPI (Python Worker)",
     description:
       "Background removal is powered by a dedicated FastAPI service written in Python. The asynchronous worker accepts inference requests, runs the BiRefNet model on GPU when available, and returns processed masks. The worker is horizontally scalable and deployed as a containerized microservice.",
-    accent: "text-emerald-300",
-    border: "border-emerald-500/20",
+    accent: "text-secondary",
+    border: "border-secondary/20",
   },
   {
     icon: BrainCircuit,
     title: "BiRefNet Model (HuggingFace)",
     description:
       "The core segmentation model is BiRefNet, loaded from HuggingFace Transformers. We use the official checkpoint with optimizations for inference — half-precision floating point, ONNX runtime graph optimization, and dynamic shape batching to maximize throughput on consumer GPUs.",
-    accent: "text-violet-300",
-    border: "border-violet-500/20",
+    accent: "text-primary",
+    border: "border-primary/20",
   },
   {
     icon: Container,
     title: "MongoDB (Job Queue)",
     description:
       "Image processing jobs are managed through MongoDB, which acts as a lightweight job queue. Each upload creates a job document with status, metadata, and result references. MongoDB's change streams power real-time status updates pushed to the frontend via Server-Sent Events.",
-    accent: "text-lime-300",
-    border: "border-lime-500/20",
+    accent: "text-secondary",
+    border: "border-secondary/20",
   },
   {
     icon: Layers,
     title: "Sharp (Image Processing)",
     description:
       "Image preprocessing and post-processing use the sharp library — a high-performance Node.js module for image transformations. Sharp handles format conversion, resizing, alpha compositing, and quality compression. All operations run in streaming mode to minimize memory overhead.",
-    accent: "text-amber-300",
-    border: "border-amber-500/20",
+    accent: "text-secondary",
+    border: "border-secondary/20",
   },
   {
     icon: Database,
     title: "TensorFlow.js (Client Fallback)",
     description:
       "For users who prefer zero-server processing, QuickBG includes a TensorFlow.js fallback that runs a lightweight segmentation model directly in the browser using WebGL acceleration. While not as precise as the server BiRefNet model, it enables fully offline background removal with complete privacy.",
-    accent: "text-rose-300",
-    border: "border-rose-500/20",
+    accent: "text-primary",
+    border: "border-primary/20",
   },
 ];
 
@@ -212,7 +212,7 @@ const useCases = [
       "No resolution loss — zoom-ready product images",
     ],
     href: "/remover",
-    accent: "text-sky-300",
+    accent: "text-secondary",
     gradient: "from-sky-500/10",
   },
   {
@@ -227,7 +227,7 @@ const useCases = [
       "Integrates into existing design pipelines",
     ],
     href: "/tools",
-    accent: "text-violet-300",
+    accent: "text-primary",
     gradient: "from-violet-500/10",
   },
   {
@@ -242,7 +242,7 @@ const useCases = [
       "No signup — jump straight into editing",
     ],
     href: "/blur-bg",
-    accent: "text-pink-300",
+    accent: "text-primary",
     gradient: "from-pink-500/10",
   },
   {
@@ -257,7 +257,7 @@ const useCases = [
       "Studio-quality results without a physical studio",
     ],
     href: "/sharpness",
-    accent: "text-amber-300",
+    accent: "text-secondary",
     gradient: "from-amber-500/10",
   },
   {
@@ -272,7 +272,7 @@ const useCases = [
       "Bulk processing for seasonal collections",
     ],
     href: "/remover",
-    accent: "text-rose-300",
+    accent: "text-primary",
     gradient: "from-rose-500/10",
   },
   {
@@ -287,7 +287,7 @@ const useCases = [
       "Free tier ideal for budget-constrained institutions",
     ],
     href: "/tools",
-    accent: "text-emerald-300",
+    accent: "text-secondary",
     gradient: "from-emerald-500/10",
   },
   {
@@ -302,7 +302,7 @@ const useCases = [
       "Privacy-preserving client-side processing option",
     ],
     href: "/remover",
-    accent: "text-cyan-300",
+    accent: "text-primary",
     gradient: "from-cyan-500/10",
   },
   {
@@ -317,7 +317,7 @@ const useCases = [
       "High-resolution exports for print marketing",
     ],
     href: "/resize",
-    accent: "text-indigo-300",
+    accent: "text-primary",
     gradient: "from-indigo-500/10",
   },
 ];
@@ -328,7 +328,7 @@ export default function AboutPage() {
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:py-16">
         {/* ===== HEADER ===== */}
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">About QuickBG</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">About QuickBG</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl lg:text-5xl">
             Technology, vision, and the story behind the tool.
           </h1>
@@ -342,7 +342,7 @@ export default function AboutPage() {
         {/* ===== THE STORY ===== */}
         <Card className="premium-surface mt-10 p-6 space-y-4 text-sm text-white/60">
           <div className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5 text-lime-300" />
+            <Lightbulb className="h-5 w-5 text-secondary" />
             <h2 className="text-lg font-semibold text-white">The Story — Why QuickBG Exists</h2>
           </div>
           <p>
@@ -372,7 +372,7 @@ export default function AboutPage() {
 
         {/* ===== TECHNICAL DETAILS ===== */}
         <div className="mt-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Architecture</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Architecture</p>
           <h2 className="mt-2 mb-3 text-2xl font-semibold tracking-normal text-white sm:text-3xl">
             How QuickBG is built
           </h2>
@@ -383,27 +383,27 @@ export default function AboutPage() {
 
           <div className="relative mb-8 overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5 sm:p-6">
             <div className="flex flex-col gap-1 text-xs text-white/40 sm:flex-row sm:items-center sm:gap-2">
-              <span className="rounded-full border border-lime-500/20 bg-lime-500/10 px-2.5 py-0.5 text-[11px] font-medium text-lime-300">
+              <span className="rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 text-[11px] font-medium text-secondary">
                 User
               </span>
               <ChevronRight className="hidden h-3 w-3 sm:block" />
-              <span className="rounded-full border border-sky-500/20 bg-sky-500/10 px-2.5 py-0.5 text-[11px] font-medium text-sky-300">
+              <span className="rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 text-[11px] font-medium text-secondary">
                 Next.js (Edge)
               </span>
               <ChevronRight className="hidden h-3 w-3 sm:block" />
-              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-medium text-amber-300">
+              <span className="rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 text-[11px] font-medium text-secondary">
                 MongoDB Queue
               </span>
               <ChevronRight className="hidden h-3 w-3 sm:block" />
-              <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">
+              <span className="rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 text-[11px] font-medium text-secondary">
                 FastAPI Worker
               </span>
               <ChevronRight className="hidden h-3 w-3 sm:block" />
-              <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-2.5 py-0.5 text-[11px] font-medium text-violet-300">
+              <span className="rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary">
                 BiRefNet (GPU)
               </span>
               <ChevronRight className="hidden h-3 w-3 sm:block" />
-              <span className="rounded-full border border-lime-500/20 bg-lime-500/10 px-2.5 py-0.5 text-[11px] font-medium text-lime-300">
+              <span className="rounded-full border border-secondary/20 bg-secondary/10 px-2.5 py-0.5 text-[11px] font-medium text-secondary">
                 Result
               </span>
             </div>
@@ -427,7 +427,7 @@ export default function AboutPage() {
         {/* ===== WHY BIREFNET ===== */}
         <Card className="premium-surface mt-10 p-6 space-y-4 text-sm text-white/60">
           <div className="flex items-center gap-2">
-            <BrainCircuit className="h-5 w-5 text-violet-300" />
+            <BrainCircuit className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-semibold text-white">Why BiRefNet? A Deeper Look</h2>
           </div>
           <p>
@@ -468,8 +468,8 @@ export default function AboutPage() {
         {/* ===== ROADMAP ===== */}
         <div className="mt-10">
           <div className="flex items-center gap-2 mb-2">
-            <Route className="h-5 w-5 text-sky-300" />
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Roadmap</p>
+            <Route className="h-5 w-5 text-secondary" />
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Roadmap</p>
           </div>
           <h2 className="text-2xl font-semibold tracking-normal text-white sm:text-3xl">
             What&rsquo;s next for QuickBG
@@ -481,7 +481,7 @@ export default function AboutPage() {
           <div className="space-y-6">
             {roadmapItems.map((quarter) => (
               <div key={quarter.quarter}>
-                <h3 className="mb-3 text-sm font-semibold text-sky-300">{quarter.quarter}</h3>
+                <h3 className="mb-3 text-sm font-semibold text-secondary">{quarter.quarter}</h3>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {quarter.items.map((item) => (
                     <div
@@ -506,7 +506,7 @@ export default function AboutPage() {
         {/* ===== TEAM ===== */}
         <Card className="premium-surface mt-10 p-6 space-y-4 text-sm text-white/60">
           <div className="flex items-center gap-2">
-            <User className="h-5 w-5 text-sky-300" />
+            <User className="h-5 w-5 text-secondary" />
             <h2 className="text-lg font-semibold text-white">The Team</h2>
           </div>
           <p>
@@ -532,7 +532,7 @@ export default function AboutPage() {
               href="https://github.com/anomalyco/quickbg"
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
             >
-              <HeartHandshake className="h-3.5 w-3.5 text-lime-300" />
+              <HeartHandshake className="h-3.5 w-3.5 text-secondary" />
               Contribute on GitHub
               <ExternalLink className="h-3 w-3" />
             </Link>
@@ -548,7 +548,7 @@ export default function AboutPage() {
 
         {/* ===== EXPANDED USE CASES ===== */}
         <div className="mt-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Use cases</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Use cases</p>
           <h2 className="mt-2 mb-3 text-2xl font-semibold tracking-normal text-white sm:text-3xl">
             Who uses QuickBG and why
           </h2>
@@ -574,7 +574,7 @@ export default function AboutPage() {
                   <ul className="mt-3 space-y-1.5">
                     {item.benefits.map((benefit) => (
                       <li key={benefit} className="flex items-start gap-2 text-xs text-white/40">
-                        <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-lime-300/60" />
+                        <Sparkles className="mt-0.5 h-3 w-3 shrink-0 text-secondary/60" />
                         {benefit}
                       </li>
                     ))}
@@ -622,7 +622,7 @@ export default function AboutPage() {
           </div>
           <Link
             href="/contact"
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full border border-white/10 bg-white px-5 text-sm font-semibold text-black transition hover:bg-lime-200"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-full border border-white/10 bg-white px-5 text-sm font-semibold text-black transition hover:bg-secondary"
           >
             Contact support
             <ArrowUpRight className="h-4 w-4" />

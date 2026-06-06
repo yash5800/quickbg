@@ -178,7 +178,7 @@ export default function FAQPage() {
       />
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:py-16">
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">FAQ</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">FAQ</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl lg:text-5xl">
             Frequently Asked Questions
           </h1>

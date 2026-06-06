@@ -618,7 +618,7 @@ export default function AdjustPage() {
 
       <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Guide</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Guide</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Adjust Image</h2>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

@@ -40,7 +40,7 @@ export default function BlogIndexPage() {
         />
 
         <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Blog</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Blog</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl lg:text-5xl">
             Guides, tutorials, and tips
           </h1>
@@ -64,13 +64,13 @@ export default function BlogIndexPage() {
                 <span className="h-1 w-1 rounded-full bg-white/20" />
                 <span>{article.readTime}</span>
               </div>
-              <h2 className="mt-4 text-xl font-semibold text-white group-hover:text-lime-200 transition-colors">
+              <h2 className="mt-4 text-xl font-semibold text-white group-hover:text-secondary transition-colors">
                 {article.title}
               </h2>
               <p className="mt-3 text-sm leading-6 text-white/50 line-clamp-3">
                 {article.excerpt}
               </p>
-              <div className="mt-5 flex items-center gap-2 text-sm font-medium text-lime-300/80 group-hover:text-lime-300 transition-colors">
+              <div className="mt-5 flex items-center gap-2 text-sm font-medium text-secondary/80 group-hover:text-secondary transition-colors">
                 Read article
                 <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -87,7 +87,7 @@ export default function BlogIndexPage() {
           <div className="mt-4 flex flex-wrap gap-3">
             <Link
               href="/remover"
-              className="inline-flex h-10 items-center rounded-full border border-white/10 bg-white px-4 text-sm font-semibold text-black transition hover:bg-lime-200"
+              className="inline-flex h-10 items-center rounded-full border border-white/10 bg-white px-4 text-sm font-semibold text-black transition hover:bg-secondary"
             >
               Background Remover
             </Link>

@@ -16,7 +16,7 @@ const tools = [
     tip: "Perfect for product photography, portraits, and e-commerce listings",
     badge: "Core",
     href: "/remover",
-    accent: "text-sky-300",
+    accent: "text-secondary",
     glow: "from-sky-500/20",
     category: "Core Tools",
   },
@@ -28,7 +28,7 @@ const tools = [
     tip: "Ideal for Amazon (1:1), Instagram (4:5), YouTube (16:9)",
     badge: "Popular",
     href: "/resize",
-    accent: "text-violet-300",
+    accent: "text-primary",
     glow: "from-violet-500/20",
     category: "Adjustment Tools",
   },
@@ -40,7 +40,7 @@ const tools = [
     tip: "Create branded product shots with solid colors or custom backgrounds",
     badge: "New",
     href: "/replace-bg",
-    accent: "text-emerald-300",
+    accent: "text-secondary",
     glow: "from-emerald-500/20",
     category: "Core Tools",
   },
@@ -52,7 +52,7 @@ const tools = [
     tip: "Add depth to profile photos and create soft, professional portraits",
     badge: null,
     href: "/blur-bg",
-    accent: "text-rose-300",
+    accent: "text-primary",
     glow: "from-rose-500/20",
     category: "Core Tools",
   },
@@ -64,7 +64,7 @@ const tools = [
     tip: "Crisp up product edges and enhance fine details before listing",
     badge: "New",
     href: "/sharpness",
-    accent: "text-amber-300",
+    accent: "text-secondary",
     glow: "from-amber-500/20",
     category: "Adjustment Tools",
   },
@@ -76,8 +76,8 @@ const tools = [
     tip: "Frame images perfectly for thumbnails, ads, and social feeds",
     badge: null,
     href: "/crop",
-    accent: "text-lime-300",
-    glow: "from-lime-500/20",
+    accent: "text-secondary",
+    glow: "from-secondary/20",
     category: "Adjustment Tools",
   },
   {
@@ -88,7 +88,7 @@ const tools = [
     tip: "Fine-tune brightness, contrast, and saturation for a consistent brand look",
     badge: null,
     href: "/adjust",
-    accent: "text-cyan-300",
+    accent: "text-primary",
     glow: "from-cyan-500/20",
     category: "Adjustment Tools",
   },
@@ -100,7 +100,7 @@ const tools = [
     tip: "Convert between formats for compatibility, archiving, or platform requirements",
     badge: "New",
     href: "/converter",
-    accent: "text-indigo-300",
+    accent: "text-primary",
     glow: "from-indigo-500/20",
     category: "Export Tools",
   },
@@ -225,7 +225,7 @@ export default function ToolsPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">QuickBG workspace</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">QuickBG workspace</p>
             <h1 className="mt-1 text-3xl font-semibold tracking-normal text-white sm:text-5xl">QuickBG Tools — Complete Image Editing Suite</h1>
             <p className="mt-2 text-sm text-white/50">
               Eight tools designed to work together. Remove backgrounds, resize, crop, adjust, and export — all in one workspace, no signup required.
@@ -238,14 +238,14 @@ export default function ToolsPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                <Sparkles className="h-4 w-4 text-lime-300" />
+                <Sparkles className="h-4 w-4 text-secondary" />
                 Recommended workflow
               </div>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
                 Remove the background first, then resize, crop, replace, blur, or adjust without leaving the QuickBG flow. The cutout stays intact as you move between tools.
               </p>
             </div>
-            <Button onClick={() => router.push("/remover")} className="rounded-full bg-white text-black hover:bg-lime-200">
+            <Button onClick={() => router.push("/remover")} className="rounded-full bg-white text-black hover:bg-secondary">
               Open remover
               <ArrowUpRight className="ml-2 h-4 w-4" />
             </Button>
@@ -298,7 +298,7 @@ export default function ToolsPage() {
         {/* ===== HOW TO CHOOSE THE RIGHT TOOL ===== */}
         <div className="premium-surface mb-10 rounded-[1.75rem] p-6 sm:p-8">
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Quick reference</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Quick reference</p>
             <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">How to Choose the Right Tool</h2>
             <p className="mt-2 text-sm text-white/50">Not sure where to start? Match your goal to the right tool.</p>
           </div>
@@ -307,7 +307,7 @@ export default function ToolsPage() {
               <div key={item.goal} className="rounded-[1.25rem] border border-white/10 bg-white/[0.035] p-4 transition hover:border-white/20">
                 <p className="text-xs font-semibold uppercase tracking-[0.12em] text-white/40">Your goal</p>
                 <p className="mt-1 text-sm font-medium text-white">{item.goal}</p>
-                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-sky-300/80">Use</p>
+                <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-secondary/80">Use</p>
                 <p className="mt-1 text-sm font-medium text-white">{item.tool}</p>
                 <p className="mt-2 text-xs leading-5 text-white/50">{item.why}</p>
               </div>
@@ -318,7 +318,7 @@ export default function ToolsPage() {
         {/* ===== WORKFLOW TIPS ===== */}
         <div className="mb-10">
           <div className="mb-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">Guides & templates</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Guides & templates</p>
             <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">Workflow Tips</h2>
             <p className="mt-2 text-sm text-white/50">Step-by-step recipes for common image editing scenarios.</p>
           </div>
@@ -352,7 +352,7 @@ export default function ToolsPage() {
         <div className="mb-10">
           <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Blog & articles</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Blog & articles</p>
               <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">Latest from the blog</h2>
               <p className="mt-2 text-sm text-white/50">Tips, tutorials, and deep dives into AI background removal and image editing.</p>
             </div>
@@ -378,7 +378,7 @@ export default function ToolsPage() {
                   <span>·</span>
                   <span>{post.readTime}</span>
                 </div>
-                <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-sky-200">{post.title}</h3>
+                <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{post.title}</h3>
                 <p className="relative mt-2 text-sm leading-6 text-white/50">{post.excerpt}</p>
                 <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                   Read article <ArrowRight className="h-3 w-3" />
@@ -391,7 +391,7 @@ export default function ToolsPage() {
         {/* ===== FAQ ===== */}
         <div className="mb-6">
           <div className="mb-6 max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">FAQ</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">FAQ</p>
             <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">Frequently Asked Questions</h2>
             <p className="mt-2 text-sm text-white/50">Quick answers about choosing and using QuickBG tools.</p>
           </div>

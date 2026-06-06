@@ -129,13 +129,13 @@ export function PreviewInfo({
 
   const statusConfig = {
     pending: { label: "Waiting", icon: Clock, color: "bg-slate-500/10 text-slate-600" },
-    starting: { label: "Starting", icon: Loader2, color: "bg-blue-500/10 text-blue-600" },
-    uploading: { label: "Uploading", icon: Loader2, color: "bg-blue-500/10 text-blue-600" },
-    queued: { label: "In Queue", icon: Loader2, color: "bg-amber-500/10 text-amber-600" },
+    starting: { label: "Starting", icon: Loader2, color: "bg-primary/10 text-primary" },
+    uploading: { label: "Uploading", icon: Loader2, color: "bg-primary/10 text-primary" },
+    queued: { label: "In Queue", icon: Loader2, color: "bg-secondary/10 text-amber-600" },
     processing: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
     running: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
     uploading_result: { label: "Finalizing", icon: Loader2, color: "bg-primary/10 text-primary" },
-    fetching_result: { label: "Fetching processed image", icon: Loader2, color: "bg-amber-500/10 text-amber-600" },
+    fetching_result: { label: "Fetching processed image", icon: Loader2, color: "bg-secondary/10 text-amber-600" },
     completed: { label: "Done", icon: CheckCircle2, color: "bg-green-500/10 text-green-600" },
     error: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
     failed: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
@@ -304,9 +304,9 @@ const StatusIcon = statusConfig.icon;
                 className={cn(
                   "rounded-lg border px-1.5 py-1.5 text-center text-[10px] font-medium",
                   step.done
-                    ? "border-lime-300/40 bg-lime-300/10 text-lime-800 dark:text-lime-100"
+                    ? "border-secondary/40 bg-secondary/10 text-secondary"
                     : step.active
-                      ? "border-sky-300/40 bg-sky-300/10 text-sky-800 dark:text-sky-100"
+                      ? "border-secondary/40 bg-secondary/10 text-secondary"
                       : "border-border/70 bg-background/30 text-muted-foreground"
                 )}
               >
@@ -325,8 +325,8 @@ const StatusIcon = statusConfig.icon;
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="p-4 space-y-3 bg-amber-500/10 border-amber-500/30">
-              <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+            <Card className="p-4 space-y-3 bg-secondary/10 border-amber-500/30">
+              <h4 className="text-sm font-semibold text-amber-700 dark:text-secondary/80">
                 {image.waitingReason === "credits_exhausted" ? "Hourly limit reached" : "Queue is full"}
               </h4>
               <p className="text-xs text-muted-foreground">
@@ -361,8 +361,8 @@ const StatusIcon = statusConfig.icon;
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="p-4 space-y-3 bg-amber-500/5 border-amber-500/20">
-              <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
+            <Card className="p-4 space-y-3 bg-amber-500/5 border-secondary/20">
+              <h4 className="text-sm font-semibold text-amber-700 dark:text-secondary/80">
                 Position in Queue
               </h4>
 
@@ -372,7 +372,7 @@ const StatusIcon = statusConfig.icon;
                     <span>#</span>
                     <span>Your Position</span>
                   </div>
-                  <span className="font-semibold text-2xl text-amber-600 dark:text-amber-400">
+                  <span className="font-semibold text-2xl text-amber-600 dark:text-secondary/80">
                     {image.queuePosition}
                   </span>
                 </div>
@@ -741,7 +741,7 @@ function ResetTimer({ resetAt }: { resetAt: number }) {
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   return (
-    <span className="font-bold text-amber-600 dark:text-amber-400 tabular-nums">
+    <span className="font-bold text-amber-600 dark:text-secondary/80 tabular-nums">
       {mins}:{secs.toString().padStart(2, "0")}
     </span>
   );

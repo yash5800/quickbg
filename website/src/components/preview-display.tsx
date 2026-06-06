@@ -113,11 +113,11 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
             <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/60">
               <motion.span
                 aria-hidden
-                className="absolute inset-0 rounded-2xl border border-sky-300/40"
+                className="absolute inset-0 rounded-2xl border border-secondary/40"
                 animate={{ scale: [1, 1.35, 1], opacity: [0.7, 0, 0.7] }}
                 transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
               />
-              <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-amber-300 animate-spin" : "h-6 w-6 text-sky-300"} />
+              <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-secondary animate-spin" : "h-6 w-6 text-secondary"} />
             </div>
 
             <div className="min-w-0 flex-1">
@@ -159,14 +159,14 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
                 key={step.label}
                 initial={false}
                 animate={{
-                  borderColor: step.done ? "rgba(190,242,100,0.45)" : "rgba(255,255,255,0.1)",
-                  backgroundColor: step.done ? "rgba(190,242,100,0.1)" : "rgba(255,255,255,0.035)",
+                  borderColor: step.done ? "hsl(var(--secondary) / 0.45)" : "rgba(255,255,255,0.1)",
+                  backgroundColor: step.done ? "hsl(var(--secondary) / 0.1)" : "rgba(255,255,255,0.035)",
                 }}
                 transition={{ delay: index * 0.04 }}
                 className="rounded-xl border px-2 py-2 text-center text-[11px] font-medium text-foreground/75"
               >
                 <div className="mx-auto mb-1 flex h-4 w-4 items-center justify-center rounded-full bg-background/40">
-                  {step.done ? <CheckCircle2 className="h-3 w-3 text-lime-500" /> : <span className="h-1.5 w-1.5 rounded-full bg-foreground/30" />}
+                  {step.done ? <CheckCircle2 className="h-3 w-3 text-secondary" /> : <span className="h-1.5 w-1.5 rounded-full bg-foreground/30" />}
                 </div>
                 {step.label}
               </motion.div>
@@ -226,7 +226,7 @@ export function PreviewDisplay({
                   className="h-full"
                 />
                 <motion.div
-                  className="pointer-events-none absolute inset-0 flex items-center justify-center bg-lime-300/10"
+                  className="pointer-events-none absolute inset-0 flex items-center justify-center bg-secondary/10"
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 0 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}

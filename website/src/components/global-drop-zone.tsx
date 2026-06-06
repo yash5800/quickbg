@@ -132,7 +132,7 @@ function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
               <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white text-black shadow-[0_22px_80px_-32px_rgba(255,255,255,0.75)]">
                 <motion.span
                   aria-hidden
-                  className="absolute inset-0 rounded-3xl border border-sky-300/45"
+                  className="absolute inset-0 rounded-3xl border border-secondary/45"
                   animate={{ scale: [1, 1.35, 1], opacity: [0.8, 0, 0.8] }}
                   transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
                 />

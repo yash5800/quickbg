@@ -37,19 +37,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function renderContent(md: string) {
   const html = marked.parse(md, { async: false }) as string
   return html
-    .replace(/<a href="\/remover">/g, '<a href="/remover" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/replace-bg">/g, '<a href="/replace-bg" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/resize">/g, '<a href="/resize" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/crop">/g, '<a href="/crop" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/sharpness">/g, '<a href="/sharpness" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/adjust">/g, '<a href="/adjust" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/blur-bg">/g, '<a href="/blur-bg" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/converter">/g, '<a href="/converter" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/">/g, '<a href="/" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/tools">/g, '<a href="/tools" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/faq">/g, '<a href="/faq" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/about">/g, '<a href="/about" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
-    .replace(/<a href="\/comparison">/g, '<a href="/comparison" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
+    .replace(/<a href="\/remover">/g, '<a href="/remover" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/replace-bg">/g, '<a href="/replace-bg" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/resize">/g, '<a href="/resize" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/crop">/g, '<a href="/crop" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/sharpness">/g, '<a href="/sharpness" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/adjust">/g, '<a href="/adjust" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/blur-bg">/g, '<a href="/blur-bg" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/converter">/g, '<a href="/converter" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/">/g, '<a href="/" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/tools">/g, '<a href="/tools" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/faq">/g, '<a href="/faq" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/about">/g, '<a href="/about" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
+    .replace(/<a href="\/comparison">/g, '<a href="/comparison" class="text-secondary underline underline-offset-2 hover:text-secondary transition-colors">')
 }
 
 export default async function ArticlePage({ params }: Props) {
@@ -113,7 +113,7 @@ export default async function ArticlePage({ params }: Props) {
 
         <div className="mt-10 border-t border-white/10 pt-10">
           <div
-            className="rounded-[1.75rem] border border-white/10 bg-[#08080a] p-6 sm:p-8 prose prose-invert prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-normal prose-p:text-white/60 prose-p:leading-7 prose-a:text-lime-300 prose-a:underline prose-a:underline-offset-2 prose-strong:text-white/80 prose-code:text-lime-200 prose-code:bg-white/[0.04] prose-code:px-1 prose-code:rounded prose-li:text-white/60 max-w-none space-y-5 text-sm sm:text-base"
+            className="rounded-[1.75rem] border border-white/10 bg-[#08080a] p-6 sm:p-8 prose prose-invert prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-normal prose-p:text-white/60 prose-p:leading-7 prose-a:text-secondary prose-a:underline prose-a:underline-offset-2 prose-strong:text-white/80 prose-code:text-secondary prose-code:bg-white/[0.04] prose-code:px-1 prose-code:rounded prose-li:text-white/60 max-w-none space-y-5 text-sm sm:text-base"
             dangerouslySetInnerHTML={{
               __html: renderContent(article.content),
             }}
@@ -176,7 +176,7 @@ export default async function ArticlePage({ params }: Props) {
           <div className="mt-4 flex flex-wrap gap-3">
             <Link
               href="/remover"
-              className="inline-flex h-10 items-center rounded-full border border-white/10 bg-white px-4 text-sm font-semibold text-black transition hover:bg-lime-200"
+              className="inline-flex h-10 items-center rounded-full border border-white/10 bg-white px-4 text-sm font-semibold text-black transition hover:bg-secondary"
             >
               Open Background Remover
             </Link>
