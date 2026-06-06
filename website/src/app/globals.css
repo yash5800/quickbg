@@ -334,6 +334,42 @@
     color: hsl(194 95% 45%) !important;
   }
 
+  .light [class*="text-white"]:not([class*="text-white/"]) {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .light [class*="text-white/90"] { color: hsl(var(--foreground) / 0.9) !important; }
+  .light [class*="text-white/80"] { color: hsl(var(--foreground) / 0.8) !important; }
+  .light [class*="text-white/70"] { color: hsl(var(--foreground) / 0.7) !important; }
+  .light [class*="text-white/60"] { color: hsl(var(--foreground) / 0.6) !important; }
+  .light [class*="text-white/55"] { color: hsl(var(--foreground) / 0.55) !important; }
+  .light [class*="text-white/50"] { color: hsl(var(--foreground) / 0.5) !important; }
+  .light [class*="text-white/40"] { color: hsl(var(--foreground) / 0.4) !important; }
+  .light [class*="text-white/35"] { color: hsl(var(--foreground) / 0.35) !important; }
+  .light [class*="text-white/30"] { color: hsl(var(--foreground) / 0.3) !important; }
+  .light [class*="text-white/20"] { color: hsl(var(--foreground) / 0.2) !important; }
+
+  .light [class*="bg-white/"] {
+    background-color: hsl(var(--card)) !important;
+  }
+
+  .light [class*="bg-white"]:not([class*="bg-white/"]) {
+    background-color: hsl(var(--card)) !important;
+  }
+
+  .light [class*="bg-black/"] {
+    background-color: hsl(var(--muted)) !important;
+  }
+
+  .light [class*="border-white/"] {
+    border-color: hsl(var(--border)) !important;
+  }
+
+  .light .premium-dashed:hover {
+    border-color: hsl(var(--border)) !important;
+    background: hsl(var(--card));
+  }
+
   .premium-dashed:hover {
     border-color: rgba(255, 255, 255, 0.34);
     background:
@@ -464,4 +500,30 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
+}
+
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.prose table th,
+.prose table td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.prose table th {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+  background: hsl(var(--muted));
+}
+
+.prose table td {
+  color: hsl(var(--muted-foreground));
+}
+
+.prose table tr {
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
 }

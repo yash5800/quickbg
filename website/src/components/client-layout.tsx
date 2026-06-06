@@ -119,7 +119,7 @@ function ScrollToTopButton() {
             onClick={handleClick}
             aria-label="Scroll to top"
             className={cn(
-              "group h-12 w-12 rounded-full border border-border/70 bg-background/90 p-0 shadow-lg backdrop-blur-md hover:bg-primary hover:text-primary-foreground hover:shadow-xl",
+              "group h-12 w-12 rounded-full border-2 border-foreground/20 bg-background p-0 shadow-2xl hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-xl",
               "focus-visible:ring-2 focus-visible:ring-ring/80"
             )}
           >
@@ -138,8 +138,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="system"
-      enableSystem
+      defaultTheme="dark"
+      enableSystem={false}
     >
       <QueryProvider>
         <ImageProvider>

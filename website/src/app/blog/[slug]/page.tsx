@@ -3,6 +3,9 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { AppLayout } from "@/components/app-layout"
 import { articles, siteUrl, blogPath } from "../blog-data"
+import { Marked } from "marked"
+
+const marked = new Marked({ gfm: true })
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -31,7 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function renderContent(html: string) {
+function renderContent(md: string) {
+  const html = marked.parse(md, { async: false }) as string
   return html
     .replace(/<a href="\/remover">/g, '<a href="/remover" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
     .replace(/<a href="\/replace-bg">/g, '<a href="/replace-bg" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
@@ -43,6 +47,9 @@ function renderContent(html: string) {
     .replace(/<a href="\/converter">/g, '<a href="/converter" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
     .replace(/<a href="\/">/g, '<a href="/" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
     .replace(/<a href="\/tools">/g, '<a href="/tools" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
+    .replace(/<a href="\/faq">/g, '<a href="/faq" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
+    .replace(/<a href="\/about">/g, '<a href="/about" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
+    .replace(/<a href="\/comparison">/g, '<a href="/comparison" class="text-lime-300 underline underline-offset-2 hover:text-lime-200 transition-colors">')
 }
 
 export default async function ArticlePage({ params }: Props) {
@@ -106,7 +113,7 @@ export default async function ArticlePage({ params }: Props) {
 
         <div className="mt-10 border-t border-white/10 pt-10">
           <div
-            className="prose prose-invert prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-normal prose-p:text-white/60 prose-p:leading-7 prose-a:text-lime-300 prose-a:underline prose-a:underline-offset-2 prose-strong:text-white/80 prose-code:text-lime-200 prose-code:bg-white/[0.04] prose-code:px-1 prose-code:rounded prose-li:text-white/60 max-w-none space-y-5 text-sm sm:text-base"
+            className="rounded-[1.75rem] border border-white/10 bg-[#08080a] p-6 sm:p-8 prose prose-invert prose-headings:text-white prose-headings:font-semibold prose-headings:tracking-normal prose-p:text-white/60 prose-p:leading-7 prose-a:text-lime-300 prose-a:underline prose-a:underline-offset-2 prose-strong:text-white/80 prose-code:text-lime-200 prose-code:bg-white/[0.04] prose-code:px-1 prose-code:rounded prose-li:text-white/60 max-w-none space-y-5 text-sm sm:text-base"
             dangerouslySetInnerHTML={{
               __html: renderContent(article.content),
             }}
