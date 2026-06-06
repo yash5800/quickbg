@@ -1,0 +1,144 @@
+{
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "remover": "Remover",
+    "about": "About",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "footer": {
+    "tagline": "AI-powered background removal for everyone. Fast, free, and private.",
+    "tools": "Tools",
+    "remover": "Remover",
+    "replaceBg": "Replace BG",
+    "blurBg": "Blur BG",
+    "resize": "Resize",
+    "crop": "Crop",
+    "adjust": "Adjust",
+    "sharpness": "Sharpness",
+    "converter": "Converter",
+    "resources": "Resources",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "comparison": "Comparison",
+    "about": "About",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "Copyright",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "home": {
+    "title": "Free AI Background Remover - Unlimited Images, 100% Original Quality",
+    "description": "quickbg.dev offers free AI background remover that preserves 100% of your image's original quality."
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "hi": "हिन्दी",
+    "de": "Deutsch"
+  },
+  "common": {
+    "tryQuickbg": "Try QuickBG tools",
+    "allTools": "All Tools",
+    "openRemover": "Open Background Remover",
+    "backToBlog": "Back to Blog",
+    "readMore": "Read more",
+    "learnMore": "Learn more",
+    "getStarted": "Get Started",
+    "removeBg": "Background Remover",
+    "contactUs": "Contact Us"
+  },
+  "blog": {
+    "title": "Blog — QuickBG",
+    "description": "Learn about AI background removal, e-commerce product photography, image editing workflows, and tips for getting the best results with QuickBG.",
+    "heading": "Guides, tutorials, and tips",
+    "subheading": "Learn how to get the most out of AI background removal, improve your product photos, and build an efficient image editing workflow — all for free.",
+    "readArticle": "Read article",
+    "back": "Back to blog",
+    "published": "Published",
+    "share": "Share",
+    "moreArticles": "More articles",
+    "tryTools": "Try QuickBG",
+    "tryToolsDesc": "Remove backgrounds instantly, resize, crop, and adjust your images — all free, no signup required."
+  },
+  "faq": {
+    "title": "FAQ — QuickBG",
+    "description": "Frequently asked questions about QuickBG background removal, image editing tools, and how to get the best results."
+  },
+  "about": {
+    "title": "About — QuickBG",
+    "description": "Learn about QuickBG, the free AI-powered background removal and image editing suite."
+  },
+  "tools": {
+    "title": "Image Tools — QuickBG",
+    "description": "Free online image editing tools: background remover, blur, replace, resize, crop, adjust, sharpness, and format converter."
+  },
+  "remover": {
+    "title": "Free Background Remover Online — QuickBG",
+    "description": "Remove image backgrounds instantly with AI. 100% free, unlimited usage, no signup required."
+  },
+  "replaceBg": {
+    "title": "Replace Background Online — QuickBG",
+    "description": "Replace image backgrounds with solid colors or gradients. Free, no signup required."
+  },
+  "blurBg": {
+    "title": "Blur Background Online — QuickBG",
+    "description": "Blur image backgrounds with AI. Free online tool, no signup required."
+  },
+  "resize": {
+    "title": "Resize Image Online — QuickBG",
+    "description": "Resize images online for free. Maintain quality with AI-powered resizing."
+  },
+  "crop": {
+    "title": "Crop Image Online — QuickBG",
+    "description": "Crop images online for free. Smart crop with preset aspect ratios."
+  },
+  "adjust": {
+    "title": "Adjust Image Online — QuickBG",
+    "description": "Adjust brightness, contrast, and saturation of your images online for free."
+  },
+  "sharpness": {
+    "title": "Sharpen Image Online — QuickBG",
+    "description": "Sharpen your images online for free. AI-powered sharpening tool."
+  },
+  "converter": {
+    "title": "Image Converter Online — QuickBG",
+    "description": "Convert images between PNG, JPEG, WebP, and AVIF formats online for free."
+  },
+  "comparison": {
+    "title": "Comparison — QuickBG",
+    "description": "Compare QuickBG with other background removal tools and see the difference."
+  },
+  "privacy": {
+    "title": "Privacy Policy — QuickBG",
+    "description": "QuickBG privacy policy. Learn how we handle your data and images."
+  },
+  "terms": {
+    "title": "Terms of Service — QuickBG",
+    "description": "QuickBG terms of service. Please read these terms carefully before using our service."
+  },
+  "legal": {
+    "title": "Legal — QuickBG",
+    "description": "QuickBG legal information, copyright notices, and intellectual property details."
+  },
+  "contact": {
+    "title": "Contact Us — QuickBG",
+    "description": "Get in touch with the QuickBG team. We'd love to hear from you."
+  },
+  "cookie": {
+    "title": "Cookie Consent",
+    "description": "We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+  "pwa": {
+    "installTitle": "Install QuickBG",
+    "installDescription": "Install QuickBG on your device for the best experience.",
+    "install": "Install",
+    "later": "Later"
+  }
+}

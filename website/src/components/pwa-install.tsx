@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Download, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/contexts/LocaleContext";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -13,6 +14,7 @@ interface BeforeInstallPromptEvent extends Event {
 export function PwaInstallPrompt() {
   const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
@@ -49,10 +51,10 @@ export function PwaInstallPrompt() {
     >
       <Download className="h-5 w-5 shrink-0 text-primary" />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold">Install QuickBG</p>
-        <p className="text-xs text-muted-foreground">Open faster and keep the editor handy.</p>
+        <p className="text-sm font-semibold">{t("pwa.installTitle")}</p>
+        <p className="text-xs text-muted-foreground">{t("pwa.installDescription")}</p>
       </div>
-      <Button size="sm" onClick={install}>Install</Button>
+      <Button size="sm" onClick={install}>{t("pwa.install")}</Button>
       <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDismissed(true)}>
         <X className="h-4 w-4" />
       </Button>

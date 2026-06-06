@@ -1,11 +1,15 @@
 import { AppLayout } from "@/components/app-layout";
 import { Card } from "@/components/ui/card";
 import { Metadata } from "next";
+import { headers } from "next/headers";
+import { getLocaleMetadata } from "@/lib/i18n/metadata";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
 
-export const metadata: Metadata = {
-  title: "Copyright - QuickBG",
-  description: "Copyright and legal information for QuickBG",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const locale = (headersList.get("x-locale") || defaultLocale) as Locale;
+  return getLocaleMetadata(locale, "legal", "/legal");
+}
 
 export default function LegalPage() {
   const currentYear = new Date().getFullYear();

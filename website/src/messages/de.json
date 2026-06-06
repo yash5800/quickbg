@@ -1,0 +1,144 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "tools": "Werkzeuge",
+    "remover": "Entferner",
+    "about": "Über uns",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "contact": "Kontakt"
+  },
+  "footer": {
+    "tagline": "KI-gestützte Hintergrundentfernung für alle. Schnell, kostenlos und privat.",
+    "tools": "Werkzeuge",
+    "remover": "Entferner",
+    "replaceBg": "HG ersetzen",
+    "blurBg": "HG unscharf",
+    "resize": "Größe ändern",
+    "crop": "Zuschneiden",
+    "adjust": "Anpassen",
+    "sharpness": "Schärfe",
+    "converter": "Konverter",
+    "resources": "Ressourcen",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "comparison": "Vergleich",
+    "about": "Über uns",
+    "legal": "Rechtliches",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "copyright": "Urheberrecht",
+    "contact": "Kontakt",
+    "rights": "Alle Rechte vorbehalten."
+  },
+  "home": {
+    "title": "Kostenloser KI-Hintergrundentferner - Unbegrenzte Bilder, 100 % Originalqualität",
+    "description": "quickbg.dev bietet einen kostenlosen KI-Hintergrundentferner, der 100 % der Originalqualität Ihrer Bilder bewahrt."
+  },
+  "language": {
+    "label": "Sprache",
+    "en": "English",
+    "hi": "हिन्दी",
+    "de": "Deutsch"
+  },
+  "common": {
+    "tryQuickbg": "QuickBG-Werkzeuge ausprobieren",
+    "allTools": "Alle Werkzeuge",
+    "openRemover": "Hintergrundentferner öffnen",
+    "backToBlog": "Zurück zum Blog",
+    "readMore": "Weiterlesen",
+    "learnMore": "Mehr erfahren",
+    "getStarted": "Loslegen",
+    "removeBg": "Hintergrundentferner",
+    "contactUs": "Kontaktieren Sie uns"
+  },
+  "blog": {
+    "title": "Blog — QuickBG",
+    "description": "Erfahren Sie mehr über KI-Hintergrundentfernung, E-Commerce-Produktfotografie, Bildbearbeitungs-Workflows und Tipps für optimale Ergebnisse mit QuickBG.",
+    "heading": "Anleitungen, Tutorials und Tipps",
+    "subheading": "Erfahren Sie, wie Sie das Beste aus der KI-Hintergrundentfernung herausholen, Ihre Produktfotos verbessern und einen effizienten Bildbearbeitungs-Workflow aufbauen – alles kostenlos.",
+    "readArticle": "Artikel lesen",
+    "back": "Zurück zum Blog",
+    "published": "Veröffentlicht",
+    "share": "Teilen",
+    "moreArticles": "Weitere Artikel",
+    "tryTools": "QuickBG ausprobieren",
+    "tryToolsDesc": "Entfernen Sie im Handumdrehen Hintergründe, ändern Sie die Größe, schneiden Sie zu und passen Sie Ihre Bilder an – alles kostenlos, ohne Anmeldung."
+  },
+  "faq": {
+    "title": "FAQ — QuickBG",
+    "description": "Häufig gestellte Fragen zur QuickBG-Hintergrundentfernung, Bildbearbeitungswerkzeugen und wie Sie die besten Ergebnisse erzielen."
+  },
+  "about": {
+    "title": "Über uns — QuickBG",
+    "description": "Erfahren Sie mehr über QuickBG, die kostenlose KI-gestützte Hintergrundentfernung und Bildbearbeitungssuite."
+  },
+  "tools": {
+    "title": "Bildwerkzeuge — QuickBG",
+    "description": "Kostenlose Online-Bildbearbeitungswerkzeuge: Hintergrundentferner, Weichzeichner, Ersetzen, Größe ändern, Zuschneiden, Anpassen, Schärfe und Formatkonverter."
+  },
+  "remover": {
+    "title": "Kostenloser Online-Hintergrundentferner — QuickBG",
+    "description": "Entfernen Sie Bildhintergründe sofort mit KI. 100 % kostenlos, unbegrenzte Nutzung, keine Anmeldung erforderlich."
+  },
+  "replaceBg": {
+    "title": "Hintergrund online ersetzen — QuickBG",
+    "description": "Ersetzen Sie Bildhintergründe durch einfarbige Farben oder Farbverläufe. Kostenlos, keine Anmeldung erforderlich."
+  },
+  "blurBg": {
+    "title": "Hintergrund online unscharf machen — QuickBG",
+    "description": "Machen Sie Bildhintergründe mit KI unscharf. Kostenloses Online-Tool, keine Anmeldung erforderlich."
+  },
+  "resize": {
+    "title": "Bildgröße online ändern — QuickBG",
+    "description": "Ändern Sie die Bildgröße kostenlos online. Behalten Sie die Qualität mit KI-gestützter Größenanpassung bei."
+  },
+  "crop": {
+    "title": "Bild online zuschneiden — QuickBG",
+    "description": "Schneiden Sie Bilder kostenlos online zu. Intelligentes Zuschneiden mit voreingestellten Seitenverhältnissen."
+  },
+  "adjust": {
+    "title": "Bild online anpassen — QuickBG",
+    "description": "Passen Sie Helligkeit, Kontrast und Sättigung Ihrer Bilder kostenlos online an."
+  },
+  "sharpness": {
+    "title": "Bild online schärfen — QuickBG",
+    "description": "Schärfen Sie Ihre Bilder kostenlos online. KI-gestütztes Schärfungswerkzeug."
+  },
+  "converter": {
+    "title": "Bildkonverter online — QuickBG",
+    "description": "Konvertieren Sie Bilder kostenlos online zwischen PNG, JPEG, WebP und AVIF."
+  },
+  "comparison": {
+    "title": "Vergleich — QuickBG",
+    "description": "Vergleichen Sie QuickBG mit anderen Hintergrundentfernungswerkzeugen und sehen Sie den Unterschied."
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung — QuickBG",
+    "description": "QuickBG-Datenschutzerklärung. Erfahren Sie, wie wir mit Ihren Daten und Bildern umgehen."
+  },
+  "terms": {
+    "title": "Nutzungsbedingungen — QuickBG",
+    "description": "QuickBG-Nutzungsbedingungen. Bitte lesen Sie diese Bedingungen sorgfältig, bevor Sie unseren Dienst nutzen."
+  },
+  "legal": {
+    "title": "Rechtliches — QuickBG",
+    "description": "QuickBG rechtliche Informationen, Urheberrechtshinweise und Details zum geistigen Eigentum."
+  },
+  "contact": {
+    "title": "Kontakt — QuickBG",
+    "description": "Nehmen Sie Kontakt mit dem QuickBG-Team auf. Wir freuen uns, von Ihnen zu hören."
+  },
+  "cookie": {
+    "title": "Cookie-Zustimmung",
+    "description": "Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Wenn Sie diese Seite weiterhin besuchen, stimmen Sie der Verwendung von Cookies zu.",
+    "accept": "Akzeptieren",
+    "decline": "Ablehnen"
+  },
+  "pwa": {
+    "installTitle": "QuickBG installieren",
+    "installDescription": "Installieren Sie QuickBG auf Ihrem Gerät für das beste Erlebnis.",
+    "install": "Installieren",
+    "later": "Später"
+  }
+}

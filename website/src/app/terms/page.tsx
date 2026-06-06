@@ -1,11 +1,15 @@
 import { AppLayout } from "@/components/app-layout";
 import { Card } from "@/components/ui/card";
 import { Metadata } from "next";
+import { headers } from "next/headers";
+import { getLocaleMetadata } from "@/lib/i18n/metadata";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
 
-export const metadata: Metadata = {
-  title: "Terms of Service - QuickBG",
-  description: "Terms of service for QuickBG - AI-powered background removal service",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const locale = (headersList.get("x-locale") || defaultLocale) as Locale;
+  return getLocaleMetadata(locale, "terms", "/terms");
+}
 
 export default function TermsPage() {
   return (

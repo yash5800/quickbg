@@ -33,7 +33,7 @@ import {
 import { motion, useReducedMotion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 
 import { AppLayout } from "@/components/app-layout";
 import { DemoRevealSlider } from "@/components/demo-reveal-slider";
@@ -539,13 +539,13 @@ export default function Home() {
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
 
-              <Link
+              <LocaleLink
                 href="/tools"
                 className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 text-sm font-semibold text-white/80 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08] sm:w-auto"
               >
                 Browse tools
                 <Globe className="h-4 w-4 text-secondary" />
-              </Link>
+              </LocaleLink>
             </div>
 
             <div className="mt-7 grid gap-2 text-left sm:grid-cols-3">
@@ -703,10 +703,10 @@ export default function Home() {
 
           {hasImages && (
             <div className="mt-8 text-center">
-              <Link href="/remover" className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-secondary">
+              <LocaleLink href="/remover" className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-secondary">
                 View {images.length} processing image{images.length !== 1 ? "s" : ""}
                 <ArrowUpRight className="h-4 w-4" />
-              </Link>
+              </LocaleLink>
             </div>
           )}
 
@@ -788,18 +788,18 @@ export default function Home() {
                   Keep moving from cutout to crop, resize, replace, blur, and adjustment without leaving the QuickBG workspace.
                 </p>
               </div>
-              <Link
+              <LocaleLink
                 href="/tools"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
               >
                 View all tools
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
+              </LocaleLink>
             </div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 relative">
               {tools.map((tool) => (
-                <Link
+                <LocaleLink
                   key={tool.id}
                   href={tool.href}
                   className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
@@ -838,7 +838,7 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                </Link>
+                </LocaleLink>
               ))}
             </div>
           </motion.div>
@@ -862,7 +862,7 @@ export default function Home() {
 
             <div className="mt-12 grid gap-6 sm:grid-cols-2">
               {useCases.map((item) => (
-                <Link
+                <LocaleLink
                   key={item.title}
                   href={item.link}
                   className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/20"
@@ -885,7 +885,7 @@ export default function Home() {
                   <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                     Try it now <ChevronRight className="h-3 w-3" />
                   </div>
-                </Link>
+                </LocaleLink>
               ))}
             </div>
           </motion.div>
@@ -980,18 +980,18 @@ export default function Home() {
                   Tips, tutorials, and deep dives into AI background removal and image editing.
                 </p>
               </div>
-              <Link
+              <LocaleLink
                 href="/blog"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
               >
                 View all articles
                 <BookOpen className="h-3.5 w-3.5" />
-              </Link>
+              </LocaleLink>
             </div>
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {blogHighlights.map((post) => (
-                <Link
+                <LocaleLink
                   key={post.slug}
                   href={`/blog/${post.slug}`}
                   className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20"
@@ -1008,7 +1008,7 @@ export default function Home() {
                   <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                     Read article <ArrowRight className="h-3 w-3" />
                   </div>
-                </Link>
+                </LocaleLink>
               ))}
             </div>
           </motion.div>
@@ -1159,13 +1159,13 @@ export default function Home() {
             </div>
 
             <div className="mt-6 text-center">
-              <Link
+              <LocaleLink
                 href="/faq"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
               >
                 View all FAQs
                 <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
+              </LocaleLink>
             </div>
           </motion.div>
 
@@ -1197,9 +1197,9 @@ export default function Home() {
                     Upload a photo, let the AI background remover detect the subject, and move straight into
                     export or refinement. The workflow keeps the subject cutout ready for transparent PNG delivery.
                   </p>
-                  <Link href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                  <LocaleLink href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     Try the remover <ExternalLink className="h-3 w-3" />
-                  </Link>
+                  </LocaleLink>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
@@ -1208,9 +1208,9 @@ export default function Home() {
                     Transparent PNGs make it easy to place a product on a marketplace, a banner, a social
                     post, or a new background without visible boxes or rough edges.
                   </p>
-                  <Link href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                  <LocaleLink href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     Read our guide <ExternalLink className="h-3 w-3" />
-                  </Link>
+                  </LocaleLink>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
@@ -1220,9 +1220,9 @@ export default function Home() {
                     busy or uneven edges. Includes follow-up tools like resize, crop, blur, replace,
                     and adjust.
                   </p>
-                  <Link href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                  <LocaleLink href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     View all tools <ExternalLink className="h-3 w-3" />
-                  </Link>
+                  </LocaleLink>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
@@ -1231,9 +1231,9 @@ export default function Home() {
                     Complex hair, smoke, shadows, or transparent objects can sometimes need a quick final
                     check. Use the erase/restore brush or retry with a tighter crop for cleaner results.
                   </p>
-                  <Link href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                  <LocaleLink href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
                     Visit FAQ <ExternalLink className="h-3 w-3" />
-                  </Link>
+                  </LocaleLink>
                 </div>
               </div>
             </div>
@@ -1283,12 +1283,12 @@ export default function Home() {
             </div>
 
             <div className="mt-6 text-center">
-              <Link
+              <LocaleLink
                 href="/tools"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
               >
                 Explore all tools <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
+              </LocaleLink>
             </div>
           </motion.div>
 
@@ -1315,13 +1315,13 @@ export default function Home() {
                 Upload your first image
               </button>
               <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs text-white/40">
-                <Link href="/about" className="hover:text-white/70">About QuickBG</Link>
+                <LocaleLink href="/about" className="hover:text-white/70">About QuickBG</LocaleLink>
                 <span>·</span>
-                <Link href="/comparison" className="hover:text-white/70">QuickBG vs Remove.bg</Link>
+                <LocaleLink href="/comparison" className="hover:text-white/70">QuickBG vs Remove.bg</LocaleLink>
                 <span>·</span>
-                <Link href="/blog" className="hover:text-white/70">Blog</Link>
+                <LocaleLink href="/blog" className="hover:text-white/70">Blog</LocaleLink>
                 <span>·</span>
-                <Link href="/faq" className="hover:text-white/70">FAQ</Link>
+                <LocaleLink href="/faq" className="hover:text-white/70">FAQ</LocaleLink>
               </div>
             </div>
           </motion.div>

@@ -9,21 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Check, X, Minus, HelpCircle } from "lucide-react";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { getLocaleMetadata } from "@/lib/i18n/metadata";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
 
-export const metadata: Metadata = {
-  title: "QuickBG vs Remove.bg vs Photoshop - Which Background Remover Is Best?",
-  description:
-    "Compare QuickBG against Remove.bg, Adobe Photoshop, and Canva across price, image quality, batch processing, privacy, and more. See why QuickBG wins.",
-  keywords: [
-    "QuickBG vs Remove.bg",
-    "background remover comparison",
-    "free background remover",
-    "best background remover",
-    "Remove.bg alternative",
-  ],
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const locale = (headersList.get("x-locale") || defaultLocale) as Locale;
+  return getLocaleMetadata(locale, "comparison", "/comparison");
+}
 
 const features = [
   {
@@ -214,12 +210,12 @@ export default function ComparisonPage() {
                 No signup, no watermark, no resolution limits. Includes additional tools for blur, replace, resize, crop, and image adjustment.
                 Best for e-commerce sellers, social media managers, and designers who need fast cutouts without a subscription.
               </p>
-              <Link
+              <LocaleLink
                 href="/remover"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
               >
                 Try QuickBG
-              </Link>
+              </LocaleLink>
             </Card>
 
             <Card className="premium-surface p-6 space-y-4">
@@ -322,18 +318,18 @@ export default function ComparisonPage() {
                 </div>
               </div>
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link
+                <LocaleLink
                   href="/remover"
                   className="inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-black transition hover:bg-secondary"
                 >
                   Try QuickBG Free
-                </Link>
-                <Link
+                </LocaleLink>
+                <LocaleLink
                   href="/faq"
                   className="inline-flex h-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-6 text-sm font-semibold text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
                 >
                   View FAQ
-                </Link>
+                </LocaleLink>
               </div>
             </div>
           </Card>

@@ -5,7 +5,7 @@ import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Scissors, Maximize2, Palette, Layers, Crop, Contrast, ArrowLeft, ArrowUpRight, Sparkles, FileImage, BookOpen, ChevronRight, Clock, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 
 const tools = [
   {
@@ -324,7 +324,7 @@ export default function ToolsPage() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {workflowTips.map((wf) => (
-              <Link
+              <LocaleLink
                 key={wf.title}
                 href={wf.link}
                 className="premium-surface group relative overflow-hidden rounded-[1.5rem] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20"
@@ -343,7 +343,7 @@ export default function ToolsPage() {
                 <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                   Read full guide <ArrowRight className="h-3 w-3" />
                 </div>
-              </Link>
+              </LocaleLink>
             ))}
           </div>
         </div>
@@ -356,17 +356,17 @@ export default function ToolsPage() {
               <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">Latest from the blog</h2>
               <p className="mt-2 text-sm text-white/50">Tips, tutorials, and deep dives into AI background removal and image editing.</p>
             </div>
-            <Link
+            <LocaleLink
               href="/blog"
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
             >
               View all articles
               <BookOpen className="h-3.5 w-3.5" />
-            </Link>
+            </LocaleLink>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {blogHighlights.map((post) => (
-              <Link
+              <LocaleLink
                 key={post.slug}
                 href={`/blog/${post.slug}`}
                 className="premium-surface group relative overflow-hidden rounded-[1.5rem] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20"
@@ -383,7 +383,7 @@ export default function ToolsPage() {
                 <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                   Read article <ArrowRight className="h-3 w-3" />
                 </div>
-              </Link>
+              </LocaleLink>
             ))}
           </div>
         </div>
@@ -412,13 +412,13 @@ export default function ToolsPage() {
             ))}
           </div>
           <div className="mt-6">
-            <Link
+            <LocaleLink
               href="/faq"
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
             >
               View all FAQs
               <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
+            </LocaleLink>
           </div>
         </div>
       </div>

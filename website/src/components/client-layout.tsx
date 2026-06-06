@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,6 +15,8 @@ import { GlobalDropZone } from "@/components/global-drop-zone";
 import { Footer } from "@/components/footer";
 import { CookieConsentBanner } from "@/components/cookie-consent";
 import { PwaInstallPrompt } from "@/components/pwa-install";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { LocaleProvider, useLocale } from "@/contexts/LocaleContext";
 import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home, Info, Newspaper, MessageCircleQuestion } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
@@ -136,29 +138,31 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const isAdminArea = pathname.startsWith("/admin");
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem={false}
-    >
-      <QueryProvider>
-        <ImageProvider>
-          <ToastProvider>
-            <div className="min-h-screen bg-background relative overflow-x-hidden flex flex-col">
-              {!isAdminArea && <Header />}
-              <main className="pt-16 flex-1">
-                <GlobalDropZone>{children}</GlobalDropZone>
-              </main>
-              {!isAdminArea && <FloatingCredits />}
-              <ScrollToTopButton />
-              {!isAdminArea && <Footer />}
-              {!isAdminArea && <CookieConsentBanner />}
-              {!isAdminArea && <PwaInstallPrompt />}
-            </div>
-          </ToastProvider>
-        </ImageProvider>
-      </QueryProvider>
-    </ThemeProvider>
+    <LocaleProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem={false}
+      >
+        <QueryProvider>
+          <ImageProvider>
+            <ToastProvider>
+              <div className="min-h-screen bg-background relative overflow-x-hidden flex flex-col">
+                {!isAdminArea && <Header />}
+                <main className="pt-16 flex-1">
+                  <GlobalDropZone>{children}</GlobalDropZone>
+                </main>
+                {!isAdminArea && <FloatingCredits />}
+                <ScrollToTopButton />
+                {!isAdminArea && <Footer />}
+                {!isAdminArea && <CookieConsentBanner />}
+                {!isAdminArea && <PwaInstallPrompt />}
+              </div>
+            </ToastProvider>
+          </ImageProvider>
+        </QueryProvider>
+      </ThemeProvider>
+    </LocaleProvider>
   );
 }
 
@@ -166,26 +170,34 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { images } = useImages();
   const pathname = usePathname();
+  const { t } = useLocale();
 
   const navItems = [
-    { href: "/", label: "Home", icon: Home },
-    { href: "/tools", label: "Tools", icon: Package },
-    { href: "/remover", label: images.length > 0 ? `Remover (${images.length})` : "Remover", icon: Sparkles },
-    { href: "/about", label: "About", icon: Info },
-    { href: "/blog", label: "Blog", icon: Newspaper },
-    { href: "/faq", label: "FAQ", icon: MessageCircleQuestion },
-    { href: "/contact", label: "Contact", icon: MessageSquare },
+    { href: "/", key: "home", icon: Home },
+    { href: "/tools", key: "tools", icon: Package },
+    { href: "/remover", key: "remover", icon: Sparkles, dynamic: true },
+    { href: "/about", key: "about", icon: Info },
+    { href: "/blog", key: "blog", icon: Newspaper },
+    { href: "/faq", key: "faq", icon: MessageCircleQuestion },
+    { href: "/contact", key: "contact", icon: MessageSquare },
   ];
+
+  const getLabel = (item: typeof navItems[number]) => {
+    if (item.dynamic && images.length > 0) {
+      return `${t(`nav.${item.key}`)} (${images.length})`;
+    }
+    return t(`nav.${item.key}`);
+  };
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2">
+            <LocaleLink href="/" className="flex items-center gap-2">
               <Image src="/icon.jpeg" alt="QuickBG" width={36} height={36} className="rounded-md" />
               <span className="hidden sm:inline font-semibold">QuickBG</span>
-            </Link>
+            </LocaleLink>
           </div>
           <nav className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
@@ -196,18 +208,20 @@ function Header() {
                 asChild
                 className={cn("gap-2 px-3.5", pathname === item.href && "text-primary bg-primary/10")}
               >
-                <Link href={item.href}>
+                <LocaleLink href={item.href}>
                   <item.icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
+                  {getLabel(item)}
+                </LocaleLink>
               </Button>
             ))}
-            <div className="ml-2 pl-2 border-l border-border/60">
+            <div className="ml-2 pl-2 border-l border-border/60 flex items-center gap-1">
+              <LanguageSwitcher />
               <ThemeToggle />
             </div>
           </nav>
 
           <div className="flex items-center gap-1 md:hidden">
+            <LanguageSwitcher />
             <ThemeToggle />
             <Button
               variant="ghost"
@@ -247,10 +261,10 @@ function Header() {
                   asChild
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <Link href={item.href}>
+                  <LocaleLink href={item.href}>
                     <item.icon className="h-5 w-5" />
-                    {item.label}
-                  </Link>
+                    {getLabel(item)}
+                  </LocaleLink>
                 </Button>
               ))}
             </nav>
