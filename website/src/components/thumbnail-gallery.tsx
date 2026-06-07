@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ImageItem } from "@/types/image";
 import { cn } from "@/lib/utils";
 import { CheckCircle2, AlertCircle, Loader2, X } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
 interface ThumbnailGalleryProps {
   images: ImageItem[];
@@ -78,6 +79,7 @@ function ThumbnailItem({
     "running",
     "processing",
   ].includes(image.status) || isFetchingResult;
+  const { t } = useLocale();
   const progress = getThumbnailProgress(image, isFetchingResult);
 
   return (
@@ -118,7 +120,7 @@ function ThumbnailItem({
               />
               <div className="absolute inset-x-2 bottom-2">
                 <div className="mb-1 flex items-center justify-between text-[10px] font-medium text-foreground/80">
-                  <span>{image.status === "queued" ? "Queued" : isFetchingResult ? "Fetching" : "Processing"}</span>
+                  <span>{image.status === "queued" ? t("thumbnail.queued") : isFetchingResult ? t("thumbnail.fetching") : t("thumbnail.processing")}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
                 <div className="h-1 overflow-hidden rounded-full bg-border/60">

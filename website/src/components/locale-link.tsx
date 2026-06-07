@@ -17,12 +17,26 @@ export function LocaleLink({ href, children, ...props }: LocaleLinkProps) {
     if (typeof href === "string") {
       const prefix = localePrefixes[locale];
       if (locale !== defaultLocale && href.startsWith("/")) {
-        return `${prefix}${href === "/" ? "" : href}` as typeof href;
+        return `${prefix}${href === "/" ? "" : href}`;
       }
-      return href as typeof href;
+      return href;
     }
     return href;
   }, [href, locale]);
+
+  // For locale-prefixed paths, use <a> so navigation goes through middleware
+  if (
+    typeof adjustedHref === "string" &&
+    adjustedHref.startsWith("/") &&
+    locale !== defaultLocale
+  ) {
+    const { ...anchorProps } = props as Record<string, unknown>;
+    return (
+      <a href={adjustedHref} {...(anchorProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
+        {children}
+      </a>
+    );
+  }
 
   return (
     <NextLink href={adjustedHref} {...props}>

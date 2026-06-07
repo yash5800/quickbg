@@ -1,9 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { ReactCompareSlider } from "react-compare-slider";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
+
+const ReactCompareSlider = dynamic(
+  () => import("react-compare-slider").then((m) => m.ReactCompareSlider),
+  { ssr: false }
+);
 
 interface LoadState {
   beforeLoaded: boolean;
@@ -25,6 +31,7 @@ export function ComparisonSlider({
   afterLabel = "Background Removed",
   className,
 }: ComparisonSliderProps) {
+  const { t } = useLocale();
   const [loaded, setLoaded] = React.useState<LoadState>({ beforeLoaded: false, afterLoaded: false });
 
   // Reset load state when images change
@@ -68,7 +75,7 @@ export function ComparisonSlider({
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/75 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="h-10 w-10 animate-spin text-foreground" />
-            <div className="text-sm text-foreground">Preparing preview…</div>
+            <div className="text-sm text-foreground">{t("comparisonSlider.preparing")}</div>
           </div>
         </div>
       )}

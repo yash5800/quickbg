@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 import { useImages } from "@/contexts/ImageContext";
 
 // Pages that should use the global drop zone (ONLY home and remover)
@@ -23,6 +24,7 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
 }
 
 function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
+  const { t } = useLocale();
   const { addImages } = useImages();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
@@ -139,8 +141,8 @@ function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
                 <Upload className="h-9 w-9" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-white">Drop images to start</h2>
-                <p className="mt-2 text-sm leading-6 text-white/55">QuickBG will upload, queue, process, and open the remover workspace automatically.</p>
+                <h2 className="text-2xl font-semibold text-white">{t("globalDrop.title")}</h2>
+                <p className="mt-2 text-sm leading-6 text-white/55">{t("globalDrop.description")}</p>
               </div>
               <div className="flex flex-wrap justify-center gap-2 text-xs text-white/55">
                 {["PNG", "JPG", "WebP", "TIFF", "HEIC", "AVIF"].map((format) => (

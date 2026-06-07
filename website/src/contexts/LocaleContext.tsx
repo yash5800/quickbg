@@ -2,9 +2,9 @@
 
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import type { Locale } from "@/lib/i18n/config";
-import { defaultLocale, localePrefixes, getLocaleFromPath } from "@/lib/i18n/config";
+import { locales, defaultLocale, localePrefixes, getLocaleFromPath } from "@/lib/i18n/config";
 import { t as translate } from "@/lib/i18n/translations";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface LocaleContextValue {
   locale: Locale;
@@ -16,22 +16,25 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 function detectLocale(): Locale {
   if (typeof window === "undefined") return defaultLocale;
+  const { locale } = getLocaleFromPath(window.location.pathname);
+  if ((locales as readonly string[]).includes(locale)) return locale;
   const match = document.cookie.match(/(?:^|;\s*)NEXT_LOCALE=([^;]*)/);
   if (match) {
     const val = match[1] as Locale;
-    if (["en", "hi", "de"].includes(val)) return val;
+    if ((locales as readonly string[]).includes(val)) return val;
   }
-  const { locale } = getLocaleFromPath(window.location.pathname);
-  return locale;
+  return defaultLocale;
 }
 
-export function LocaleProvider({ children }: { children: React.ReactNode }) {
+export function LocaleProvider({ children, initialLocale }: { children: React.ReactNode; initialLocale?: Locale }) {
   const pathname = usePathname();
-  const router = useRouter();
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
+  const [locale, setLocaleState] = useState<Locale>(initialLocale || defaultLocale);
 
   useEffect(() => {
-    setLocaleState(detectLocale());
+    const detected = detectLocale();
+    if (detected !== locale) {
+      setLocaleState(detected);
+    }
   }, [pathname]);
 
   const setLocale = useCallback(
@@ -49,9 +52,10 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
       }
 
       document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000;samesite=lax`;
-      router.push(newPath || "/");
+      // Use full navigation so middleware rewrites work for locale-prefixed paths
+      window.location.href = newPath || "/";
     },
-    [pathname, locale, router]
+    [pathname, locale]
   );
 
   const tFn = useCallback(

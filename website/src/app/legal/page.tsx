@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 import { getLocaleMetadata } from "@/lib/i18n/metadata";
 import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { getServerTranslations } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
@@ -11,13 +12,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return getLocaleMetadata(locale, "legal", "/legal");
 }
 
-export default function LegalPage() {
+export default async function LegalPage() {
+  const { t } = await getServerTranslations();
   const currentYear = new Date().getFullYear();
 
   return (
     <AppLayout>
       <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="mb-8 text-3xl font-semibold tracking-normal text-white">Copyright & Legal</h1>
+        <h1 className="mb-8 text-3xl font-semibold tracking-normal text-white">{t("legal.heading")}</h1>
 
         <Card className="premium-surface p-6 space-y-6 text-sm text-white/60">
           <div>

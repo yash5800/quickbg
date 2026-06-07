@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { locales, defaultLocale, localePrefixes, type Locale } from "./config";
+import { locales, defaultLocale, localePrefixes, localeOpenGraph, type Locale } from "./config";
 import { t } from "./translations";
 
 const SITE_URL = "https://quickbg.dev";
@@ -47,7 +47,7 @@ export async function generatePageMetadata(
     openGraph: {
       title,
       description,
-      locale: locale === "en" ? "en_US" : locale === "hi" ? "hi_IN" : "de_DE",
+      locale: localeOpenGraph[locale] || "en_US",
     },
   };
 }
@@ -92,7 +92,7 @@ export function getLocaleMetadata(
       title,
       description,
       url,
-      locale: locale === "en" ? "en_US" : locale === "hi" ? "hi_IN" : "de_DE",
+      locale: localeOpenGraph[locale] || "en_US",
     },
   };
 }

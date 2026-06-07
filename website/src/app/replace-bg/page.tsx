@@ -6,6 +6,7 @@ import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/LocaleContext";
 
 const backgroundColors = [
   { name: "White", value: "#ffffff" },
@@ -26,6 +27,7 @@ const gradients = [
 ];
 
 export default function ReplaceBgPage() {
+  const { t } = useLocale();
   const router = useRouter();
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
@@ -145,8 +147,8 @@ export default function ReplaceBgPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">Background Replace</h1>
-              <p className="text-muted-foreground text-sm">Replace background with colors, gradients, or images</p>
+              <h1 className="text-2xl font-bold">{t("home.tools.replaceBg")}</h1>
+              <p className="text-muted-foreground text-sm">{t("home.tools.replaceBgDesc")}</p>
             </div>
           </div>
 
@@ -154,12 +156,12 @@ export default function ReplaceBgPage() {
             <div className="w-20 h-20 rounded-2xl bg-muted/50 flex items-center justify-center mb-6">
               <Palette className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+              <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
             <p className="text-muted-foreground mb-6 max-w-md">
               Please process an image with Background Remover first, then use the &ldquo;Replace BG&rdquo; button to access this tool.
             </p>
             <Button onClick={() => router.push("/remover")} size="lg">
-              Go to Background Remover
+              {t("common.openRemover")}
             </Button>
           </div>
         </div>
@@ -175,8 +177,8 @@ export default function ReplaceBgPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Background Replace</h1>
-            <p className="text-muted-foreground text-sm">Replace background with colors, gradients, or images</p>
+            <h1 className="text-2xl font-bold">{t("home.tools.replaceBg")}</h1>
+            <p className="text-muted-foreground text-sm">{t("home.tools.replaceBgDesc")}</p>
           </div>
         </div>
 
@@ -192,7 +194,7 @@ export default function ReplaceBgPage() {
                 <a href={result} download="replaced-bg.png" className="absolute top-4 right-4">
                   <Button size="sm">
                     <Download className="h-4 w-4 mr-2" />
-                    Download
+                    {t("remover.actions.download")}
                   </Button>
                 </a>
               )}
@@ -330,29 +332,29 @@ export default function ReplaceBgPage() {
 
       <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Guide</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Background Replace</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("replaceBg.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.replaceBg")}</h2>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Remove the background</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Use the remover first to get a clean transparent cutout.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step1Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Choose a background</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Pick a solid color, gradient, or upload a custom background image.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step2Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Adjust position</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Fine-tune how the subject sits on the new background.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step3Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Download your image</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Export as PNG with the new background applied.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step4Desc")}</p>
           </div>
         </div>
       </section>

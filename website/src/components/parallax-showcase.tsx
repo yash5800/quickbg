@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue, useReducedMotion } from "framer-motion";
 import { Upload, Zap, Globe, ShieldCheck, Sparkles, ArrowUpRight, Layers, Clock, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/contexts/LocaleContext";
 
 interface Stat {
   value: string;
@@ -43,6 +44,7 @@ interface ScrollLinkedParallaxProps {
 }
 
 export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: ScrollLinkedParallaxProps) {
+  const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const isReduced = prefersReducedMotion ?? reduced ?? false;
@@ -86,9 +88,9 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
     return (
       <div ref={sectionRef} className="p-8 sm:p-10">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Impact</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">QuickBG by the numbers</h2>
-          <p className="mt-3 text-sm leading-6 text-white/50">Real usage stats from people removing backgrounds every day.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.performanceMetrics.edge")}</p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.performance")}</h2>
+          <p className="mt-3 text-sm leading-6 text-white/50">{t("home.builtForSpeedDesc")}</p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-4">
           {stats.map((stat) => (
@@ -138,7 +140,7 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
             viewport={{ once: true }}
             className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80"
           >
-            Impact
+            {t("home.performanceMetrics.edge")}
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 15 }}
@@ -147,7 +149,7 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
             transition={{ delay: 0.08 }}
             className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl"
           >
-            QuickBG by the numbers
+            {t("home.performance")}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 15 }}
@@ -156,7 +158,7 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
             transition={{ delay: 0.15 }}
             className="mt-3 text-sm leading-6 text-white/50"
           >
-            Real usage stats from people removing backgrounds every day.
+            {t("home.builtForSpeedDesc")}
           </motion.p>
         </div>
 
@@ -190,7 +192,7 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
             className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 text-sm font-medium text-white/70 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08]"
           >
             <Upload className="h-4 w-4" />
-            Start processing
+            {t("home.uploadImage")}
             <ArrowUpRight className="h-4 w-4" />
           </button>
         </motion.div>

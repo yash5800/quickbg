@@ -1,19 +1,18 @@
-import type { Locale } from "./config";
 import en from "@/messages/en.json";
 import hi from "@/messages/hi.json";
 import de from "@/messages/de.json";
 
-const messages: Record<Locale, Record<string, unknown>> = {
+const messages: Record<string, Record<string, unknown>> = {
   en,
   hi,
   de,
 };
 
-export function loadTranslations(locale: Locale): Record<string, unknown> {
+export function loadTranslations(locale: string): Record<string, unknown> {
   return messages[locale] ?? messages.en;
 }
 
-export function t(locale: Locale, key: string): string {
+export function t(locale: string, key: string): string {
   const keys = key.split(".");
   let value: unknown = messages[locale] ?? messages.en;
   for (const k of keys) {

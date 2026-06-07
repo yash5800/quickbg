@@ -6,6 +6,7 @@ import getStroke from "perfect-freehand";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/contexts/LocaleContext";
 
 interface Point {
   x: number;
@@ -21,6 +22,7 @@ interface EraserToolProps {
 }
 
 export function EraserTool({ processedImage, originalImage, onSave, onClose }: EraserToolProps) {
+  const { t } = useLocale();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -398,7 +400,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
         <div className="flex items-center justify-between p-4 sm:p-4 border-b border-border">
           <div className="flex items-center gap-2">
             <Eraser className="h-5 w-5" />
-            <h2 className="text-base sm:text-lg font-semibold">Magic Edit</h2>
+            <h2 className="text-base sm:text-lg font-semibold">{t("eraser.title")}</h2>
           </div>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="h-5 w-5" />
@@ -414,7 +416,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
               onClick={() => setMode("erase")}
             >
               <Eraser className="h-4 w-4 mr-2" />
-              Erase
+              {t("eraser.erase")}
             </Button>
             <Button
               variant={mode === "restore" ? "default" : "outline"}
@@ -422,14 +424,14 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
               onClick={() => setMode("restore")}
               className={mode === "restore" ? "bg-green-600 hover:bg-green-700" : ""}
             >
-              Restore
+              {t("eraser.restore")}
             </Button>
           </div>
 
           <div className="hidden sm:block h-8 w-px bg-border" />
 
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:w-auto sm:flex-none">
-            <span className="text-sm text-muted-foreground font-medium shrink-0">Size:</span>
+            <span className="text-sm text-muted-foreground font-medium shrink-0">{t("eraser.size")}:</span>
             <Slider
               type="range"
               min="10"
@@ -448,18 +450,18 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
           <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
             <Button variant="outline" size="sm" onClick={handleUndo} disabled={undoDepth <= 1}>
               <Undo2 className="h-4 w-4 mr-2" />
-              Undo
+              {t("eraser.undo")}
             </Button>
             <Button variant="outline" size="sm" onClick={handleReset}>
               <RotateCcw className="h-4 w-4 mr-2" />
-              Reset
+              {t("eraser.reset")}
             </Button>
           </div>
 
           <div className="hidden sm:block h-8 w-px bg-border" />
 
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 w-full sm:min-w-[280px] sm:flex-none">
-            <span className="text-sm text-muted-foreground font-medium shrink-0">Zoom:</span>
+            <span className="text-sm text-muted-foreground font-medium shrink-0">{t("eraser.zoom")}:</span>
             <Slider
               type="range"
               min="0.5"

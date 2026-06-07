@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next'
-import { localePrefixes } from '@/lib/i18n/config'
+import { locales, localePrefixes } from '@/lib/i18n/config'
 
 const baseUrl = 'https://quickbg.dev'
 
@@ -62,7 +62,7 @@ const pages: PageEntry[] = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const result: MetadataRoute.Sitemap = []
 
-  for (const locale of ['en', 'hi', 'de'] as const) {
+  for (const locale of locales) {
     const prefix = localePrefixes[locale]
     for (const { path, priority } of pages) {
       result.push({

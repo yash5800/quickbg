@@ -14,6 +14,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { getLocaleMetadata } from "@/lib/i18n/metadata";
 import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { getServerTranslations } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
@@ -146,7 +147,8 @@ const faq = {
   ],
 };
 
-export default function ComparisonPage() {
+export default async function ComparisonPage() {
+  const { t } = await getServerTranslations();
   return (
     <AppLayout>
       <script
@@ -155,12 +157,12 @@ export default function ComparisonPage() {
       />
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
         <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Comparison</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("comparison.label")}</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl lg:text-5xl">
-            QuickBG vs Remove.bg vs Photoshop — Which Background Remover Is Best?
+            {t("comparison.heading")}
           </h1>
           <p className="mt-4 text-base leading-7 text-white/60 sm:text-lg">
-            We compared QuickBG against the most popular background removal tools across price, quality, speed, privacy, and features. See how they stack up.
+            {t("comparison.intro")}
           </p>
         </div>
 
@@ -194,9 +196,9 @@ export default function ComparisonPage() {
         </Card>
 
         <section className="mt-16">
-          <h2 className="text-2xl font-semibold text-white">Detailed Breakdown</h2>
+          <h2 className="text-2xl font-semibold text-white">{t("comparison.detailedHeading")}</h2>
           <p className="mt-2 text-sm leading-6 text-white/50">
-            A closer look at each alternative and when you might choose one over the others.
+            {t("comparison.detailedDesc")}
           </p>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -271,8 +273,8 @@ export default function ComparisonPage() {
         <section className="mt-16">
           <Card className="premium-surface overflow-hidden">
             <div className="bg-gradient-to-br from-lime-500/10 via-transparent to-transparent p-6 sm:p-8 lg:p-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Why QuickBG Wins</p>
-              <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">The best free background remover for most people</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("comparison.whyWinsLabel")}</p>
+              <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">{t("comparison.whyWinsTitle")}</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
                   <Check className="h-5 w-5 text-secondary" />
@@ -322,13 +324,13 @@ export default function ComparisonPage() {
                   href="/remover"
                   className="inline-flex h-11 items-center justify-center rounded-full bg-white px-6 text-sm font-semibold text-black transition hover:bg-secondary"
                 >
-                  Try QuickBG Free
+                  {t("comparison.tryFree")}
                 </LocaleLink>
                 <LocaleLink
                   href="/faq"
                   className="inline-flex h-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-6 text-sm font-semibold text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
                 >
-                  View FAQ
+                  {t("comparison.viewFaq")}
                 </LocaleLink>
               </div>
             </div>

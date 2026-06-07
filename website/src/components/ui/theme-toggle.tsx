@@ -4,8 +4,10 @@ import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "./button";
+import { useLocale } from "@/contexts/LocaleContext";
 
 export function ThemeToggle() {
+  const { t } = useLocale();
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -33,7 +35,7 @@ export function ThemeToggle() {
       ) : (
         <Sun className="h-4 w-4" />
       )}
-      <span className="sr-only">Toggle theme</span>
+      <span className="sr-only">{t("ui.toggleTheme")}</span>
     </Button>
   );
 }

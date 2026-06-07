@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { ClientLayout } from "@/components/client-layout";
 import { Analytics } from "@vercel/analytics/react";
-import { defaultLocale, localePrefixes, locales, type Locale } from "@/lib/i18n/config";
+import { defaultLocale, localePrefixes, locales, localeOpenGraph, type Locale } from "@/lib/i18n/config";
 import "./globals.css";
 
 const baseKeywords = [
@@ -72,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      locale: locale === "en" ? "en_US" : locale === "hi" ? "hi_IN" : "de_DE",
+      locale: localeOpenGraph[locale] || "en_US",
     },
   };
 }
@@ -121,7 +121,7 @@ export default async function RootLayout({
         }) }} />
       </head>
       <body className="font-sans">
-        <ClientLayout>{children}</ClientLayout>
+        <ClientLayout initialLocale={localeHeader as Locale}>{children}</ClientLayout>
         <Analytics />
       </body>
     </html>

@@ -14,7 +14,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           <div className="col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <Image src="/icon.jpeg" alt="QuickBG" width={28} height={28} className="rounded-md" />
+              <Image src="/icon.jpeg" alt="" width={28} height={28} className="rounded-md" />
               <span className="text-sm font-semibold">QuickBG</span>
             </div>
             <p className="text-xs text-muted-foreground max-w-44">

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Download, FileImage, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/app-layout";
+import { useLocale } from "@/contexts/LocaleContext";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { convertFormat, downloadBlob } from "@/lib/image-operations";
@@ -25,6 +26,7 @@ function extension(format: OutputFormat) {
 }
 
 export default function ConverterPage() {
+  const { t } = useLocale();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -89,8 +91,8 @@ export default function ConverterPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold">Format Converter</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Convert PNG, JPG, WebP, AVIF, and TIFF exports.</p>
+            <h1 className="text-3xl font-bold">{t("home.tools.converter")}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{t("home.tools.converterDesc")}</p>
           </div>
         </div>
 
@@ -104,7 +106,7 @@ export default function ConverterPage() {
                 className="flex min-h-[380px] w-full flex-col items-center justify-center rounded-xl border border-dashed border-border text-center"
               >
                 <Upload className="mb-4 h-12 w-12 text-muted-foreground" />
-                <span className="font-semibold">Upload an image</span>
+                <span className="font-semibold">{t("home.howItWorksSteps.upload")}</span>
                 <span className="mt-2 text-sm text-muted-foreground">Choose output format and quality.</span>
               </button>
             )}
@@ -139,7 +141,7 @@ export default function ConverterPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" onClick={() => inputRef.current?.click()}>Change</Button>
+              <Button variant="outline" onClick={() => inputRef.current?.click()}>{t("converter.change")}</Button>
               <Button onClick={() => void convert()} disabled={!file || isConverting}>
                 {isConverting ? "Converting..." : "Convert"}
               </Button>
@@ -160,29 +162,29 @@ export default function ConverterPage() {
 
       <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Guide</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Format Converter</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("converter.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.converter")}</h2>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Upload your image</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Upload any image you want to convert to another format.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("converter.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("converter.guide.step1Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Select target format</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Choose from PNG, JPEG, WebP, AVIF, or TIFF.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("converter.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("converter.guide.step2Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Adjust quality</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Use the quality slider to balance file size and fidelity.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("converter.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("converter.guide.step3Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Download the result</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Convert and download your image in the new format.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("converter.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("converter.guide.step4Desc")}</p>
           </div>
         </div>
       </section>

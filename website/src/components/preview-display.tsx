@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ImageItem } from "@/types/image";
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, Clock, Loader2, Sparkles, UploadCloud } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
 const ComparisonSlider = dynamic(
   () => import("@/components/comparison-slider").then((mod) => mod.ComparisonSlider),
@@ -46,47 +47,51 @@ function getDisplayProgress(image: ImageItem, isResultFetching: boolean): number
   return fallback[image.status] ?? 12;
 }
 
-function getStatusCopy(image: ImageItem, isResultFetching: boolean) {
+function getStatusCopy(image: ImageItem, isResultFetching: boolean, t: (key: string) => string) {
   if (isResultFetching) {
     return {
-      title: "Preparing final preview",
-      description: "The worker finished. Fetching the transparent PNG now.",
+      title: t("remover.statusCopy.preparing"),
+      description: t("remover.statusCopy.preparingDesc"),
       icon: Sparkles,
     };
   }
 
   if (image.status === "uploading") {
     return {
-      title: "Uploading image",
-      description: "Sending your file to the worker without changing quality.",
+      title: t("remover.statusCopy.uploading"),
+      description: t("remover.statusCopy.uploadingDesc"),
       icon: UploadCloud,
     };
   }
 
   if (image.status === "queued") {
     return {
-      title: image.queuePosition != null && image.queuePosition > 0 ? `Queue position #${image.queuePosition}` : "Waiting in queue",
-      description: image.estimatedWaitSeconds ? `Estimated wait: ${formatWait(image.estimatedWaitSeconds)}` : "Your image will start as soon as capacity opens.",
+      title: image.queuePosition != null && image.queuePosition > 0
+        ? t("remover.statusCopy.queuePosition").replace("{position}", String(image.queuePosition))
+        : t("remover.statusCopy.waiting"),
+      description: image.estimatedWaitSeconds
+        ? t("remover.statusCopy.estimatedWait").replace("{time}", formatWait(image.estimatedWaitSeconds))
+        : t("remover.statusCopy.capacityDesc"),
       icon: Clock,
     };
   }
 
   return {
-    title: "Removing background",
-    description: "Detecting the subject edges and creating a transparent cutout.",
+    title: t("remover.statusCopy.removing"),
+    description: t("remover.statusCopy.removingDesc"),
     icon: Loader2,
   };
 }
 
-function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isResultFetching: boolean }) {
+function ProcessingOverlay({ image, isResultFetching, t }: { image: ImageItem; isResultFetching: boolean; t: (key: string) => string }) {
   const progress = getDisplayProgress(image, isResultFetching);
-  const statusCopy = getStatusCopy(image, isResultFetching);
+  const statusCopy = getStatusCopy(image, isResultFetching, t);
   const StatusIcon = statusCopy.icon;
   const steps = [
-    { label: "Upload", done: progress >= 24 },
-    { label: "Queue", done: progress >= 42 },
-    { label: "Mask", done: progress >= 72 },
-    { label: "Export", done: progress >= 96 },
+    { label: t("remover.steps.upload"), done: progress >= 24 },
+    { label: t("remover.steps.queue"), done: progress >= 42 },
+    { label: t("remover.steps.mask"), done: progress >= 72 },
+    { label: t("remover.steps.export"), done: progress >= 96 },
   ];
 
   return (
@@ -138,7 +143,7 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
 
           <div className="mt-5">
             <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-              <span>Progress</span>
+              <span>{t("remover.preview.progress")}</span>
               <motion.span key={progress} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="tabular-nums">
                 {Math.round(progress)}%
               </motion.span>
@@ -184,6 +189,7 @@ export function PreviewDisplay({
   isProcessing,
   isResultFetching,
 }: PreviewDisplayProps) {
+  const { t } = useLocale();
   const isCompleted = !!resultUrl;
   const showLoadingOverlay = isProcessing || isResultFetching;
 
@@ -221,8 +227,8 @@ export function PreviewDisplay({
                   key={resultUrl || image.id}
                   beforeImage={image.preview}
                   afterImage={resultUrl!}
-                  beforeLabel="Original"
-                  afterLabel="Background Removed"
+                  beforeLabel={t("remover.preview.original")}
+                  afterLabel={t("remover.preview.backgroundRemoved")}
                   className="h-full"
                 />
                 <motion.div
@@ -237,7 +243,7 @@ export function PreviewDisplay({
                     transition={{ type: "spring", stiffness: 220, damping: 18 }}
                     className="rounded-full border border-lime-300/40 bg-background/80 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur"
                   >
-                    Background removed
+                    {t("remover.preview.backgroundRemovedBadge")}
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -251,7 +257,7 @@ export function PreviewDisplay({
               >
                 <img
                   src={image.preview}
-                  alt="Preview"
+                  alt={t("remover.preview.alt")}
                   className="max-h-[70vh] max-w-full w-auto h-auto object-contain"
                   draggable={false}
                 />
@@ -259,7 +265,7 @@ export function PreviewDisplay({
                 <AnimatePresence>
                   {showLoadingOverlay && (
                     <div className="hidden sm:block">
-                      <ProcessingOverlay image={image} isResultFetching={isResultFetching} />
+                      <ProcessingOverlay image={image} isResultFetching={isResultFetching} t={t} />
                     </div>
                   )}
                 </AnimatePresence>

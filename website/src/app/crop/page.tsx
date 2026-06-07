@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/LocaleContext";
 
 const aspectRatios = [
   { label: "Free", value: null },
@@ -19,6 +20,7 @@ const aspectRatios = [
 ];
 
 export default function CropPage() {
+  const { t } = useLocale();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -285,8 +287,8 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Smart Crop</h1>
-            <p className="text-muted-foreground text-sm">Drag to select area, then crop</p>
+            <h1 className="text-2xl font-bold">{t("home.tools.crop")}</h1>
+            <p className="text-muted-foreground text-sm">{t("home.tools.cropDesc")}</p>
           </div>
         </div>
 
@@ -301,10 +303,10 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
               >
                 <div className="flex flex-col items-center justify-center">
                   <Settings className="h-14 w-14 mb-4 text-muted-foreground" />
-                  <p className="text-lg font-semibold">Upload your image</p>
-                  <p className="text-sm text-muted-foreground mt-2 max-w-md text-center">Supported formats: JPG, PNG, WebP.</p>
+                  <p className="text-lg font-semibold">{t("home.howItWorksSteps.upload")}</p>
+                  <p className="text-sm text-muted-foreground mt-2 max-w-md text-center">JPG, PNG, WebP</p>
                   <div className="mt-6 flex gap-3">
-                    <Button variant="default" onClick={() => fileInputRef.current?.click()}>Select Image</Button>
+                    <Button variant="default" onClick={() => fileInputRef.current?.click()}>{t("home.uploadImage")}</Button>
                   </div>
                 </div>
               </div>
@@ -391,13 +393,13 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
             {/* Render result preview below the main image so it doesn't compress the original */}
             {result && (
               <div className="mt-4 border-t border-white/10 pt-4">
-                <h3 className="text-sm font-semibold mb-2">Preview</h3>
+                <h3 className="text-sm font-semibold mb-2">{t("home.beforeAfter")}</h3>
                 <div className="relative rounded-lg overflow-hidden bg-muted">
                   <img src={result} alt="" className="w-full h-auto" />
                   <a href={result} download="cropped.png" className="absolute top-4 right-4">
                     <Button size="sm">
                       <Download className="h-4 w-4 mr-2" />
-                      Download
+                      {t("remover.actions.download")}
                     </Button>
                   </a>
                 </div>
@@ -477,29 +479,29 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
 
       <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Guide</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">How to use Smart Crop</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("crop.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.crop")}</h2>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Upload your image</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Upload any image you want to reframe or crop.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("crop.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("crop.guide.step1Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Drag the crop box</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Adjust the crop area by dragging the corners and edges.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("crop.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("crop.guide.step2Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Choose aspect ratio</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Lock to a specific ratio or crop free-form.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("crop.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("crop.guide.step3Desc")}</p>
           </div>
           <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">Apply and download</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">Click Apply Crop and download the result.</p>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("crop.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("crop.guide.step4Desc")}</p>
           </div>
         </div>
       </section>

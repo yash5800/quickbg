@@ -17,6 +17,7 @@ import { CookieConsentBanner } from "@/components/cookie-consent";
 import { PwaInstallPrompt } from "@/components/pwa-install";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { LocaleProvider, useLocale } from "@/contexts/LocaleContext";
+import { getLocaleFromPath, type Locale } from "@/lib/i18n/config";
 import { ArrowUp, Menu, X, Sparkles, Zap, Package, MessageSquare, Home, Info, Newspaper, MessageCircleQuestion } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCreditsStore } from "@/store/credits";
@@ -133,12 +134,12 @@ function ScrollToTopButton() {
   );
 }
 
-export function ClientLayout({ children }: { children: React.ReactNode }) {
+export function ClientLayout({ children, initialLocale }: { children: React.ReactNode; initialLocale?: Locale }) {
   const pathname = usePathname();
   const isAdminArea = pathname.startsWith("/admin");
 
   return (
-    <LocaleProvider>
+    <LocaleProvider initialLocale={initialLocale}>
       <ThemeProvider
         attribute="class"
         defaultTheme="dark"
@@ -171,6 +172,7 @@ function Header() {
   const { images } = useImages();
   const pathname = usePathname();
   const { t } = useLocale();
+  const { pathWithoutLocale } = getLocaleFromPath(pathname);
 
   const navItems = [
     { href: "/", key: "home", icon: Home },
@@ -206,7 +208,7 @@ function Header() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className={cn("gap-2 px-3.5", pathname === item.href && "text-primary bg-primary/10")}
+                className={cn("gap-2 px-3.5", pathWithoutLocale === item.href && "text-primary bg-primary/10")}
               >
                 <LocaleLink href={item.href}>
                   <item.icon className="h-4 w-4" />
@@ -256,7 +258,7 @@ function Header() {
               {navItems.map((item) => (
                 <Button
                   key={item.href}
-                  variant={pathname === item.href ? "secondary" : "ghost"}
+                  variant={pathWithoutLocale === item.href ? "secondary" : "ghost"}
                   className="w-full justify-start gap-3"
                   asChild
                   onClick={() => setMobileMenuOpen(false)}

@@ -6,6 +6,7 @@ import { Star, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/contexts/LocaleContext";
 
 interface RatingWidgetProps {
   tool: string;
@@ -14,6 +15,7 @@ interface RatingWidgetProps {
 }
 
 export function RatingWidget({ tool, imageId, jobId }: RatingWidgetProps) {
+  const { t } = useLocale();
   const [rating, setRating] = useState(0);
   const [hovered, setHovered] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -51,9 +53,9 @@ export function RatingWidget({ tool, imageId, jobId }: RatingWidgetProps) {
           <Card className="p-4">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold">{submitted ? "Thanks for the feedback" : "How did this result feel?"}</p>
+                <p className="text-sm font-semibold">{submitted ? t("rating.feedbackThanks") : t("rating.feedbackQuestion")}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {submitted ? "Your rating helps tune QuickBG." : "Rate this tool without interrupting your workflow."}
+                  {submitted ? t("rating.feedbackDescThanks") : t("rating.feedbackDesc")}
                 </p>
               </div>
               <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setDismissed(true)}>

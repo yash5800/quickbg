@@ -3,11 +3,13 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeftRight, Check, Sparkles } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
 import originalImage from "../../assets/demo/org.jpg";
 import processedImage from "../../assets/demo/pro.png";
 
 export function DemoRevealSlider() {
+  const { t } = useLocale();
   const prefersReducedMotion = useReducedMotion();
 
   const revealTransition = prefersReducedMotion
@@ -58,14 +60,14 @@ export function DemoRevealSlider() {
             </div>
             <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-black/30 px-3 py-1 text-[11px] font-medium text-white/60 sm:flex">
               <Sparkles className="h-3.5 w-3.5 text-secondary" />
-              QuickBG preview
+              {t("nav.home")} preview
             </div>
           </div>
 
           <div className="grid gap-0 lg:grid-cols-[0.72fr_1fr]">
             <div className="border-b border-white/10 bg-black/20 p-4 lg:border-b-0 lg:border-r">
               <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                <div className="text-xs font-medium text-white/40">Processing queue</div>
+                <div className="text-xs font-medium text-white/40">{t("remover.status.inQueue")}</div>
                 <div className="mt-4 space-y-3">
                   {[
                     ["Upload", "Complete"],
@@ -87,11 +89,11 @@ export function DemoRevealSlider() {
 
               <div className="mt-4 grid grid-cols-2 gap-3">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                  <div className="text-[11px] text-white/40">Output</div>
+                  <div className="text-[11px] text-white/40">{t("remover.complete.processed")}</div>
                   <div className="mt-2 text-lg font-semibold text-white">PNG</div>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                  <div className="text-[11px] text-white/40">Quality</div>
+                  <div className="text-[11px] text-white/40">{t("remover.progress")}</div>
                   <div className="mt-2 text-lg font-semibold text-white">Full</div>
                 </div>
               </div>
@@ -139,10 +141,10 @@ export function DemoRevealSlider() {
                 </motion.div>
 
                 <div className="absolute bottom-4 left-4 rounded-full border border-white/20 bg-black/70 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur">
-                  Original
+{t("home.original")}
                 </div>
                 <div className="absolute bottom-4 right-4 rounded-full border border-white/20 bg-black/70 px-3 py-1 text-xs font-semibold text-white/90 backdrop-blur">
-                  Removed
+                  {t("home.backgroundRemoved")}
                 </div>
               </div>
             </div>

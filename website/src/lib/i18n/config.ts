@@ -15,19 +15,31 @@ export const localePrefixes: Record<Locale, string> = {
   de: "/de",
 };
 
+export const localeOpenGraph: Record<Locale, string> = {
+  en: "en_US",
+  hi: "hi_IN",
+  de: "de_DE",
+};
+
+// Build regex patterns dynamically from the locales list
+const nonDefaultLocales = locales.filter((l) => l !== defaultLocale);
+const localePattern = nonDefaultLocales.join("|");
+const localeRegex = new RegExp(`^/(${localePattern})(/|$)`);
+
 export function getLocaleFromPath(pathname: string): { locale: Locale; pathWithoutLocale: string } {
-  const match = pathname.match(/^\/(de|hi)(\/|$)/);
+  const match = pathname.match(localeRegex);
   if (match) {
     const locale = match[1] as Locale;
-    const rest = pathname.slice(match[0].length - 1) || "/";
+    const afterLocale = pathname.indexOf(locale) + locale.length;
+    const rest = pathname.slice(afterLocale) || "/";
     return { locale, pathWithoutLocale: rest.startsWith("/") ? rest : "/" + rest };
   }
-  return { locale: "en" as Locale, pathWithoutLocale: pathname };
+  return { locale: defaultLocale, pathWithoutLocale: pathname };
 }
 
 export function getPathWithLocale(pathname: string, targetLocale: Locale, currentLocale: Locale): string {
   const { pathWithoutLocale } =
-    currentLocale === "en"
+    currentLocale === defaultLocale
       ? { pathWithoutLocale: pathname }
       : getLocaleFromPath(pathname);
 
@@ -37,5 +49,5 @@ export function getPathWithLocale(pathname: string, targetLocale: Locale, curren
 }
 
 export function isLocalePath(pathname: string): boolean {
-  return /^\/(de|hi)(\/|$)/.test(pathname);
+  return localeRegex.test(pathname);
 }
