@@ -1,0 +1,1286 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "tools": "Herramientas",
+    "remover": "Eliminador",
+    "about": "Acerca de",
+    "blog": "Blog",
+    "faq": "Preguntas Frecuentes",
+    "contact": "Contacto"
+  },
+  "footer": {
+    "tagline": "Eliminación de fondos con IA para todos. Rápido, gratuito y privado.",
+    "tools": "Herramientas",
+    "remover": "Eliminador",
+    "replaceBg": "Reemplazar Fondo",
+    "blurBg": "Desenfocar Fondo",
+    "resize": "Redimensionar",
+    "crop": "Recortar",
+    "adjust": "Ajustar",
+    "sharpness": "Nitidez",
+    "converter": "Convertidor",
+    "resources": "Recursos",
+    "blog": "Blog",
+    "faq": "Preguntas Frecuentes",
+    "comparison": "Comparación",
+    "about": "Acerca de",
+    "legal": "Legal",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "copyright": "Derechos de Autor",
+    "contact": "Contacto",
+    "rights": "Todos los derechos reservados."
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "English",
+    "hi": "हिन्दी",
+    "de": "Deutsch"
+  },
+  "common": {
+    "tryQuickbg": "Prueba las herramientas de QuickBG",
+    "allTools": "Todas las Herramientas",
+    "openRemover": "Abrir Eliminador de Fondos",
+    "backToBlog": "Volver al Blog",
+    "readMore": "Leer más",
+    "learnMore": "Aprender más",
+    "getStarted": "Comenzar",
+    "removeBg": "Eliminador de Fondos",
+    "contactUs": "Contáctanos",
+    "menu": "Menú",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "scrollToTop": "Desplazarse arriba"
+  },
+  "home": {
+    "title": "Eliminador de Fondos con IA Gratuito — Imágenes Ilimitadas, 100% Calidad Original",
+    "description": "quickbg.dev ofrece un eliminador de fondos con IA gratuito que preserva el 100% de la calidad original de tu imagen.",
+    "badge": "Eliminación de fondos con IA gratuita — sin registro, sin marca de agua",
+    "typewriterStatic": "Elimina fondos con ",
+    "typewriterPhrases": {
+      "precision": "alta precisión.",
+      "speed": "velocidad de estudio.",
+      "noLimit": "sin límites.",
+      "tools": "herramientas de IA.",
+      "privacy": "total privacidad."
+    },
+    "heroDescription": "QuickBG elimina fondos, mantiene la resolución original y envía cada carga directamente a un editor diseñado para exportaciones rápidas. Sin registro, sin tarjeta de crédito, sin marca de agua — solo PNG transparentes limpios en segundos.",
+    "uploadImage": "Subir imagen",
+    "browseTools": "Explorar herramientas",
+    "heroNotes": {
+      "png": "Salida PNG transparente — sin recuadros blancos residuales",
+      "quality": "Calidad original preservada — sin pérdida por compresión",
+      "works": "Funciona con retratos, productos, mascotas y obras de arte"
+    },
+    "aiMask": "Máscara de IA detectada",
+    "fullRes": "Resolución completa",
+    "cleanCutout": "Recorte Limpio Listo",
+    "transparentExport": "Exportación PNG transparente",
+    "trustStats": {
+      "signup": "Sin registro requerido",
+      "batch": "Procesamiento por lotes",
+      "format": "Formato de exportación",
+      "resolution": "Resolución original"
+    },
+    "trustValues": {
+      "free": "Gratuito",
+      "multi": "Múltiple",
+      "png": "PNG",
+      "hd": "Full HD"
+    },
+    "simpleWorkflow": "Flujo de trabajo simple",
+    "howItWorks": "Cómo funciona",
+    "howItWorksDesc": "Cuatro pasos desde la carga hasta la exportación. No se necesitan tutoriales — la interfaz te guía.",
+    "howItWorksSteps": {
+      "upload": "Sube tu imagen",
+      "uploadDesc": "Arrastra y suelta o haz clic para subir. Soporta PNG, JPG, WebP, HEIC y AVIF. La carga por lotes también funciona.",
+      "ai": "La IA elimina el fondo",
+      "aiDesc": "Nuestro motor impulsado por BiRefNet detecta bordes, cabello, pelaje y límites complejos automáticamente. No se necesita selección manual.",
+      "refine": "Refina o reemplaza",
+      "refineDesc": "Usa el pincel de borrar/restaurar para retoques, luego desenfoca, reemplaza, redimensiona, recorta o ajusta tu imagen.",
+      "download": "Descarga PNG transparente",
+      "downloadDesc": "Exporta tu recorte como un PNG transparente de alta calidad. Resolución completa preservada, sin marca de agua, sin límites."
+    },
+    "dropTitle": "Suelta imágenes aquí o haz clic para subir",
+    "dropDesc": "La carga por lotes es compatible. QuickBG envía tus imágenes al eliminador y exporta resultados PNG transparentes.",
+    "viewProcessing": "Ver {count} imagen{plural} en procesamiento",
+    "liveSamples": "Ejemplos en vivo",
+    "tryReal": "Prueba el flujo real del eliminador.",
+    "loadingSample": "Cargando ejemplo",
+    "try": "Probar",
+    "imageToolkit": "Kit de herramientas de imagen",
+    "toolkitTitle": "Todo permanece cerca de la carga.",
+    "toolkitDesc": "Pasa del recorte al recortado, redimensionado, reemplazo, desenfoque y ajuste sin salir del espacio de trabajo de QuickBG.",
+    "viewAllTools": "Ver todas las herramientas",
+    "openTool": "Abrir herramienta",
+    "useCases": "Casos de uso",
+    "whoUses": "¿Quién usa QuickBG?",
+    "whoUsesDesc": "Desde vendedores de Amazon hasta diseñadores gráficos — QuickBG se adapta a flujos de trabajo reales.",
+    "tryItNow": "Pruébalo ahora",
+    "useCaseStats": {
+      "ecommerce": "30% más de conversión",
+      "social": "2x tasa de interacción",
+      "design": "5x flujo de trabajo más rápido",
+      "photo": "Calidad de estudio en casa"
+    },
+    "useCaseTitles": {
+      "ecommerce": "Comercio electrónico",
+      "social": "Redes Sociales",
+      "design": "Diseño Gráfico",
+      "photo": "Fotografía"
+    },
+    "useCaseDescs": {
+      "ecommerce": "Recortes de productos limpios para listados de Amazon, Etsy, Shopify y eBay. Los fondos blancos aumentan las tasas de conversión hasta en un 30%.",
+      "social": "Fotos de perfil, portadas de historias, miniaturas de reels y contenido de marca. Elimina fondos para una identidad visual consistente.",
+      "design": "Activos PNG transparentes para carteles, volantes, presentaciones y composiciones en capas. Más máscaras de recorte.",
+      "photo": "Elimina fondos ocupados, agrega desenfoque para profundidad y exporta recortes limpios. Perfecto para imágenes de portafolio y pruebas para clientes."
+    },
+    "whyQuickbg": "Por qué QuickBG",
+    "builtDifferent": "Construido diferente al resto",
+    "builtDifferentDesc": "Sin registros, sin marcas de agua, sin límites de resolución. QuickBG está diseñado para ser el camino más rápido desde la imagen hasta el PNG transparente.",
+    "whyItems": {
+      "precision": "Precisión Impulsada por IA",
+      "precisionDesc": "El modelo BiRefNet ofrece bordes limpios en sujetos complejos — cabello, pelaje, vidrio y sombras incluidos.",
+      "private": "Privacidad por Diseño",
+      "privateDesc": "No se requiere cuenta. Las imágenes se eliminan automáticamente después del procesamiento. Nunca usamos tus cargas para entrenamiento.",
+      "export": "Salida Lista para Exportar",
+      "exportDesc": "PNG transparentes a resolución completa. Sin marca de agua, sin artefactos de compresión, sin pérdida de calidad.",
+      "toolchain": "Cadena de Herramientas Completa",
+      "toolchainDesc": "Eliminar, reemplazar, desenfocar, redimensionar, recortar, ajustar — ocho herramientas en un espacio de trabajo. Sin necesidad de cambiar de aplicación.",
+      "fast": "Rayo Rápido",
+      "fastDesc": "La mayoría de las imágenes se procesan en menos de 5 segundos. Soporte de carga por lotes para flujos de trabajo masivos.",
+      "free": "100% Gratuito, Sin Límites",
+      "freeDesc": "Procesa hasta 25 imágenes por hora sin tarjeta de crédito, sin registro y sin muros de pago ocultos."
+    },
+    "seeTheDifference": "Ve la diferencia",
+    "beforeAfter": "Antes y después",
+    "beforeAfterDesc": "Resultados reales de QuickBG. Desliza el control para comparar original vs procesado.",
+    "original": "Original",
+    "backgroundRemoved": "Fondo Eliminado",
+    "beforeAfterCaption": "Foto de retrato — fondo eliminado mientras se preservan los detalles del cabello y los bordes",
+    "blogGuides": "Blog y guías",
+    "latestArticles": "Artículos recientes",
+    "latestArticlesDesc": "Consejos, tutoriales y análisis profundos sobre eliminación de fondos con IA y edición de imágenes.",
+    "viewAllArticles": "Ver todos los artículos",
+    "readArticle": "Leer artículo",
+    "testimonials": "Testimonios",
+    "whatUsersSay": "Lo que dicen los usuarios",
+    "performance": "Rendimiento",
+    "builtForSpeed": "Construido para velocidad y escala",
+    "builtForSpeedDesc": "Cada milisegundo cuenta cuando estás procesando cientos de imágenes de productos.",
+    "performanceMetrics": {
+      "time": "Tiempo promedio de procesamiento",
+      "timeDesc": "Desde la carga hasta la descarga del PNG transparente — la mayoría de las imágenes terminan en menos de 5 segundos.",
+      "timeValue": "3.2 segundos",
+      "edge": "Precisión de detección de bordes",
+      "edgeDesc": "Precisión del modelo BiRefNet en sujetos de alto contraste con límites de primer plano claros.",
+      "edgeValue": "99.2%",
+      "batch": "Velocidad de procesamiento por lotes",
+      "batchDesc": "Sube y procesa múltiples imágenes simultáneamente con la función de carga por lotes.",
+      "batchValue": "12 imágenes/min",
+      "uptime": "Tiempo de actividad y disponibilidad",
+      "uptimeDesc": "Tubería de procesamiento confiable con conmutación automática por error y gestión de cola.",
+      "uptimeValue": "99.9%"
+    },
+    "faqLabel": "Preguntas Frecuentes",
+    "commonQuestions": "Preguntas comunes",
+    "homeFaq": {
+      "q1": "¿QuickBG es realmente gratuito?",
+      "a1": "Sí — QuickBG es completamente gratuito. Sin tarjeta de crédito, sin registro, sin límites ocultos. Puedes procesar hasta 25 imágenes por hora sin costo.",
+      "q2": "¿QuickBG preserva la calidad de la imagen?",
+      "a2": "Absolutamente. QuickBG exporta PNG transparentes a la resolución original completa. No hay compresión, pérdida de calidad ni marca de agua añadida.",
+      "q3": "¿Qué formatos de imagen son compatibles?",
+      "a3": "QuickBG acepta cargas PNG, JPG, WebP, HEIC y AVIF. Todos los resultados se exportan como PNG transparentes de alta calidad.",
+      "q4": "¿Puedo usar QuickBG para proyectos comerciales?",
+      "a4": "Sí — todas las imágenes procesadas a través de QuickBG se pueden usar con fines comerciales, incluidos listados de Amazon, tiendas de Etsy y materiales de marketing. No se necesita atribución."
+    },
+    "viewAllFaqs": "Ver todas las preguntas frecuentes",
+    "seoExplainer": "Explicador SEO",
+    "seoTitle": "Un mejor eliminador de fondos comienza con un flujo de trabajo claro.",
+    "seoDesc": "QuickBG está construido para personas que necesitan recortes rápidos, exportaciones transparentes limpias y una ruta de edición práctica para imágenes de productos, publicaciones sociales y trabajo de diseño.",
+    "seoCards": {
+      "howItWorks": "Cómo funciona la herramienta",
+      "howItWorksDesc": "Sube una foto, deja que el eliminador de fondos con IA detecte el sujeto y pasa directamente a la exportación o refinamiento. El flujo de trabajo mantiene el recorte del sujeto listo para la entrega de PNG transparente.",
+      "tryRemover": "Prueba el eliminador",
+      "png": "Por qué los PNG son importantes",
+      "pngDesc": "Los PNG transparentes facilitan colocar un producto en un mercado, un banner, una publicación social o un nuevo fondo sin recuadros visibles ni bordes irregulares.",
+      "readGuide": "Lee nuestra guía",
+      "handles": "Lo que QuickBG maneja",
+      "handlesDesc": "Diseñado para retratos, productos, mascotas, obras de arte e imágenes cotidianas con bordes ocupados o irregulares. Incluye herramientas complementarias como redimensionar, recortar, desenfocar, reemplazar y ajustar.",
+      "viewAllTools": "Ver todas las herramientas",
+      "refine": "Cuándo refinar manualmente",
+      "refineDesc": "El cabello complejo, el humo, las sombras o los objetos transparentes a veces pueden necesitar una revisión final rápida. Usa el pincel de borrar/restaurar o reintenta con un recorte más ajustado para obtener resultados más limpios.",
+      "visitFaq": "Visita las preguntas frecuentes"
+    },
+    "compatibility": "Compatibilidad",
+    "worksEvery": "Funciona con cada formato que necesitas",
+    "worksEveryDesc": "Sube cualquier cosa. QuickBG maneja todos los formatos de imagen principales y preserva la calidad completa en la exportación.",
+    "formats": {
+      "png": "Sin pérdida",
+      "jpeg": "Fotos",
+      "webp": "Optimizado web",
+      "avif": "Próxima generación",
+      "heic": "Fotos Apple",
+      "tiff": "Alta calidad",
+      "gif": "Animaciones",
+      "bmp": "Legado"
+    },
+    "exploreAllTools": "Explorar todas las herramientas",
+    "readyToRemove": "¿Listo para eliminar fondos?",
+    "readyDesc": "Sin registro. Sin marca de agua. Sin pérdida de calidad. Solo sube y obtén tu PNG transparente en segundos.",
+    "uploadFirst": "Sube tu primera imagen",
+    "links": {
+      "about": "Acerca de QuickBG",
+      "comparison": "QuickBG vs Remove.bg",
+      "blog": "Blog",
+      "faq": "Preguntas Frecuentes"
+    },
+    "tools": {
+      "removeBg": "Eliminador de Fondos",
+      "removeBgDesc": "Elimina fondos de cualquier imagen al instante con precisión de IA. Funciona en retratos, productos, mascotas y más.",
+      "removeBgTip": "Ideal para fotos de productos de comercio electrónico y retratos",
+      "resize": "Redimensionamiento Inteligente",
+      "resizeDesc": "Redimensiona imágenes para escaparates, redes sociales y perfiles sin configuración adicional. Relaciones de preset incluidas.",
+      "resizeTip": "Perfecto para Amazon, Etsy y redes sociales",
+      "replaceBg": "Reemplazo de Fondo",
+      "replaceBgDesc": "Intercambia recortes transparentes sobre colores limpios, degradados o imágenes personalizadas al instante.",
+      "replaceBgTip": "Crea tomas de productos con marca en segundos",
+      "blurBg": "Desenfoque de Fondo",
+      "blurBgDesc": "Crea profundidad y enfoque con desenfoque de fondo suave y realista. Intensidad ajustable.",
+      "blurBgTip": "Excelente para fotos de perfil y retratos",
+      "crop": "Recorte Inteligente",
+      "cropDesc": "Enmarca imágenes para anuncios, mercados y proporciones sociales en segundos. Relaciones de aspecto personalizadas.",
+      "cropTip": "Ideal para miniaturas y anuncios de banner",
+      "sharpness": "Nitidez",
+      "sharpnessDesc": "Aumenta la nitidez del sujeto o fondo de forma independiente para exportaciones finales nítidas.",
+      "sharpnessTip": "Pule los bordes del producto antes de listarlo",
+      "adjust": "Ajustar Imagen",
+      "adjustDesc": "Ajusta finamente brillo, contraste y saturación antes de exportar. Compresión de calidad incluida.",
+      "adjustTip": "Retoques finales antes de descargar",
+      "converter": "Convertidor de Formato",
+      "converterDesc": "Convierte entre PNG, JPG, WebP, AVIF y TIFF con controles de calidad y soporte por lotes.",
+      "converterTip": "Convierte imágenes masivas de una sola vez"
+    }
+  },
+  "blog": {
+    "title": "Blog — QuickBG",
+    "description": "Aprende sobre eliminación de fondos con IA, fotografía de productos para comercio electrónico, flujos de trabajo de edición de imágenes y consejos para obtener los mejores resultados con QuickBG.",
+    "heading": "Guías, tutoriales y consejos",
+    "subheading": "Aprende cómo aprovechar al máximo la eliminación de fondos con IA, mejorar tus fotos de productos y construir un flujo de trabajo eficiente de edición de imágenes — todo gratis.",
+    "readArticle": "Leer artículo",
+    "back": "Volver al blog",
+    "published": "Publicado",
+    "share": "Compartir",
+    "moreArticles": "Más artículos",
+    "tryTools": "Prueba QuickBG",
+    "tryToolsDesc": "Elimina fondos al instante, redimensiona, recorta y ajusta tus imágenes — todo gratis, sin necesidad de registro.",
+    "articles": {
+      "how-ai-background-removal-works": {
+        "title": "Cómo Funciona la Eliminación de Fondos con IA en 2026",
+        "excerpt": "Detrás de cada recorte limpio de producto hay una red neuronal entrenada para entender bordes, profundidad y límites del sujeto. Aquí te explicamos cómo la eliminación moderna con IA difiere de los métodos antiguos de croma clave.",
+        "category": "Tecnología",
+        "content": "<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Interfaz de eliminación de fondos con IA mostrando el aislamiento del sujeto del fondo\" />\n\nSi alguna vez has usado un eliminador de fondos en línea, probablemente te hayas preguntado cómo separa un sujeto de su fondo con un solo clic. La respuesta breve es aprendizaje profundo — específicamente una clase de modelos llamados BiRefNet que se han convertido en el estándar para el matting de alta calidad en 2026.\n\n## ¿Qué es BiRefNet?\n\nBiRefNet (Bilateral Reference Network) es una arquitectura de red neuronal diseñada para segmentación de imágenes y eliminación de fondos. A diferencia de modelos antiguos que trataban cada píxel de forma independiente, BiRefNet utiliza una estructura bilateral que procesa tanto el contexto global (la escena general) como el detalle local (bordes, hebras de cabello, texturas finas) simultáneamente.\n\nEste diseño de doble ruta es lo que hace que la eliminación moderna sea mucho más nítida que las herramientas de hace solo unos años. La ruta global entiende que esto es una persona parada frente a una pared, mientras que la ruta local se asegura de que cada hebra de cabello se preserve.\n\n## Cómo Funciona el Proceso\n\nCuando subes una imagen al <a href=\"/remover\">eliminador de fondos de QuickBG</a>, el proceso de procesamiento sigue varias etapas:\n\n**1. Preprocesamiento** — La imagen se redimensiona a una resolución estándar y se normaliza para que el modelo vea valores de píxel consistentes. Los metadatos como datos EXIF se eliminan en esta etapa por privacidad.\n\n**2. Extracción de características** — El modelo procesa la imagen a través de una serie de capas convolucionales que identifican bordes, grupos de colores, texturas y señales de profundidad. Aquí es donde ocurre la \"comprensión\": el modelo aprende qué es primer plano y qué es fondo sin que se le diga explícitamente.\n\n**3. Refinamiento** — La innovación clave de BiRefNet es una etapa de refinamiento que revisita regiones ambiguas (cabello, reflejos de vidrio, sombras) y aplica una segunda pasada de atención para limpiar el límite. Este paso es lo que elimina los bordes dentados que afectaban a los primeros eliminadores de fondos con IA.\n\n**4. Post-procesamiento** — La máscara alpha generada se aplica a la imagen original para producir el PNG transparente final. En este punto, también puedes usar el <a href=\"/replace-bg\">reemplazo de fondo</a> o el <a href=\"/blur-bg\">desenfoque de fondo</a> sin volver a procesar.\n\n## Por Qué Esto Importa para Tu Flujo de Trabajo\n\nEntender cómo funciona el proceso ayuda a solucionar problemas cuando los resultados no son perfectos. Si estás procesando imágenes de productos para Amazon, la invasión de fondo cerca de bordes blancos puede ocurrir porque el modelo no puede distinguir entre un producto blanco y un fondo blanco. Aumentar el contraste antes de cargar a menudo resuelve esto.\n\nPara fotógrafos de retratos, la capacidad del modelo para manejar cabello suelto y pelaje significa que puedes fotografiar sujetos en cualquier entorno y obtener un recorte limpio sin una sesión de estudio. Esto ahorra horas de enmascaramiento manual en Photoshop."
+      },
+      "transparent-pngs-amazon-etsy": {
+        "title": "10 Formas de Usar PNG Transparentes para Listados de Amazon y Etsy",
+        "excerpt": "Los PNG transparentes son un arma secreta para los vendedores de mercados en línea. Aquí hay diez formas de mejorar tus listados con recortes limpios.",
+        "category": "Comercio Electrónico",
+        "content": "<img src=\"/assets/demo/bgreplace.jpg\" alt=\"Recorte PNG transparente de producto para listados de comercio electrónico\" />\n\nSi vendes en Amazon o Etsy, ya sabes que la calidad del listado afecta directamente las tasas de conversión. Una de las mejoras más simples que puedes hacer es cambiar a PNG transparentes para las imágenes de tus productos. Aquí hay diez formas prácticas de usarlos.\n\n## 1. Estética de Marca Consistente\n\nCuando todos tus productos comparten un fondo transparente, puedes colocarlos en el mismo fondo de marca — un color consistente, degradado o escena de estilo de vida — sin volver a fotografiar. Esto crea un escaparate cohesivo que genera confianza con los compradores. Usa el <a href=\"/replace-bg\">reemplazador de fondos de QuickBG</a> para aplicar el mismo fondo en todo tu catálogo.\n\n## 2. Contenido A+ Que Destaque\n\nEl módulo de Contenido A+ de Amazon te permite mezclar texto e imágenes en diseños personalizados. Los recortes de productos transparentes se integran perfectamente en estos diseños sin recuadros blancos ni bordes incómodos. Tu producto flota naturalmente junto a viñetas, llamadas de características y tablas comparativas.\n\n## 3. Maquetas y Collages de Etsy\n\nA los compradores de Etsy les encanta ver productos en contexto. Con PNG transparentes, puedes superponer tu artículo en maquetas de estilo de vida — una taza de cerámica sobre una mesa de madera, un collar sobre un busto de terciopelo — sin pasar horas enmascarando. Coloca el PNG sobre cualquier imagen de fondo y encaja al instante.\n\n## 4. Tablas Comparativas Tipo Infografía\n\nLas tablas comparativas que muestran tu producto versus competidores son herramientas de conversión poderosas. Los recortes transparentes te permiten organizar múltiples productos lado a lado en una cuadrícula limpia, cada uno perfectamente aislado, con líneas de llamada que señalan características.\n\n## 5. Promociones en Redes Sociales\n\nLas imágenes de listados no deberían vivir solo en el mercado. Usa los mismos PNG transparentes para publicaciones de Instagram, pines de Pinterest y anuncios de Facebook. Un estilo visual consistente en todos los canales refuerza el reconocimiento de marca. Procesa imágenes a través del <a href=\"/crop\">recorte inteligente de QuickBG</a> para ajustarlas a las proporciones de cada plataforma.\n\n## 6. Imágenes de Estilo de Vida con Superposición\n\nCrea una escena de estilo de vida tomando una foto de fondo (una sala de estar, una cocina, una oficina) y superponiendo tu recorte de producto transparente encima. Como el producto está aislado, puedes escalarlo y posicionarlo sin afectar el fondo. Esto produce imágenes de aspecto profesional sin fotografía de estudio.\n\n## 7. Anuncios de Producto en Amazon\n\nLos anuncios patrocinados de Amazon funcionan mejor con imágenes de fondo limpio. Los recortes transparentes te permiten crear imágenes publicitarias que mantienen el enfoque en el producto sin distracciones, lo que puede mejorar las tasas de clics en un 15-20%.\n\n## 8. Variaciones de Color y Tamaño\n\nPara productos que vienen en múltiples colores o tamaños, los PNG transparentes facilitan la creación de imágenes de variación consistentes. Toma una foto del producto de referencia, elimina el fondo y luego intercambia colores o escala el producto en el mismo diseño de fondo. Todos las variantes se ven consistentes y profesionales.\n\n## 9. Guías de Tallas y Tablas de Medidas\n\nLos PNG transparentes son perfectos para guías de tallas visuales. Muestra el producto sobre un fondo transparente con líneas de medida y etiquetas de talla. Esto permite a los compradores ver las dimensiones exactas del producto sin que el fondo distraiga.\n\n## 10. Imágenes de Paquete y Sets\n\nPara productos que se venden en paquetes o sets, usa PNG transparentes para mostrar cada artículo individualmente y luego componerlos juntos en una imagen grupal. Cada artículo se puede escalar y posicionar independientemente, dándote control total sobre el diseño final de la imagen del paquete."
+      },
+      "ecommerce-product-photos-guide": {
+        "title": "Mejores Prácticas para Fotos de Productos de Comercio Electrónico en 2026",
+        "excerpt": "La fotografía de productos ha evolucionado. Aprende las técnicas de iluminación, composición y edición que producen imágenes de listados que venden.",
+        "category": "Fotografía",
+        "content": "<img src=\"/assets/demo/org.jpg\" alt=\"Configuración profesional de iluminación para fotografía de productos\" />\n\nLa diferencia entre un producto que se vende y uno que languidece a menudo se reduce a las fotos. En 2026, los compradores esperan imágenes de aspecto profesional incluso de tiendas pequeñas. Aquí tienes una guía completa para obtenerlas correctamente.\n\n## Configuración de Iluminación\n\nNo necesitas un estudio para tomar buenas fotos de productos. La clave es luz suave y difusa que minimice las sombras duras. Coloca tu producto cerca de una ventana grande durante el día, con una tabla de espuma blanca en el lado opuesto para reflejar la luz de vuelta a las áreas de sombra. Esto crea el mismo efecto que una configuración de estudio de dos luces por casi cero costo.\n\nPara resultados consistentes en todo tu catálogo, dispara a la misma hora del día y en la misma ubicación. Las variaciones en el color e intensidad de la luz te obligarán a ajustar cada imagen individualmente durante la edición.\n\n## Elegir el Fondo Correcto\n\nLos fondos blancos sólidos son el estándar para Amazon y Google Shopping, pero no siempre son la mejor opción para cada producto. Para artículos con bordes blancos o de colores claros, un fondo gris o negro produce mejor contraste y recortes más limpios cuando los procesas a través del <a href=\"/remover\">eliminador de fondos de QuickBG</a>.\n\nSi planeas usar fondos de estilo de vida, dispara el producto por separado sobre una superficie limpia y elimina el fondo después. Esto te da la flexibilidad de componer el producto en cualquier escena más tarde.\n\n## Composición y Ángulos\n\nIncluye al menos cinco imágenes por producto: frente, detrás, lateral, detalle (primer plano de textura o logotipo) y en contexto (producto siendo usado). Para listados de Amazon, la imagen principal debe mostrar el producto solo sobre un fondo blanco, pero las imágenes adicionales pueden ser tomas de estilo de vida.\n\nMantén el producto centrado y ocupando al menos el 80% del encuadre. Las miniaturas recortan ajustadamente, así que evita espacio desperdiciado alrededor de los bordes.\n\n## Flujo de Trabajo de Post-Procesamiento\n\nDespués de disparar, el proceso de edición determina la calidad final de tu imagen. Aquí está el flujo de trabajo recomendado:\n\n**Paso 1:** Elimina el fondo usando el <a href=\"/remover\">eliminador de fondos de QuickBG</a>. Esto aísla tu producto y te da un PNG transparente con el que trabajar.\n\n**Paso 2:** Redimensiona a las dimensiones objetivo de tu plataforma. Usa la <a href=\"/resize\">herramienta de redimensionamiento inteligente</a> para configurar dimensiones exactas.\n\n**Paso 3:** Ajusta brillo, contraste y saturación con la <a href=\"/adjust\">herramienta de ajuste</a> para que el producto se vea vibrante y natural.\n\n**Paso 4:** Exporta como PNG de alta calidad para máxima compatibilidad en todas las plataformas."
+      },
+      "best-free-image-editing-workflow": {
+        "title": "Mejor Flujo de Trabajo de Edición de Imágenes Gratuito para Principiantes",
+        "excerpt": "No necesitas Photoshop para producir imágenes profesionales. Aquí tienes un flujo de trabajo gratuito completo usando herramientas basadas en web que rivalizan con los editores de escritorio.",
+        "category": "Tutoriales",
+        "content": "<img src=\"/assets/demo/pro.png\" alt=\"Interfaz de flujo de trabajo gratuito de edición de imágenes basado en web\" />\n\nLa edición profesional de imágenes solía significar software costoso y una curva de aprendizaje empinada. Eso ha cambiado. En 2026, una cadena de herramientas gratuitas basadas en web puede manejar todo, desde la eliminación de fondos hasta la gradación de color — sin descargas, sin suscripciones, sin experiencia requerida.\n\n## El Kit de Herramientas\n\nAquí está el conjunto que recomendamos para un proceso de edición completamente gratuito:\n\n- **QuickBG** para eliminación de fondos, redimensionamiento, recorte y ajustes\n- Un editor de fotos basado en navegador para retoques avanzados\n- Un convertidor de archivos gratuito para cambios de formato\n\nEso es todo. Cada herramienta en este flujo de trabajo funciona en un navegador y en cualquier sistema operativo.\n\n## Paso 1: Elimina el Fondo\n\nComienza subiendo tu imagen al <a href=\"/remover\">eliminador de fondos de QuickBG</a>. El modelo de IA detecta el sujeto y produce un PNG transparente en segundos. Esta es la base de la mayoría de los flujos de trabajo de edición — una vez que el sujeto está aislado, todo lo demás se vuelve más fácil.\n\nSi el resultado tiene bordes irregulares, intenta ajustar el recorte antes de procesar. Un recorte más ajustado alrededor del sujeto ayuda al modelo a enfocarse en el área correcta.\n\n## Paso 2: Redimensiona a Tus Dimensiones Objetivo\n\nDiferentes plataformas necesitan diferentes tamaños. Las publicaciones en redes sociales funcionan mejor a 1080×1080 px (cuadrado de Instagram) o 1200×630 px (vistas previas de enlaces). Usa el <a href=\"/resize\">redimensionamiento inteligente de QuickBG</a> para configurar dimensiones exactas mientras mantienes la calidad.\n\nPara impresión, apunta a 300 DPI en el tamaño de impresión final. Una impresión de 4×6 pulgadas necesita 1200×1800 px. La herramienta de redimensionamiento maneja estos cálculos automáticamente si ingresas el tamaño de impresión objetivo.\n\n## Paso 3: Recorta para Composición\n\nDespués de redimensionar, verifica la composición. ¿Está el sujeto centrado? ¿Hay demasiado espacio superior? El <a href=\"/crop\">recorte inteligente de QuickBG</a> te permite ajustar el encuadre con relaciones preestablecidas para plataformas comunes.\n\nUsa la regla de los tercios: imagina una cuadrícula 3×3 sobre tu imagen. Coloca al sujeto en una de las intersecciones para una composición más atractiva visualmente.\n\n## Paso 4: Ajusta Color y Contraste\n\nLa mayoría de las imágenes se benefician de pequeños ajustes de brillo, contraste y saturación. La <a href=\"/adjust\">herramienta de ajuste de QuickBG</a> te permite refinar estos valores con controles deslizantes. Los cambios se muestran en tiempo real, para que puedas ver el efecto antes de confirmar.\n\n## Paso 5: Enfoca y Exporta\n\nFinalmente, aplica un toque de nitidez usando la <a href=\"/sharpness\">herramienta de nitidez</a> para que los bordes del producto se vean nítidos. Luego exporta en tu formato preferido — PNG para transparencia, JPG para fotografías o WebP para un rendimiento web óptimo.\n\nEste flujo de trabajo completo toma menos de 60 segundos por imagen una vez que te acostumbras al proceso."
+      },
+      "common-mistakes-ai-background-removal": {
+        "title": "Errores Comunes con la Eliminación de Fondos con IA (y Cómo Solucionarlos)",
+        "excerpt": "La eliminación de fondos con IA es poderosa, pero no es magia. Aquí están los problemas más comunes que encuentran los usuarios y cómo resolverlos.",
+        "category": "Consejos",
+        "content": "<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Errores comunes y casos límite en la eliminación de fondos con IA\" />\n\nLa eliminación de fondos con IA se ha vuelto increíblemente confiable, pero ciertas imágenes todavía la complican. Entender por qué ocurren estas fallas — y cómo evitarlas — es la diferencia entre un recorte utilizable y una experiencia frustrante.\n\n## Error 1: Bajo Contraste Entre Sujeto y Fondo\n\nLa causa más común de malos resultados es el contraste insuficiente. Si tu sujeto usa una camisa blanca contra una pared blanca, el modelo tiene dificultad para encontrar el límite porque los valores de píxel son casi idénticos en ambos lados.\n\n**Solución:** Cambia la iluminación o el fondo antes de disparar. Incluso una pequeña sombra o diferencia de color ayuda al modelo a distinguir bordes. Si estás trabajando con una foto existente, intenta aumentar el contraste en la <a href=\"/adjust\">herramienta de ajuste de QuickBG</a> antes de ejecutar el eliminador de fondos.\n\n## Error 2: Cabello y Pelaje Complejos\n\nLos detalles finos como hebras de cabello, pelaje y plumas son la prueba más difícil para cualquier modelo de eliminación de fondos. Las primeras herramientas de IA los cortaban por completo o dejaban un halo del fondo original.\n\n**Solución:** Los modelos modernos basados en BiRefNet manejan el cabello mucho mejor, pero aún puedes mejorar los resultados asegurándote de que el cabello no esté contrailuminado. La luz dura desde atrás crea un efecto de brillo que desdibuja el límite cabello-fondo. Dispara con luz uniforme frontal. Después de la eliminación, usa la <a href=\"/sharpness\">herramienta de nitidez de QuickBG</a> para refinar cualquier borde suave restante.\n\n## Error 3: Objetos Transparentes y Reflectantes\n\nLas botellas de vidrio, gotas de agua, gafas y telas translúcidas son inherentemente difíciles porque el fondo se ve a través del sujeto. El modelo debe decidir qué es sujeto y qué es fondo en cada píxel.\n\n**Solución:** Para productos de vidrio, intenta colocar un objeto oscuro detrás de la posición de la cámara para que el vidrio refleje una superficie oscura en lugar de la habitación. Esto le da al modelo bordes más claros para trabajar. Para objetos transparentes, el refinamiento manual con el pincel de restaurar a menudo ayuda a recuperar detalles perdidos.\n\n## Error 4: Múltiples Sujetos\n\nCuando múltiples personas u objetos están en el encuadre, el modelo debe decidir cuáles mantener y cuáles eliminar. Los resultados pueden ser impredecibles.\n\n**Solución:** Siempre que sea posible, fotografía cada sujeto por separado contra un fondo limpio. Si debes procesar una foto grupal, usa la herramienta de recorte para aislar a cada persona primero, luego procesa individualmente.\n\n## Error 5: Mala Iluminación y Sombras\n\nLas sombras duras y la iluminación irregular confunden al modelo. Las sombras pueden confundirse con parte del sujeto, o partes del sujeto pueden perderse en las sombras.\n\n**Solución:** Usa iluminación suave y difusa. Las ventanas grandes en días nublados proporcionan la luz más pareja. Si ya tienes la foto, ajusta las sombras y los reflejos en la herramienta de ajuste antes de eliminar el fondo."
+      },
+      "how-to-resize-images-without-losing-quality-batch-processing-guide": {
+        "title": "Cómo Redimensionar Imágenes Sin Perder Calidad (Guía de Procesamiento por Lotes)",
+        "excerpt": "Redimensionar imágenes a escala sin pérdida de calidad requiere los algoritmos y el flujo de trabajo adecuados.",
+        "category": "Tutoriales",
+        "content": "## Por Qué Redimensionar a Menudo Destruye la Calidad de la Imagen\n\nCuando redimensionas una imagen, el software debe recrear datos de píxeles a través de un proceso llamado **interpolación**. Cada vez que se añaden o eliminan píxeles, el algoritmo estima nuevos valores de color basados en píxeles vecinos. La calidad de esta estimación determina si tu imagen se mantiene nítida o se vuelve borrosa y pixelada.\n\nHay cuatro métodos comunes de interpolación, y elegir el incorrecto es la razón principal por la que las imágenes redimensionadas se ven mal:\n\n- **Vecino más cercano** duplica o elimina píxeles sin promediar. Rápido, pero produce artefactos de escalera dentados en curvas. Solo adecuado para arte de píxeles y diagramas.\n- **Bilineal** promedia los cuatro píxeles más cercanos. Suave pero puede verse blando. Bueno para vistas previas rápidas donde la velocidad importa más que la calidad.\n- **Bicúbica** considera dieciséis píxeles circundantes. Más nítida que la bilineal y la opción estándar para redimensionamiento general de fotos.\n- **Lanczos** utiliza una función sinc con ventana para el mejor remuestreo de alta calidad. Preserva detalles finos mejor que la bicúbica.\n\n<table>\n  <thead>\n    <tr><th>Algoritmo</th><th>Calidad</th><th>Velocidad</th><th>Mejor Caso de Uso</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Vecino más cercano</td><td>Baja</td><td>Más rápida</td><td>Arte de píxeles, iconos, diagramas</td></tr>\n    <tr><td>Bilineal</td><td>Media</td><td>Rápida</td><td>Vistas previas rápidas, miniaturas</td></tr>\n    <tr><td>Bicúbica</td><td>Alta</td><td>Moderada</td><td>Redimensionamiento general de fotos</td></tr>\n    <tr><td>Lanczos</td><td>Más alta</td><td>Lenta</td><td>Impresión profesional y web</td></tr>\n  </tbody>\n</table>\n\nNuestra <a href=\"/resize\">herramienta de redimensionamiento de imágenes</a> usa por defecto la interpolación Lanczos para darte la mejor calidad automáticamente, mientras sigue ofreciendo las cuatro opciones para usuarios que necesitan procesamiento más rápido.\n\n## Entendiendo Resolución vs. Tamaño de Archivo\n\nUn error común es pensar que resolución y tamaño de archivo son lo mismo. **Resolución** son las dimensiones en píxeles de tu imagen (por ejemplo, 4000×3000). **Tamaño de archivo** es cuánto espacio ocupa en disco (por ejemplo, 5 MB). Están relacionados pero no son idénticos.\n\nUna imagen de alta resolución puede tener un tamaño de archivo pequeño si está muy comprimida (JPEG al 50%), y una imagen de baja resolución puede tener un tamaño de archivo grande si está sin comprimir (BMP sin comprimir).\n\n## Flujo de Trabajo de Procesamiento por Lotes\n\nPara redimensionar cientos de imágenes a la vez:\n\n1. Reúne todas las imágenes en una carpeta\n2. Cárgalas en la herramienta de redimensionamiento de QuickBG (soporta hasta 100 imágenes por lote)\n3. Elige tus dimensiones objetivo o relación de aspecto\n4. Elige el algoritmo de interpolación (Lanczos para máxima calidad)\n5. Elige el formato de salida\n6. Descarga todos los resultados como un archivo ZIP\n\nEste flujo de trabajo reduce el redimensionamiento de horas a minutos, incluso para catálogos grandes."
+      },
+      "color-correction-101-adjusting-brightness-contrast-saturation": {
+        "title": "Corrección de Color 101: Ajustando Brillo, Contraste y Saturación",
+        "excerpt": "Aprende los fundamentos de la corrección de color, incluyendo ajustes de brillo, contraste y saturación.",
+        "category": "Tutoriales",
+        "content": "## ¿Qué es la Corrección de Color?\n\nLa corrección de color es el proceso de ajustar el brillo, contraste y balance de color de una imagen para que se vea natural y atractiva. Se diferencia de la **gradación de color**, que aplica un aspecto estilístico para un efecto creativo. La corrección busca precisión; la gradación busca ambiente.\n\n### Brillo\n\nEl brillo controla la luminancia general de una imagen. Demasiado bajo y los detalles desaparecen en las sombras; demasiado alto y los reflejos se desvanecen a blanco puro. El objetivo es distribuir los valores de píxel en todo el rango sin recortar ninguno de los extremos.\n\n### Contraste\n\nEl contraste ajusta la diferencia entre las partes más oscuras y más brillantes de una imagen. Mayor contraste hace que las imágenes resalten pero puede perder detalles en sombras y reflejos. Menor contraste produce un aspecto más plano que retiene más detalles pero parece menos vibrante.\n\n### Saturación\n\nLa saturación controla la intensidad de los colores. Una imagen completamente desaturada se vuelve escala de grises, mientras que las imágenes sobresaturadas se ven artificiales con colores que se desbordan más allá de los límites naturales. La mayoría de las imágenes se benefician de un modesto aumento de saturación.\n\n## Configuraciones Recomendadas por Tipo de Imagen\n\nDiferentes imágenes necesitan diferente tratamiento. Aquí hay una tabla de referencia para escenarios comunes:\n\n<table>\n  <thead>\n    <tr><th>Tipo de Imagen</th><th>Brillo</th><th>Contraste</th><th>Saturación</th><th>Notas</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Retrato (interior)</td><td>+10</td><td>+5</td><td>+5</td><td>Cuida los cambios en tono de piel</td></tr>\n    <tr><td>Retrato (exterior)</td><td>0</td><td>+10</td><td>+10</td><td>La luz natural necesita contraste</td></tr>\n    <tr><td>Producto (fondo blanco)</td><td>+15</td><td>+15</td><td>+5</td><td>Aclara para cumplir estándares de Amazon</td></tr>\n    <tr><td>Paisaje</td><td>-5</td><td>+20</td><td>+20</td><td>Preserva detalle del cielo, realza verdes</td></tr>\n    <tr><td>Fotografía de comida</td><td>+5</td><td>+10</td><td>+15</td><td>Realza colores naturales</td></tr>\n  </tbody>\n</table>\n\n## Guía Paso a Paso de Corrección de Color\n\n1. **Comienza con el balance de blancos.** Asegúrate de que los blancos se vean blancos, no azulados ni amarillentos.\n2. **Ajusta la exposición.** Usa el control deslizante de brillo para que la imagen tenga un rango completo de tonos sin recortar los extremos.\n3. **Aumenta el contraste.** Agrega suficiente contraste para que la imagen tenga profundidad, pero no tanto que pierdas detalle en las sombras.\n4. **Ajusta la saturación.** Aumenta la saturación ligeramente para que los colores se vean vivos pero naturales.\n5. **Revisa en múltiples pantallas.** Los colores se ven diferente en diferentes pantallas. Si es posible, verifica tu imagen en al menos dos dispositivos.\n\nUsa la <a href=\"/adjust\">herramienta de ajuste de QuickBG</a> para aplicar estos cambios. Se actualiza en tiempo real, así que puedes experimentar sin perder tu configuración actual."
+      },
+      "image-sharpening-techniques-when-and-how-to-sharpen-photos": {
+        "title": "Técnicas de Enfoque de Imágenes: Cuándo y Cómo Enfocar Tus Fotos",
+        "excerpt": "Domina las técnicas de enfoque de imágenes, incluyendo máscara de desenfoque, filtro de paso alto y enfoque inteligente.",
+        "category": "Tutoriales",
+        "content": "## ¿Qué es el Enfoque de Imágenes?\n\nEl enfoque de imágenes realza el contraste de bordes para hacer que una imagen parezca más detallada. Funciona aumentando el contraste entre píxeles adyacentes a lo largo de los bordes, creando la ilusión de mayor resolución. La mayoría de las imágenes digitales se benefician de al menos una pequeña cantidad de enfoque, particularmente después de redimensionar o eliminar el fondo.\n\n### Cómo Funciona el Enfoque\n\nLos algoritmos de enfoque detectan bordes — áreas donde los valores de píxel cambian rápidamente — y aumentan el contraste en esas transiciones. El efecto es más visible a lo largo de límites de alto contraste como texto, contornos de productos y hebras de cabello. Aplicado correctamente, el enfoque hace que una imagen se vea nítida y profesional. Exagerado, crea halos visibles y ruido.\n\n## Técnicas de Enfoque Comparadas\n\nHay tres enfoques principales de enfoque, cada uno adecuado para diferentes escenarios:\n\n<table>\n  <thead>\n    <tr><th>Técnica</th><th>Mecanismo</th><th>Mejor Para</th><th>Riesgo si se Exagera</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Máscara de Desenfoque</td><td>Desenfoca imagen, resta del original, añade la diferencia de vuelta</td><td>Enfoque general, retratos</td><td>Halos visibles alrededor de bordes</td></tr>\n    <tr><td>Filtro de Paso Alto</td><td>Extrae detalle de alta frecuencia, superpone sobre original</td><td>Fotos de productos, texto, arte lineal</td><td>Amplificación de ruido, textura granujienta</td></tr>\n    <tr><td>Enfoque Inteligente</td><td>Reduce ruido antes de enfocar, aplica diferente a sombras/reflejos</td><td>Imágenes con ISO alto, paisajes</td><td>Menos riesgoso que otros métodos</td></tr>\n  </tbody>\n</table>\n\n### Parámetros de Máscara de Desenfoque\n\nTres parámetros controlan la máscara de desenfoque:\n\n- **Cantidad** — Cuánto contraste de borde añadir (50-150% típico)\n- **Radio** — Anchura del realce de borde (0.5-2.0 píxeles típico)\n- **Umbral** — Contraste mínimo para que un borde sea enfocado (0-10 típico)\n\n### Enfoque con Filtro de Paso Alto\n\nEl enfoque de paso alto aísla el detalle fino y lo superpone de vuelta sobre el original. Esto evita enfocar áreas de baja frecuencia como cielos y paredes, que de otro modo podrían introducir ruido.\n\n## Cuándo Aplicar el Enfoque\n\n- **Después de redimensionar** — Redimensionar suaviza los detalles. Siempre enfoca después de reducir la escala.\n- **Después de eliminar el fondo** — Los bordes del recorte pueden beneficiarse de un enfoque sutil.\n- **Antes de exportar para impresión** — La impresión añade su propia suavidad, así que enfoca ligeramente más de lo que parece necesario en pantalla.\n\nUsa la <a href=\"/sharpness\">herramienta de nitidez de QuickBG</a> para resultados consistentes. Te permite apuntar al sujeto o al fondo por separado usando la máscara del eliminador."
+      },
+      "complete-guide-to-cropping-rule-of-thirds-aspect-ratios-framing": {
+        "title": "La Guía Completa de Recorte: Regla de los Tercios, Relaciones de Aspecto y Encuadre",
+        "excerpt": "Domina las técnicas de recorte desde la regla de los tercios hasta la selección de relación de aspecto para cualquier plataforma.",
+        "category": "Tutoriales",
+        "content": "<img src=\"/assets/demo/org.jpg\" alt=\"Imagen original sin recortar para comparación\" />\n\n## Por Qué es Importante el Recorte\n\nEl recorte es una de las herramientas de edición más poderosas porque cambia lo que el espectador ve — y lo que no ve. Un buen recorte elimina distracciones, mejora la composición y ajusta tu imagen al formato requerido. Un mal recorte corta elementos importantes o crea espacio negativo incómodo.\n\nA diferencia del redimensionamiento, que escala toda la imagen, el <a href=\"/crop\">recorte</a> elimina píxeles de los bordes. Esto significa que pierdes parte de la imagen, así que elegir qué conservar es una decisión creativa.\n\n## La Regla de los Tercios\n\nLa regla de los tercios es la guía de composición más famosa en fotografía. Imagina dividir tu imagen en una cuadrícula 3×3 con dos líneas horizontales y dos verticales. La teoría dice que colocar elementos clave a lo largo de estas líneas o en sus intersecciones crea una composición más atractiva que centrar todo.\n\n**Cómo aplicarlo:** Al recortar, usa la superposición de cuadrícula disponible en la <a href=\"/crop\">herramienta de recorte de QuickBG</a>. Coloca los ojos del sujeto (para retratos) o el punto focal principal (para paisajes) en uno de los cuatro puntos de intersección.\n\n### Cuándo Romper la Regla\n\nLa regla de los tercios es una guía, no una ley. La composición centrada funciona bien para:\n\n- **Fotografía de productos** donde la simetría enfatiza el producto\n- **Imágenes minimalistas** donde el espacio negativo es parte del diseño\n- **Formatos cuadrados** para imágenes de perfil de redes sociales\n\n## Relaciones de Aspecto y Sus Usos\n\nDiferentes plataformas y tamaños de impresión requieren diferentes relaciones de aspecto:\n\n<table>\n  <thead>\n    <tr><th>Relación de Aspecto</th><th>Dimensiones</th><th>Uso Común</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>1:1</td><td>1080 x 1080</td><td>Cuadrado de Instagram, imágenes principales de Amazon</td></tr>\n    <tr><td>4:3</td><td>1200 x 900</td><td>Cámara digital estándar, iPad</td></tr>\n    <tr><td>3:2</td><td>1800 x 1200</td><td>Película de 35 mm, DSLR nativo</td></tr>\n    <tr><td>16:9</td><td>1920 x 1080</td><td>YouTube, TV, presentaciones</td></tr>\n    <tr><td>9:16</td><td>1080 x 1920</td><td>Historias de Instagram, TikTok, Reels</td></tr>\n  </tbody>\n</table>\n\n## Técnicas de Encuadre\n\n- **Espacio para respirar** — Deja espacio en la dirección hacia donde mira el sujeto\n- **Encuadre dentro de encuadre** — Usa elementos naturales para enmarcar al sujeto\n- **Simetría y patrones** — Úsalos para crear imágenes visualmente llamativas\n- **Ángulos diagonales** — Añaden energía y movimiento a la composición\n\nLa herramienta de recorte de QuickBG soporta todas las relaciones de aspecto principales y te permite personalizar las tuyas propias para requisitos específicos de plataforma."
+      },
+      "blur-effects-in-photography-background-vs-gaussian-vs-motion-blur": {
+        "title": "Efectos de Desenfoque en Fotografía: Desenfoque de Fondo vs Gaussiano vs de Movimiento",
+        "excerpt": "Tres tipos de desenfoque, tres efectos diferentes. Aprende cuándo y cómo usar cada técnica en fotografía.",
+        "category": "Tutoriales",
+        "content": "## Desenfoque de Fondo (Profundidad de Campo)\n\nEl desenfoque de fondo simula la profundidad de campo reducida producida por un lente rápido con una apertura amplia. En fotografía, este efecto — llamado **bokeh** — separa al sujeto del fondo desenfocando el fondo. Es el efecto de desenfoque más solicitado para retratos y fotografía de productos porque elimina distracciones del fondo mientras mantiene al sujeto perfectamente nítido.\n\n### Cómo Crear Desenfoque de Fondo\n\nPuedes lograr el desenfoque de fondo de dos maneras: ópticamente con un lente de cámara durante la toma, o digitalmente con software después del hecho. Para imágenes tomadas con fondos ocupados, nuestra <a href=\"/blur-bg\">herramienta de desenfoque de fondo</a> aplica un efecto realista de profundidad de campo que imita una apertura de lente.\n\nLa IA detecta al sujeto y aplica desenfoque solo al fondo, preservando los bordes del sujeto. Puedes ajustar la intensidad del desenfoque desde una sutil simulación f/2.8 hasta un aspecto extremo f/1.2.\n\n## Desenfoque Gaussiano\n\nEl desenfoque gaussiano es un desenfoque uniforme aplicado igualmente a toda la imagen o a un área seleccionada. A diferencia del desenfoque de fondo, que respeta los límites del sujeto, el desenfoque gaussiano trata cada píxel de la misma manera. Recibe su nombre de la función gaussiana utilizada para calcular el kernel de desenfoque.\n\n### Usos Comunes del Desenfoque Gaussiano\n\n- **Suavizar fondos** para superposiciones de texto en gráficos de redes sociales\n- **Crear efectos brillantes** combinando una capa desenfocada con la original\n- **Reducir ruido** en imágenes con ISO alto (aunque la reducción de ruido dedicada es mejor)\n- **Desenfocar información sensible** como rostros o placas de matrícula\n\nEl desenfoque gaussiano no es ideal para la separación sujeto-fondo porque no distingue entre primer plano y fondo. Usa el <a href=\"/blur-bg\">desenfoque de fondo de QuickBG</a> para ese propósito, o <a href=\"/remover\">elimina el fondo</a> por completo y coloca al sujeto sobre un fondo personalizado.\n\n## Desenfoque de Movimiento\n\nEl desenfoque de movimiento simula el efecto de estela de un objeto en movimiento. A diferencia del desenfoque de fondo o gaussiano, que son simétricos, el desenfoque de movimiento tiene una dirección. Puede simular movimiento horizontal (un coche pasando), movimiento vertical (algo cayendo) o desenfoque radial (rotación de cámara).\n\n### Usos Creativos del Desenfoque de Movimiento\n\n- **Transmitir velocidad y acción** en fotografía deportiva\n- **Crear fondos dinámicos** para gráficos de redes sociales\n- **Simular fotografía de larga exposición** sin trípode\n- **Añadir energía** a imágenes estáticas de productos\n\nElige el efecto correcto según lo que quieras comunicar. El desenfoque de fondo es mejor para retratos y productos, el gaussiano para elementos de diseño y superposiciones de texto, y el de movimiento para contenido dinámico y deportivo."
+      },
+      "how-to-create-amazon-approved-product-images-with-ai": {
+        "title": "Cómo Crear Imágenes de Producto Aprobadas por Amazon con IA",
+        "excerpt": "Aprende cómo cumplir con los estrictos requisitos de imagen de Amazon usando herramientas de eliminación de fondos y edición con IA.",
+        "category": "Comercio Electrónico",
+        "content": "## Requisitos de Imagen de Amazon en 2026\n\nVender en Amazon significa competir con millones de listados. La diferencia entre un clic y un desplazamiento a menudo se reduce a las imágenes de tus productos. Amazon tiene requisitos técnicos estrictos para la fotografía de productos, y no cumplirlos puede hacer que tu listado sea suprimido o pierdas el Buy Box.\n\nAmazon requiere que la imagen principal use un **fondo blanco puro** (RGB 255, 255, 255). El producto debe ocupar al menos el 85% del encuadre. No se permiten texto, logotipos, marcas de agua ni accesorios en la imagen principal. Las imágenes secundarias pueden mostrar el producto en uso, incluir infografías o resaltar dimensiones.\n\nAquí tienes un desglose completo de los requisitos oficiales de imagen de Amazon:\n\n<table>\n  <thead>\n    <tr>\n      <th>Requisito</th>\n      <th>Imagen Principal</th>\n      <th>Imágenes Secundarias</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Fondo</td>\n      <td>Blanco puro (RGB 255,255,255)</td>\n      <td>Cualquier fondo apropiado al contexto</td>\n    </tr>\n    <tr>\n      <td>Formato de Archivo</td>\n      <td>JPEG o PNG</td>\n      <td>JPEG, PNG, GIF</td>\n    </tr>\n    <tr>\n      <td>Modo de Color</td>\n      <td>sRGB o CMYK</td>\n      <td>sRGB o CMYK</td>\n    </tr>\n    <tr>\n      <td>Lado Más Largo</td>\n      <td>Al menos 1,000 px</td>\n      <td>Al menos 1,000 px</td>\n    </tr>\n    <tr>\n      <td>Ocupación del Producto</td>\n      <td>85% del encuadre</td>\n      <td>Sin mínimo</td>\n    </tr>\n    <tr>\n      <td>Capacidad de Zoom</td>\n      <td>Requerida (se recomienda 2,000+ px)</td>\n      <td>Recomendada</td>\n    </tr>\n  </tbody>\n</table>\n\n### Método Tradicional vs Eliminación de Fondos con IA\n\nHistóricamente, los vendedores tenían dos opciones: contratar a un fotógrafo profesional o pasar horas recortando fondos manualmente en Photoshop. Ambos enfoques son costosos y requieren mucho tiempo. Las herramientas impulsadas por IA han cambiado el juego por completo.\n\nEl <a href=\"/remover\">eliminador de fondos de QuickBG</a> puede procesar una foto de producto en segundos, produciendo un PNG transparente con bordes limpios. De ahí, puedes colocar el producto sobre un fondo blanco puro que cumple exactamente con los requisitos de Amazon, sin necesidad de disparar en un estudio.\n\n## Flujo de Trabajo para Imágenes de Producto en Amazon\n\n1. Toma la foto del producto sobre un fondo limpio y simple (no tiene que ser blanco)\n2. Ejecútala a través del eliminador de fondos con IA para obtener un recorte transparente\n3. Usa la <a href=\"/resize\">herramienta de redimensionamiento inteligente</a> para configurar las dimensiones correctas (se recomiendan 2000+ px en el lado más largo)\n4. Aplica un fondo blanco usando la <a href=\"/replace-bg\">herramienta de reemplazo de fondo</a>\n5. Ajusta brillo y contraste con la <a href=\"/adjust\">herramienta de ajuste</a> para que coincida con los estándares de Amazon\n6. Exporta como JPEG de alta calidad para la imagen principal"
+      },
+      "etsy-shop-optimization-role-of-image-quality-in-conversion": {
+        "title": "Optimización de Tienda Etsy: El Papel de la Calidad de Imagen en la Conversión",
+        "excerpt": "Descubre cómo las imágenes de producto de alta calidad impactan directamente las tasas de conversión de Etsy y la visibilidad de la tienda.",
+        "category": "Comercio Electrónico",
+        "content": "<img src=\"/assets/stock_images/st1.jpg\" alt=\"Ejemplo de fotografía de producto de alta calidad en Etsy\" />\n\n## Por Qué la Calidad de la Imagen Determina el Éxito en Etsy\n\nEtsy es un mercado visual. Los compradores navegan por millones de productos hechos a mano, artículos vintage y suministros para manualidades, y toman decisiones de compra en fracciones de segundo. Las imágenes de tus productos son el factor más importante que determina si un navegador hace clic o se desplaza más allá de tu listado. De hecho, el algoritmo de búsqueda de Etsy favorece explícitamente los listados con imágenes de alta resolución, múltiples ángulos y fondos limpios.\n\nLa correlación entre la calidad de la imagen y la tasa de conversión en Etsy está bien documentada. Los vendedores que pasan de instantáneas de teléfono a imágenes editadas de aspecto profesional ven un aumento promedio del **20-40% en las tasas de conversión**. Esto no se trata de tener una cámara elegante — se trata de presentación, consistencia y atención al detalle.\n\n### Requisitos de Imagen de Etsy Comparados con Otras Plataformas\n\n<table>\n  <thead>\n    <tr>\n      <th>Plataforma</th>\n      <th>Tamaño de Imagen Recomendado</th>\n      <th>Máx. Imágenes</th>\n      <th>Preferencia de Fondo</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Etsy</td>\n      <td>2,000 x 2,000 px (cuadrado)</td>\n      <td>10 por listado</td>\n      <td>Fondo limpio y claro preferido</td>\n    </tr>\n    <tr>\n      <td>Amazon</td>\n      <td>2,000+ px en el lado más largo</td>\n      <td>9 por listado</td>\n      <td>Blanco puro para imagen principal</td>\n    </tr>\n    <tr>\n      <td>eBay</td>\n      <td>1,600 x 1,600 px mínimo</td>\n      <td>24 por listado</td>\n      <td>Fondo blanco o claro</td>\n    </tr>\n    <tr>\n      <td>Shopify</td>\n      <td>2,048 x 2,048 px recomendado</td>\n      <td>Ilimitado</td>\n      <td>Fondo consistente con la marca</td>\n    </tr>\n  </tbody>\n</table>\n\n### El Impacto de los Fondos Limpios en la Tasa de Clics\n\nLos compradores de Etsy se sienten atraídos por listados donde el producto es el punto focal claro. Un fondo desordenado distrae y hace que tu producto parezca menos profesional. Los estudios muestran que los productos con fondos limpios y neutrales tienen tasas de clics significativamente más altas que aquellos con entornos ocupados o inconsistentes.\n\nUsa el <a href=\"/remover\">eliminador de fondos de QuickBG</a> para limpiar los fondos de todas tus imágenes de Etsy. Esto funciona particularmente bien para artesanías hechas a mano, donde el fondo de la foto casera distrae del producto mismo."
+      },
+      "diy-product-photography-professional-results-without-studio": {
+        "title": "Fotografía de Producto DIY: Resultados Profesionales Sin Estudio",
+        "excerpt": "Crea fotos de producto de calidad de estudio en casa usando herramientas de edición con IA y técnicas simples de iluminación.",
+        "category": "Comercio Electrónico",
+        "content": "## Puedes Hacer Fotografía de Producto Sin un Estudio\n\nLa fotografía profesional de productos solía requerir miles de dólares en equipo, un espacio de estudio dedicado y años de experiencia. En 2026, eso ya no es cierto. Con un teléfono inteligente, conocimientos básicos de iluminación y herramientas de edición impulsadas por IA, cualquiera puede producir imágenes que parecen tomadas por un fotógrafo profesional.\n\nEl secreto no está en la cámara — está en el flujo de trabajo. Las herramientas modernas de IA manejan el trabajo técnico pesado, desde la <a href=\"/remover\">eliminación de fondos</a> hasta la corrección de color y el redimensionamiento. Tú te enfocas en la composición y la iluminación. La IA maneja todo lo demás.\n\n### Comparación: Estudio vs. Fotografía DIY\n\n<table>\n  <thead>\n    <tr>\n      <th>Factor</th>\n      <th>Estudio Profesional</th>\n      <th>DIY con Herramientas de IA</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Costo de equipo</td>\n      <td>$2,000 - $10,000+</td>\n      <td>$0 (usa tu teléfono)</td>\n    </tr>\n    <tr>\n      <td>Espacio requerido</td>\n      <td>Habitación de estudio dedicada</td>\n      <td>Cualquier habitación con ventana</td>\n    </tr>\n    <tr>\n      <td>Curva de aprendizaje</td>\n      <td>Meses a años</td>\n      <td>Horas a días</td>\n    </tr>\n    <tr>\n      <td>Tiempo de edición por imagen</td>\n      <td>10-30 minutos (manual)</td>\n      <td>30-60 segundos (asistido por IA)</td>\n    </tr>\n    <tr>\n      <td>Consistencia en todo el catálogo</td>\n      <td>Alta (con editor experto)</td>\n      <td>Muy alta (preajustes automatizados)</td>\n    </tr>\n    <tr>\n      <td>Costo por imagen (a escala)</td>\n      <td>$10-$50</td>\n      <td>Centavos</td>\n    </tr>\n  </tbody>\n</table>\n\n### Configurando Tu Estación de Fotografía DIY\n\nNo necesitas mucho para empezar. Aquí está todo lo que necesitas:\n\n1. **Un teléfono inteligente** con al menos 12 megapíxeles (cualquier iPhone moderno o Android funciona)\n2. **Luz natural** de una ventana grande — las ventanas orientadas al norte proporcionan la luz más consistente\n3. **Un fondo blanco o neutral** — cartulina, tela o un fondo de rodillo de papel\n4. **Una superficie reflectante** — espuma blanca para reflejar la luz de vuelta a las sombras\n5. **Las herramientas de edición de QuickBG** — para eliminación de fondos, ajustes y exportación\n\nCon esta configuración, puedes producir imágenes de calidad de estudio por una fracción del costo. La clave está en usar la luz natural de manera efectiva y dejar que la IA maneje el trabajo pesado de edición."
+      },
+      "amazon-a-plus-content-transparent-cutouts-premium-listings": {
+        "title": "Contenido A+ de Amazon: Usando Recortes Transparentes para Listados Premium",
+        "excerpt": "Mejora tu Contenido A+ de Amazon con recortes de producto transparentes que mejoran la narrativa visual y las ventas.",
+        "category": "Comercio Electrónico",
+        "content": "## ¿Qué es el Contenido A+ de Amazon y Por Qué es Importante\n\nEl Contenido A+ de Amazon (anteriormente Enhanced Brand Content) permite a los vendedores registrados como marca añadir contenido multimedia enriquecido a sus páginas de detalle de producto. En lugar de una descripción de texto plano, el Contenido A+ te permite usar imágenes mejoradas, tablas comparativas y módulos narrativos de marca. Los vendedores que usan Contenido A+ ven un aumento promedio del **5-15% en las tasas de conversión** en comparación con los listados estándar.\n\nLos módulos de Contenido A+ más efectivos usan **recortes de producto transparentes** — imágenes donde se ha eliminado el fondo para que el producto pueda colocarse sin problemas en escenas de estilo de vida, cuadrículas de comparación y llamadas de características. Estos recortes crean un aspecto premium y pulido que señala calidad a los compradores.\n\n### Tipos de Módulo de Contenido A+ y Su Efectividad\n\n<table>\n  <thead>\n    <tr>\n      <th>Tipo de Módulo</th>\n      <th>Mejor Caso de Uso</th>\n      <th>¿Requiere Recortes?</th>\n      <th>Aumento Típico de Conversión</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Imágenes de estilo de vida (ancho completo)</td>\n      <td>Mostrando el producto en uso</td>\n      <td>Sí</td>\n      <td>+12-18%</td>\n    </tr>\n    <tr>\n      <td>Tabla comparativa</td>\n      <td>Producto vs competidores</td>\n      <td>Sí</td>\n      <td>+8-15%</td>\n    </tr>\n    <tr>\n      <td>Llamadas de características con texto</td>\n      <td>Destacando beneficios clave</td>\n      <td>Recomendado</td>\n      <td>+10-14%</td>\n    </tr>\n    <tr>\n      <td>Módulo de historia de marca</td>\n      <td>Generando confianza de marca</td>\n      <td>No</td>\n      <td>+5-10%</td>\n    </tr>\n    <tr>\n      <td>Módulo interactivo hover</td>\n      <td>Detalles técnicos del producto</td>\n      <td>No</td>\n      <td>+7-12%</td>\n    </tr>\n  </tbody>\n</table>\n\n### Cómo Crear Recortes de Producto Transparentes para Contenido A+\n\nCrear recortes transparentes solía requerir horas de meticuloso trabajo en Photoshop. Con la eliminación de fondos impulsada por IA, puedes crear recortes de calidad de estudio en segundos. Simplemente sube tu foto de producto al <a href=\"/remover\">eliminador de fondos de QuickBG</a>, deja que la IA procese la imagen y descarga el PNG transparente. Luego coloca ese recorte en los módulos de Contenido A+ para un acabado profesional."
+      },
+      "multi-platform-selling-resizing-formatting-images-every-marketplace": {
+        "title": "Venta Multiplataforma: Redimensionando y Formateando Imágenes para Cada Mercado",
+        "excerpt": "Domina los requisitos de imagen en Amazon, Etsy, eBay y Shopify con un solo flujo de trabajo optimizado.",
+        "category": "Comercio Electrónico",
+        "content": "## El Desafío de Vender en Múltiples Plataformas\n\nVender a través de múltiples plataformas de comercio electrónico es una de las formas más efectivas de hacer crecer tu negocio online. Cada plataforma aporta tráfico único, diferentes demografías de clientes y canales de venta adicionales. Pero la venta multiplataforma tiene un costo oculto: **la gestión de imágenes**.\n\nCada mercado tiene sus propios requisitos de imagen — diferentes dimensiones, formatos de archivo, relaciones de aspecto y reglas de fondo. Gestionar estas variaciones manualmente es tedioso, propenso a errores y consume tiempo. Un solo producto podría necesitar cinco o más variantes de imagen para cumplir con los estándares de cada plataforma.\n\n### Referencia Completa de Especificaciones de Imagen\n\n<table>\n  <thead>\n    <tr>\n      <th>Plataforma</th>\n      <th>Tamaño de Imagen Principal</th>\n      <th>Relación de Aspecto</th>\n      <th>Formato</th>\n      <th>Fondo</th>\n      <th>Máx. Imágenes</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Amazon</td>\n      <td>2,000+ px (lado más largo)</td>\n      <td>Cualquiera (cuadrado preferido)</td>\n      <td>JPEG, PNG</td>\n      <td>Blanco puro (RGB 255,255,255)</td>\n      <td>9</td>\n    </tr>\n    <tr>\n      <td>Etsy</td>\n      <td>2,000 x 2,000 px</td>\n      <td>1:1 (cuadrado)</td>\n      <td>JPEG, PNG, WebP</td>\n      <td>Limpio, claro preferido</td>\n      <td>10</td>\n    </tr>\n    <tr>\n      <td>eBay</td>\n      <td>1,600 x 1,600 px mínimo</td>\n      <td>1:1 o 4:3</td>\n      <td>JPEG, PNG, BMP</td>\n      <td>Blanco o claro</td>\n      <td>24</td>\n    </tr>\n    <tr>\n      <td>Shopify</td>\n      <td>2,048 x 2,048 px</td>\n      <td>1:1 o 3:2</td>\n      <td>JPEG, PNG, WebP</td>\n      <td>Consistente con la marca</td>\n      <td>Ilimitado</td>\n    </tr>\n    <tr>\n      <td>Walmart</td>\n      <td>2,000 x 2,000 px mínimo</td>\n      <td>1:1</td>\n      <td>JPEG, PNG</td>\n      <td>Blanco solamente</td>\n      <td>8</td>\n    </tr>\n    <tr>\n      <td>Google Shopping</td>\n      <td>1,200 x 1,200 px mínimo</td>\n      <td>1:1 o 4:3</td>\n      <td>JPEG, PNG, WebP</td>\n      <td>Blanco o transparente</td>\n      <td>10</td>\n    </tr>\n  </tbody>\n</table>\n\n## Cómo QuickBG Simplifica la Gestión de Imágenes Multiplataforma\n\nEn lugar de mantener múltiples configuraciones y flujos de trabajo, puedes usar QuickBG como una ventanilla única para la preparación de imágenes:\n\n1. Elimina el fondo de la foto de tu producto usando el <a href=\"/remover\">eliminador de fondos</a>\n2. Redimensiona a los requisitos de cada plataforma con el <a href=\"/resize\">redimensionamiento inteligente</a>\n3. Recorta a la relación de aspecto correcta con el <a href=\"/crop\">recorte inteligente</a>\n4. Exporta en el formato requerido (JPEG para Amazon, PNG para Shopify, WebP para rendimiento web)\n\nEste flujo de trabajo único e ininterrumpido reemplaza múltiples herramientas y reduce el tiempo de preparación de imágenes en un 80%."
+      },
+      "understanding-image-segmentation-semantic-vs-instance-vs-panoptic": {
+        "title": "Entendiendo la Segmentación de Imágenes: Semántica vs Instancia vs Panóptica",
+        "excerpt": "Explora los tres paradigmas principales de segmentación de imágenes y aprende cómo cada enfoque impulsa las aplicaciones modernas de visión artificial, desde la conducción autónoma hasta la eliminación de fondos con IA.",
+        "category": "Tecnología",
+        "content": "La segmentación de imágenes es una de las tareas más fundamentales en visión artificial, pero sigue siendo ampliamente malinterpretada fuera de los círculos académicos. Si alguna vez has usado una herramienta como nuestro <a href=\"/remover\">eliminador de fondos</a> o intentado aislar un objeto específico en una foto, te has beneficiado de la tecnología de segmentación. Pero no toda la segmentación es igual. Hay tres paradigmas principales: segmentación semántica, de instancia y panóptica. Cada una sirve a un propósito diferente y tiene sus propias ventajas y desventajas.\n\n## ¿Qué es la Segmentación de Imágenes?\n\nEn esencia, la segmentación de imágenes significa dividir una imagen digital en múltiples segmentos o regiones. A diferencia de la clasificación de imágenes que etiqueta una imagen completa, o la detección de objetos que dibuja rectángulos alrededor de objetos, la segmentación trabaja a nivel de píxel. Cada píxel en la imagen se asigna a una categoría. Esta precisión a nivel de píxel es lo que hace que herramientas como <a href=\"/replace-bg\">reemplazar fondo</a> y <a href=\"/blur-bg\">desenfocar fondo</a> sean tan efectivas.\n\n<table><thead><tr><th>Tarea</th><th>Salida</th><th>Precisión</th><th>Caso de Uso</th></tr></thead><tbody><tr><td>Clasificación</td><td>Etiqueta única</td><td>Nivel de imagen</td><td>Moderación de contenido</td></tr><tr><td>Detección de Objetos</td><td>Rectángulos delimitadores</td><td>Nivel de región</td><td>Autos autónomos</td></tr><tr><td>Segmentación Semántica</td><td>Etiquetas por píxel</td><td>Nivel de píxel</td><td>Imágenes médicas</td></tr><tr><td>Segmentación de Instancia</td><td>Máscaras por objeto</td><td>Nivel de píxel</td><td>Fotos de comercio electrónico</td></tr><tr><td>Segmentación Panóptica</td><td>Etiquetas unificadas</td><td>Nivel de píxel</td><td>Robótica</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"Comparación de segmentación\" />\n\n### Cómo Funciona\n\nLa segmentación semántica moderna se basa en redes completamente convolucionales (FCN) y arquitecturas codificador-decodificador como U-Net. El codificador reduce progresivamente la resolución de la información espacial, mientras que el decodificador recupera detalles finos. Las conexiones de salto permiten que el decodificador acceda a la información de alta resolución del codificador, produciendo mapas de segmentación detallados.\n\n## Por Qué la Segmentación de Instancia es Clave para el Comercio Electrónico\n\nPara la eliminación de fondos, la segmentación de instancia es el paradigma más relevante porque produce una máscara separada para cada objeto. Esto permite que herramientas como QuickBG aíslen un producto específico de su fondo sin eliminar otros objetos en la imagen. Cuando subes una foto de producto, el modelo identifica qué píxeles pertenecen al producto y cuáles al fondo, produciendo un recorte limpio con bordes precisos."
+      },
+      "evolution-of-background-removal-chroma-key-to-deep-learning": {
+        "title": "La Evolución de la Eliminación de Fondos: Del Croma Clave al Aprendizaje Profundo",
+        "excerpt": "Traza el fascinante viaje de la tecnología de eliminación de fondos desde la composición analógica de croma clave hasta los modelos modernos de aprendizaje profundo como BiRefNet y MODNet.",
+        "category": "Tecnología",
+        "content": "La eliminación de fondos ha recorrido un largo camino. Lo que una vez requirió un mezclador de video de $50,000, un estudio dedicado y una pantalla verde cuidadosamente iluminada ahora se puede lograr en milisegundos con una herramienta basada en navegador como nuestro <a href=\"/remover\">eliminador de fondos</a>. Este artículo traza la evolución de la tecnología de eliminación de fondos desde sus orígenes analógicos hasta la revolución del aprendizaje profundo que impulsa las soluciones de matting más precisas de hoy.\n\n## La Era del Croma Clave\n\n### Inicios Analógicos\n\nLa primera técnica de eliminación de fondos fue la composición de croma clave, pionera de Petro Vlahos en la década de 1960. El concepto era simple: filmar a un sujeto frente a un fondo de color uniforme, luego reemplazar electrónicamente ese color con un fondo diferente. Los primeros sistemas como Ultimatte usaban circuitos analógicos para detectar el color de croma clave y generar una señal de control.\n\n**Limitaciones clave del croma clave analógico:**\n\n1. Requería un fondo perfectamente iluminado y de color uniforme\n2. Tenía problemas con el desenfoque de movimiento y detalles finos como el cabello\n3. No podía manejar objetos transparentes o semitransparentes\n4. Necesitaba hardware especializado costoso\n5. Requería espacio de estudio significativo\n\n<table><thead><tr><th>Era</th><th>Tecnología</th><th>Costo de Hardware</th><th>Tiempo de Procesamiento</th><th>Precisión</th></tr></thead><tbody><tr><td>1960s-1980s</td><td>Croma clave analógico</td><td>$50,000+</td><td>Tiempo real</td><td>Baja</td></tr><tr><td>1990s</td><td>Croma clave digital</td><td>$10,000+</td><td>Tiempo real</td><td>Media</td></tr><tr><td>2000s</td><td>Croma clave por software</td><td>$500+</td><td>Minutos</td><td>Media</td></tr><tr><td>2010s</td><td>Matting asistido por ML</td><td>$0+</td><td>Segundos</td><td>Alta</td></tr><tr><td>2020s</td><td>Matting con aprendizaje profundo</td><td>$0+</td><td>Milisegundos</td><td>Muy Alta</td></tr></tbody></table>\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Evolución de la tecnología de eliminación de fondos\" />\n\n### El Auge de la Eliminación Basada en Software\n\nLa llegada de editores de imágenes digitales como Photoshop en la década de 1990 trajo la eliminación de fondos a las computadoras de escritorio. Herramientas como la varita mágica y el lazo magnético permitían a los usuarios seleccionar y eliminar fondos sin equipo de video especializado. Sin embargo, estos métodos seguían siendo manuales y requerían mucho tiempo, y a menudo producían bordes dentados y resultados poco naturales.\n\n## La Revolución del Aprendizaje Profundo\n\n### Redes Neuronales Convolucionales\n\nEl verdadero punto de inflexión llegó con las redes neuronales convolucionales (CNN) y su aplicación a la segmentación de imágenes. U-Net (2015) fue un avance significativo, introduciendo una arquitectura codificador-decodificador con conexiones de salto que preservaban tanto el contexto como los detalles finos.\n\n### Modelos Modernos: BiRefNet\n\nHoy en día, modelos como BiRefNet representan el estado del arte en matting. El diseño de referencia bilateral de BiRefNet procesa simultáneamente el contexto global y el detalle local, produciendo bordes más limpios que los modelos anteriores, especialmente alrededor de cabello, pelaje y formas complejas.\n\nPara una comparación detallada de los modelos de matting con IA, consulta nuestro artículo sobre <a href=\"/blog/birefnet-vs-u2net-vs-modnet-comparing-ai-matting-models\">BiRefNet vs U2Net vs MODNet</a>."
+      },
+      "birefnet-vs-u2net-vs-modnet-comparing-ai-matting-models": {
+        "title": "BiRefNet vs U2Net vs MODNet: Comparando Modelos de Matting con IA",
+        "excerpt": "Una comparación técnica en profundidad de los tres principales modelos de matting con IA que impulsan las herramientas modernas de eliminación de fondos, con datos de referencia y recomendaciones prácticas.",
+        "category": "Tecnología",
+        "content": "Si alguna vez has usado un <a href=\"/remover\">eliminador de fondos</a> con IA, probablemente te has beneficiado de una de las tres arquitecturas líderes de aprendizaje profundo: BiRefNet, U2Net o MODNet. Cada una toma un enfoque fundamentalmente diferente al problema del matting de imágenes, y cada una tiene fortalezas y debilidades distintas. En este artículo, comparamos estos modelos en precisión, velocidad, uso de memoria y rendimiento en el mundo real.\n\n## ¿Qué es el Matting de Imágenes?\n\nEl matting de imágenes es la tarea de estimar con precisión la opacidad del primer plano para cada píxel en una imagen. A diferencia de la segmentación binaria, que produce una máscara dura de 0 o 1, el matting produce un matte alpha continuo donde los valores entre 0 y 1 representan transparencia parcial. Esto es esencial para el <a href=\"/replace-bg\">reemplazo de fondo</a>, los <a href=\"/blur-bg\">efectos de desenfoque</a> y la composición en capas.\n\n<img src=\"/assets/demo/pro.png\" alt=\"Comparación de modelos de matting con IA\" />\n\n## Resumen de Arquitectura de Modelos\n\n### MODNet (2020)\n\nMODNet (Matting Objective Decomposition Network) fue diseñado para matting de retratos en tiempo real sin ninguna entrada auxiliar. Su innovación clave es descomponer la tarea de matting en tres subobjetivos:\n\n1. **Rama semántica**: Predice la región del primer plano aproximada\n2. **Rama de detalle**: Refina bordes y estructuras finas\n3. **Rama de fusión**: Combina ambas salidas en el matte final\n\nEsta descomposición permite que MODNet funcione a 30+ FPS en GPUs de consumo.\n\n### U2Net (2020)\n\nU2Net (U-squared Net) utiliza una arquitectura U-Net anidada donde cada etapa del codificador-decodificador es en sí misma una estructura similar a U-Net. Este diseño anidado, combinado con conexiones residuales (bloques RSU), permite que la red capture tanto detalles finos como información contextual amplia simultáneamente.\n\n### BiRefNet (2023)\n\nBiRefNet (Bilateral Reference Network) es la arquitectura más nueva. Introduce el aprendizaje de referencia bilateral, donde la red mantiene codificaciones de referencia separadas para información global y local. Este diseño de doble ruta produce bordes más limpios alrededor de cabello, vidrio y objetos complejos. BiRefNet supera consistentemente tanto a MODNet como a U2Net en puntos de referencia estándar de matting, aunque con mayores requisitos computacionales.\n\n## Comparación de Rendimiento\n\nBiRefNet ofrece la mejor precisión general, especialmente para sujetos complejos. MODNet es el más rápido, ideal para aplicaciones en tiempo real. U2Net ofrece un buen equilibrio entre velocidad y precisión para tareas de segmentación general."
+      },
+      "what-is-alpha-matte-and-why-it-matters-for-transparent-pngs": {
+        "title": "¿Qué es un Matte Alpha y Por Qué es Importante para los PNG Transparentes?",
+        "excerpt": "Entiende la ciencia detrás de los mattes alpha, cómo permiten PNG transparentes perfectos y por qué los valores de opacidad continua importan más que las máscaras binarias para la composición profesional.",
+        "category": "Tecnología",
+        "content": "Cuando usas un <a href=\"/remover\">eliminador de fondos</a> para crear un PNG transparente, lo que realmente estás generando es un matte alpha. Pero ¿qué es exactamente un matte alpha y por qué es importante para la calidad de tus imágenes transparentes? Entender el matte alpha es la clave para producir compuestos de grado profesional que se vean naturales en cualquier contexto.\n\n## La Ecuación de Composición\n\nEn su forma más simple, una imagen es un arreglo bidimensional de píxeles, cada uno con canales de color (típicamente Rojo, Verde y Azul). Para imágenes transparentes, se añade un cuarto canal: Alpha. El canal alpha almacena información de opacidad, donde 0 significa completamente transparente y 1 (o 255 en 8 bits) significa completamente opaco.\n\nLa ecuación de composición describe cómo una imagen de primer plano con alpha se mezcla sobre un fondo:\n\n**Salida = Primer Plano * Alpha + Fondo * (1 - Alpha)**\n\nEste es el fundamento matemático detrás de cada herramienta en el sitio, desde el <a href=\"/replace-bg\">reemplazo de fondo</a> hasta el <a href=\"/blur-bg\">desenfoque de fondo</a>.\n\n## Máscara Binaria vs Matte Alpha\n\nUna máscara binaria asigna cada píxel como completamente de primer plano o completamente de fondo. Esto funciona para objetos sólidos pero falla catastróficamente para hebras de cabello, vidrio, desenfoque de movimiento y sombras suaves.\n\nUn matte alpha, en contraste, asigna un valor de opacidad continuo a cada píxel. Esto permite transiciones suaves entre el primer plano y el fondo.\n\n<table><thead><tr><th>Característica</th><th>Máscara Binaria</th><th>Matte Alpha</th></tr></thead><tbody><tr><td>Valores de píxel</td><td>0 o 1</td><td>0.0 a 1.0</td></tr><tr><td>Manejo de cabello</td><td>Desigual, dentado</td><td>Suave, natural</td></tr><tr><td>Transparencia</td><td>No soportada</td><td>Totalmente soportada</td></tr><tr><td>Tamaño de archivo</td><td>Pequeño</td><td>Más grande (8 o 16 bits)</td></tr><tr><td>Calidad de composición</td><td>Pobre en bordes</td><td>Profesional</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"Comparación de matte alpha vs máscara binaria\" />\n\n## Por Qué el Matte Alpha Importa para el Comercio Electrónico\n\nPara imágenes de productos, la calidad del matte alpha determina qué tan bien se ve tu producto cuando se coloca sobre diferentes fondos. Un matte alpha de alta calidad asegura que los bordes de tu producto se mezclen suavemente con cualquier fondo — blanco, negro, colorido o una escena de estilo de vida. Este es el factor que distingue a herramientas gratuitas como QuickBG de soluciones más costosas."
+      },
+      "science-of-image-resolution-dpi-ppi-and-why-size-matters": {
+        "title": "La Ciencia de la Resolución de Imágenes: DPI, PPI y Por Qué el Tamaño Importa",
+        "excerpt": "Entiende la diferencia crítica entre DPI y PPI, cómo la resolución afecta la calidad de impresión y web, y por qué redimensionar imágenes correctamente hace o deshace tus proyectos.",
+        "category": "Tecnología",
+        "content": "La resolución de imágenes es uno de los conceptos más malinterpretados en la imagen digital. Muchas personas usan DPI y PPI indistintamente, pero se refieren a cosas fundamentalmente diferentes. Ya sea que estés preparando una imagen para impresión usando nuestra <a href=\"/resize\">herramienta de redimensionamiento</a> u optimizando gráficos web con el <a href=\"/converter\">convertidor</a>, entender la ciencia de la resolución es esencial.\n\n## DPI vs PPI: La Diferencia Fundamental\n\n**DPI** (Dots Per Inch / Puntos Por Pulgada) se refiere al número de gotas de tinta que una impresora coloca por pulgada de papel. Es una propiedad del dispositivo de salida, no del archivo de imagen. **PPI** (Pixels Per Inch / Píxeles Por Pulgada) se refiere al número de píxeles en una imagen por pulgada de pantalla.\n\n<table><thead><tr><th>Término</th><th>Significa</th><th>Aplica a</th><th>Valor Típico</th></tr></thead><tbody><tr><td>DPI</td><td>Dots Per Inch (Puntos Por Pulgada)</td><td>Impresoras</td><td>300-1200</td></tr><tr><td>PPI</td><td>Pixels Per Inch (Píxeles Por Pulgada)</td><td>Pantallas y archivos</td><td>72-300</td></tr><tr><td>LPI</td><td>Lines Per Inch (Líneas Por Pulgada)</td><td>Medios tonos de impresión</td><td>50-200</td></tr><tr><td>MP</td><td>Megapixels (Megapíxeles)</td><td>Sensores de cámara</td><td>8-100</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"Comparación de DPI vs PPI\" />\n\n## Cómo la Resolución Afecta la Calidad de Salida\n\n### Resolución de Impresión\n\nPara impresión de alta calidad, la regla estándar es 300 PPI al tamaño de impresión objetivo. Una imagen de 3000x2400 píxeles a 300 PPI produce una impresión de 10x8 pulgadas.\n\n**PPI recomendado para diferentes aplicaciones de impresión:**\n1. **300 PPI**: Revistas, libros de fotos, impresiones de arte fino\n2. **240 PPI**: Folletos, volantes, materiales de marketing de alta calidad\n3. **150 PPI**: Carteles de gran formato (vistos desde distancia)\n4. **72 PPI**: Vallas publicitarias (vistas desde muy lejos)\n\n### Resolución Web\n\nLas imágenes web usan PPI solo para el tamaño de visualización. Una imagen de 72 PPI se renderiza en las mismas dimensiones de píxel que una imagen de 300 PPI en pantalla. Lo que importa para la web son las dimensiones reales de píxel, no la etiqueta PPI.\n\n## Dimensiones de Imagen y Tamaño de Archivo\n\nLa herramienta de redimensionamiento de QuickBG maneja automáticamente los cálculos de resolución. Ya sea que necesites redimensionar para impresión o web, la herramienta preserva la máxima calidad posible según tu configuración de salida."
+      },
+      "quickbg-vs-removebg-which-background-removal-tool-is-better": {
+        "title": "QuickBG vs Remove.bg: ¿Qué Herramienta de Eliminación de Fondos es Mejor en 2026?",
+        "excerpt": "Una comparación detallada de QuickBG y Remove.bg que cubre precios, precisión, características, procesamiento por lotes y velocidad para ayudarte a decidir.",
+        "category": "Comparaciones",
+        "content": "## Introducción\n\nLa eliminación de fondos es una de las tareas de edición de imágenes más solicitadas en 2026. Ya seas un vendedor de comercio electrónico, un diseñador gráfico o un creador de contenido, necesitas una herramienta confiable que ofrezca recortes limpios sin romper tu presupuesto. <a href=\"/remover\">QuickBG</a> y Remove.bg son dos de los servicios de eliminación de fondos con IA más populares disponibles hoy en día.\n\nEsta comparación examina cada aspecto de ambas plataformas para que puedas tomar una decisión informada.\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Interfaz de eliminación de fondos de QuickBG\" />\n\n## Desglose de Precios\n\nEl precio es a menudo el factor decisivo al elegir entre estos dos servicios. QuickBG ofrece un nivel gratuito notablemente generoso, mientras que Remove.bg cobra por imagen después de consumir un crédito de vista previa único.\n\n<table>\n  <thead>\n    <tr><th>Plan</th><th>QuickBG</th><th>Remove.bg</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Nivel Gratuito</td><td>Imágenes ilimitadas hasta 5MP</td><td>1 vista previa solamente</td></tr>\n    <tr><td>Descarga HD</td><td>Gratis con registro</td><td>$0.99 por imagen</td></tr>\n    <tr><td>Mensual Ilimitado</td><td>$9.99</td><td>$14.99 por 200 créditos</td></tr>\n    <tr><td>Plan Anual</td><td>$59.99</td><td>$119.88</td></tr>\n    <tr><td>API por imagen</td><td>$0.01</td><td>$0.10</td></tr>\n  </tbody>\n</table>\n\n## Comparación de Precisión y Calidad\n\nAmbas plataformas utilizan IA entrenada en millones de imágenes, pero su calidad de salida varía significativamente en escenarios desafiantes.\n\n<table>\n  <thead>\n    <tr><th>Escenario de Prueba</th><th>Resultado QuickBG</th><th>Resultado Remove.bg</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Fondo blanco sólido</td><td>Detección de bordes perfecta</td><td>Detección de bordes perfecta</td></tr>\n    <tr><td>Cabello rizado y suelto</td><td>Preservación excelente de hebras</td><td>Pérdida moderada de detalle</td></tr>\n    <tr><td>Objetos de vidrio transparentes</td><td>Buen manejo de transparencia</td><td>Resultados inconsistentes</td></tr>\n  </tbody>\n</table>\n\n## Veredicto\n\nQuickBG es la mejor opción para la mayoría de los usuarios porque ofrece resultados de calidad profesional de forma gratuita. Remove.bg tiene sentido para usuarios que necesitan procesamiento de API o integraciones específicas y están dispuestos a pagar por ello."
+      },
+      "how-to-convert-images-between-formats-png-jpg-webp-avif": {
+        "title": "Cómo Convertir Imágenes Entre Formatos: Comparación de PNG, JPG, WebP, AVIF",
+        "excerpt": "Una guía completa para convertir imágenes entre formatos PNG, JPG, WebP y AVIF con comparaciones detalladas de calidad y tamaño de archivo.",
+        "category": "Comparaciones",
+        "content": "<img src=\"/assets/demo/converter.png\" alt=\"Interfaz del convertidor de formato de imágenes de QuickBG mostrando selección de formato\" />\n\n## Introducción\n\nLa conversión de formato de imágenes es una habilidad fundamental para cualquiera que trabaje con imágenes digitales. Ya sea que estés optimizando un sitio web, preparando materiales de impresión o construyendo una aplicación, elegir el formato correcto impacta directamente la calidad, el tamaño del archivo y la velocidad de carga.\n\nEl <a href=\"/converter\">convertidor de imágenes gratuito</a> de QuickBG soporta conversión sin problemas entre todos los formatos principales, incluyendo PNG, JPG, WebP y AVIF.\n\n## Características de los Formatos\n\n<table>\n  <thead>\n    <tr><th>Propiedad</th><th>PNG</th><th>JPG</th><th>WebP</th><th>AVIF</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Tipo de Compresión</td><td>Sin pérdida</td><td>Con pérdida</td><td>Con y sin pérdida</td><td>Con y sin pérdida</td></tr>\n    <tr><td>Soporte de Transparencia</td><td>Sí</td><td>No</td><td>Sí</td><td>Sí</td></tr>\n    <tr><td>Soporte de Animación</td><td>No</td><td>No</td><td>Sí</td><td>Sí</td></tr>\n    <tr><td>Soporte de Navegadores</td><td>Universal</td><td>Universal</td><td>96% de navegadores</td><td>84% de navegadores</td></tr>\n    <tr><td>Profundidad de Color</td><td>Hasta 48 bits</td><td>24 bits</td><td>Hasta 24 bits</td><td>Hasta 12 bits HDR</td></tr>\n  </tbody>\n</table>\n\n## Comparación de Tamaño de Archivo en el Mundo Real\n\n<table>\n  <thead>\n    <tr><th>Formato</th><th>Configuración de Calidad</th><th>Tamaño de Archivo</th><th>Tamaño vs PNG</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>PNG</td><td>Sin pérdida</td><td>2.45 MB</td><td>Línea base</td></tr>\n    <tr><td>JPG</td><td>85%</td><td>520 KB</td><td>79% más pequeño</td></tr>\n    <tr><td>WebP</td><td>85%</td><td>340 KB</td><td>86% más pequeño</td></tr>\n    <tr><td>AVIF</td><td>85%</td><td>280 KB</td><td>89% más pequeño</td></tr>\n  </tbody>\n</table>\n\n## Cuándo Usar Cada Formato\n\n- **PNG**: Imágenes que requieren transparencia, como logotipos, iconos y capturas de pantalla. Úsalo con la <a href=\"/remover\">eliminación de fondos</a> para crear imágenes recortadas.\n- **JPG**: Fotografías e imágenes complejas donde el tamaño del archivo importa más que la transparencia.\n- **WebP**: El estándar web moderno que ofrece excelente compresión con y sin pérdida de calidad.\n- **AVIF**: El formato más nuevo con la mejor compresión, ideal para sitios de alto tráfico que necesitan cargas rápidas."
+      },
+      "ultimate-guide-to-quickbg-batch-processing-tools": {
+        "title": "La Guía Definitiva de las Herramientas de Procesamiento de Imágenes de QuickBG",
+        "excerpt": "Explora el conjunto completo de herramientas gratuitas de procesamiento de imágenes de QuickBG, incluyendo eliminación de fondos, redimensionamiento, recorte, ajuste de color y procesamiento por lotes.",
+        "category": "Comparaciones",
+        "content": "## Introducción\n\nQuickBG comenzó como una simple herramienta de eliminación de fondos, pero ha evolucionado hasta convertirse en una plataforma integral de procesamiento de imágenes. Hoy, QuickBG ofrece un conjunto completo de herramientas de edición que rivalizan con costosos software de escritorio, todo accesible desde tu navegador de forma gratuita.\n\n## Resumen de Herramientas\n\n<table>\n  <thead>\n    <tr><th>Herramienta</th><th>Uso Principal</th><th>Impulsado por IA</th><th>Soporte por Lotes</th></tr>\n  </thead>\n  <tbody>\n    <tr><td><a href=\"/remover\">Eliminador de Fondos</a></td><td>Eliminar fondos de imágenes</td><td>Sí</td><td>Hasta 50 imágenes</td></tr>\n    <tr><td><a href=\"/replace-bg\">Reemplazo de Fondo</a></td><td>Reemplazar con fondos personalizados</td><td>Sí</td><td>Hasta 50 imágenes</td></tr>\n    <tr><td><a href=\"/blur-bg\">Desenfoque de Fondo</a></td><td>Añadir efectos de desenfoque</td><td>Sí</td><td>Hasta 50 imágenes</td></tr>\n    <tr><td><a href=\"/resize\">Redimensionador de Imágenes</a></td><td>Cambiar dimensiones de imagen</td><td>No</td><td>Hasta 100 imágenes</td></tr>\n    <tr><td><a href=\"/crop\">Recortador de Imágenes</a></td><td>Recortar a relaciones específicas</td><td>No</td><td>Hasta 100 imágenes</td></tr>\n    <tr><td><a href=\"/adjust\">Ajustes de Imagen</a></td><td>Brillo, contraste, saturación</td><td>No</td><td>Hasta 100 imágenes</td></tr>\n    <tr><td><a href=\"/sharpness\">Herramienta de Nitidez</a></td><td>Mejorar claridad de imagen</td><td>Mejorado con IA</td><td>Hasta 100 imágenes</td></tr>\n    <tr><td><a href=\"/converter\">Convertidor de Formato</a></td><td>Convertir entre formatos de imagen</td><td>No</td><td>Hasta 100 imágenes</td></tr>\n  </tbody>\n</table>\n\n## Eliminación y Reemplazo de Fondos\n\nLa fortaleza principal de QuickBG reside en su eliminación de fondos impulsada por IA. El <a href=\"/remover\">eliminador de fondos</a> utiliza modelos de aprendizaje profundo entrenados en millones de imágenes etiquetadas.\n\n<img src=\"/assets/demo/pro.png\" alt=\"Vista previa de eliminación de fondos impulsada por IA\" />\n\n## Redimensionamiento y Recorte de Imágenes\n\nLas herramientas de redimensionamiento y recorte de QuickBG te permiten preparar imágenes para cualquier plataforma con ajustes preestablecidos para Amazon, Etsy, Instagram y más. El soporte de procesamiento por lotes te permite procesar cientos de imágenes en minutos."
+      },
+      "quickbg-vs-canva-background-removal-and-editing-compared": {
+        "title": "QuickBG vs Canva: Eliminación de Fondos y Edición Comparadas",
+        "excerpt": "Una comparación detallada entre QuickBG y Canva para eliminación de fondos y edición de imágenes, cubriendo precios, características y calidad de salida.",
+        "category": "Comparaciones",
+        "content": "## Introducción\n\nCanva se ha convertido en un nombre familiar para el diseño gráfico, pero su herramienta de eliminación de fondos está bloqueada detrás de una suscripción paga. QuickBG ofrece funcionalidad similar completamente gratis, además de un conjunto de herramientas dedicadas de edición de imágenes.\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Comparación de interfaz de eliminación de fondos\" />\n\n## Comparación de Precios\n\n<table>\n  <thead>\n    <tr><th>Característica</th><th>QuickBG</th><th>Canva</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Eliminación de Fondos Gratuita</td><td>Ilimitada, hasta 5MP</td><td>No disponible (solo Pro)</td></tr>\n    <tr><td>Descargas HD</td><td>Gratis con cuenta</td><td>Suscripción Pro requerida</td></tr>\n    <tr><td>Costo Mensual</td><td>$9.99 (ilimitado)</td><td>$12.99 por persona (Pro)</td></tr>\n    <tr><td>Edición de Imágenes Gratuita</td><td>Suite completa incluida</td><td>Herramientas básicas limitadas</td></tr>\n    <tr><td>Procesamiento por Lotes</td><td>Hasta 50 imágenes</td><td>No disponible</td></tr>\n  </tbody>\n</table>\n\n## Calidad de Eliminación de Fondos\n\n<table>\n  <thead>\n    <tr><th>Métrica de Calidad</th><th>QuickBG</th><th>Canva</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Preservación de detalle de cabello</td><td>Excelente</td><td>Buena</td></tr>\n    <tr><td>Suavidad de bordes</td><td>Excelente</td><td>Buena</td></tr>\n    <tr><td>Manejo de fondos complejos</td><td>Excelente</td><td>Aceptable</td></tr>\n    <tr><td>Salida de transparencia</td><td>PNG nativo con alpha</td><td>PNG con alpha (solo Pro)</td></tr>\n    <tr><td>Velocidad de procesamiento</td><td>2-3 segundos</td><td>5-8 segundos</td></tr>\n  </tbody>\n</table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"Comparación de calidad de eliminación de fondos\" />\n\n## Veredicto\n\nQuickBG es claramente superior para la eliminación de fondos, especialmente para usuarios que necesitan procesar múltiples imágenes o requieren descargas HD sin pagar una suscripción."
+      },
+      "quickbg-vs-adobe-photoshop-free-alternative-background-removal": {
+        "title": "QuickBG vs Adobe Photoshop: Alternativa Gratuita para Eliminación de Fondos",
+        "excerpt": "Compara la eliminación de fondos gratuita con IA de QuickBG contra las herramientas profesionales de Adobe Photoshop para ver si una alternativa gratuita puede reemplazar al costoso software.",
+        "category": "Comparaciones",
+        "content": "## Introducción\n\nAdobe Photoshop ha sido el estándar de oro para la edición de imágenes durante décadas. Pero a $22.99 por mes, es prohibitivamente caro para muchos usuarios. QuickBG ofrece una alternativa gratuita convincente para la eliminación de fondos y tareas comunes de edición.\n\n<img src=\"/assets/demo/pro.png\" alt=\"Comparación lado a lado de QuickBG y Photoshop\" />\n\n## Comparación de Precios\n\n<table>\n  <thead>\n    <tr><th>Factor de Costo</th><th>QuickBG</th><th>Adobe Photoshop</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Nivel Gratuito</td><td>Acceso completo con límites</td><td>Solo prueba de 7 días</td></tr>\n    <tr><td>Suscripción Mensual</td><td>$9.99 ilimitado</td><td>$22.99 Plan de Fotografía</td></tr>\n    <tr><td>Costo Anual</td><td>$59.99</td><td>$263.88</td></tr>\n    <tr><td>Compra Única</td><td>Disponible</td><td>No disponible</td></tr>\n  </tbody>\n</table>\n\n## Capacidades de Eliminación de Fondos\n\n<table>\n  <thead>\n    <tr><th>Área de Comparación</th><th>QuickBG</th><th>Adobe Photoshop</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Método</td><td>Automatización con IA de un clic</td><td>Selección manual o asistida por IA</td></tr>\n    <tr><td>Tiempo para imagen estándar</td><td>2-3 segundos</td><td>30 segundos a 5 minutos</td></tr>\n    <tr><td>Curva de aprendizaje</td><td>Ninguna</td><td>Empinada</td></tr>\n    <tr><td>Detalle de cabello</td><td>Excelente automatizado</td><td>Excelente con refinamiento manual</td></tr>\n    <tr><td>Procesamiento por lotes</td><td>Hasta 50 imágenes</td><td>A través de Acciones y scripts</td></tr>\n  </tbody>\n</table>\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Comparación de eliminación de fondos\" />\n\n## Veredicto\n\nPara la mayoría de los usuarios, QuickBG es una alternativa más que suficiente a Photoshop para la eliminación de fondos. Es más rápido, gratuito y no requiere curva de aprendizaje. Photoshop sigue siendo necesario para trabajos de composición complejos, pero para el 80% de las tareas de edición de imágenes, QuickBG es la mejor opción."
+      },
+      "social-media-image-sizes-2026-complete-cheat-sheet": {
+        "title": "Tamaños de Imágenes para Redes Sociales 2026: Guía de Referencia Completa para Cada Plataforma",
+        "excerpt": "Nunca más recortes mal tus imágenes. Esta guía de referencia 2026 cubre todos los tamaños de imagen de las principales plataformas, desde Historias de Instagram hasta banners de LinkedIn.",
+        "category": "Redes Sociales",
+        "content": "Equivocar las dimensiones de las imágenes es una de las formas más rápidas de verse poco profesional en redes sociales. Un banner estirado, una cara recortada o una historia con barras negras, todo indica descuido. En 2026, el panorama está más fragmentado que nunca, con cada plataforma impulsando relaciones de aspecto ligeramente diferentes.\n\n## Por Qué las Dimensiones de las Imágenes Importan Más Que Nunca\n\nLos algoritmos de redes sociales favorecen cada vez más el contenido que carga rápido y llena la pantalla exactamente. Si tu imagen tiene el tamaño incorrecto, la plataforma la estira (borrosa) o la recorta (pierde contexto). Ambos resultados reducen la interacción. Meta reportó que las imágenes con el tamaño correcto ven hasta un 38% más de tasas de clics.\n\n## Guía de Referencia Plataforma por Plataforma\n\n### Instagram\n<table>\n  <thead>\n    <tr><th>Tipo de Imagen</th><th>Dimensiones (px)</th><th>Relación de Aspecto</th><th>Tamaño Máx. de Archivo</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Publicación cuadrada</td><td>1080 x 1080</td><td>1:1</td><td>30 MB</td></tr>\n    <tr><td>Publicación vertical</td><td>1080 x 1350</td><td>4:5</td><td>30 MB</td></tr>\n    <tr><td>Publicación horizontal</td><td>1080 x 566</td><td>1.91:1</td><td>30 MB</td></tr>\n    <tr><td>Historia / Reels</td><td>1080 x 1920</td><td>9:16</td><td>30 MB</td></tr>\n    <tr><td>Foto de perfil</td><td>320 x 320</td><td>1:1</td><td>10 MB</td></tr>\n  </tbody>\n</table>\n\n### TikTok\n<table>\n  <thead>\n    <tr><th>Tipo de Imagen</th><th>Dimensiones (px)</th><th>Relación de Aspecto</th><th>Notas</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Publicaciones de video</td><td>1080 x 1920</td><td>9:16</td><td>Solo vertical</td></tr>\n    <tr><td>Foto de perfil</td><td>200 x 200</td><td>1:1</td><td>Recorte circular</td></tr>\n    <tr><td>Imágenes de carrusel</td><td>1080 x 1920</td><td>9:16</td><td>Deslizables</td></tr>\n  </tbody>\n</table>\n\n### YouTube, LinkedIn, Facebook\n\n**YouTube**: Miniatura 1280 x 720 (16:9), Banner de canal 2048 x 1152\n**LinkedIn**: Banner personal 1584 x 396, Imagen compartida 1200 x 627\n**Facebook**: Publicación en feed 1200 x 630 (1.91:1), Imagen de evento 1920 x 1080, Historia 1080 x 1920\n\nUsa las herramientas de <a href=\"/resize\">redimensionamiento inteligente</a> y <a href=\"/crop\">recorte inteligente</a> de QuickBG para preparar imágenes para cualquier plataforma. Los ajustes preestablecidos integrados cubren todas las relaciones de aspecto comunes."
+      },
+      "creating-consistent-brand-imagery-instagram-tiktok": {
+        "title": "Creando Imágenes de Marca Consistentes para Instagram y TikTok",
+        "excerpt": "La consistencia de marca en Instagram y TikTok es más difícil de lo que parece. Aprende a construir plantillas reutilizables, paletas de colores y flujos de trabajo de edición.",
+        "category": "Redes Sociales",
+        "content": "Desplazarse por Instagram y TikTok uno tras otro revela una verdad dura: la mayoría de las marcas parecen dos empresas diferentes en cada plataforma. El feed de Instagram es pulido y alineado en cuadrícula. La presencia en TikTok es cruda y vertical. Esta desconexión confunde a los seguidores y debilita el recuerdo de marca.\n\n## Por Qué la Consistencia de Marca Importa\n\nLas imágenes consistentes generan reconocimiento. Cuando alguien ve tu contenido fuera de contexto, debería saber instantáneamente que es tuyo. Según un estudio de Lucidpress de 2025, la presentación consistente de marca en todas las plataformas aumenta los ingresos hasta en un 23%.\n\n## Construyendo Tu Sistema Visual Central\n\n### Paleta de Colores\n<table>\n  <thead>\n    <tr><th>Elemento</th><th>Código Hex</th><th>Uso</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Primario</td><td>#2A6BFF</td><td>Encabezados, botones, acentos</td></tr>\n    <tr><td>Secundario</td><td>#1A1A2E</td><td>Fondos, texto</td></tr>\n    <tr><td>Acento</td><td>#FF6B6B</td><td>CTAs, destacados de urgencia</td></tr>\n    <tr><td>Neutral</td><td>#F5F5F5</td><td>Fondos de tarjetas, divisores</td></tr>\n  </tbody>\n</table>\n\nExporta todos los gráficos en espacio de color sRGB. Las plataformas sociales asumen sRGB, y los colores de gama amplia se verán descoloridos.\n\n### Sistema de Tipografía\n| Uso | Fuente | Peso | Tamaño (px) |\n|---|---|---|---|\n| Título | Inter | Negrita (700) | 36-48 |\n| Subtítulo | Inter | Semi-Negrita (600) | 20-28 |\n| Cuerpo | Inter | Regular (400) | 14-18 |\n\n## Instagram: El Enfoque Primero la Cuadrícula\n\nUsa la <a href=\"/adjust\">herramienta de ajuste de QuickBG</a> para aplicar brillo, contraste y saturación consistentes en cada foto antes de colocarla en una plantilla.\n\n### Plantillas de Historias de Instagram\n- Usa un lienzo de 1080 x 1920 con márgenes de seguridad de 120 px\n- Coloca el logotipo en la esquina superior derecha a 80 px de ancho\n- Mantén el texto dentro del 70% central del encuadre\n\nUsa el <a href=\"/blur-bg\">desenfoque de fondo</a> para fondos de Historias y añade profundidad sin distracciones.\n\n## TikTok: Vertical y Rápido\n\nEl formato vertical de pantalla completa de TikTok exige contenido que se entienda al instante. A diferencia de Instagram, donde los usuarios se toman su tiempo para explorar, TikTok se basa en bucles de atención rápidos.\n\nUsa la <a href=\"/crop\">herramienta de recorte</a> para asegurar que tus imágenes de TikTok llenen la pantalla sin barras negras. La relación de aspecto 9:16 es obligatoria."
+      },
+      "how-to-build-image-processing-pipeline-online-store": {
+        "title": "Cómo Construir un Proceso de Procesamiento de Imágenes para Tu Tienda Online",
+        "excerpt": "Un proceso de imágenes automatizado ahorra horas por semana y asegura que cada foto de producto esté optimizada para velocidad y conversiones.",
+        "category": "Consejos",
+        "content": "Cada imagen de producto en tu tienda online es un vendedor. Si carga lentamente o se ve inconsistente, ese vendedor está rindiendo por debajo de su potencial. Construir un proceso automatizado de procesamiento de imágenes soluciona los tres problemas a la vez.\n\n## Por Qué Necesitas un Proceso\n\nLa edición manual de imágenes funciona para una tienda de 20 productos. Cuando llegas a 200 o 2,000 productos, colapsa. Un proceso automatizado ofrece:\n1. Tamaños de archivo consistentes para páginas más rápidas\n2. Dimensiones uniformes para una apariencia profesional\n3. Fotos de producto sin fondo\n4. Exportaciones en múltiples formatos (WebP + JPEG)\n5. Copias de seguridad automáticas\n\n## Arquitectura del Proceso\n\n### Etapa 1: Ingesta y Validación\n<table>\n  <thead>\n    <tr><th>Paso</th><th>Herramienta</th><th>Propósito</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Subir imágenes originales</td><td>API de QuickBG</td><td>Recibir originales</td></tr>\n    <tr><td>Validar resolución</td><td>Script personalizado</td><td>Rechazar imágenes menores a 1200 px</td></tr>\n    <tr><td>Verificar espacio de color</td><td>ImageMagick</td><td>Convertir CMYK a sRGB</td></tr>\n    <tr><td>Almacenar original</td><td>Almacenamiento en la nube</td><td>Copia de seguridad</td></tr>\n  </tbody>\n</table>\n\n### Etapa 2: Eliminación de Fondos\nUsa el <a href=\"/remover\">eliminador de fondos de QuickBG</a>. Soporta procesamiento por lotes para que puedas eliminar fondos de 50 fotos de producto en menos de dos minutos.\n\n### Etapa 3: Estandarización\n1. Recorta a una relación de aspecto consistente usando la <a href=\"/crop\">herramienta de recorte</a>\n2. Redimensiona usando la <a href=\"/resize\">herramienta de redimensionamiento</a>\n3. Aplica nitidez con la <a href=\"/sharpness\">herramienta de nitidez</a>\n4. Normaliza el balance de blancos con la <a href=\"/adjust\">herramienta de ajuste</a>\n\n### Etapa 4: Optimización de Formato\n<table>\n  <thead>\n    <tr><th>Formato</th><th>Caso de Uso</th><th>Reducción de Tamaño vs TIFF</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>WebP</td><td>Navegadores modernos (principal)</td><td>34%</td></tr>\n    <tr><td>JPEG (calidad 82)</td><td>Respaldo para navegadores antiguos</td><td>26%</td></tr>\n    <tr><td>AVIF</td><td>Rendimiento de vanguardia</td><td>45%</td></tr>\n  </tbody>\n</table>\n\nEste proceso reduce el tiempo de preparación de imágenes de horas a minutos, permitiéndote escalar tu catálogo de productos sin contratar personal adicional de edición."
+      },
+      "common-image-file-formats-explained-png-jpg-webp-avif": {
+        "title": "Formatos de Archivo de Imagen Comunes Explicados: Cuándo Usar PNG, JPG, WebP o AVIF",
+        "excerpt": "Aprende las fortalezas y debilidades de PNG, JPEG, WebP y AVIF para que puedas elegir el formato correcto para cada caso de uso.",
+        "category": "Consejos",
+        "content": "Elegir el formato de imagen incorrecto es uno de los errores de rendimiento más comunes. Un PNG donde JPEG funcionaría añade 200 KB de peso innecesario. Un JPEG donde WebP es compatible deja un 30% de rendimiento sobre la mesa.\n\n## Cómo Funciona la Compresión de Imágenes\n\n<table>\n  <thead>\n    <tr><th>Tipo</th><th>Cómo Funciona</th><th>Mejor Para</th><th>Formato de Ejemplo</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Sin pérdida</td><td>Preserva cada píxel exactamente</td><td>Capturas de pantalla, diagramas, logotipos</td><td>PNG, WebP sin pérdida</td></tr>\n    <tr><td>Con pérdida</td><td>Descarta algo de detalle para reducir tamaño</td><td>Fotografías, degradados</td><td>JPEG, WebP con pérdida, AVIF</td></tr>\n    <tr><td>Submuestreo de croma</td><td>Reduce la resolución de color</td><td>Cualquier foto</td><td>4:2:0 en JPEG</td></tr>\n  </tbody>\n</table>\n\n## Análisis Profundo de Formatos\n\n### PNG\n- Compresión: Sin pérdida\n- Transparencia: Canal alpha completo\n- Mejor para: Capturas de pantalla, logotipos, elementos de UI\n\n### JPEG\n- Compresión: Con pérdida (calidad 0-100)\n- Transparencia: No soportada\n- Mejor para: Fotografías, imágenes de redes sociales\n\n### WebP\n- Compresión: Modos con y sin pérdida\n- Transparencia: Sí\n- Mejor para: Reemplazo universal de JPEG y PNG\n\n### AVIF\n- Compresión: Con y sin pérdida\n- Transparencia: Sí\n- Mejor para: Sitios de alto tráfico, contenido HDR\n\n## Tabla Comparativa\n\n<table>\n  <thead>\n    <tr><th>Formato</th><th>Tamaño Promedio (fuente 1MB)</th><th>Calidad al 80%</th><th>Transparencia</th><th>Soporte de Navegadores</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>PNG</td><td>800 KB</td><td>Sin pérdida</td><td>Sí</td><td>100%</td></tr>\n    <tr><td>JPEG</td><td>260 KB</td><td>Buena</td><td>No</td><td>100%</td></tr>\n    <tr><td>WebP</td><td>180 KB</td><td>Excelente</td><td>Sí</td><td>97%</td></tr>\n    <tr><td>AVIF</td><td>130 KB</td><td>Excelente</td><td>Sí</td><td>80%</td></tr>\n  </tbody>\n</table>\n\n## Marco de Decisión\n\n1. Usa AVIF con respaldo WebP para aplicaciones web modernas\n2. Usa WebP con respaldo JPEG para sitios públicos\n3. Usa PNG para imágenes que necesitan transparencia\n4. Usa JPEG para fotografías donde el tamaño del archivo es crítico"
+      },
+      "10-image-editing-mistakes-that-hurt-your-conversion-rates": {
+        "title": "10 Errores de Edición de Imágenes Que Dañan Tus Tasas de Conversión",
+        "excerpt": "La mala edición de imágenes destruye conversiones silenciosamente. Evita estos 10 errores comunes y mira cómo tu interacción y ventas mejoran inmediatamente.",
+        "category": "Consejos",
+        "content": "Tus imágenes de producto son lo más cerca que un cliente llega a tocar tu producto. Si esas imágenes se ven mal a nivel subconsciente, los visitantes se van. Baymard Institute reporta que el 22% de los usuarios han abandonado una compra específicamente porque las imágenes de producto eran de baja calidad.\n\n## 1. Sobrecompresión\n\n| Error | Calidad JPEG por debajo de 60 | Tamaño de archivo bajo 50 KB |\n|---|---|---|\n| Resultado | Artefactos en bloque, bandas de color | Detalle deslavado |\n| Impacto | -7% a -12% de conversión | -9% |\n\nMantén la calidad en 82 para JPEG y 85 para WebP. Usa la <a href=\"/adjust\">herramienta de ajuste</a> antes de exportar.\n\n## 2. Relación de Aspecto Incorrecta para la Plataforma\n\n| Plataforma | Relación Ideal | Error Común |\n|---|---|---|\n| Feed de Instagram | 1:1 o 4:5 | 16:9 horizontal |\n| TikTok / Reels | 9:16 | 1:1 cuadrado |\n| Cuadrícula de productos | 1:1 | 3:2 dimensiones de foto |\n\nUsa la <a href=\"/crop\">herramienta de recorte</a> para exportar por lotes en cada relación de aspecto necesaria.\n\n## 3. Ignorar el Desorden del Fondo\n\n| Escenario | CTR | Tasa de Agregar al Carrito |\n|---|---|---|\n| Fondo blanco limpio | 4.2% | 8.7% |\n| Fondo de habitación desordenada | 2.1% | 4.3% |\n\nUsa el <a href=\"/remover\">eliminador de fondos de QuickBG</a> para eliminar entornos distractores.\n\n## 4. Iluminación Inconsistente\n\nAplica un balance de blancos uniforme en cada imagen usando la <a href=\"/adjust\">herramienta de ajuste</a>. Ajusta por lotes 50 imágenes en menos de dos minutos.\n\n## 5. No Usar WebP o AVIF\n\n| Formato | 100 imágenes | Peso total | Tiempo de carga (3G) |\n|---|---|---|---|\n| Solo JPEG | 26 MB | 26 MB | 6.8 segundos |\n| JPEG + WebP | 18 MB | 18 MB | 4.7 segundos |\n| WebP + AVIF | 13 MB | 13 MB | 3.4 segundos |\n\nCada segundo adicional de carga reduce las conversiones en un 2.1%. <a href=\"/converter\">Convierte a WebP hoy</a>.\n\n## 6. Olvidar las Zonas de Recorte Móvil\n\nMantén la cara del producto centrada en el 60% medio del encuadre. Prueba cada imagen a 375 x 667 px. Usa la <a href=\"/resize\">herramienta de redimensionamiento</a> para recortes específicos para móviles.\n\n## 7. Sobreenfoque\n\n| Nivel | Calidad Visual |\n|---|---|\n| Sin enfoque | Suave, sin detalles |\n| Enfoque óptimo | Nítido, bordes limpios |\n| Sobreenfoque | Halos, ruido, aspecto artificial |\n\nUsa la <a href=\"/sharpness\">herramienta de nitidez de QuickBG</a> con una configuración de radio baja (0.5-1.0 píxeles) y aumenta la cantidad gradualmente."
+      }
+    }
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes — QuickBG",
+    "description": "Preguntas frecuentes sobre la eliminación de fondos de QuickBG, las herramientas de edición de imágenes y cómo obtener los mejores resultados.",
+    "heading": "Preguntas Frecuentes",
+    "subheading": "Respuestas a preguntas comunes sobre el eliminador de fondos con IA gratuito de QuickBG, formatos de imagen, privacidad, uso comercial y más.",
+    "items": {
+      "q1": {
+        "q": "¿Cuál es el mejor eliminador de fondos gratuito?",
+        "a": "QuickBG ofrece un eliminador de fondos con IA gratuito que preserva la resolución original, no requiere registro y procesa imágenes ilimitadas. Utiliza BiRefNet para la detección precisa de bordes en retratos, productos, mascotas y sujetos complejos."
+      },
+      "q2": {
+        "q": "¿QuickBG es realmente gratuito?",
+        "a": "Sí — QuickBG es completamente gratuito. Sin tarjeta de crédito, sin registro, sin límites ocultos. Puedes procesar hasta 25 imágenes por hora sin costo, con resolución completa y sin marca de agua."
+      },
+      "q3": {
+        "q": "¿Qué formatos de imagen soporta QuickBG?",
+        "a": "QuickBG soporta todos los formatos de imagen principales, incluyendo PNG, JPEG, WebP, AVIF, GIF, BMP y TIFF. También puedes convertir entre formatos usando nuestra herramienta de convertidor gratuita."
+      },
+      "q4": {
+        "q": "¿Puedo usar las imágenes de QuickBG con fines comerciales?",
+        "a": "Sí. Todas las imágenes procesadas a través de QuickBG son tuyas para usar con cualquier propósito — personal, comercial o de otro tipo. No reclamamos derechos sobre tu contenido."
+      },
+      "q5": {
+        "q": "¿Cómo protege QuickBG mi privacidad?",
+        "a": "Las imágenes se procesan en memoria y se eliminan automáticamente de nuestros servidores después de la entrega. Nunca almacenamos, entrenamos ni compartimos tus cargas. No se requiere cuenta ni datos personales."
+      },
+      "q6": {
+        "q": "¿Qué es BiRefNet?",
+        "a": "BiRefNet (Bilateral Reference Network) es un modelo de IA de última generación para matting de imágenes. Produce bordes más limpios que modelos antiguos como U²-Net o MODNet, especialmente alrededor de cabello, pelaje y formas complejas."
+      },
+      "q7": {
+        "q": "¿Hay un límite de cuántas imágenes puedo procesar?",
+        "a": "QuickBG permite hasta 25 imágenes por hora para usuarios gratuitos. Este límite se restablece cada hora. No hay topes diarios o mensuales."
+      },
+      "q8": {
+        "q": "¿QuickBG funciona en dispositivos móviles?",
+        "a": "Sí. QuickBG es completamente responsivo y funciona en todos los navegadores móviles modernos. También puedes instalarlo como una PWA para una experiencia similar a una aplicación."
+      }
+    }
+  },
+  "about": {
+    "title": "Acerca de — QuickBG",
+    "description": "Conoce QuickBG, la suite gratuita de eliminación de fondos y edición de imágenes impulsada por IA.",
+    "badge": "Nuestra Historia",
+    "heading": "Acerca de QuickBG",
+    "intro": "QuickBG nació de una simple frustración: ¿por qué eliminar un fondo debería costar dinero o requerir un registro? Construimos una herramienta gratuita e ilimitada impulsada por IA que cualquiera puede usar — sin condiciones.",
+    "techHeading": "Tecnología",
+    "techItems": {
+      "model": "Modelo de IA BiRefNet",
+      "modelDesc": "Usamos BiRefNet, una red de referencia bilateral de última generación para matting de imágenes de alta resolución. Ofrece una calidad de bordes superior en comparación con modelos antiguos.",
+      "serverless": "Arquitectura Serverless",
+      "serverlessDesc": "Construido en la plataforma serverless de Vercel con inferencia de HuggingFace. Escala automáticamente, cero mantenimiento y mantiene los costos en cero.",
+      "fallback": "Alternativa del Lado del Cliente",
+      "fallbackDesc": "TensorFlow.js se ejecuta directamente en tu navegador cuando la cola está ocupada. Tus imágenes nunca salen de tu dispositivo en este modo.",
+      "queue": "Cola de Trabajos MongoDB",
+      "queueDesc": "Los trabajos se encolan en MongoDB con limpieza automática. Las imágenes se eliminan inmediatamente después del procesamiento — nunca almacenamos tus datos."
+    },
+    "whoHeading": "¿Quién usa QuickBG?",
+    "useCases": {
+      "ecommerce": "Comercio electrónico",
+      "ecommerceDesc": "Fotos de productos para Amazon, Etsy, Shopify",
+      "social": "Redes Sociales",
+      "socialDesc": "Miniaturas para Instagram, TikTok, YouTube",
+      "photo": "Fotografía",
+      "photoDesc": "Edición de retratos, fotografía de eventos",
+      "design": "Diseño",
+      "designDesc": "Maquetas, presentaciones, materiales de marketing",
+      "fashion": "Moda",
+      "fashionDesc": "Catálogos de ropa, lookbooks",
+      "education": "Educación",
+      "educationDesc": "Presentaciones, materiales de curso",
+      "health": "Salud",
+      "healthDesc": "Imágenes médicas, documentación",
+      "realestate": "Bienes Raíces",
+      "realestateDesc": "Listados de propiedades, staging virtual"
+    },
+    "faqHeading": "Preguntas Frecuentes",
+    "faqs": {
+      "q1": "¿Qué tipo de imágenes funcionan mejor con QuickBG?",
+      "a1": "QuickBG funciona mejor en imágenes donde el sujeto tiene un contraste claro contra el fondo — retratos, fotos de productos sobre fondos blancos o sólidos, mascotas y composiciones planas. También maneja casos difíciles como cabello, pelaje, vidrio y objetos semitransparentes gracias al refinamiento de bordes del modelo BiRefNet. Para mejores resultados, asegúrate de que tu sujeto esté bien iluminado y ocupe una porción significativa del encuadre.",
+      "q2": "¿Por qué QuickBG usa BiRefNet en lugar de otros modelos?",
+      "a2": "BiRefNet (Bilateral Reference Network) fue elegido porque supera consistentemente a U²-Net, MODNet y otras arquitecturas comunes en los puntos de referencia estándar que evaluamos. Su diseño de doble ruta — uno para contexto global y otro para detalle local — produce bordes más limpios, especialmente alrededor del cabello y geometría compleja. El modelo también es de código abierto y tiene una licencia permisiva, lo que se alinea con la filosofía de QuickBG de construir sobre tecnología transparente y accesible.",
+      "q3": "¿Qué sucede con mis imágenes después del procesamiento?",
+      "a3": "Tus imágenes se procesan en memoria y se almacenan temporalmente en la cola de trabajos en MongoDB. Una vez que el resultado se entrega a tu navegador, los datos de la imagen se eliminan automáticamente de la cola. Nunca almacenamos, entrenamos ni compartimos tus cargas. El almacenamiento temporal del trabajador está encriptado y se limpia de forma continua. Para total tranquilidad, también puedes usar la alternativa del lado del cliente de TensorFlow.js, que mantiene cada píxel en tu dispositivo.",
+      "q4": "¿Quién construyó QuickBG?",
+      "a4": "QuickBG fue construido por un solo desarrollador (Yash) que estaba frustrado con las costosas herramientas de eliminación de fondos y quería crear una alternativa verdaderamente gratuita. El proyecto comenzó como un experimento de fin de semana y creció hasta convertirse en un conjunto completo de herramientas de edición de imágenes.",
+      "q5": "¿Cuál es la hoja de ruta de QuickBG?",
+      "a5": "Las próximas funciones incluyen: procesamiento por lotes para usuarios avanzados, acceso API para desarrolladores, más modelos de IA para casos de uso especializados y soporte de formatos ampliado. Las herramientas principales siempre permanecerán gratuitas."
+    },
+    "roadmapHeading": "Hoja de Ruta",
+    "roadmap": {
+      "core": "Eliminación de fondos principal",
+      "coreDesc": "Lanzado — Modelo BiRefNet, uso ilimitado",
+      "suite": "Suite de edición de imágenes",
+      "suiteDesc": "Lanzado — Redimensionar, recortar, desenfocar, reemplazar, ajustar, enfocar, convertir",
+      "lang": "Soporte multilingüe",
+      "langDesc": "En progreso — Inglés, Hindi, Alemán",
+      "api": "Acceso API",
+      "apiDesc": "Planificado — API REST para desarrolladores",
+      "batch": "Procesamiento por lotes",
+      "batchDesc": "Planificado — Procesar carpetas enteras a la vez"
+    },
+    "touchHeading": "Ponte en Contacto",
+    "touchDesc": "¿Tienes preguntas, comentarios o ideas de colaboración? Nos encantaría saber de ti."
+  },
+  "tools": {
+    "title": "Herramientas de Imagen — QuickBG",
+    "description": "Herramientas gratuitas de edición de imágenes en línea: eliminador de fondos, desenfoque, reemplazo, redimensionamiento, recorte, ajuste, nitidez y convertidor de formato.",
+    "pageTitle": "Herramientas QuickBG — Suite Completa de Edición de Imágenes",
+    "pageDesc": "Ocho herramientas diseñadas para trabajar juntas. Elimina fondos, redimensiona, recorta, ajusta y exporta — todo en un espacio de trabajo, sin necesidad de registro.",
+    "recommended": "Flujo de trabajo recomendado",
+    "recommendedDesc": "Elimina el fondo primero, luego redimensiona, recorta, reemplaza, desenfoca o ajusta sin salir del flujo de QuickBG. El recorte permanece intacto mientras te mueves entre herramientas.",
+    "openRemoverBtn": "Abrir eliminador",
+    "chooseHeading": "Cómo Elegir la Herramienta Correcta",
+    "chooseDesc": "¿No estás seguro por dónde empezar? Combina tu objetivo con la herramienta adecuada.",
+    "chooseGoal": "Tu objetivo",
+    "chooseUse": "Usa",
+    "chooseItems": {
+      "cutout": "Necesito un recorte limpio del sujeto",
+      "cutoutTool": "Eliminador de Fondos",
+      "cutoutWhy": "La detección de bordes impulsada por IA maneja cabello, pelaje y límites complejos.",
+      "dimensions": "Necesito dimensiones específicas",
+      "dimensionsTool": "Redimensionamiento Inteligente o Recorte Inteligente",
+      "dimensionsWhy": "Redimensiona para dimensiones de píxel exactas o recorta a relaciones de preset para plataformas.",
+      "styled": "Quiero un fondo con estilo",
+      "styledTool": "Reemplazo de Fondo o Desenfoque de Fondo",
+      "styledWhy": "Reemplazar añade colores/degradados/imágenes; Desenfocar crea profundidad mientras mantiene el contexto.",
+      "pop": "Necesito que la imagen destaque",
+      "popTool": "Ajustar Imagen o Nitidez",
+      "popWhy": "Ajustar maneja brillo/contraste/saturación; Nitidez refina el detalle de bordes.",
+      "format": "Necesito un formato de archivo específico",
+      "formatTool": "Convertidor de Formato",
+      "formatWhy": "Convierte a PNG, JPG, WebP, AVIF o TIFF con controles de calidad."
+    },
+    "workflowHeading": "Consejos de Flujo de Trabajo",
+    "workflowDesc": "Recetas paso a paso para escenarios comunes de edición de imágenes.",
+    "workflows": {
+      "ecom": {
+        "title": "Fotos de productos para comercio electrónico",
+        "steps": [
+          "Elimina el fondo para un recorte limpio",
+          "Redimensiona a Amazon 1:1 o Etsy 4:3",
+          "Reemplaza con fondo blanco o de marca",
+          "Ajusta brillo y contraste"
+        ]
+      },
+      "social": {
+        "title": "Contenido para redes sociales",
+        "steps": [
+          "Elimina el fondo del retrato",
+          "Recorta a Instagram 4:5 o 1:1",
+          "Desenfoca el fondo para efecto de profundidad",
+          "Exporta como WebP para carga más rápida"
+        ]
+      },
+      "listing": {
+        "title": "Optimización de listados de productos",
+        "steps": [
+          "Elimina el fondo con refinamiento de bordes",
+          "Recorta para enfocar al sujeto",
+          "Enfoca los bordes del producto",
+          "Convierte a PNG para transparencia"
+        ]
+      }
+    },
+    "readFullGuide": "Leer guía completa",
+    "blogHeading": "Lo último del blog",
+    "blogDesc": "Consejos, tutoriales y análisis profundos sobre eliminación de fondos con IA y edición de imágenes.",
+    "faqHeading": "Preguntas Frecuentes",
+    "faqDesc": "Respuestas rápidas sobre cómo elegir y usar las herramientas de QuickBG.",
+    "faqItems": {
+      "first": "¿Qué herramienta debería usar primero?",
+      "firstA": "Comienza con el Eliminador de Fondos para crear un recorte limpio, luego usa Redimensionamiento Inteligente, Recorte o Reemplazo de Fondo dependiendo de tu destino de salida. La mayoría de los flujos siguen: eliminar → redimensionar/recortar → refinar.",
+      "multiple": "¿Puedo usar múltiples herramientas en la misma imagen?",
+      "multipleA": "Sí — QuickBG mantiene tu recorte del sujeto mientras te mueves entre herramientas. Puedes eliminar, redimensionar, recortar, reemplazar el fondo, desenfocar y ajustar en cualquier orden sin empezar de nuevo.",
+      "signup": "¿Necesito registrarme para usar las herramientas?",
+      "signupA": "Sin registro, sin tarjeta de crédito, sin límites. Todas las herramientas son gratuitas. Exporta PNG transparentes a resolución completa sin marca de agua.",
+      "formats": "¿Qué formatos de imagen son compatibles entre las herramientas?",
+      "formatsA": "Todas las herramientas aceptan cargas PNG, JPG, WebP, HEIC y AVIF. El Convertidor de Formato te permite exportar a cualquier formato compatible, incluyendo TIFF y AVIF."
+    },
+    "howToUse": {
+      "adjust": "Cómo usar Ajustar Imagen",
+      "blurBg": "Cómo usar Desenfoque de Fondo",
+      "converter": "Cómo usar Convertidor de Formato",
+      "crop": "Cómo usar Recorte Inteligente",
+      "remover": "Cómo usar Eliminador de Fondos",
+      "replaceBg": "Cómo usar Reemplazo de Fondo",
+      "resize": "Cómo usar Redimensionamiento Inteligente",
+      "sharpness": "Cómo usar Nitidez"
+    }
+  },
+  "remover": {
+    "title": "Eliminador de Fondos Gratuito en Línea — QuickBG",
+    "description": "Elimina fondos de imágenes al instante con IA. 100% gratuito, uso ilimitado, sin necesidad de registro.",
+    "progress": "Progreso",
+    "yourPosition": "Tu Posición",
+    "estWait": "Espera Est.",
+    "processingTime": "Tiempo de Procesamiento",
+    "resolution": "Resolución",
+    "processed": "Procesado",
+    "format": "Formato",
+    "position": {
+      "bottomRight": "Inferior derecha",
+      "bottomLeft": "Inferior izquierda",
+      "topRight": "Superior derecha",
+      "topLeft": "Superior izquierda",
+      "center": "Centro"
+    },
+    "status": {
+      "waiting": "Esperando",
+      "starting": "Iniciando",
+      "uploading": "Subiendo",
+      "inQueue": "En Cola",
+      "processing": "Procesando",
+      "finalizing": "Finalizando",
+      "fetching": "Obteniendo imagen procesada",
+      "done": "Listo",
+      "failed": "Falló",
+      "expired": "Expirado",
+      "cancelled": "Cancelado"
+    },
+    "timeline": {
+      "upload": "Subir",
+      "queue": "Cola",
+      "mask": "Máscara",
+      "ready": "Listo"
+    },
+    "waiting": {
+      "hourlyLimit": "Límite por hora alcanzado",
+      "queueFull": "La cola está llena",
+      "hourlyDesc": "Esta imagen se procesará automáticamente cuando se restablezcan los créditos.",
+      "queueDesc": "Esta imagen se procesará automáticamente cuando haya capacidad en la cola.",
+      "resetsIn": "Se restablece en",
+      "retryingIn": "Reintentando en"
+    },
+    "queue": {
+      "position": "Posición en la Cola",
+      "yourPosition": "Tu Posición",
+      "estWait": "Espera Est."
+    },
+    "complete": {
+      "heading": "Procesamiento Completo",
+      "time": "Tiempo de Procesamiento",
+      "resolution": "Resolución",
+      "processed": "Procesado",
+      "format": "Formato"
+    },
+    "error": {
+      "heading": "Procesamiento Falló"
+    },
+    "actions": {
+      "download": "Descargar",
+      "downloading": "Descargando...",
+      "copyPng": "Copiar PNG",
+      "delete": "Eliminar",
+      "retry": "Reintentar Procesamiento",
+      "cancel": "Cancelar"
+    },
+    "quickEdit": {
+      "heading": "Edición Rápida",
+      "eraser": "Borrador",
+      "sharpness": "Nitidez",
+      "convert": "Convertir",
+      "blurBg": "Desenfocar Fondo",
+      "replaceBg": "Reemplazar Fondo"
+    },
+    "watermark": {
+      "heading": "Marca de Agua",
+      "placeholder": "Texto de marca de agua",
+      "size": "Tamaño",
+      "opacity": "Opacidad",
+      "apply": "Aplicar Marca de Agua",
+      "position": {
+        "bottomRight": "Inferior derecha",
+        "bottomLeft": "Inferior izquierda",
+        "topRight": "Superior derecha",
+        "topLeft": "Superior izquierda",
+        "center": "Centro"
+      }
+    },
+    "border": {
+      "heading": "Borde",
+      "width": "Ancho",
+      "apply": "Aplicar Borde"
+    },
+    "steps": {
+      "upload": "Subir",
+      "queue": "Cola",
+      "mask": "Máscara",
+      "export": "Exportar"
+    },
+    "preview": {
+      "progress": "Progreso",
+      "original": "Original",
+      "backgroundRemoved": "Fondo Eliminado",
+      "backgroundRemovedBadge": "Fondo eliminado",
+      "alt": "Vista previa"
+    },
+    "statusCopy": {
+      "preparing": "Preparando vista previa final",
+      "preparingDesc": "El trabajador terminó. Obteniendo el PNG transparente ahora.",
+      "uploading": "Subiendo imagen",
+      "uploadingDesc": "Enviando tu archivo al trabajador sin cambiar la calidad.",
+      "queuePosition": "Posición en cola #{position}",
+      "waiting": "Esperando en la cola",
+      "estimatedWait": "Espera estimada: {time}",
+      "capacityDesc": "Tu imagen comenzará tan pronto como haya capacidad disponible.",
+      "removing": "Eliminando fondo",
+      "removingDesc": "Detectando los bordes del sujeto y creando un recorte transparente."
+    }
+  },
+  "replaceBg": {
+    "title": "Reemplazar Fondo en Línea — QuickBG",
+    "description": "Reemplaza fondos de imágenes con colores sólidos o degradados. Gratuito, sin necesidad de registro.",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Abre la imagen",
+      "step1Desc": "Comienza desde el Eliminador de Fondos y haz clic en el botón de edición rápida Reemplazar Fondo en una imagen completada.",
+      "step2Title": "Elige el tipo de fondo",
+      "step2Desc": "Selecciona color sólido, degradado o imagen personalizada como tu nuevo fondo.",
+      "step3Title": "Ajusta y previsualiza",
+      "step3Desc": "Selector de color, paradas de degradado y carga de imagen te permiten ajustar el fondo.",
+      "step4Title": "Descarga el resultado",
+      "step4Desc": "Exporta como superposición PNG transparente o imagen aplanada con el nuevo fondo."
+    }
+  },
+  "blurBg": {
+    "title": "Desenfocar Fondo en Línea — QuickBG",
+    "description": "Desenfoca fondos de imágenes con IA. Herramienta gratuita en línea, sin necesidad de registro.",
+    "sharp": "Nítido",
+    "blurred": "Desenfocado",
+    "error": "Error",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Abre la imagen",
+      "step1Desc": "Procesa una imagen en el Eliminador de Fondos primero, luego haz clic en el botón de edición rápida Desenfocar Fondo.",
+      "step2Title": "Ajusta la intensidad del desenfoque",
+      "step2Desc": "Usa el control deslizante para controlar cuánto desenfoque se aplica al fondo mientras el sujeto permanece nítido.",
+      "step3Title": "Previsualiza el efecto",
+      "step3Desc": "La vista previa se actualiza automáticamente mientras arrastras el control deslizante. Ajusta hasta que se vea natural.",
+      "step4Title": "Descargar",
+      "step4Desc": "Guarda la imagen desenfocada como PNG transparente o compuesto aplanado."
+    }
+  },
+  "resize": {
+    "title": "Redimensionar Imagen en Línea — QuickBG",
+    "description": "Redimensiona imágenes en línea gratis. Mantén la calidad con redimensionamiento impulsado por IA.",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Sube tu imagen",
+      "step1Desc": "Sube cualquier imagen. Los formatos aceptados incluyen PNG, JPG, WebP y HEIC.",
+      "step2Title": "Elige relación de aspecto o dimensiones personalizadas",
+      "step2Desc": "Selecciona entre relaciones preestablecidas (1:1, 4:5, 16:9, etc.) o ingresa ancho y alto personalizados.",
+      "step3Title": "Revisa la vista previa",
+      "step3Desc": "Mira cómo se ve tu imagen en las nuevas dimensiones antes de aplicar el redimensionamiento.",
+      "step4Title": "Descargar",
+      "step4Desc": "Descarga la imagen redimensionada en tu formato preferido."
+    }
+  },
+  "crop": {
+    "title": "Recortar Imagen en Línea — QuickBG",
+    "description": "Recorta imágenes en línea gratis. Recorte inteligente con relaciones de aspecto preestablecidas.",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Sube una imagen",
+      "step1Desc": "Sube cualquier archivo de imagen. La herramienta de recorte soporta todos los formatos de imagen principales.",
+      "step2Title": "Selecciona la relación de aspecto",
+      "step2Desc": "Elige entre Libre, 1:1, 4:3, 16:9, 9:16 o 3:2. O usa rotación y zoom libremente.",
+      "step3Title": "Ajusta el área de recorte",
+      "step3Desc": "Arrastra los mangos de recorte o rota para enmarcar tu sujeto exactamente como lo quieres.",
+      "step4Title": "Aplica y descarga",
+      "step4Desc": "Haz clic en Aplicar Recorte, luego descarga el resultado en tu formato elegido."
+    }
+  },
+  "adjust": {
+    "title": "Ajustar Imagen en Línea — QuickBG",
+    "description": "Ajusta el brillo, contraste y saturación de tus imágenes en línea gratis.",
+    "smallerFile": "Archivo más pequeño",
+    "betterQuality": "Mejor calidad",
+    "selectImage": "Seleccionar Imagen",
+    "change": "Cambiar",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Sube tu imagen",
+      "step1Desc": "Sube una imagen JPG, PNG o WebP para empezar a ajustar.",
+      "step2Title": "Ajusta finamente",
+      "step2Desc": "Usa los controles deslizantes de brillo, contraste y saturación. Los cambios se actualizan en tiempo real.",
+      "step3Title": "Elige la configuración de salida",
+      "step3Desc": "Selecciona formato y calidad. Alterna el tamaño de archivo objetivo para optimización de salida.",
+      "step4Title": "Descargar",
+      "step4Desc": "Descarga la imagen ajustada a máxima calidad con todos los cambios aplicados."
+    }
+  },
+  "sharpness": {
+    "title": "Enfocar Imagen en Línea — QuickBG",
+    "description": "Enfoca tus imágenes en línea gratis. Herramienta de enfoque impulsada por IA.",
+    "error": "Error",
+    "howToUse": "Cómo usar Nitidez",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Abrir desde el Eliminador",
+      "step1Desc": "Procesa una imagen con el Eliminador de Fondos primero, luego haz clic en el botón de edición rápida Nitidez.",
+      "step2Title": "Ajusta la nitidez",
+      "step2Desc": "Usa el control deslizante para controlar la intensidad de la nitidez. Aumenta suavemente para retratos y bordes de productos.",
+      "step3Title": "Elige el objetivo",
+      "step3Desc": "Apunta al sujeto, fondo o ambos usando la máscara alpha del eliminador.",
+      "step4Title": "Descargar",
+      "step4Desc": "La vista previa se actualiza automáticamente. Descarga cuando estés satisfecho con el resultado."
+    }
+  },
+  "converter": {
+    "title": "Convertidor de Imágenes en Línea — QuickBG",
+    "description": "Convierte imágenes entre formatos PNG, JPEG, WebP y AVIF en línea gratis.",
+    "change": "Cambiar",
+    "howToUse": "Cómo usar el Convertidor de Formato",
+    "guide": {
+      "heading": "Guía",
+      "step1Title": "Sube imágenes",
+      "step1Desc": "Sube una o más imágenes. Formatos soportados: PNG, JPG, WebP, HEIC, AVIF, TIFF.",
+      "step2Title": "Elige el formato de salida",
+      "step2Desc": "Selecciona PNG, JPG, WebP, AVIF o TIFF como formato destino y ajusta la calidad.",
+      "step3Title": "Revisa y convierte",
+      "step3Desc": "Haz clic en Convertir para procesar. La herramienta maneja la conversión por lotes automáticamente.",
+      "step4Title": "Descargar",
+      "step4Desc": "Descarga archivos individuales o todos los resultados como un archivo ZIP."
+    }
+  },
+  "comparison": {
+    "title": "Comparación — QuickBG",
+    "description": "Compara QuickBG con otras herramientas de eliminación de fondos y ve la diferencia.",
+    "label": "Comparación",
+    "heading": "QuickBG vs Remove.bg vs Photoshop — ¿Cuál es el Mejor Eliminador de Fondos?",
+    "intro": "Comparamos QuickBG contra las herramientas de eliminación de fondos más populares en precio, calidad, velocidad, privacidad y características. Mira cómo se comparan.",
+    "feature": "Característica",
+    "tools": {
+      "quickbg": "QuickBG",
+      "removebg": "Remove.bg",
+      "photoshop": "Adobe Photoshop",
+      "canva": "Canva"
+    },
+    "rows": {
+      "price": {
+        "feature": "Precio",
+        "quickbg": "Gratis — sin tarjeta de crédito",
+        "removebg": "Vista previa gratis, HD paga",
+        "photoshop": "$23/mes suscripción",
+        "canva": "Gratis con marca de agua, Pro $13/mes"
+      },
+      "signup": {
+        "feature": "Registro Requerido",
+        "quickbg": "No",
+        "removebg": "Opcional",
+        "photoshop": "Sí",
+        "canva": "Sí"
+      },
+      "quality": {
+        "feature": "Calidad de Imagen",
+        "quickbg": "Resolución completa preservada",
+        "removebg": "HD en plan pago",
+        "photoshop": "Control total",
+        "canva": "Limitado en plan gratuito"
+      },
+      "resolution": {
+        "feature": "Resolución Máxima",
+        "quickbg": "Original — sin límite",
+        "removebg": "0.25 MP gratis, HD paga",
+        "photoshop": "Ilimitada",
+        "canva": "Limitado en plan gratuito"
+      },
+      "batch": {
+        "feature": "Procesamiento por Lotes",
+        "quickbg": "Sí",
+        "removebg": "No gratis",
+        "photoshop": "Sí (acciones)",
+        "canva": "No gratis"
+      },
+      "watermark": {
+        "feature": "Marca de Agua",
+        "quickbg": "Ninguna",
+        "removebg": "Vistas previas gratis",
+        "photoshop": "Ninguna",
+        "canva": "Exportaciones gratis"
+      },
+      "replace": {
+        "feature": "Reemplazo de Fondo",
+        "quickbg": "Sí",
+        "removebg": "Sí",
+        "photoshop": "Sí",
+        "canva": "Sí (Pro)"
+      },
+      "blur": {
+        "feature": "Desenfoque de Fondo",
+        "quickbg": "Sí",
+        "removebg": "No",
+        "photoshop": "Sí",
+        "canva": "Sí (Pro)"
+      },
+      "resize": {
+        "feature": "Herramientas de Redimensionar/Recortar",
+        "quickbg": "Sí",
+        "removebg": "No",
+        "photoshop": "Sí",
+        "canva": "Sí"
+      },
+      "speed": {
+        "feature": "Velocidad de Procesamiento",
+        "quickbg": "Menos de 5 segundos",
+        "removebg": "5-10 segundos",
+        "photoshop": "Minutos (manual)",
+        "canva": "10-30 segundos"
+      },
+      "privacy": {
+        "feature": "Privacidad",
+        "quickbg": "Auto-eliminado después de usar, sin entrenamiento",
+        "removebg": "Retenido 48 horas",
+        "photoshop": "Procesamiento local",
+        "canva": "Almacenado para entrenamiento de IA"
+      },
+      "commercial": {
+        "feature": "Uso Comercial",
+        "quickbg": "Sí, sin atribución",
+        "removebg": "Plan pago",
+        "photoshop": "Sí",
+        "canva": "Con licencia"
+      },
+      "mobile": {
+        "feature": "Soporte Móvil",
+        "quickbg": "Basado en navegador",
+        "removebg": "App disponible",
+        "photoshop": "App Express",
+        "canva": "Sí"
+      }
+    },
+    "yes": "Sí",
+    "no": "No",
+    "detailedHeading": "Desglose Detallado",
+    "detailedDesc": "Una mirada más cercana a cada alternativa y cuándo podrías elegir una sobre las otras.",
+    "quickbgDesc": "QuickBG es un eliminador de fondos gratuito basado en navegador que usa IA BiRefNet para producir PNG transparentes de alta calidad. Sin registro, sin marca de agua, sin límites de resolución. Incluye herramientas adicionales para desenfoque, reemplazo, redimensionamiento, recorte y ajuste de imagen. Ideal para vendedores de comercio electrónico, administradores de redes sociales y diseñadores que necesitan recortes rápidos sin suscripción.",
+    "tryQuickbg": "Prueba QuickBG",
+    "removebgDesc": "Remove.bg es un servicio dedicado de eliminación de fondos con una vista previa gratuita (baja resolución, con marca de agua) y descargas HD pagas desde $0.99/imagen o planes de suscripción. Ofrece una API para desarrolladores e integraciones con Shopify, Figma y más. El principal inconveniente es el costo a escala — procesar cientos de fotos de producto se acumula rápidamente.",
+    "removebgVerdict": "Bueno para imágenes únicas, pero costoso para flujos de trabajo masivos en comparación con QuickBG.",
+    "photoshopDesc": "Photoshop es el estándar de la industria para la edición de imágenes con control total sobre cada píxel. Sus herramientas Seleccionar Sujeto, máscaras de capa y pluma dan a los profesionales un control preciso. Sin embargo, requiere una suscripción de $23/mes, una curva de aprendizaje y trabajo manual para cada imagen. La eliminación de fondos que toma segundos en QuickBG puede tomar 5-10 minutos en Photoshop.",
+    "photoshopVerdict": "Ideal para compuestos complejos y retoques, pero excesivo y lento para simple eliminación de fondos.",
+    "canvaDesc": "Canva es una plataforma de diseño popular que incluye un Eliminador de Fondos en su panel de Efectos. La herramienta funciona bien para recortes básicos pero requiere una suscripción a Canva Pro ($13/mes) para exportaciones PNG transparentes a resolución completa. Las exportaciones del nivel gratuito incluyen una marca de agua. Canva también almacena cargas para entrenamiento de IA, lo que plantea preocupaciones de privacidad para el trabajo comercial.",
+    "canvaVerdict": "Buena si ya usas Canva Pro, pero QuickBG ofrece mejor privacidad y exportaciones HD gratuitas.",
+    "verdictLabel": "Veredicto:",
+    "whyWinsLabel": "Por Qué QuickBG Gana",
+    "whyWinsTitle": "El mejor eliminador de fondos gratuito para la mayoría de las personas",
+    "whyWinsItems": {
+      "free": "Verdaderamente Gratuito, Sin Truco",
+      "freeDesc": "A diferencia de Remove.bg y Canva Pro, QuickBG no cobra por exportaciones HD ni esconde funciones detrás de un muro de pago.",
+      "resolution": "Resolución Completa Siempre",
+      "resolutionDesc": "Sin compresión, sin límites de resolución, sin marcas de agua. Lo que subes es lo que descargas a máxima calidad.",
+      "toolchain": "Cadena de Herramientas Completa",
+      "toolchainDesc": "Desenfocar, reemplazar, redimensionar, recortar, ajustar — ocho herramientas en un solo lugar. Sin necesidad de cambiar entre aplicaciones.",
+      "signup": "Sin Registro Requerido",
+      "signupDesc": "Comienza a eliminar fondos inmediatamente. Sin creación de cuenta, sin verificación de correo, sin fricción de incorporación.",
+      "privacy": "Privacidad Primero",
+      "privacyDesc": "Las imágenes se eliminan automáticamente después del procesamiento. No entrenamos con tus cargas ni las compartimos con terceros.",
+      "ai": "Precisión Impulsada por IA",
+      "aiDesc": "El modelo BiRefNet maneja cabello, pelaje, vidrio y bordes complejos con la misma precisión que los servicios pagos."
+    },
+    "tryFree": "Prueba QuickBG Gratis",
+    "viewFaq": "Ver Preguntas Frecuentes"
+  },
+  "privacy": {
+    "title": "Política de Privacidad — QuickBG",
+    "description": "Política de privacidad de QuickBG. Conoce cómo manejamos tus datos e imágenes.",
+    "heading": "Política de Privacidad",
+    "lastUpdated": "Última actualización: Junio 2026",
+    "sections": {
+      "collection": {
+        "title": "Recopilación de Datos",
+        "body": "QuickBG está diseñado con la privacidad como principio fundamental. Cuando subes una imagen para eliminar el fondo, el archivo se transmite a nuestros servidores únicamente con el propósito de procesamiento. No recopilamos, almacenamos ni compartimos ninguna información personal derivada de tus imágenes más allá de lo estrictamente necesario para proporcionar el servicio. Los únicos datos que retenemos temporalmente son el archivo de imagen durante el procesamiento y, en casos limitados, una referencia anonimizada para la gestión de colas y limitación de velocidad."
+      },
+      "handling": {
+        "title": "Manejo de Imágenes",
+        "body": "Las imágenes subidas se almacenan solo el tiempo necesario para completar el proceso de eliminación de fondos. Una vez que el procesamiento finaliza y el resultado se te ha entregado, tanto la imagen original como la procesada se programan para su eliminación permanente. Implementamos una política de tiempo de vida (TTL) de 24 horas como máximo, después del cual todos los datos de imagen se eliminan de forma irrecuperable de nuestros sistemas de almacenamiento. Las imágenes nunca se utilizan para entrenamiento de IA, mejora de modelos, minería de datos ni ningún otro propósito que no sea cumplir con tu solicitud específica de eliminación de fondos."
+      },
+      "retention": {
+        "title": "Retención de Datos",
+        "body": "Los archivos de imagen se eliminan automáticamente dentro de las 24 horas posteriores a la carga mediante un índice TTL aplicado en nuestra base de datos. No se conservan copias de respaldo más allá de esta ventana. Los metadatos básicos, como marcas de tiempo de procesamiento y dimensiones de imagen, pueden mantenerse en forma agregada para análisis operativos, pero no se pueden rastrear hasta ningún usuario individual. No mantenemos cuentas de usuario, por lo que no hay perfiles personales persistentes ni historiales asociados con tu uso."
+      },
+      "analytics": {
+        "title": "Analíticas",
+        "body": "QuickBG utiliza Vercel Analytics para recopilar datos de uso anonimizados y agregados, incluyendo visitas a páginas, recuentos de trabajos de procesamiento y tiempos promedio de procesamiento. Estos datos se utilizan exclusivamente para monitorear el rendimiento del servicio, identificar tendencias y guiar mejoras. Vercel Analytics no utiliza cookies ni recopila información de identificación personal. No se almacenan direcciones IP, agentes de usuario ni otras señales de identificación. Todos los datos analíticos están completamente anonimizados y no se pueden vincular a ningún individuo o dispositivo específico."
+      },
+      "cookies": {
+        "title": "Cookies",
+        "body": "QuickBG utiliza solo cookies estrictamente esenciales que son necesarias para que el servicio funcione. Estas incluyen tokens de sesión para limitación de velocidad, seguimiento de posición en cola y una pequeña cookie para recordar que has descartado el aviso de privacidad para evitar mostrarlo repetidamente. No utilizamos cookies de seguimiento, cookies publicitarias, cookies analíticas ni ninguna forma de seguimiento persistente entre sitios. Todas las cookies establecidas por QuickBG son de primera parte, solo de sesión cuando es posible y no contienen información de identificación personal."
+      },
+      "third": {
+        "title": "Terceros",
+        "body": "QuickBG se integra con varios servicios de terceros para ofrecer su funcionalidad:",
+        "vercel": "Vercel — Nuestra plataforma de alojamiento. Vercel puede procesar direcciones IP y encabezados de solicitud HTTP estándar como parte de las operaciones normales de CDN. Consulta la política de privacidad de Vercel para más detalles.",
+        "mongo": "MongoDB Atlas — Nuestro proveedor de base de datos. Los datos de imagen y metadatos de procesamiento se almacenan temporalmente en MongoDB Atlas con un TTL de 24 horas. Los datos están encriptados en reposo y en tránsito.",
+        "adsense": "Google AdSense — Anuncios en páginas públicas. AdSense puede usar cookies y balizas web para mostrar anuncios dirigidos basados en tu actividad de navegación. Esto está regulado por la política de privacidad de Google y no por QuickBG. Puedes optar por no recibir publicidad personalizada en google.com/adssettings."
+      },
+      "advertising": {
+        "title": "Publicidad",
+        "body": "QuickBG muestra anuncios a través de Google AdSense en ciertas páginas públicas. Google, como proveedor externo, utiliza cookies para mostrar anuncios basados en las visitas anteriores de un usuario a este sitio web u otros sitios web. El uso de cookies publicitarias por parte de Google le permite a él y a sus socios mostrar anuncios basados en tu visita a este sitio y/u otros sitios en internet. Puedes optar por no recibir publicidad personalizada visitando la página de Configuración de Anuncios de Google. Alternativamente, puedes optar por no participar en cookies de proveedores externos visitando la página de exclusión de la Network Advertising Initiative. QuickBG no controla qué anuncios se muestran ni cómo Google los segmenta."
+      },
+      "rights": {
+        "title": "Tus Derechos",
+        "body": "Si te encuentras en el Espacio Económico Europeo (EEE) o el Reino Unido, tienes ciertos derechos bajo el Reglamento General de Protección de Datos (GDPR), incluyendo el derecho a acceder, rectificar o borrar tus datos personales. Debido a que QuickBG no mantiene cuentas de usuario y elimina automáticamente las imágenes dentro de las 24 horas, típicamente no hay datos personales retenidos que puedan ser objeto de estas solicitudes. Si crees que tenemos datos relacionados contigo, por favor contáctanos y abordaremos tu solicitud con prontitud. También tienes derecho a presentar una queja ante tu autoridad local de protección de datos."
+      },
+      "children": {
+        "title": "Privacidad de Menores",
+        "body": "QuickBG no está dirigido a menores de 13 años (o la edad equivalente de mayoría de edad en tu jurisdicción). No recopilamos a sabiendas información personal de menores. Si crees que un menor nos ha proporcionado datos personales, por favor contáctanos inmediatamente y tomaremos medidas para eliminar dicha información lo más rápido posible. Nuestro servicio está destinado al público en general y no está diseñado para atraer a menores."
+      },
+      "international": {
+        "title": "Usuarios Internacionales",
+        "body": "QuickBG procesa datos en servidores ubicados en los Estados Unidos y potencialmente otras jurisdicciones donde operan nuestros proveedores de infraestructura. Al usar el servicio, reconoces que tus datos pueden ser transferidos y procesados en países que pueden no tener las mismas leyes de protección de datos que tu país de residencia. Tomamos las salvaguardas apropiadas, incluyendo encriptación de datos y estrictos controles de acceso, para proteger tu información independientemente de dónde se procese."
+      },
+      "contact": {
+        "title": "Contacto",
+        "body": "Si tienes alguna pregunta, inquietud o solicitud con respecto a esta política de privacidad o cómo se manejan tus datos, por favor contáctanos a través del formulario de comentarios disponible en el sitio web. Hacemos todo lo posible por responder a las consultas de privacidad dentro de un plazo razonable. También puedes contactarnos para cualquiera de los siguientes: solicitar información sobre los datos que podamos tener, reportar una sospecha de violación de datos o ejercer cualquiera de tus derechos de protección de datos."
+      }
+    }
+  },
+  "terms": {
+    "title": "Términos de Servicio — QuickBG",
+    "description": "Términos de servicio de QuickBG. Por favor lee estos términos cuidadosamente antes de usar nuestro servicio.",
+    "heading": "Términos de Servicio",
+    "lastUpdated": "Última actualización: Junio 2026",
+    "sections": {
+      "acceptance": {
+        "title": "Aceptación",
+        "body": "Al acceder o usar QuickBG (\"el Servicio\"), aceptas estar sujeto a estos Términos de Servicio. Si no estás de acuerdo con todos estos términos, no estás autorizado a usar el Servicio. Estos términos aplican a todos los visitantes, usuarios y cualquier individuo que acceda o interactúe con QuickBG en cualquier capacidad. Al usar el Servicio, declaras que tienes al menos 13 años de edad (o la edad de consentimiento digital en tu jurisdicción) y tienes la capacidad legal para aceptar estos términos."
+      },
+      "license": {
+        "title": "Licencia de Uso",
+        "body": "QuickBG te otorga una licencia limitada, no exclusiva, no transferible y revocable para usar el Servicio tanto para fines personales como comerciales. Puedes usar las imágenes de salida procesadas para cualquier aplicación legal, incluyendo productos comerciales, materiales de marketing, sitios web y software, sin atribución a QuickBG. Esta licencia no te permite copiar, modificar, distribuir, realizar ingeniería inversa ni crear trabajos derivados del Servicio mismo, los modelos de IA o cualquier tecnología subyacente. El uso no autorizado del Servicio puede resultar en la terminación de tu acceso y acciones legales cuando corresponda."
+      },
+      "ai": {
+        "title": "Limitaciones de la IA",
+        "body": "QuickBG utiliza inteligencia artificial para realizar la eliminación de fondos, y aunque el modelo está diseñado para producir resultados de alta calidad, no es perfecto. La calidad de salida depende de factores como la resolución de la imagen, iluminación, complejidad del sujeto, oclusión y contraste entre primer plano y fondo. La IA puede fallar en identificar bordes correctamente, puede eliminar partes del sujeto o puede dejar porciones del fondo intactas. Eres el único responsable de revisar todas las imágenes procesadas antes de usarlas en cualquier contexto. QuickBG no garantiza la precisión, integridad o idoneidad de la salida generada por IA para ningún propósito específico."
+      },
+      "advertising": {
+        "title": "Publicidad",
+        "body": "QuickBG puede mostrar anuncios servidos por Google AdSense en páginas públicas del sitio web. Estos anuncios son servidos por Google y pueden ser segmentados basándose en tu historial de navegación, información del dispositivo y otras señales recopiladas por Google. QuickBG no controla qué anuncios se muestran, cómo se segmentan ni el contenido de las páginas de anunciantes enlazadas desde estos anuncios. El uso de cookies publicitarias y datos por parte de Google se rige por la propia política de privacidad y términos de Google. Puedes optar por no recibir publicidad personalizada en cualquier momento a través de la página de Configuración de Anuncios de Google."
+      },
+      "account": {
+        "title": "Términos de la Cuenta",
+        "body": "QuickBG no requiere cuentas de usuario para funcionar. El Servicio opera en un modelo basado en colas donde cada visita se trata como anónima. No se necesita registro, inicio de sesión ni identidad persistente. Como resultado, no hay credenciales de cuenta que mantener, contraseñas que proteger ni perfiles personales almacenados en nuestros sistemas. Tu uso está gobernado por límites de velocidad aplicados a nivel de red, no por ninguna asociación de cuenta de usuario."
+      },
+      "availability": {
+        "title": "Disponibilidad del Servicio",
+        "body": "Nos esforzamos por mantener una alta disponibilidad de QuickBG, pero no garantizamos un servicio ininterrumpido o libre de fallos. El Servicio puede no estar disponible temporalmente debido a mantenimiento programado, actualizaciones de infraestructura, cortes inesperados, interrupciones de red o factores fuera de nuestro control. QuickBG está desplegado en la infraestructura serverless de Vercel, y la disponibilidad está sujeta al rendimiento y confiabilidad de esa plataforma. Nos reservamos el derecho de modificar, suspender o descontinuar cualquier aspecto del Servicio en cualquier momento sin previo aviso. No somos responsables por ningún tiempo de inactividad o pérdida de acceso."
+      },
+      "conduct": {
+        "title": "Conducta del Usuario",
+        "body": "Aceptas usar QuickBG de manera responsable y en cumplimiento con todas las leyes aplicables. La conducta prohibida incluye, pero no se limita a:",
+        "items": [
+          "Subir, procesar o distribuir contenido que sea ilegal, obsceno, difamatorio, amenazante o que infrinja los derechos de otros",
+          "Intentar realizar ingeniería inversa, descompilar o extraer el código fuente o los pesos del modelo de IA utilizados por el Servicio",
+          "Enviar solicitudes automatizadas o scripteadas que excedan los límites de uso razonables o evadan los mecanismos de limitación de velocidad",
+          "Usar el Servicio para cualquier forma de minería de datos, scraping o recopilación de datos no autorizada",
+          "Interferir con la operación del Servicio, incluyendo introducir malware, sobrecargar la infraestructura o interrumpir el acceso de otros usuarios",
+          "Suplantar a cualquier persona o entidad o tergiversar tu afiliación con QuickBG",
+          "Usar el Servicio de cualquier manera que viole las leyes aplicables de control de exportaciones o sanciones"
+        ]
+      },
+      "ip": {
+        "title": "Propiedad Intelectual",
+        "body": "El Servicio, incluyendo su diseño, código, logotipos, marcas comerciales, modelos de IA y tecnología propietaria, es propiedad intelectual de QuickBG y sus licenciantes. Estos Términos no transfieren ningún derecho de propiedad a ti. No puedes copiar, modificar, distribuir, vender ni arrendar ninguna parte del Servicio sin nuestro permiso expreso por escrito. El modelo de IA utilizado para la eliminación de fondos está basado en BiRefNet, que está disponible por sus creadores bajo una licencia abierta, y se proporciona atribución a los autores originales cuando es requerido."
+      },
+      "prohibited": {
+        "title": "Uso Prohibido",
+        "items": [
+          "Procesar contenido ilegal o dañino, incluyendo material de explotación infantil, discurso de odio o extremismo violento",
+          "Intentar realizar ingeniería inversa, descompilar o extraer nuestros modelos de IA, código o algoritmos propietarios",
+          "Abusar del servicio con solicitudes automatizadas, excesivas o maliciosas que degraden el rendimiento para otros usuarios",
+          "Usar el servicio para cualquier propósito ilegal o en violación de las leyes locales, nacionales o internacionales aplicables",
+          "Eldir cualquier medida técnica, límites de velocidad o controles de acceso implementados por QuickBG"
+        ]
+      },
+      "disclaimer": {
+        "title": "Descargo de Responsabilidad",
+        "body": "QuickBG se proporciona estrictamente sobre una base \"tal cual\" y \"según disponibilidad\". En la máxima medida permitida por la ley, renunciamos a todas las garantías de cualquier tipo, ya sean expresas, implícitas o legales, incluyendo pero no limitado a garantías implícitas de comerciabilidad, idoneidad para un propósito particular, título y no infracción. No garantizamos que el Servicio cumpla con tus requisitos, sea ininterrumpido, oportuno, seguro o libre de errores, que los defectos sean corregidos o que el Servicio esté libre de virus u otros componentes dañinos. Cualquier confianza en el Servicio es bajo tu propio riesgo. Ningún consejo o información obtenida de QuickBG creará ninguna garantía no expresamente establecida en estos términos."
+      },
+      "liability": {
+        "title": "Limitación de Responsabilidad",
+        "body": "En la máxima medida permitida por la ley aplicable, QuickBG, sus operadores, contribuyentes y afiliados no serán responsables por ningún daño indirecto, incidental, especial, consecuente o punitivo, incluyendo pero no limitado a pérdida de ganancias, datos, uso, buena voluntad u otras pérdidas intangibles, que surjan de o estén relacionados con tu uso o incapacidad de usar el Servicio. Esta limitación aplica independientemente de la teoría de responsabilidad, ya sea en contrato, agravio, negligencia, responsabilidad estricta o de otra manera, incluso si QuickBG ha sido informado de la posibilidad de dichos daños. En ningún caso nuestra responsabilidad total excederá la cantidad que hayas pagado, si la hubiera, para usar el Servicio."
+      },
+      "termination": {
+        "title": "Terminación",
+        "body": "Nos reservamos el derecho de suspender o terminar tu acceso a QuickBG en cualquier momento, sin previo aviso ni responsabilidad, por cualquier razón, incluyendo violación de estos términos, comportamiento abusivo o a nuestra sola discreción. Tras la terminación, tu derecho a usar el Servicio cesa inmediatamente. Cualquier disposición de estos términos que por su naturaleza deba sobrevivir a la terminación, incluyendo disposiciones de propiedad intelectual, descargos de responsabilidad y limitaciones de responsabilidad, sobrevivirá."
+      },
+      "law": {
+        "title": "Legislación Aplicable",
+        "body": "Estos Términos se regirán e interpretarán de acuerdo con las leyes del Estado de California, sin tener en cuenta sus disposiciones sobre conflictos de leyes. Cualquier disputa que surja de o esté relacionada con estos términos o el Servicio se resolverá exclusivamente en los tribunales estatales o federales ubicados en California. Aceptas la jurisdicción personal de dichos tribunales y renuncias a cualquier objeción basada en foro inapropiado o forum non conveniens. Si alguna disposición de estos términos se considera inaplicable, las disposiciones restantes permanecerán en pleno vigor y efecto."
+      },
+      "changes": {
+        "title": "Cambios a los Términos",
+        "body": "Nos reservamos el derecho de modificar o reemplazar estos Términos en cualquier momento a nuestra sola discreción. Si una revisión es importante, haremos esfuerzos razonables para proporcionar aviso a través del sitio web. Al continuar accediendo o usando el Servicio después de que cualquier revisión entre en vigor, aceptas estar sujeto a los términos actualizados. Te animamos a revisar esta página periódicamente para conocer los cambios. La fecha de la actualización más reciente se muestra al final de esta página."
+      },
+      "contact": {
+        "title": "Información de Contacto",
+        "body": "Si tienes alguna pregunta sobre estos Términos, deseas reportar una violación o necesitas contactarnos para cualquier asunto legal o administrativo, por favor contáctanos a través del formulario de comentarios en el sitio web de QuickBG. Nos esforzamos por responder a todas las consultas dentro de un plazo razonable, pero no garantizamos el tiempo de respuesta para ninguna comunicación en particular."
+      }
+    }
+  },
+  "legal": {
+    "title": "Legal — QuickBG",
+    "description": "Información legal de QuickBG, avisos de derechos de autor y detalles de propiedad intelectual.",
+    "heading": "Derechos de Autor y Legal",
+    "rights": "Todos los derechos reservados.",
+    "independent": "QuickBG es un proyecto independiente no afiliado con BiRefNet, Hugging Face ni ningún tercero referenciado.",
+    "sections": {
+      "ownership": {
+        "title": "Propiedad",
+        "body": "QuickBG, incluyendo el sitio web, logotipo, marca, diseño de interfaz de usuario, tecnología de IA subyacente y todo el código de software asociado, es propiedad intelectual exclusiva de QuickBG. El nombre \"QuickBG\", su identidad visual, nombre de dominio y cualquier trabajo derivado están protegidos bajo las leyes aplicables de derechos de autor, marcas comerciales y vestimenta comercial. Nada en estos términos te otorga ningún derecho, título o interés en el servicio o sus componentes más allá de los derechos de uso limitados expresamente descritos en el presente."
+      },
+      "content": {
+        "title": "Tu Contenido",
+        "body": "Conservas la propiedad total e incondicional de todas las imágenes que subes a QuickBG. No reclamamos ningún derecho, título o interés en tus imágenes originales o procesadas. Tu contenido sigue siendo tuyo, y actuamos únicamente como procesador de datos para facilitar la transformación de eliminación de fondos que solicitas. No se otorga ningún tipo de licencia de tu parte a QuickBG con respecto a tus imágenes subidas más allá del procesamiento temporal necesario para prestar el servicio."
+      },
+      "processed": {
+        "title": "Imágenes Procesadas",
+        "body": "Una vez que la eliminación de fondos está completa, eres libre de usar las imágenes de salida para cualquier propósito legal, incluyendo proyectos personales, productos comerciales, publicidad, redes sociales o cualquier otra aplicación que elijas. No se requiere atribución a QuickBG, aunque es apreciada. QuickBG no afirma ningún derecho de propiedad o licencia sobre la salida procesada. Asumes toda la responsabilidad de asegurar que tu uso de las imágenes procesadas cumpla con las leyes aplicables y los derechos de terceros."
+      },
+      "trademark": {
+        "title": "Marca Comercial",
+        "body": "\"QuickBG\", el logotipo de QuickBG y cualquier elemento de marca asociado son marcas comerciales o marcas comerciales registradas de QuickBG. No puedes usar, reproducir, mostrar, modificar ni distribuir nuestra marca, nombre o logotipo en conexión con cualquier producto o servicio sin nuestro permiso previo por escrito. Esto incluye uso en publicidad, materiales de prensa, sitios web o cualquier otro medio. Cualquier uso permitido de nuestra marca no debe implicar respaldo, patrocinio o afiliación sin un acuerdo escrito expreso."
+      },
+      "model": {
+        "title": "Modelo de IA",
+        "body": "El modelo de IA que impulsa la eliminación de fondos en QuickBG está basado en la tecnología BiRefNet (Bilateral Reference Network). Los pesos del modelo provienen de Hugging Face y siguen siendo propiedad intelectual de sus respectivos creadores y contribuyentes. QuickBG no reclama propiedad de la arquitectura del modelo subyacente ni de los pesos preentrenados. BiRefNet se utiliza bajo los términos de su licencia aplicable, y agradecemos a la comunidad de investigación cuyo trabajo abierto hace posible este servicio."
+      },
+      "thirdparty": {
+        "title": "Servicios de Terceros",
+        "body": "QuickBG depende de varios servicios de terceros para operar. La inferencia del modelo de IA utiliza modelos alojados en Hugging Face. El almacenamiento de imágenes y metadatos se gestiona a través de MongoDB Atlas. La aplicación está desplegada en la infraestructura en la nube de Vercel. Cada servicio de terceros opera bajo sus propios términos de servicio y política de privacidad. QuickBG no es responsable por la disponibilidad, seguridad o prácticas de estos terceros. Te animamos a revisar sus respectivas políticas para más información sobre cómo manejan los datos."
+      },
+      "dmca": {
+        "title": "DMCA",
+        "body": "QuickBG respeta los derechos de propiedad intelectual de otros y cumple con la Ley de Derechos de Autor del Milenio Digital (DMCA). Si crees de buena fe que cualquier contenido disponible a través de QuickBG infringe tus derechos de autor, por favor notifícanos con la siguiente información: (i) una firma física o electrónica del propietario de los derechos de autor o representante autorizado; (ii) identificación del trabajo protegido por derechos de autor que se alega infringido; (iii) identificación del material infractor e información razonablemente suficiente para localizarlo; (iv) tu información de contacto incluyendo dirección, número de teléfono y correo electrónico; (v) una declaración de que tienes una creencia de buena fe de que el uso no está autorizado por el propietario de los derechos de autor, su agente o la ley; y (vi) una declaración bajo pena de perjurio de que la información en la notificación es precisa y que eres el propietario de los derechos de autor o estás autorizado para actuar en su nombre. Las notificaciones pueden enviarse a través de nuestro formulario de comentarios o contactándonos directamente. Responderemos a todos los avisos DMCA válidos y podemos eliminar o deshabilitar el acceso al material supuestamente infractor según lo requiera la ley."
+      },
+      "disclaimer": {
+        "title": "Descargo de Responsabilidad",
+        "body": "QuickBG se proporciona sobre una base \"tal cual\" y \"según disponibilidad\" sin garantías de ningún tipo, expresas o implícitas. No garantizamos que el servicio sea ininterrumpido, oportuno, seguro o libre de errores. El proceso de eliminación de fondos se basa en IA que puede producir resultados inexactos o insatisfactorios. Reconoces que usas el servicio bajo tu propio criterio y riesgo. En la máxima medida permitida por la ley, QuickBG renuncia a todas las garantías, incluyendo cualquier garantía implícita de comerciabilidad, idoneidad para un propósito particular y no infracción."
+      },
+      "changes": {
+        "title": "Cambios a Esta Política",
+        "body": "Nos reservamos el derecho de actualizar o modificar esta página legal en cualquier momento sin previo aviso. Los cambios entrarán en vigor inmediatamente después de su publicación en esta URL. Tu uso continuado de QuickBG después de cualquier cambio constituye la aceptación de los términos actualizados. Te animamos a revisar esta página periódicamente para obtener la información más reciente sobre nuestras políticas legales. Los cambios importantes se notificarán actualizando la fecha de vigencia al final de esta página."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contáctanos — QuickBG",
+    "description": "Ponte en contacto con el equipo de QuickBG. Nos encantaría saber de ti.",
+    "label": "Contacto",
+    "heading": "Envía comentarios, preguntas o solicitudes de colaboración",
+    "intro": "Usa el formulario a continuación para contactar directamente al equipo de QuickBG. Los mensajes llegan al propietario del sitio y responderemos al correo electrónico que proporciones."
+  },
+  "cookie": {
+    "title": "Consentimiento de Cookies",
+    "description": "Utilizamos cookies para mejorar tu experiencia. Al continuar visitando este sitio, aceptas nuestro uso de cookies.",
+    "accept": "Aceptar",
+    "decline": "Rechazar"
+  },
+  "pwa": {
+    "installTitle": "Instalar QuickBG",
+    "installDescription": "Instala QuickBG en tu dispositivo para la mejor experiencia.",
+    "install": "Instalar",
+    "later": "Después"
+  },
+  "feedback": {
+    "love": "¿Amas QuickBG?",
+    "loveDesc": "Nos encantaría escuchar tus comentarios y sugerencias para mejorar.",
+    "whyLonger": "¿Por qué tarda más?",
+    "whyLongerDesc": "QuickBG funciona en un VPS de presupuesto pequeño para mantenerlo gratuito para todos. El procesamiento puede tardar más durante horas pico. ¡Somos desarrolladores independientes trabajando para mejorar esto!",
+    "share": "Compartir Comentarios",
+    "madeWith": "Hecho con ❤️ por desarrolladores independientes | Funcionando en un VPS pequeño para acceso gratuito",
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@correo.com",
+      "message": "Mensaje",
+      "messagePlaceholder": "Tus comentarios o sugerencia...",
+      "cancel": "Cancelar",
+      "send": "Enviar",
+      "notConfigured": "Servicio de comentarios no configurado",
+      "notConfiguredDesc": "Por favor contacta al administrador.",
+      "sent": "¡Comentario enviado!",
+      "sentDesc": "Gracias por tu mensaje.",
+      "failed": "Error al enviar",
+      "failedDesc": "Por favor inténtalo de nuevo más tarde."
+    }
+  },
+  "offline": {
+    "title": "Estás desconectado",
+    "description": "QuickBG necesita una conexión para el procesamiento de IA, pero las páginas guardadas y el shell del editor volverán tan pronto como te reconectes."
+  },
+  "globalDrop": {
+    "title": "Suelta imágenes para empezar",
+    "description": "QuickBG cargará, encolará, procesará y abrirá el espacio de trabajo del eliminador automáticamente."
+  },
+  "eraser": {
+    "title": "Edición Mágica",
+    "erase": "Borrar",
+    "restore": "Restaurar",
+    "size": "Tamaño:",
+    "undo": "Deshacer",
+    "reset": "Restablecer",
+    "zoom": "Zoom:"
+  },
+  "rating": {
+    "feedbackThanks": "Gracias por tus comentarios",
+    "feedbackQuestion": "¿Cómo te pareció este resultado?",
+    "feedbackDescThanks": "Tu calificación ayuda a ajustar QuickBG.",
+    "feedbackDesc": "Califica esta herramienta sin interrumpir tu flujo de trabajo."
+  },
+  "thumbnail": {
+    "queued": "En cola",
+    "fetching": "Obteniendo",
+    "processing": "Procesando"
+  },
+  "comparisonSlider": {
+    "preparing": "Preparando vista previa..."
+  },
+  "ui": {
+    "toggleTheme": "Cambiar tema",
+    "close": "Cerrar"
+  }
+}
