@@ -1,0 +1,59 @@
+x# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js / build
+.next/
+out/
+build/
+dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Python
+*.py[cod]
+__pycache__/
+*.so
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ML model weights and artifacts
+*.pth
+*.safetensors
+*.onnx
+
+# VS Code / IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Uploads / runtime data
+uploads/
+worker/uploads/
+worker/processed/
+website/uploads/
+
+# Test / coverage
+coverage/
+.coverage
+coverage.xml
