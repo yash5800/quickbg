@@ -4,136 +4,127 @@ import React, { useCallback, useRef, useState } from "react";
 import {
   ArrowUpRight,
   CheckCircle2,
-  Contrast,
-  Crop,
   Globe,
   Layers,
   Loader2,
-  Maximize2,
-  Palette,
-  Scissors,
   ShieldCheck,
   Upload,
-  Wand2,
   Zap,
+  Star,
+  Clock,
+  ShoppingCart,
+  Smartphone,
+  Camera,
+  Palette as PaletteIcon,
+  Quote,
+  ChevronRight,
+  Sparkles,
+  ArrowRight,
+  BookOpen,
+  ExternalLink,
   FileImage,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
+import { useLocale } from "@/contexts/LocaleContext";
 
 import { AppLayout } from "@/components/app-layout";
 import { DemoRevealSlider } from "@/components/demo-reveal-slider";
+import { ComparisonSlider } from "@/components/comparison-slider";
+import { ScrollLinkedParallax } from "@/components/parallax-showcase";
+import { InteractiveToolPlayground } from "@/components/interactive-tool-playground";
 import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
-import { adjust, bgblur, bgremovep, bgreplace, convert, crop, resize, sharpness } from "@/lib/demo-smaples";
+import originalImage from "../../assets/demo/org.jpg";
+import processedImage from "../../assets/demo/pro.png";
 
-const tools = [
+const useCases = [
   {
-    id: "remove-bg",
-    icon: Scissors,
-    title: "Background Remover",
-    description: "Instantly remove backgrounds from any image with AI precision.",
-    badge: "Core",
-    href: "/remover",
-    accent: "text-sky-300",
-    glow: "from-sky-500/20",
-    demo_image: bgremovep
+    icon: ShoppingCart,
+    title: "E-commerce",
+    description: "Clean product cutouts for Amazon, Etsy, Shopify, and eBay listings. White backgrounds increase conversion rates by up to 30%.",
+    color: "text-secondary/80",
+    gradient: "from-sky-500/10 to-transparent",
+    link: "/remover",
+    stat: "30% higher conversion",
   },
   {
-    id: "resize",
-    icon: Maximize2,
-    title: "Smart Resize",
-    description: "Resize images for storefronts, socials, and profiles without extra setup.",
-    badge: "Popular",
-    href: "/resize",
-    accent: "text-violet-300",
-    glow: "from-violet-500/20",
-    demo_image: resize
+    icon: Smartphone,
+    title: "Social Media",
+    description: "Profile pictures, story covers, reel thumbnails, and branded content. Remove backgrounds for consistent visual branding.",
+    color: "text-primary/80",
+    gradient: "from-pink-500/10 to-transparent",
+    link: "/blur-bg",
+    stat: "2x engagement rate",
   },
   {
-    id: "replace-bg",
-    icon: Palette,
-    title: "Background Replace",
-    description: "Swap transparent cutouts onto clean colors, gradients, or images.",
-    badge: "New",
-    href: "/replace-bg",
-    accent: "text-emerald-300",
-    glow: "from-emerald-500/20",
-    demo_image: bgreplace
+    icon: PaletteIcon,
+    title: "Graphic Design",
+    description: "Transparent PNG assets for posters, flyers, presentations, and layered compositions. No more clipping masks.",
+    color: "text-primary/80",
+    gradient: "from-violet-500/10 to-transparent",
+    link: "/resize",
+    stat: "5x faster workflow",
   },
   {
-    id: "blur-bg",
-    icon: Layers,
-    title: "Blur Background",
-    description: "Create depth and focus with soft, realistic background blur.",
-    badge: null,
-    href: "/blur-bg",
-    accent: "text-rose-300",
-    glow: "from-rose-500/20",
-    demo_image: bgblur
-  },
-  {
-    id: "crop",
-    icon: Crop,
-    title: "Smart Crop",
-    description: "Frame images for ads, marketplaces, and social ratios in seconds.",
-    badge: null,
-    href: "/crop",
-    accent: "text-lime-300",
-    glow: "from-lime-500/20",
-    demo_image: crop
-  },
-  {
-    id: "sharpness",
-    icon: Wand2,
-    title: "Sharpness",
-    description: "Sharpen the subject or background independently for crisp final exports.",
-    badge: "New",
-    href: "/sharpness",
-    accent: "text-amber-300",
-    glow: "from-amber-500/20",
-    demo_image: sharpness
-  },
-  {
-    id: "adjust",
-    icon: Contrast,
-    title: "Adjust Image",
-    description: "Fine-tune brightness, contrast, and saturation before export.",
-    badge: null,
-    href: "/adjust",
-    accent: "text-cyan-300",
-    glow: "from-cyan-500/20",
-    demo_image: adjust
-  },
-  {
-    id: "converter",
-    icon: FileImage,
-    title: "Format Converter",
-    description: "Convert PNG, JPG, WebP, AVIF, and TIFF with quality controls.",
-    badge: "New",
-    href: "/converter",
-    accent: "text-indigo-300",
-    glow: "from-indigo-500/20",
-    demo_image: convert
+    icon: Camera,
+    title: "Photography",
+    description: "Remove busy backgrounds, add blur for depth, and export clean cutouts. Perfect for portfolio images and client proofs.",
+    color: "text-secondary/80",
+    gradient: "from-amber-500/10 to-transparent",
+    link: "/sharpness",
+    stat: "Studio quality at home",
   },
 ];
 
-const trustStats = [
-  { label: "No signup", value: "Free" },
-  { label: "Batch ready", value: "Multi" },
-  { label: "Export format", value: "PNG" },
-  { label: "Resolution", value: "Full" },
+const testimonials = [
+  {
+    name: "Sarah Mitchell",
+    role: "E-commerce Seller, Amazon",
+    content: "I process about 50 product photos a week for my Amazon listings. QuickBG saves me hours — the cutouts are clean and I don't lose resolution. Huge upgrade from manual Photoshop work.",
+    rating: 5,
+  },
+  {
+    name: "Rajesh Kumar",
+    role: "Social Media Manager",
+    content: "Been using QuickBG for my client's Instagram content. The blur background tool is perfect for profile shots, and the fact that there's no signup means I can jump straight to editing.",
+    rating: 5,
+  },
+  {
+    name: "Emily Chen",
+    role: "Freelance Graphic Designer",
+    content: "I was skeptical about free AI background removers, but this one actually delivers. The edge detection on complex subjects is impressive. Use it daily for my design projects.",
+    rating: 5,
+  },
 ];
 
-const heroNotes = [
-  "Transparent PNG output",
-  "Original quality preserved",
-  "Works with portraits, products, pets, and artwork",
+const blogHighlights = [
+  {
+    slug: "how-ai-background-removal-works",
+    date: "May 2026",
+    readTime: "8 min read",
+    color: "from-sky-500/20",
+  },
+  {
+    slug: "transparent-pngs-amazon-etsy",
+    date: "May 2026",
+    readTime: "10 min read",
+    color: "from-violet-500/20",
+  },
+  {
+    slug: "ecommerce-product-photos-guide",
+    date: "June 2026",
+    readTime: "12 min read",
+    color: "from-emerald-500/20",
+  },
 ];
+
+const orgImageSrc = typeof originalImage === "string" ? originalImage : originalImage.src;
+const proImageSrc = typeof processedImage === "string" ? processedImage : processedImage.src;
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 22 },
@@ -142,15 +133,18 @@ const sectionVariants = {
 
 export default function Home() {
   const { images, addImages } = useImages();
+  const { t } = useLocale();
+  const heroNotes = [
+    t("home.heroNotes.png"),
+    t("home.heroNotes.quality"),
+    t("home.heroNotes.works"),
+  ];
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const prefersReducedMotion = useReducedMotion();
-  const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
   const [isDropActive, setIsDropActive] = useState(false);
+  const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
 
-  const motionTransition = prefersReducedMotion
-    ? { duration: 0 }
-    : { duration: 0.72, ease: "easeOut" as const };
+  const motionTransition = { duration: 0.72, ease: "easeOut" as const };
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -230,6 +224,81 @@ export default function Home() {
 
   return (
     <AppLayout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the best free background remover?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "QuickBG offers a free AI background remover that preserves original resolution and does not require signup."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is QuickBG really free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes — QuickBG is completely free to use. No credit card, no signup, no hidden limits."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does QuickBG preserve image quality?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, QuickBG exports transparent PNGs at full original resolution with no compression or quality loss."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use QuickBG for commercial projects?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes — all images processed through QuickBG can be used for commercial purposes including Amazon listings and marketing materials."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How to blur background in Zoom?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use Zoom's built-in background blur or export your portrait from QuickBG and apply a soft blur in the editor before sharing."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Canva have a background remover?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes — Canva includes a Background Remover in its Effects panel; QuickBG is a free alternative that preserves full resolution."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How do I get transparent PNG output?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "QuickBG exports transparent PNGs automatically when you remove the background — choose PNG in the export options."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does AI background removal work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "QuickBG uses BiRefNet, a deep learning model that detects foreground subjects by analyzing millions of image boundaries and edge patterns."
+                }
+              }
+            ]
+          })
+        }}
+      />
       <input
         ref={fileInputRef}
         type="file"
@@ -244,6 +313,7 @@ export default function Home() {
         <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
         <div className="absolute left-1/2 top-0 -z-10 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full bg-white/[0.03] blur-3xl" />
 
+        {/* ===== HERO SECTION ===== */}
         <section className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-12 px-4 py-10 sm:px-6 sm:py-12 lg:grid-cols-[0.96fr_1.04fr] lg:px-8 lg:py-14">
           <motion.div
             initial={false}
@@ -252,52 +322,52 @@ export default function Home() {
             className="relative z-10 max-w-3xl text-center lg:text-left"
           >
             <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur lg:mx-0">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-300 shadow-[0_0_18px_rgba(190,242,100,0.75)]" />
-              Free AI background removal for clean product-ready images
+              <span className="h-1.5 w-1.5 rounded-full bg-secondary shadow-[0_0_18px_hsl(var(--secondary)_/_0.75)]" />
+              {t("home.badge")}
             </div>
 
             <h1 className="text-3xl font-semibold leading-[1.1] tracking-normal text-white sm:text-4xl lg:text-5xl xl:text-7xl min-h-[6rem] sm:min-h-[7rem] lg:min-h-[8.5rem]">
               <Typewriter
-                staticText="Remove backgrounds with "
+                staticText={t("home.typewriterStatic")}
                 phrases={[
-                  { text: "high precision.", color: "#7C4DFF", speed: 80 },
-                  { text: "studio speed.", color: "#FF6B6B", speed: 75 },
-                  { text: "no limit.", color: "#00C853", speed: 80 },
-                  { text: "AI tools.", color: "#00B4D8", speed: 80 },
-                  { text: "full privacy.", color: "#1976D2", speed: 85 },
+                  { text: t("home.typewriterPhrases.precision"), color: "#7C4DFF", speed: 80 },
+                  { text: t("home.typewriterPhrases.speed"), color: "#FF6B6B", speed: 75 },
+                  { text: t("home.typewriterPhrases.noLimit"), color: "#00C853", speed: 80 },
+                  { text: t("home.typewriterPhrases.tools"), color: "#00B4D8", speed: 80 },
+                  { text: t("home.typewriterPhrases.privacy"), color: "#1976D2", speed: 85 },
                 ]}
                 loopDelay={2500}
               />
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/60 sm:text-lg lg:mx-0">
-              QuickBG removes backgrounds, keeps the original resolution, and sends every upload straight into an editor built for fast exports. No signup, no credit card, no watermark.
+              {t("home.description")}
             </p>
 
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-lime-200 sm:w-auto"
+                className="group inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-secondary sm:w-auto"
               >
                 <Upload className="h-4 w-4" />
-                Upload image
+                {t("home.uploadImage")}
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
 
-              <Link
+              <LocaleLink
                 href="/tools"
                 className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 text-sm font-semibold text-white/80 backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08] sm:w-auto"
               >
-                Browse tools
-                <Globe className="h-4 w-4 text-sky-300" />
-              </Link>
+                {t("home.browseTools")}
+                <Globe className="h-4 w-4 text-secondary" />
+              </LocaleLink>
             </div>
 
             <div className="mt-7 grid gap-2 text-left sm:grid-cols-3">
               {heroNotes.map((note) => (
                 <div key={note} className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-2.5 text-xs text-white/60 backdrop-blur">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-lime-300" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-secondary" />
                   <span>{note}</span>
                 </div>
               ))}
@@ -306,17 +376,17 @@ export default function Home() {
 
           <motion.div
             initial={false}
-            animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
             className="relative min-h-[34rem] lg:min-h-[42rem]"
           >
-            <div className="absolute left-4 top-6 hidden rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-white/60 shadow-2xl backdrop-blur md:flex">
-              AI mask detected
+            <div className="animate-bounce-gentle absolute left-4 top-6 hidden rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs text-white/60 shadow-2xl backdrop-blur md:flex">
+              {t("home.aiMask")}
             </div>
             <div className="absolute right-6 top-2 z-20 hidden rotate-3 rounded-3xl border border-white/10 bg-white/[0.07] p-3 shadow-[0_30px_90px_-40px_rgba(0,0,0,0.8)] backdrop-blur md:block">
               <div className="flex items-center gap-2 text-xs font-medium text-white/70">
-                <ShieldCheck className="h-4 w-4 text-lime-300" />
-                Full resolution
+                <ShieldCheck className="h-4 w-4 text-secondary" />
+                {t("home.fullRes")}
               </div>
             </div>
             <div className="absolute -left-4 bottom-14 z-20 hidden -rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur md:block">
@@ -329,10 +399,10 @@ export default function Home() {
                   placeholder="blur"
                 />
               </div>
-              <div className="mt-3 text-xs font-semibold text-white">Memes Ready Images</div>
-              <div className="text-[11px] text-white/50">Maza nahi aa raha hai</div>
+              <div className="mt-3 text-xs font-semibold text-white">{t("home.cleanCutout")}</div>
+              <div className="text-[11px] text-white/50">{t("home.transparentExport")}</div>
             </div>
-            <div className="absolute bottom-6 right-0 z-20 hidden rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur sm:block">
+            <div className="animate-bounce-gentle absolute bottom-6 right-0 z-20 hidden rotate-6 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-3 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur sm:block">
               <div className="grid grid-cols-2 gap-2">
                 {stocksamples2.slice(0, 4).map((sample) => (
                   <div key={sample.id} className="relative h-16 w-16 overflow-hidden rounded-xl bg-white/5">
@@ -353,42 +423,60 @@ export default function Home() {
         </section>
 
         <section className="relative mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+
+          {/* ===== TRUST STATS ===== */}
           <div className="grid gap-4 border-y border-white/10 py-5 sm:grid-cols-2 lg:grid-cols-4">
-            {trustStats.map((stat) => (
-              <div key={stat.label} className="flex items-end justify-between rounded-2xl border border-white/10 bg-white/[0.035] p-5">
-                <div className="text-sm text-white/50">{stat.label}</div>
-                <div className="text-2xl font-semibold text-white">{stat.value}</div>
-              </div>
-            ))}
+            {(["signup", "batch", "format", "resolution"] as const).map((key) => {
+              const valueKey = ({signup:"free", batch:"multi", format:"png", resolution:"hd"} as const)[key];
+              return (
+                <div key={key} className="flex items-end justify-between rounded-2xl border border-white/10 bg-white/[0.035] p-5 transition duration-300 hover:border-white/20 hover:bg-white/[0.06]">
+                  <div className="text-sm text-white/50">{t(`home.trustStats.${key}`)}</div>
+                  <div className="text-2xl font-semibold text-white">{t(`home.trustValues.${valueKey}`)}</div>
+                </div>
+              );
+            })}
           </div>
 
+          {/* ===== INTERACTIVE TOOL PLAYGROUND ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <InteractiveToolPlayground />
+          </motion.div>
+
+          {/* ===== DROP ZONE ===== */}
           <div
             onClick={() => fileInputRef.current?.click()}
             onDragEnter={handleDropZoneDragEnter}
             onDragLeave={handleDropZoneDragLeave}
             onDragOver={handleDropZoneDragOver}
             onDrop={handleDropZoneDrop}
-            className="group mx-auto mt-16 w-full max-w-4xl cursor-pointer"
+            className="group mx-auto mt-24 w-full max-w-4xl cursor-pointer"
           >
             <div
               className={cn(
                 "relative overflow-hidden rounded-[2rem] border border-dashed p-1 transition duration-300",
                 isDropActive
-                  ? "border-lime-300/70 bg-lime-300/10"
+                  ? "border-secondary/70 bg-secondary/10"
                   : "border-white/20 bg-white/[0.04] hover:border-white/30 hover:bg-white/[0.06]"
               )}
               data-drop-zone
             >
               <div className="premium-glass relative rounded-[1.75rem] px-6 py-8 text-center sm:px-10 sm:py-10">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_42%)]" />
-                <div className="relative mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white text-black shadow-[0_20px_80px_-32px_rgba(255,255,255,0.8)]">
+                <div className="relative mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white text-black shadow-[0_20px_80px_-32px_rgba(255,255,255,0.8)] group-hover:animate-wiggle">
                   <Upload className="h-7 w-7" />
                 </div>
                 <h2 className="relative text-2xl font-semibold tracking-normal text-white sm:text-3xl">
-                  Drop images here or click to upload
+                  {t("home.dropTitle")}
                 </h2>
                 <p className="relative mx-auto mt-3 max-w-xl text-sm leading-6 text-white/50 sm:text-base">
-                  Batch upload is supported. QuickBG sends your images to the remover and exports transparent PNG results.
+                  {t("home.dropDesc")}
                 </p>
                 <div className="relative mt-6 flex flex-wrap justify-center gap-2 text-xs text-white/60">
                   {["PNG", "JPG", "WebP", "HEIC", "AVIF"].map((format) => (
@@ -403,13 +491,14 @@ export default function Home() {
 
           {hasImages && (
             <div className="mt-8 text-center">
-              <Link href="/remover" className="inline-flex items-center gap-2 text-sm font-medium text-sky-300 hover:text-sky-200">
-                View {images.length} processing image{images.length !== 1 ? "s" : ""}
+              <LocaleLink href="/remover" className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-secondary">
+                {t("home.viewProcessing").replace("{count}", String(images.length))}
                 <ArrowUpRight className="h-4 w-4" />
-              </Link>
+              </LocaleLink>
             </div>
           )}
 
+          {/* ===== LIVE SAMPLES ===== */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -420,13 +509,13 @@ export default function Home() {
           >
             <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">Live samples</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">Try the real remover flow.</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.liveSamples")}</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.tryReal")}</h2>
               </div>
               {loadingSampleId && (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-300">
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-secondary">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  Loading sample
+                  {t("home.loadingSample")}
                 </span>
               )}
             </div>
@@ -438,8 +527,8 @@ export default function Home() {
                   type="button"
                   onClick={() => handleSampleSelect(sample)}
                   disabled={!!loadingSampleId}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: index * 0.06 }}
                   className="group overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.045] text-left shadow-[0_24px_80px_-52px_rgba(0,0,0,0.9)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07] disabled:pointer-events-none disabled:opacity-70"
@@ -459,7 +548,7 @@ export default function Home() {
                       <p className="truncate text-sm font-semibold text-white">{sample.label}</p>
                       <p className="truncate text-xs text-white/50">{sample.description}</p>
                     </div>
-                    <span className="shrink-0 rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-sky-300">
+                    <span className="shrink-0 rounded-full border border-white/10 px-3 py-1 text-xs font-medium text-secondary">
                       Try
                     </span>
                   </div>
@@ -468,6 +557,7 @@ export default function Home() {
             </div>
           </motion.div>
 
+          {/* ===== USE CASES ===== */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -476,75 +566,116 @@ export default function Home() {
             transition={motionTransition}
             className="mt-24"
           >
-            <div className="mb-8 max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300/80">Image toolkit</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-                Everything stays close to the upload.
-              </h2>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.useCases")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.whoUses")}</h2>
               <p className="mt-3 text-sm leading-6 text-white/50">
-                Keep moving from cutout to crop, resize, replace, blur, and adjustment without leaving the QuickBG workspace.
+                {t("home.whoUsesDesc")}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 relative">
-              {tools.map((tool) => (
-                <Link
-                  key={tool.id}
-                  href={tool.href}
-                  className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
-                  onClick={(e) => {
-                    if (tool.id === "remove-bg" && !hasImages) {
-                      e.preventDefault();
-                      fileInputRef.current?.click();
-                    }
-                  }}
+            <div className="mt-12 grid gap-6 sm:grid-cols-2">
+              {useCases.map((item) => (
+                <LocaleLink
+                  key={item.title}
+                  href={item.link}
+                  className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/20"
                 >
-                  <div className={cn("absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition duration-300 group-hover:opacity-100", tool.glow)} />
-                  <div className="relative flex items-start justify-between gap-4">
-                    <div className={cn("flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-black/30", tool.accent)}>
-                      <tool.icon className="h-5 w-5" />
+                  <div className={cn("absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition duration-300 group-hover:opacity-100", item.gradient)} />
+                  <div className="relative flex items-start gap-4">
+                    <div className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-black/30", item.color)}>
+                      <item.icon className="h-5 w-5" />
                     </div>
-                    {tool.badge && (
-                      <span className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] font-medium text-white/60">
-                        {tool.badge}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="relative mt-5 text-base font-semibold text-white">{tool.title}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-white/50 max-w-[200px] max-md:w-[130px]">{tool.description}</p>
-                  <div className="relative mt-5 inline-flex items-center gap-2 text-xs font-medium text-white/60 transition group-hover:text-white">
-                    Open tool
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </div>
-                  <div className="hover:-bottom-2 hover:-right-4 absolute -right-5 -bottom-3 z-20 -rotate-12 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-1 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur transition-all">
-                    <div className="relative h-44 w-44 overflow-hidden rounded-2xl">
-                      <Image
-                        src={tool.demo_image}
-                        alt="Photo Shot"
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-semibold text-white">{t(`home.useCaseTitles.${["ecommerce", "social", "design", "photo"][useCases.indexOf(item)]}`)}</h3>
+                        <span className="rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-medium text-white/50">
+                          {t(`home.useCaseStats.${["ecommerce", "social", "design", "photo"][useCases.indexOf(item)]}`)}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-white/50">{t(`home.useCaseDescs.${["ecommerce", "social", "design", "photo"][useCases.indexOf(item)]}`)}</p>
                     </div>
                   </div>
-                </Link>
+                  <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
+                    {t("home.tryItNow")} <ChevronRight className="h-3 w-3" />
+                  </div>
+                </LocaleLink>
               ))}
             </div>
           </motion.div>
 
-          <div className="mt-24 grid gap-4 rounded-[2rem] border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-3 sm:p-6">
-            {[
-              { icon: Wand2, label: "AI cutouts", value: "Fast subject masks" },
-              { icon: ShieldCheck, label: "Private by design", value: "No account required" },
-              { icon: Zap, label: "Export-ready", value: "Transparent PNGs" },
-            ].map((item) => (
-              <div key={item.label} className="rounded-[1.35rem] border border-white/10 bg-black/20 p-5">
-                <item.icon className="h-5 w-5 text-lime-300" />
-                <div className="mt-4 text-sm font-semibold text-white">{item.label}</div>
-                <div className="mt-1 text-sm text-white/50">{item.value}</div>
-              </div>
-            ))}
+          {/* ===== WHY QUICKBG ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.whyQuickbg")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.builtDifferent")}</h2>
+              <p className="mt-3 text-sm leading-6 text-white/50">
+                {t("home.builtDifferentDesc")}
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-4 rounded-[2rem] border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-3 sm:p-6">
+              {(["precision", "private", "export", "toolchain", "fast", "free"] as const).map((key) => (
+                <div key={key} className="rounded-[1.35rem] border border-white/10 bg-black/20 p-5 transition duration-300 hover:border-white/20 hover:bg-black/30">
+                  {key === "precision" && <Sparkles className="h-5 w-5 text-secondary" />}
+                  {key === "private" && <ShieldCheck className="h-5 w-5 text-secondary" />}
+                  {key === "export" && <Zap className="h-5 w-5 text-secondary" />}
+                  {key === "toolchain" && <Layers className="h-5 w-5 text-secondary" />}
+                  {key === "fast" && <Clock className="h-5 w-5 text-secondary" />}
+                  {key === "free" && <Star className="h-5 w-5 text-secondary" />}
+                  <div className="mt-4 text-sm font-semibold text-white">{t(`home.whyItems.${key}`)}</div>
+                  <div className="mt-1 text-sm leading-6 text-white/50">{t(`home.whyItems.${key}Desc`)}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* ===== PARALLAX SHOWCASE ===== */}
+          <div className="relative mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]">
+            <ScrollLinkedParallax fileInputRef={fileInputRef} />
           </div>
 
+          {/* ===== BEFORE/AFTER SHOWCASE ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.seeTheDifference")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.beforeAfter")}</h2>
+              <p className="mt-3 text-sm leading-6 text-white/50">
+                {t("home.beforeAfterDesc")}
+              </p>
+            </div>
+
+            <div className="mt-8 mx-auto max-w-2xl">
+              <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04]">
+                <ComparisonSlider
+                  beforeImage={orgImageSrc}
+                  afterImage={proImageSrc}
+                  beforeLabel={t("home.original")}
+                  afterLabel={t("home.backgroundRemoved")}
+                  className="aspect-[4/3]"
+                />
+              </div>
+              <p className="mt-3 text-center text-xs text-white/40">
+                {t("home.beforeAfterCaption")}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* ===== SEO EXPLAINER ===== */}
           <motion.section
             variants={sectionVariants}
             initial="hidden"
@@ -555,56 +686,316 @@ export default function Home() {
           >
             <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-start">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">SEO explainer</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.seoExplainer")}</p>
                 <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-                  A better background remover starts with a clear workflow.
+                  {t("home.seoTitle")}
                 </h2>
                 <p className="mt-4 max-w-xl text-sm leading-7 text-white/55 sm:text-base">
-                  QuickBG is built for people who need fast cutouts, clean transparent exports, and a
-                  practical editing path for product images, social posts, and design work. The page below
-                  explains how the tool works so users and crawlers can understand the full experience.
+                  {t("home.seoDesc")}
                 </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">How the tool works</h3>
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.howItWorks")}</h3>
                   <p className="mt-2 text-sm leading-6 text-white/50">
-                    Upload a photo, let the background remover detect the subject, and move straight into
-                    export or refinement. The workflow keeps the important part in view: a subject cutout
-                    that is ready for transparent PNG delivery.
+                    {t("home.seoCards.howItWorksDesc")}
                   </p>
+                  <LocaleLink href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.tryRemover")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">Why PNGs matter</h3>
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.png")}</h3>
                   <p className="mt-2 text-sm leading-6 text-white/50">
-                    Transparent PNGs make it easy to place a product on a marketplace, a banner, a social
-                    post, or a new background without visible boxes or rough edges. That keeps the output
-                    reusable across marketing and design workflows.
+                    {t("home.seoCards.pngDesc")}
                   </p>
+                  <LocaleLink href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.readGuide")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">What QuickBG handles</h3>
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.handles")}</h3>
                   <p className="mt-2 text-sm leading-6 text-white/50">
-                    The app is designed for portraits, products, pets, artwork, and everyday images with
-                    busy or uneven edges. It also supports follow-up tools like resize, crop, blur, replace,
-                    and adjust, so users can finish the job in one place.
+                    {t("home.seoCards.handlesDesc")}
                   </p>
+                  <LocaleLink href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.viewAllTools")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
                 </div>
 
                 <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">When to refine manually</h3>
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.refine")}</h3>
                   <p className="mt-2 text-sm leading-6 text-white/50">
-                    Complex hair, smoke, shadows, or transparent objects can sometimes need a quick final
-                    check. If the subject edge needs polish, users can rerun the image, crop tighter, or use
-                    the adjacent tools to make the result cleaner before download.
+                    {t("home.seoCards.refineDesc")}
                   </p>
+                  <LocaleLink href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.visitFaq")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
                 </div>
               </div>
             </div>
           </motion.section>
+
+          {/* ===== SUPPORTED FORMATS ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.compatibility")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.worksEvery")}</h2>
+              <p className="mt-3 text-sm leading-6 text-white/50">
+                {t("home.worksEveryDesc")}
+              </p>
+            </div>
+
+            <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+              {(["png", "jpeg", "webp", "avif", "heic", "tiff", "gif", "bmp"] as const).map((fmt, i) => (
+                <motion.div
+                  key={fmt}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.05 }}
+                  className="group rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4 text-center transition duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-secondary/[0.04]"
+                >
+                  <FileImage className="mx-auto h-6 w-6 text-white/40 transition duration-300 group-hover:text-secondary" />
+                  <div className="mt-2 text-sm font-semibold text-white transition duration-300 group-hover:text-secondary">{fmt === "jpeg" ? "JPEG" : fmt.charAt(0).toUpperCase() + fmt.slice(1)}</div>
+                  <div className="mt-0.5 text-[11px] text-white/40">{t(`home.formats.${fmt}`)}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <LocaleLink
+                href="/tools"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
+              >
+                {t("home.exploreAllTools")} <ArrowUpRight className="h-3.5 w-3.5" />
+              </LocaleLink>
+            </div>
+          </motion.div>
+
+          {/* ===== BLOG HIGHLIGHTS ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.blogGuides")}</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.latestArticles")}</h2>
+                <p className="mt-3 text-sm leading-6 text-white/50">
+                  {t("home.latestArticlesDesc")}
+                </p>
+              </div>
+              <LocaleLink
+                href="/blog"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
+              >
+                {t("home.viewAllArticles")}
+                <BookOpen className="h-3.5 w-3.5" />
+              </LocaleLink>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {blogHighlights.map((post) => (
+                <LocaleLink
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20"
+                >
+                  <div className={cn("absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition duration-300 group-hover:opacity-100", post.color)} />
+                  <div className="relative flex items-center gap-2 text-xs text-white/40">
+                    <Clock className="h-3 w-3" />
+                    <span>{post.date}</span>
+                    <span>·</span>
+                    <span>{post.readTime}</span>
+                  </div>
+                  <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{t(`blog.articles.${post.slug}.title`)}</h3>
+                  <p className="relative mt-2 text-sm leading-6 text-white/50">{t(`blog.articles.${post.slug}.excerpt`)}</p>
+                  <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
+                    {t("home.readArticle")} <ArrowRight className="h-3 w-3" />
+                  </div>
+                </LocaleLink>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* ===== TESTIMONIALS ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.testimonials")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.whatUsersSay")}</h2>
+            </div>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((item, i) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="relative rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6"
+                >
+                  <Quote className="h-6 w-6 text-white/20" />
+                  <p className="mt-3 text-sm leading-7 text-white/70">{item.content}</p>
+                  <div className="mt-4 flex items-center gap-1">
+                    {Array.from({ length: item.rating }).map((_, j) => (
+                      <Star key={j} className="h-3.5 w-3.5 fill-amber-400 text-secondary/80" />
+                    ))}
+                  </div>
+                  <div className="mt-4 border-t border-white/10 pt-4">
+                    <div className="text-sm font-semibold text-white">{item.name}</div>
+                    <div className="text-xs text-white/40">{item.role}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* ===== TECH PERFORMANCE ===== */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-120px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.performance")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.builtForSpeed")}</h2>
+              <p className="mt-3 text-sm leading-6 text-white/50">{t("home.builtForSpeedDesc")}</p>
+            </div>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {(["time", "edge", "batch", "uptime"] as const).map((key, i) => (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/20"
+                >
+                  <div className="flex items-end justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-white">{t(`home.performanceMetrics.${key}`)}</div>
+                      <div className="mt-1 text-xs text-white/40">{t(`home.performanceMetrics.${key}Desc`)}</div>
+                    </div>
+                    <div className="shrink-0 text-2xl font-bold text-white">{t(`home.performanceMetrics.${key}Value`)}</div>
+                  </div>
+                  <div className="relative mt-5 h-2 overflow-hidden rounded-full bg-white/10">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${{time:92, edge:96, batch:85, uptime:98}[key]}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, delay: 0.3 + i * 0.1, ease: "easeOut" }}
+                      className={cn("absolute inset-y-0 left-0 rounded-full bg-gradient-to-r", {time:"from-sky-500", edge:"from-violet-500", batch:"from-emerald-500", uptime:"from-amber-500"}[key], "to-white/40")}
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* ===== FAQ SECTION ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.faqLabel")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.commonQuestions")}</h2>
+            </div>
+
+            <div className="mt-10 mx-auto max-w-3xl space-y-3">
+              {([1, 2, 3, 4] as const).map((i) => (
+                <details
+                  key={i}
+                  className="group rounded-[1.25rem] border border-white/10 bg-white/[0.035] transition hover:border-white/20"
+                >
+                  <summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-semibold text-white">
+                    {t(`home.homeFaq.q${i}`)}
+                    <ChevronRight className="h-4 w-4 shrink-0 text-white/40 transition group-open:rotate-90" />
+                  </summary>
+                  <div className="px-5 pb-4 text-sm leading-6 text-white/50">
+                    {t(`home.homeFaq.a${i}`)}
+                  </div>
+                </details>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <LocaleLink
+                href="/faq"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
+              >
+                {t("home.viewAllFaqs")}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </LocaleLink>
+            </div>
+          </motion.div>
+
+
+
+          {/* ===== FINAL CTA ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24 mb-10 text-center"
+          >
+            <div className="rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.06] to-transparent p-8 sm:p-12">
+              <h2 className="text-3xl font-semibold text-white sm:text-4xl">{t("home.readyToRemove")}</h2>
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-white/50">
+                {t("home.readyDesc")}
+              </p>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-sm font-semibold text-black shadow-[0_18px_70px_-22px_rgba(255,255,255,0.72)] transition duration-300 hover:-translate-y-0.5 hover:bg-secondary"
+              >
+                <Upload className="h-4 w-4" />
+                {t("home.uploadFirst")}
+              </button>
+              <div className="mt-6 flex flex-wrap justify-center gap-4 text-xs text-white/40">
+                <LocaleLink href="/about" className="hover:text-white/70">{t("home.links.about")}</LocaleLink>
+                <span>·</span>
+                <LocaleLink href="/comparison" className="hover:text-white/70">{t("home.links.comparison")}</LocaleLink>
+                <span>·</span>
+                <LocaleLink href="/blog" className="hover:text-white/70">{t("home.links.blog")}</LocaleLink>
+                <span>·</span>
+                <LocaleLink href="/faq" className="hover:text-white/70">{t("home.links.faq")}</LocaleLink>
+              </div>
+            </div>
+          </motion.div>
+
         </section>
       </div>
     </AppLayout>

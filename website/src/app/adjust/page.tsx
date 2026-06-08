@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 export default function AdjustPage() {
+  const { t } = useLocale();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
@@ -356,8 +359,8 @@ export default function AdjustPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-extrabold tracking-tight">Adjust & Compress</h1>
-            <p className="text-sm text-muted-foreground mt-1">Fine-tune image appearance, resize, and export optimized files.</p>
+            <h1 className="text-3xl font-extrabold tracking-tight">{t("home.tools.adjust")}</h1>
+            <p className="text-sm text-muted-foreground mt-1">{t("home.tools.adjustDesc")}</p>
           </div>
         </div>
 
@@ -372,10 +375,10 @@ export default function AdjustPage() {
               >
                 <div className="flex flex-col items-center justify-center">
                   <Settings className="h-14 w-14 mb-4 text-muted-foreground" />
-                  <p className="text-lg font-semibold">Upload your image</p>
+                  <p className="text-lg font-semibold">{t("home.howItWorksSteps.upload")}</p>
                   <p className="text-sm text-muted-foreground mt-2 max-w-md text-center">Supported formats: JPG, PNG, WebP.</p>
                   <div className="mt-6 flex gap-3">
-                    <Button variant="default" onClick={() => fileInputRef.current?.click()}>Select Image</Button>
+                    <Button variant="default" onClick={() => fileInputRef.current?.click()}>{t("adjust.selectImage")}</Button>
                   </div>
                 </div>
               </div>
@@ -383,7 +386,7 @@ export default function AdjustPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="rounded-xl overflow-hidden premium-surface">
-                    <div className="px-4 py-3 bg-white/[0.035] border-b border-white/10 text-sm font-medium">Original</div>
+                    <div className="px-4 py-3 bg-white/[0.035] border-b border-white/10 text-sm font-medium">{t("remover.preview.original")}</div>
                     <div className="p-6 flex items-center justify-center bg-gradient-to-b from-white/3 via-transparent to-transparent">
                       <img src={image.preview} alt="original" className="max-w-full max-h-80 object-contain" />
                     </div>
@@ -397,7 +400,7 @@ export default function AdjustPage() {
                           <a href={result} download={`${image.name.split(".")[0]}_adjusted.${getFileExtension()}`}>
                             <Button size="sm">
                               <Download className="h-4 w-4 mr-2" />
-                              Download
+                              {t("remover.actions.download")}
                             </Button>
                           </a>
                         )}
@@ -425,7 +428,7 @@ export default function AdjustPage() {
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-muted-foreground">Filename: <span className="text-muted-foreground/90 font-medium">{image.name}</span></div>
                   <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" onClick={() => { setImage(null); setResult(null); }}>Change</Button>
+                    <Button variant="outline" size="sm" onClick={() => { setImage(null); setResult(null); }}>{t("adjust.change")}</Button>
                     <Button variant="secondary" size="sm" onClick={() => { setResult(null); setBrightness(100); setContrast(100); setSaturation(100); }}>Reset</Button>
                   </div>
                 </div>
@@ -569,8 +572,8 @@ export default function AdjustPage() {
                 className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-3">
-                <span>Smaller file</span>
-                <span>Better quality</span>
+                <span>{t("adjust.smallerFile")}</span>
+                <span>{t("adjust.betterQuality")}</span>
               </div>
             </div>
 
@@ -615,6 +618,37 @@ export default function AdjustPage() {
           </aside>
         </div>
       </div>
+
+      <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("adjust.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.adjust")}</h2>
+        </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("adjust.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("adjust.guide.step1Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("adjust.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("adjust.guide.step2Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("adjust.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("adjust.guide.step3Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("adjust.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("adjust.guide.step4Desc")}</p>
+          </div>
+        </div>
+      </section>
+      <ToolFaq toolKey="adjust" />
+      <ToolExtraContent toolKey="adjust" />
     </AppLayout>
   );
 }

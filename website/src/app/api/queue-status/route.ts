@@ -86,7 +86,8 @@ async function getMongoDB() {
   // Create and connect a new client
   const client = new MongoClient(uri);
   await client.connect();
-  const database = client.db("bgremover");
+  const dbName = process.env.NEXT_MONGODB_DB || "bgremover";
+  const database = client.db(dbName);
 
   // persist on global to survive module reloads in dev
   mongoGlobal.__bgremover_mongo_client = client;

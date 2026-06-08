@@ -16,7 +16,8 @@ if (!uri || !uri.startsWith('mongodb')) {
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   try {
     await client.connect();
-    const db = client.db("bgremover");
+    const dbName = process.env.NEXT_MONGODB_DB || "bgremover";
+    const db = client.db(dbName);
     const col = db.collection("user_uploads");
 
     const hourAgo = new Date(Date.now() - 60 * 60 * 1000);

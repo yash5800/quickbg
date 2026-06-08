@@ -6,6 +6,7 @@ import { getClientIp } from "@/lib/request-session";
 export const dynamic = "force-dynamic";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
+const DB_NAME = process.env.NEXT_MONGODB_DB || "bgremover";
 
 // Rate limiting for admin routes
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -58,7 +59,7 @@ export async function GET(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db(DB_NAME);
 
     const analytics = db.collection("analytics");
 
@@ -140,7 +141,7 @@ export async function DELETE(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db(DB_NAME);
 
     const analytics = db.collection("analytics");
     const analyticsSeen = db.collection("analytics_seen");

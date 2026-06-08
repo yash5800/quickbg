@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShieldCheck, Cookie } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/contexts/LocaleContext";
 
 const NOTICE_COOKIE = "qb_cookie_notice";
 const NOTICE_MAX_AGE = 60 * 60 * 24 * 365;
@@ -41,6 +42,7 @@ function writeNoticeCookie() {
 export function CookieConsentBanner() {
   const [seen, setSeen] = useState<NoticeState>(null);
   const [mounted, setMounted] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     setSeen(readNoticeCookie());
@@ -72,21 +74,21 @@ export function CookieConsentBanner() {
 
             <div className="min-w-0 flex-1 space-y-3">
               <div className="space-y-1">
-                <p className="text-sm font-semibold text-foreground">Cookies in use</p>
+                <p className="text-sm font-semibold text-foreground">{t("cookie.title")}</p>
                 <p className="text-sm text-muted-foreground">
-                  QuickBG uses only essential cookies for sessions, credits, and queue tracking. No tracking cookies are used.
+                  {t("cookie.description")}
                 </p>
               </div>
 
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <Link href="/privacy" className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground">
                   <ShieldCheck className="h-3.5 w-3.5" />
-                  View privacy policy
+                  {t("footer.privacy")}
                 </Link>
 
                 <Button size="sm" onClick={handleDismiss} className="gap-2">
                   <ShieldCheck className="h-4 w-4" />
-                  Got it
+                  {t("cookie.accept")}
                 </Button>
               </div>
             </div>

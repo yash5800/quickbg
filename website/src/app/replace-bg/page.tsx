@@ -6,6 +6,8 @@ import { AppLayout } from "@/components/app-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 const backgroundColors = [
   { name: "White", value: "#ffffff" },
@@ -26,6 +28,7 @@ const gradients = [
 ];
 
 export default function ReplaceBgPage() {
+  const { t } = useLocale();
   const router = useRouter();
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [originalImage, setOriginalImage] = useState<string | null>(null);
@@ -145,8 +148,8 @@ export default function ReplaceBgPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">Background Replace</h1>
-              <p className="text-muted-foreground text-sm">Replace background with colors, gradients, or images</p>
+              <h1 className="text-2xl font-bold">{t("home.tools.replaceBg")}</h1>
+              <p className="text-muted-foreground text-sm">{t("home.tools.replaceBgDesc")}</p>
             </div>
           </div>
 
@@ -154,15 +157,46 @@ export default function ReplaceBgPage() {
             <div className="w-20 h-20 rounded-2xl bg-muted/50 flex items-center justify-center mb-6">
               <Palette className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+              <h2 className="text-xl font-semibold mb-2">{t("replaceBg.accessRestricted.heading")}</h2>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Please process an image with Background Remover first, then use the &ldquo;Replace BG&rdquo; button to access this tool.
+              {t("replaceBg.accessRestricted.desc")}
             </p>
             <Button onClick={() => router.push("/remover")} size="lg">
-              Go to Background Remover
+              {t("common.openRemover")}
             </Button>
           </div>
-        </div>
+
+          <section className="mx-auto mb-20 mt-24 max-w-5xl px-4 sm:px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("replaceBg.guide.heading")}</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.replaceBg")}</h2>
+            </div>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step1Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step1Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step2Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step2Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step3Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step3Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step4Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step4Desc")}</p>
+              </div>
+            </div>
+            </section>
+            <ToolFaq toolKey="replaceBg" />
+            <ToolExtraContent toolKey="replaceBg" />
+          </div>
       </AppLayout>
     );
   }
@@ -175,8 +209,8 @@ export default function ReplaceBgPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Background Replace</h1>
-            <p className="text-muted-foreground text-sm">Replace background with colors, gradients, or images</p>
+            <h1 className="text-2xl font-bold">{t("home.tools.replaceBg")}</h1>
+            <p className="text-muted-foreground text-sm">{t("home.tools.replaceBgDesc")}</p>
           </div>
         </div>
 
@@ -192,20 +226,20 @@ export default function ReplaceBgPage() {
                 <a href={result} download="replaced-bg.png" className="absolute top-4 right-4">
                   <Button size="sm">
                     <Download className="h-4 w-4 mr-2" />
-                    Download
+                    {t("remover.actions.download")}
                   </Button>
                 </a>
               )}
             </div>
 
             <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-sm">
-              <span className="text-green-700 dark:text-green-400">Subject ready - background will be replaced</span>
+              <span className="text-green-700 dark:text-green-400">{t("replaceBg.badge")}</span>
             </div>
           </div>
 
           <div className="space-y-6">
             <div className="p-6 rounded-2xl premium-surface">
-              <h3 className="font-semibold mb-4">Background Type</h3>
+              <h3 className="font-semibold mb-4">{t("replaceBg.bgType")}</h3>
               <div className="flex gap-2">
                 {(["color", "gradient", "image"] as const).map((type) => (
                   <button
@@ -219,7 +253,7 @@ export default function ReplaceBgPage() {
                       selectedBg === type ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"
                     )}
                   >
-                    {type}
+                    {t(`replaceBg.type${type.charAt(0).toUpperCase() + type.slice(1)}`)}
                   </button>
                 ))}
               </div>
@@ -227,7 +261,7 @@ export default function ReplaceBgPage() {
 
             {selectedBg === "color" && (
               <div className="p-6 rounded-2xl premium-surface">
-                <h3 className="font-semibold mb-4">Choose Color</h3>
+                <h3 className="font-semibold mb-4">{t("replaceBg.chooseColor")}</h3>
                 <div className="flex flex-wrap gap-3">
                   {backgroundColors.map((color) => (
                     <button
@@ -250,7 +284,7 @@ export default function ReplaceBgPage() {
 
             {selectedBg === "gradient" && (
               <div className="p-6 rounded-2xl premium-surface">
-                <h3 className="font-semibold mb-4">Choose Gradient</h3>
+                <h3 className="font-semibold mb-4">{t("replaceBg.chooseGradient")}</h3>
                 <div className="flex flex-wrap gap-3">
                   {gradients.map((grad, idx) => (
                     <button
@@ -273,7 +307,7 @@ export default function ReplaceBgPage() {
 
             {selectedBg === "image" && (
               <div className="p-6 rounded-2xl premium-surface">
-                <h3 className="font-semibold mb-4">Background Image</h3>
+                <h3 className="font-semibold mb-4">{t("replaceBg.bgImage")}</h3>
                 {backgroundImage ? (
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-muted">
                     <img src={backgroundImage} alt="" className="w-full h-full object-contain" />
@@ -293,7 +327,7 @@ export default function ReplaceBgPage() {
                     className="premium-dashed aspect-video rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all"
                   >
                     <Plus className="h-8 w-8 mb-2 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">Click to upload background</p>
+                    <p className="text-sm text-muted-foreground">{t("replaceBg.uploadBg")}</p>
                   </div>
                 )}
                 <input
@@ -315,18 +349,49 @@ export default function ReplaceBgPage() {
               {isProcessing ? (
                 <>
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                  Processing...
+                  {t("replaceBg.processing")}
                 </>
               ) : (
                 <>
                   <Plus className="h-4 w-4 mr-2" />
-                  Replace Background
+                  {t("replaceBg.replaceBtn")}
                 </>
               )}
             </Button>
           </div>
         </div>
       </div>
+
+      <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("replaceBg.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.replaceBg")}</h2>
+        </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step1Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step2Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step3Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("replaceBg.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step4Desc")}</p>
+          </div>
+        </div>
+      </section>
+      <ToolFaq toolKey="replaceBg" />
+      <ToolExtraContent toolKey="replaceBg" />
     </AppLayout>
   );
 }

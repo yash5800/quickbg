@@ -56,7 +56,8 @@ async function getMongoDB() {
       await mongoClient.connect();
     }
 
-    db = mongoClient.db("bgremover");
+    const dbName = process.env.NEXT_MONGODB_DB || "bgremover";
+    db = mongoClient.db(dbName);
     
     try {
       await db.collection<UserUpload>("user_uploads").createIndex(

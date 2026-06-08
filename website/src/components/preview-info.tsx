@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { RatingWidget } from "@/components/rating-widget";
 import { addBorder, addWatermark, blobToDataUrl } from "@/lib/image-operations";
+import { useLocale } from "@/contexts/LocaleContext";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) {
@@ -95,6 +96,7 @@ export function PreviewInfo({
 }: PreviewInfoProps) {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useLocale();
   const watermarkSectionRef = useRef<HTMLDivElement | null>(null);
   const [showWatermarkHint, setShowWatermarkHint] = useState(false);
   const [processedDimensions, setProcessedDimensions] = useState<{ width: number; height: number } | null>(null);
@@ -128,28 +130,28 @@ export function PreviewInfo({
   }, [showWatermarkHint]);
 
   const statusConfig = {
-    pending: { label: "Waiting", icon: Clock, color: "bg-slate-500/10 text-slate-600" },
-    starting: { label: "Starting", icon: Loader2, color: "bg-blue-500/10 text-blue-600" },
-    uploading: { label: "Uploading", icon: Loader2, color: "bg-blue-500/10 text-blue-600" },
-    queued: { label: "In Queue", icon: Loader2, color: "bg-amber-500/10 text-amber-600" },
-    processing: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
-    running: { label: "Processing", icon: Loader2, color: "bg-primary/10 text-primary" },
-    uploading_result: { label: "Finalizing", icon: Loader2, color: "bg-primary/10 text-primary" },
-    fetching_result: { label: "Fetching processed image", icon: Loader2, color: "bg-amber-500/10 text-amber-600" },
-    completed: { label: "Done", icon: CheckCircle2, color: "bg-green-500/10 text-green-600" },
-    error: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
-    failed: { label: "Failed", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
-    expired: { label: "Expired", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
-    cancelled: { label: "Cancelled", icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
+    pending: { label: t("remover.status.waiting"), icon: Clock, color: "bg-slate-500/10 text-slate-600" },
+    starting: { label: t("remover.status.starting"), icon: Loader2, color: "bg-primary/10 text-primary" },
+    uploading: { label: t("remover.status.uploading"), icon: Loader2, color: "bg-primary/10 text-primary" },
+    queued: { label: t("remover.status.inQueue"), icon: Loader2, color: "bg-secondary/10 text-amber-600" },
+    processing: { label: t("remover.status.processing"), icon: Loader2, color: "bg-primary/10 text-primary" },
+    running: { label: t("remover.status.processing"), icon: Loader2, color: "bg-primary/10 text-primary" },
+    uploading_result: { label: t("remover.status.finalizing"), icon: Loader2, color: "bg-primary/10 text-primary" },
+    fetching_result: { label: t("remover.status.fetching"), icon: Loader2, color: "bg-secondary/10 text-amber-600" },
+    completed: { label: t("remover.status.done"), icon: CheckCircle2, color: "bg-green-500/10 text-green-600" },
+    error: { label: t("remover.status.failed"), icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
+    failed: { label: t("remover.status.failed"), icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
+    expired: { label: t("remover.status.expired"), icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
+    cancelled: { label: t("remover.status.cancelled"), icon: AlertCircle, color: "bg-red-500/10 text-red-600" },
   }[displayStatus as string] || { label: displayStatus, icon: Clock, color: "bg-slate-500/10 text-slate-600" };
 
 const StatusIcon = statusConfig.icon;
   const progress = getPanelProgress(image, isResultFetching);
   const timeline = [
-    { label: "Upload", active: ["uploading"].includes(image.status), done: progress >= 24 },
-    { label: "Queue", active: image.status === "queued", done: progress >= 42 },
-    { label: "Mask", active: isProcessing && image.status !== "uploading" && image.status !== "queued", done: progress >= 72 },
-    { label: "Ready", active: isResultFetching, done: isCompleted },
+    { label: t("remover.timeline.upload"), active: ["uploading"].includes(image.status), done: progress >= 24 },
+    { label: t("remover.timeline.queue"), active: image.status === "queued", done: progress >= 42 },
+    { label: t("remover.timeline.mask"), active: isProcessing && image.status !== "uploading" && image.status !== "queued", done: progress >= 72 },
+    { label: t("remover.timeline.ready"), active: isResultFetching, done: isCompleted },
   ];
 
   useEffect(() => {
@@ -229,7 +231,7 @@ const StatusIcon = statusConfig.icon;
             onClick={() => watermarkSectionRef.current?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" })}
             className="fixed bottom-4 right-6 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-primary/30 bg-background/95 px-4 py-2 text-sm font-medium text-foreground shadow-lg shadow-black/10 backdrop-blur-md"
           >
-            <span>watermark tools</span>
+            <span>{t("remover.watermark.heading")}</span>
             {!prefersReducedMotion && (
               <motion.span
                 aria-hidden="true"
@@ -263,7 +265,7 @@ const StatusIcon = statusConfig.icon;
             size="sm"
             onClick={onRemove}
             className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-            title="Delete image"
+            title={t("remover.actions.delete")}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -304,9 +306,9 @@ const StatusIcon = statusConfig.icon;
                 className={cn(
                   "rounded-lg border px-1.5 py-1.5 text-center text-[10px] font-medium",
                   step.done
-                    ? "border-lime-300/40 bg-lime-300/10 text-lime-800 dark:text-lime-100"
+                    ? "border-secondary/40 bg-secondary/10 text-secondary"
                     : step.active
-                      ? "border-sky-300/40 bg-sky-300/10 text-sky-800 dark:text-sky-100"
+                      ? "border-secondary/40 bg-secondary/10 text-secondary"
                       : "border-border/70 bg-background/30 text-muted-foreground"
                 )}
               >
@@ -325,26 +327,26 @@ const StatusIcon = statusConfig.icon;
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="p-4 space-y-3 bg-amber-500/10 border-amber-500/30">
-              <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
-                {image.waitingReason === "credits_exhausted" ? "Hourly limit reached" : "Queue is full"}
+            <Card className="p-4 space-y-3 bg-secondary/10 border-amber-500/30">
+              <h4 className="text-sm font-semibold text-amber-700 dark:text-secondary/80">
+                {image.waitingReason === "credits_exhausted" ? t("remover.waiting.hourlyLimit") : t("remover.waiting.queueFull")}
               </h4>
               <p className="text-xs text-muted-foreground">
                 {image.waitingReason === "credits_exhausted"
-                  ? "This image will process automatically when credits reset."
-                  : "This image will process automatically when queue capacity opens."}
+                  ? t("remover.waiting.hourlyDesc")
+                  : t("remover.waiting.queueDesc")}
               </p>
               {image.waitingReason === "credits_exhausted" && image.creditResetAt && (
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="h-4 w-4 text-amber-600" />
-                  <span className="text-muted-foreground">Resets in</span>
+                  <span className="text-muted-foreground">{t("remover.waiting.resetsIn")}</span>
                   <ResetTimer resetAt={image.creditResetAt} />
                 </div>
               )}
               {image.waitingReason === "queue_full" && image.queueRetryAt && (
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="h-4 w-4 text-amber-600" />
-                  <span className="text-muted-foreground">Retrying in</span>
+                  <span className="text-muted-foreground">{t("remover.waiting.retryingIn")}</span>
                   <ResetTimer resetAt={image.queueRetryAt} />
                 </div>
               )}
@@ -361,18 +363,18 @@ const StatusIcon = statusConfig.icon;
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <Card className="p-4 space-y-3 bg-amber-500/5 border-amber-500/20">
-              <h4 className="text-sm font-semibold text-amber-700 dark:text-amber-400">
-                Position in Queue
+            <Card className="p-4 space-y-3 bg-amber-500/5 border-secondary/20">
+              <h4 className="text-sm font-semibold text-amber-700 dark:text-secondary/80">
+                {t("remover.queue.position")}
               </h4>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <span>#</span>
-                    <span>Your Position</span>
+                    <span>{t("remover.queue.yourPosition")}</span>
                   </div>
-                  <span className="font-semibold text-2xl text-amber-600 dark:text-amber-400">
+                  <span className="font-semibold text-2xl text-amber-600 dark:text-secondary/80">
                     {image.queuePosition}
                   </span>
                 </div>
@@ -381,7 +383,7 @@ const StatusIcon = statusConfig.icon;
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Clock className="h-4 w-4" />
-                      <span>Est. Wait</span>
+                      <span>{t("remover.queue.estWait")}</span>
                     </div>
                     <span className="font-semibold text-foreground">
                       ~{image.estimatedWaitSeconds}s
@@ -404,14 +406,14 @@ const StatusIcon = statusConfig.icon;
           >
             <Card className="p-4 space-y-3 bg-green-500/5 border-green-500/20">
               <h4 className="text-sm font-semibold text-green-700 dark:text-green-400">
-                Processing Complete
+                {t("remover.complete.heading")}
               </h4>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>Processing Time</span>
+                    <span>{t("remover.complete.time")}</span>
                   </div>
                   <span className="font-semibold text-foreground">
                     {(image.duration / 1000).toFixed(2)}s
@@ -422,7 +424,7 @@ const StatusIcon = statusConfig.icon;
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <Monitor className="h-4 w-4" />
-                      <span>Resolution</span>
+                      <span>{t("remover.complete.resolution")}</span>
                     </div>
                     <span className="font-semibold text-foreground">
                       {image.dimensions.width} × {image.dimensions.height}
@@ -433,7 +435,7 @@ const StatusIcon = statusConfig.icon;
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2 text-muted-foreground">
                       <BadgeInfo className="h-4 w-4" />
-                      <span>Processed</span>
+                      <span>{t("remover.complete.processed")}</span>
                     </div>
                     <span className="font-semibold text-foreground">
                       {processedDimensions.width} × {processedDimensions.height}
@@ -443,7 +445,7 @@ const StatusIcon = statusConfig.icon;
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <FileBadgeIcon />
-                    <span>Format</span>
+                    <span>{t("remover.complete.format")}</span>
                   </div>
                   <Badge variant="outline">{fileFormat}</Badge>
                 </div>
@@ -466,7 +468,7 @@ const StatusIcon = statusConfig.icon;
                 <AlertCircle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-sm text-destructive">
-                    Processing Failed
+                    {t("remover.error.heading")}
                   </h4>
                   {image.error && (
                     <p className="text-xs text-muted-foreground mt-1">{image.error}</p>
@@ -489,7 +491,7 @@ const StatusIcon = statusConfig.icon;
               size="sm"
             >
               <Download className="h-4 w-4 mr-2" />
-              {isDownloading ? "Downloading..." : "Download"}
+              {isDownloading ? t("remover.actions.downloading") : t("remover.actions.download")}
             </Button>
             {onCopy && (
               <Button
@@ -499,7 +501,7 @@ const StatusIcon = statusConfig.icon;
                 size="sm"
               >
                 <Copy className="h-4 w-4 mr-2" />
-                Copy PNG
+                {t("remover.actions.copyPng")}
               </Button>
             )}
             <Button
@@ -509,7 +511,7 @@ const StatusIcon = statusConfig.icon;
               size="sm"
             >
               <X className="h-4 w-4 mr-2" />
-              Delete
+              {t("remover.actions.delete")}
             </Button>
           </>
         )}
@@ -522,7 +524,7 @@ const StatusIcon = statusConfig.icon;
               className="w-full"
               size="sm"
             >
-              Retry Processing
+              {t("remover.actions.retry")}
             </Button>
             <Button
               onClick={onRemove}
@@ -531,7 +533,7 @@ const StatusIcon = statusConfig.icon;
               size="sm"
             >
               <X className="h-4 w-4 mr-2" />
-              Delete
+              {t("remover.actions.delete")}
             </Button>
           </>
         )}
@@ -544,7 +546,7 @@ const StatusIcon = statusConfig.icon;
             size="sm"
           >
             <X className="h-4 w-4 mr-2" />
-            Cancel
+            {t("remover.actions.cancel")}
           </Button>
         )}
 
@@ -556,7 +558,7 @@ const StatusIcon = statusConfig.icon;
             size="sm"
           >
             <X className="h-4 w-4 mr-2" />
-            Delete
+            {t("remover.actions.delete")}
           </Button>
         )}
       </div>
@@ -565,7 +567,7 @@ const StatusIcon = statusConfig.icon;
       {isCompleted && image.result && (
         <div className="pt-2 border-t">
           <h4 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-            Quick Edit
+            {t("remover.quickEdit.heading")}
           </h4>
           <div className="grid grid-cols-2 gap-2">
             {onOpenEraser && (
@@ -576,7 +578,7 @@ const StatusIcon = statusConfig.icon;
                 onClick={onOpenEraser}
               >
                 <Eraser className="h-3 w-3 mr-1" />
-                Eraser
+                {t("remover.quickEdit.eraser")}
               </Button>
             )}
             <Button
@@ -591,7 +593,7 @@ const StatusIcon = statusConfig.icon;
               }}
             >
               <Sparkles className="h-3 w-3 mr-1" />
-              Sharpness
+              {t("remover.quickEdit.sharpness")}
             </Button>
             <Button
               variant="outline"
@@ -603,7 +605,7 @@ const StatusIcon = statusConfig.icon;
               }}
             >
               <Frame className="h-3 w-3 mr-1" />
-              Convert
+              {t("remover.quickEdit.convert")}
             </Button>
             <Button
               variant="outline"
@@ -616,7 +618,7 @@ const StatusIcon = statusConfig.icon;
               }}
             >
               <Layers className="h-3 w-3 mr-1" />
-              Blur BG
+              {t("remover.quickEdit.blurBg")}
             </Button>
             <Button
               variant="outline"
@@ -629,7 +631,7 @@ const StatusIcon = statusConfig.icon;
               }}
             >
               <Palette className="h-3 w-3 mr-1" />
-              Replace BG
+              {t("remover.quickEdit.replaceBg")}
             </Button>
           </div>
           <motion.div
@@ -669,47 +671,47 @@ const StatusIcon = statusConfig.icon;
               transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
               className="space-y-2"
             >
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Watermark</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("remover.watermark.heading")}</p>
               <input
                 value={watermarkText}
                 onChange={(event) => setWatermarkText(event.target.value)}
-                placeholder="Watermark text"
+                placeholder={t("remover.watermark.placeholder")}
                 className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm"
               />
               <div className="grid grid-cols-2 gap-2">
                 <input type="color" value={watermarkColor} onChange={(event) => setWatermarkColor(event.target.value)} className="h-9 w-full rounded-lg border border-input bg-background" />
                 <select value={watermarkPosition} onChange={(event) => setWatermarkPosition(event.target.value as typeof watermarkPosition)} className="h-9 rounded-lg border border-input bg-background px-2 text-xs">
-                  <option value="bottom-right">Bottom right</option>
-                  <option value="bottom-left">Bottom left</option>
-                  <option value="top-right">Top right</option>
-                  <option value="top-left">Top left</option>
-                  <option value="center">Center</option>
+                  <option value="bottom-right">{t("remover.watermark.position.bottomRight")}</option>
+                  <option value="bottom-left">{t("remover.watermark.position.bottomLeft")}</option>
+                  <option value="top-right">{t("remover.watermark.position.topRight")}</option>
+                  <option value="top-left">{t("remover.watermark.position.topLeft")}</option>
+                  <option value="center">{t("remover.watermark.position.center")}</option>
                 </select>
               </div>
               <label className="block text-xs text-muted-foreground">
-                Size {watermarkSize}px
+                {t("remover.watermark.size")} {watermarkSize}px
                 <input type="range" min="12" max="96" value={watermarkSize} onChange={(event) => setWatermarkSize(Number(event.target.value))} className="mt-1 w-full" />
               </label>
               <label className="block text-xs text-muted-foreground">
-                Opacity {Math.round(watermarkOpacity * 100)}%
+                {t("remover.watermark.opacity")} {Math.round(watermarkOpacity * 100)}%
                 <input type="range" min="0.1" max="1" step="0.05" value={watermarkOpacity} onChange={(event) => setWatermarkOpacity(Number(event.target.value))} className="mt-1 w-full" />
               </label>
               <Button size="sm" className="w-full" disabled={isApplyingTool || !watermarkText.trim()} onClick={() => void applyWatermark()}>
-                Apply Watermark
+                {t("remover.watermark.apply")}
               </Button>
             </motion.div>
 
             <div className="space-y-2 border-t border-border/70 pt-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Border</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("remover.border.heading")}</p>
               <div className="grid grid-cols-[1fr_auto] gap-2">
                 <label className="text-xs text-muted-foreground">
-                  Width {borderWidth}px
+                  {t("remover.border.width")} {borderWidth}px
                   <input type="range" min="0" max="80" value={borderWidth} onChange={(event) => setBorderWidth(Number(event.target.value))} className="mt-1 w-full" />
                 </label>
                 <input type="color" value={borderColor} onChange={(event) => setBorderColor(event.target.value)} className="mt-4 h-9 w-12 rounded-lg border border-input bg-background" />
               </div>
               <Button size="sm" variant="outline" className="w-full" disabled={isApplyingTool || borderWidth <= 0} onClick={() => void applyBorder()}>
-                Apply Border
+                {t("remover.border.apply")}
               </Button>
             </div>
           </motion.div>
@@ -741,7 +743,7 @@ function ResetTimer({ resetAt }: { resetAt: number }) {
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
   return (
-    <span className="font-bold text-amber-600 dark:text-amber-400 tabular-nums">
+    <span className="font-bold text-amber-600 dark:text-secondary/80 tabular-nums">
       {mins}:{secs.toString().padStart(2, "0")}
     </span>
   );

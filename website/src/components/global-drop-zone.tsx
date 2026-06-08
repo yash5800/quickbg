@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 import { useImages } from "@/contexts/ImageContext";
 
 // Pages that should use the global drop zone (ONLY home and remover)
@@ -23,6 +24,7 @@ export function GlobalDropZone({ children }: { children: React.ReactNode }) {
 }
 
 function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
+  const { t } = useLocale();
   const { addImages } = useImages();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
@@ -127,20 +129,20 @@ function GlobalDropZoneInner({ children }: { children: React.ReactNode }) {
                 aria-hidden
                 className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent"
                 animate={{ x: ["-100%", "100%"] }}
-                transition={{ duration: 1.7, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 3.4, repeat: Infinity, ease: "easeInOut" }}
               />
               <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white text-black shadow-[0_22px_80px_-32px_rgba(255,255,255,0.75)]">
                 <motion.span
                   aria-hidden
-                  className="absolute inset-0 rounded-3xl border border-sky-300/45"
+                  className="absolute inset-0 rounded-3xl border border-secondary/45"
                   animate={{ scale: [1, 1.35, 1], opacity: [0.8, 0, 0.8] }}
-                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                  transition={{ duration: 3.2, repeat: Infinity, ease: "easeOut" }}
                 />
                 <Upload className="h-9 w-9" />
               </div>
               <div>
-                <h2 className="text-2xl font-semibold text-white">Drop images to start</h2>
-                <p className="mt-2 text-sm leading-6 text-white/55">QuickBG will upload, queue, process, and open the remover workspace automatically.</p>
+                <h2 className="text-2xl font-semibold text-white">{t("globalDrop.title")}</h2>
+                <p className="mt-2 text-sm leading-6 text-white/55">{t("globalDrop.description")}</p>
               </div>
               <div className="flex flex-wrap justify-center gap-2 text-xs text-white/55">
                 {["PNG", "JPG", "WebP", "TIFF", "HEIC", "AVIF"].map((format) => (

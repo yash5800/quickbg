@@ -1,9 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { ReactCompareSlider } from "react-compare-slider";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
+
+const ReactCompareSlider = dynamic(
+  () => import("react-compare-slider").then((m) => m.ReactCompareSlider),
+  { ssr: false }
+);
 
 interface LoadState {
   beforeLoaded: boolean;
@@ -25,6 +31,7 @@ export function ComparisonSlider({
   afterLabel = "Background Removed",
   className,
 }: ComparisonSliderProps) {
+  const { t } = useLocale();
   const [loaded, setLoaded] = React.useState<LoadState>({ beforeLoaded: false, afterLoaded: false });
 
   // Reset load state when images change
@@ -32,31 +39,37 @@ export function ComparisonSlider({
     setLoaded({ beforeLoaded: false, afterLoaded: false });
   }, [beforeImage, afterImage]);
 
-  React.useEffect(() => {
-    let beforeImg: HTMLImageElement | null = new Image();
-    beforeImg.src = beforeImage;
-    beforeImg.onload = () => setLoaded((s) => ({ ...s, beforeLoaded: true }));
-    beforeImg.onerror = () => setLoaded((s) => ({ ...s, beforeLoaded: true }));
+  const imagesLoadingRef = React.useRef(false);
 
-    let afterImg: HTMLImageElement | null = null;
-    if (afterImage) {
-      afterImg = new Image();
-      afterImg.src = afterImage;
-      afterImg.onload = () => setLoaded((s) => ({ ...s, afterLoaded: true }));
-      afterImg.onerror = () => setLoaded((s) => ({ ...s, afterLoaded: true }));
-    }
+  React.useEffect(() => {
+    if (imagesLoadingRef.current) return;
+    imagesLoadingRef.current = true;
+
+    let cancelled = false;
+
+    const loadImage = (src: string): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        img.src = src;
+      });
+    };
+
+    void (async () => {
+      await Promise.all([
+        loadImage(beforeImage),
+        afterImage ? loadImage(afterImage) : Promise.resolve(),
+      ]);
+      if (!cancelled) {
+        setLoaded({ beforeLoaded: true, afterLoaded: !!afterImage });
+        imagesLoadingRef.current = false;
+      }
+    })();
 
     return () => {
-      if (beforeImg) {
-        beforeImg.onload = null;
-        beforeImg.onerror = null;
-        beforeImg = null;
-      }
-      if (afterImg) {
-        afterImg.onload = null;
-        afterImg.onerror = null;
-        afterImg = null;
-      }
+      cancelled = true;
+      imagesLoadingRef.current = false;
     };
   }, [beforeImage, afterImage]);
 
@@ -68,7 +81,7 @@ export function ComparisonSlider({
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/75 backdrop-blur-sm">
           <div className="flex flex-col items-center gap-2">
             <Loader2 className="h-10 w-10 animate-spin text-foreground" />
-            <div className="text-sm text-foreground">Preparing preview…</div>
+            <div className="text-sm text-foreground">{t("comparisonSlider.preparing")}</div>
           </div>
         </div>
       )}

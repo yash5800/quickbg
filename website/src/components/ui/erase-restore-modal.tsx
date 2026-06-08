@@ -1,6 +1,9 @@
+"use client";
+
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
 interface EraseRestoreModalProps {
   jobId?: string;
@@ -9,6 +12,7 @@ interface EraseRestoreModalProps {
 }
 
 export const EraseRestoreModal: React.FC<EraseRestoreModalProps> = ({ jobId, open, onOpenChange }) => {
+  const { t } = useLocale();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -57,19 +61,19 @@ export const EraseRestoreModal: React.FC<EraseRestoreModalProps> = ({ jobId, ope
       <div className="absolute inset-0 bg-black/50" onClick={() => onOpenChange(false)} />
       <div className="relative bg-card border border-border rounded-xl shadow-lg p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Erase / Restore</h2>
+          <h2 className="text-lg font-semibold">{t("eraser.title")}</h2>
           <Button variant="ghost" size="icon" onClick={() => onOpenChange(false)}>
             <X className="h-4 w-4" />
           </Button>
         </div>
-        <p className="text-sm text-muted-foreground mb-4">Choose an action for the selected image.</p>
+        <p className="text-sm text-muted-foreground mb-4">{t("remover.quickEdit.eraser")}</p>
         {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
         <div className="flex space-x-2 justify-end">
           <Button variant="destructive" onClick={handleErase} disabled={loading}>
-            {loading ? "Erasing…" : "Erase"}
+            {loading ? t("eraser.erase") + "…" : t("eraser.erase")}
           </Button>
           <Button variant="default" onClick={handleRestore} disabled={loading}>
-            {loading ? "Restoring…" : "Restore"}
+            {loading ? t("eraser.restore") + "…" : t("eraser.restore")}
           </Button>
         </div>
       </div>

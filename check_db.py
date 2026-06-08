@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv("worker/.env")
 uri = os.getenv("NEXT_MONGODB_URI")
+db_name = os.getenv("NEXT_MONGODB_DB", "bgremover")
 client = MongoClient(uri)
-db = client.get_database("bgremover")
+db = client.get_database(db_name)
 jobs = db["jobs"]
 job = jobs.find_one({"jobId": "aba72179-cbd1-48f7-8dce-c24a81fd8426"})
 print(job)

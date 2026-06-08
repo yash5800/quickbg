@@ -1,125 +1,157 @@
 import { AppLayout } from "@/components/app-layout";
 import { Card } from "@/components/ui/card";
-import Link from "next/link";
+import { LocaleLink } from "@/components/locale-link";
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { getLocaleMetadata } from "@/lib/i18n/metadata";
+import { defaultLocale, type Locale } from "@/lib/i18n/config";
+import { getServerTranslations } from "@/lib/i18n/server";
+import {
+  Lightbulb,
+  ArrowUpRight,
+  Server,
+  BrainCircuit,
+  HeartHandshake,
+  Cpu,
+  Database,
+  Shirt,
+  GraduationCap,
+  Stethoscope,
+  Building2,
+  ShoppingCart,
+  Palette,
+  Smartphone,
+  Camera,
+} from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "About QuickBG - Technology and Workflow",
-  description: "Learn how QuickBG removes backgrounds, what BiRefNet contributes, and how the workflow supports product, design, and social use cases.",
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const locale = (headersList.get("x-locale") || defaultLocale) as Locale;
+  return getLocaleMetadata(locale, "about", "/about");
+}
+
+const useCasesIcons = {
+  ecommerce: ShoppingCart,
+  social: Smartphone,
+  photo: Camera,
+  design: Palette,
+  fashion: Shirt,
+  education: GraduationCap,
+  health: Stethoscope,
+  realestate: Building2,
 };
 
-const faqItems = [
-  {
-    question: "What kind of images work best?",
-    answer:
-      "QuickBG works best on clear subjects with enough contrast from the background, especially portraits, products, pets, and flat-lay photos.",
-  },
-  {
-    question: "Why does the site mention BiRefNet?",
-    answer:
-      "BiRefNet is the background-removal model family used in the processing pipeline, which helps QuickBG detect edges and subject boundaries quickly.",
-  },
-  {
-    question: "What should I do if the edge looks rough?",
-    answer:
-      "Try a tighter crop, a cleaner source image, or one of the follow-up editing tools like blur, adjust, or replace background before exporting.",
-  },
-];
+export default async function AboutPage() {
+  const { t } = await getServerTranslations();
 
-export default function AboutPage() {
   return (
     <AppLayout>
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:py-16">
-        <div className="max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-lime-300/80">About QuickBG</p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl lg:text-5xl">
-            Technology, workflow, and why the remover feels fast.
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
+            <Lightbulb className="h-4 w-4" />
+            {t("about.badge")}
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            {t("about.heading")}
           </h1>
-          <p className="mt-4 text-base leading-7 text-white/60 sm:text-lg">
-            QuickBG is designed as a practical image utility: upload a file, remove the background, and
-            keep moving into export or refinement. The site combines a focused toolchain with a lightweight
-            explanation of the model and workflow so users understand what happens behind the scenes.
+          <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            {t("about.intro")}
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-2">
-          <Card className="premium-surface p-6 space-y-4 text-sm text-white/60">
-            <h2 className="text-lg font-semibold text-white">How the workflow works</h2>
-            <p>
-              The app accepts an image, runs the subject through the removal pipeline, and returns a transparent
-              result that can be reused across product pages, banners, thumbnails, and social graphics.
-            </p>
-            <p>
-              Once the cutout is ready, the rest of the tools stay close by. You can resize, crop, blur, replace
-              the background, or adjust the image without leaving the product flow.
-            </p>
-          </Card>
-
-          <Card className="premium-surface p-6 space-y-4 text-sm text-white/60">
-            <h2 className="text-lg font-semibold text-white">Why BiRefNet matters</h2>
-            <p>
-              QuickBG references BiRefNet because strong foreground detection is essential for clean edges.
-              The model helps identify subject boundaries so the output stays useful for product photography,
-              profile images, and other real-world image tasks.
-            </p>
-            <p>
-              That matters most when the source image includes hair, shadows, overlapping objects, or textured
-              edges that need more than a simple color-keyed cutout.
-            </p>
-          </Card>
-        </div>
-
-        <Card className="premium-surface mt-4 p-6 space-y-5 text-sm text-white/60">
-          <h2 className="text-lg font-semibold text-white">Common use cases</h2>
-          <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-              <div className="font-semibold text-white">E-commerce</div>
-              <p className="mt-2 leading-6">
-                Clean product cutouts for listings, marketplaces, and promotional banners.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-              <div className="font-semibold text-white">Design work</div>
-              <p className="mt-2 leading-6">
-                Transparent assets for posters, presentations, thumbnails, and layered compositions.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-              <div className="font-semibold text-white">Social media</div>
-              <p className="mt-2 leading-6">
-                Fast cutouts for profile images, story graphics, reels covers, and content previews.
-              </p>
-            </div>
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">{t("about.techHeading")}</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Card className="p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <BrainCircuit className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold">{t("about.techItems.model")}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t("about.techItems.modelDesc")}</p>
+            </Card>
+            <Card className="p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <Server className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold">{t("about.techItems.serverless")}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t("about.techItems.serverlessDesc")}</p>
+            </Card>
+            <Card className="p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <Cpu className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold">{t("about.techItems.fallback")}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t("about.techItems.fallbackDesc")}</p>
+            </Card>
+            <Card className="p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <Database className="h-5 w-5 text-primary" />
+                <h3 className="font-semibold">{t("about.techItems.queue")}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{t("about.techItems.queueDesc")}</p>
+            </Card>
           </div>
-        </Card>
+        </section>
 
-        <Card className="premium-surface mt-4 p-6 space-y-5 text-sm text-white/60">
-          <h2 className="text-lg font-semibold text-white">FAQ</h2>
-          <div className="space-y-4">
-            {faqItems.map((item) => (
-              <div key={item.question} className="rounded-2xl border border-white/10 bg-black/20 p-4">
-                <h3 className="font-semibold text-white">{item.question}</h3>
-                <p className="mt-2 leading-6">{item.answer}</p>
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">{t("about.whoHeading")}</h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {Object.entries(useCasesIcons).map(([key, Icon]) => (
+              <div key={key} className="flex items-center gap-3 rounded-lg border border-border/60 bg-card/30 p-3">
+                <Icon className="h-4 w-4 text-primary shrink-0" />
+                <div>
+                  <div className="text-sm font-medium">{t(`about.useCases.${key}`)}</div>
+                  <div className="text-xs text-muted-foreground">{t(`about.useCases.${key}Desc`)}</div>
+                </div>
               </div>
             ))}
           </div>
-        </Card>
+        </section>
 
-        <Card className="premium-surface mt-4 p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-sm text-white/60">
-          <div className="flex-1">
-            <h2 className="text-lg font-semibold text-white">Need help or want to report an edge case?</h2>
-            <p className="mt-2 leading-6">
-              Reach out if you have questions about image handling, policy details, or a difficult file that
-              needs manual review.
-            </p>
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">{t("about.faqHeading")}</h2>
+          <div className="space-y-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Card key={i} className="p-5">
+                <h3 className="font-semibold mb-2">{t(`about.faqs.q${i}`)}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{t(`about.faqs.a${i}`)}</p>
+              </Card>
+            ))}
           </div>
-          <Link
-            href="/contact"
-            className="inline-flex h-11 items-center justify-center rounded-full border border-white/10 bg-white px-5 text-sm font-semibold text-black transition hover:bg-lime-200"
-          >
-            Contact support
-          </Link>
-        </Card>
+        </section>
+
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold mb-6">{t("about.roadmapHeading")}</h2>
+          <Card className="p-6">
+            <div className="space-y-4">
+              {["core", "suite", "lang", "api", "batch"].map((key) => (
+                <div key={key} className="flex items-start gap-3">
+                  <div className={`mt-1 h-2 w-2 rounded-full shrink-0 ${["core", "suite"].includes(key) ? "bg-green-500" : ["lang"].includes(key) ? "bg-primary" : "bg-muted-foreground/40"}`} />
+                  <div>
+                    <p className="font-medium text-sm">{t(`about.roadmap.${key}`)}</p>
+                    <p className="text-xs text-muted-foreground">{t(`about.roadmap.${key}Desc`)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </section>
+
+        <section>
+          <Card className="p-6 text-center bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+            <HeartHandshake className="h-8 w-8 text-primary mx-auto mb-3" />
+            <h2 className="text-xl font-bold mb-2">{t("about.touchHeading")}</h2>
+            <p className="text-sm text-muted-foreground mb-4">{t("about.touchDesc")}</p>
+            <LocaleLink
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              {t("common.contactUs")}
+              <ArrowUpRight className="h-4 w-4" />
+            </LocaleLink>
+          </Card>
+        </section>
       </div>
     </AppLayout>
   );

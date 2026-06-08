@@ -5,6 +5,7 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 export const dynamic = "force-dynamic";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
+const DB_NAME = process.env.NEXT_MONGODB_DB || "bgremover";
 
 export async function DELETE(request: NextRequest) {
   if (!isAdminAuthenticated(request)) {
@@ -18,7 +19,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db(DB_NAME);
 
     // Delete all user uploads
     const uploadsResult = await db.collection("user_uploads").deleteMany({});

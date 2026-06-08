@@ -8,10 +8,10 @@ export function useCreditsSync() {
   const query = useQuery({
     queryKey: ["queue-status"],
     queryFn: getQueueStatus,
-    refetchInterval: 10000,
+    refetchInterval: 30000,
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
-    refetchIntervalInBackground: true,
+    refetchIntervalInBackground: false,
     staleTime: 0,
   });
 

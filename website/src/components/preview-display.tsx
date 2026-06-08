@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ImageItem } from "@/types/image";
 import { Card } from "@/components/ui/card";
 import { CheckCircle2, Clock, Loader2, Sparkles, UploadCloud } from "lucide-react";
+import { useLocale } from "@/contexts/LocaleContext";
 
 const ComparisonSlider = dynamic(
   () => import("@/components/comparison-slider").then((mod) => mod.ComparisonSlider),
@@ -46,47 +47,51 @@ function getDisplayProgress(image: ImageItem, isResultFetching: boolean): number
   return fallback[image.status] ?? 12;
 }
 
-function getStatusCopy(image: ImageItem, isResultFetching: boolean) {
+function getStatusCopy(image: ImageItem, isResultFetching: boolean, t: (key: string) => string) {
   if (isResultFetching) {
     return {
-      title: "Preparing final preview",
-      description: "The worker finished. Fetching the transparent PNG now.",
+      title: t("remover.statusCopy.preparing"),
+      description: t("remover.statusCopy.preparingDesc"),
       icon: Sparkles,
     };
   }
 
   if (image.status === "uploading") {
     return {
-      title: "Uploading image",
-      description: "Sending your file to the worker without changing quality.",
+      title: t("remover.statusCopy.uploading"),
+      description: t("remover.statusCopy.uploadingDesc"),
       icon: UploadCloud,
     };
   }
 
   if (image.status === "queued") {
     return {
-      title: image.queuePosition != null && image.queuePosition > 0 ? `Queue position #${image.queuePosition}` : "Waiting in queue",
-      description: image.estimatedWaitSeconds ? `Estimated wait: ${formatWait(image.estimatedWaitSeconds)}` : "Your image will start as soon as capacity opens.",
+      title: image.queuePosition != null && image.queuePosition > 0
+        ? t("remover.statusCopy.queuePosition").replace("{position}", String(image.queuePosition))
+        : t("remover.statusCopy.waiting"),
+      description: image.estimatedWaitSeconds
+        ? t("remover.statusCopy.estimatedWait").replace("{time}", formatWait(image.estimatedWaitSeconds))
+        : t("remover.statusCopy.capacityDesc"),
       icon: Clock,
     };
   }
 
   return {
-    title: "Removing background",
-    description: "Detecting the subject edges and creating a transparent cutout.",
+    title: t("remover.statusCopy.removing"),
+    description: t("remover.statusCopy.removingDesc"),
     icon: Loader2,
   };
 }
 
-function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isResultFetching: boolean }) {
+function ProcessingOverlay({ image, isResultFetching, t }: { image: ImageItem; isResultFetching: boolean; t: (key: string) => string }) {
   const progress = getDisplayProgress(image, isResultFetching);
-  const statusCopy = getStatusCopy(image, isResultFetching);
+  const statusCopy = getStatusCopy(image, isResultFetching, t);
   const StatusIcon = statusCopy.icon;
   const steps = [
-    { label: "Upload", done: progress >= 24 },
-    { label: "Queue", done: progress >= 42 },
-    { label: "Mask", done: progress >= 72 },
-    { label: "Export", done: progress >= 96 },
+    { label: t("remover.steps.upload"), done: progress >= 24 },
+    { label: t("remover.steps.queue"), done: progress >= 42 },
+    { label: t("remover.steps.mask"), done: progress >= 72 },
+    { label: t("remover.steps.export"), done: progress >= 96 },
   ];
 
   return (
@@ -100,7 +105,7 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
         aria-hidden
         className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-sky-300/18 to-transparent"
         animate={{ y: ["-100%", "560%"] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
       />
       <div className="absolute inset-0 flex items-center justify-center p-6">
         <motion.div
@@ -113,11 +118,11 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
             <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/60">
               <motion.span
                 aria-hidden
-                className="absolute inset-0 rounded-2xl border border-sky-300/40"
+                className="absolute inset-0 rounded-2xl border border-secondary/40"
                 animate={{ scale: [1, 1.35, 1], opacity: [0.7, 0, 0.7] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: "easeOut" }}
               />
-              <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-amber-300 animate-spin" : "h-6 w-6 text-sky-300"} />
+              <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-secondary animate-spin" : "h-6 w-6 text-secondary"} />
             </div>
 
             <div className="min-w-0 flex-1">
@@ -138,7 +143,7 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
 
           <div className="mt-5">
             <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-              <span>Progress</span>
+              <span>{t("remover.preview.progress")}</span>
               <motion.span key={progress} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="tabular-nums">
                 {Math.round(progress)}%
               </motion.span>
@@ -159,14 +164,14 @@ function ProcessingOverlay({ image, isResultFetching }: { image: ImageItem; isRe
                 key={step.label}
                 initial={false}
                 animate={{
-                  borderColor: step.done ? "rgba(190,242,100,0.45)" : "rgba(255,255,255,0.1)",
-                  backgroundColor: step.done ? "rgba(190,242,100,0.1)" : "rgba(255,255,255,0.035)",
+                  borderColor: step.done ? "hsl(var(--secondary) / 0.45)" : "rgba(255,255,255,0.1)",
+                  backgroundColor: step.done ? "hsl(var(--secondary) / 0.1)" : "rgba(255,255,255,0.035)",
                 }}
                 transition={{ delay: index * 0.04 }}
                 className="rounded-xl border px-2 py-2 text-center text-[11px] font-medium text-foreground/75"
               >
                 <div className="mx-auto mb-1 flex h-4 w-4 items-center justify-center rounded-full bg-background/40">
-                  {step.done ? <CheckCircle2 className="h-3 w-3 text-lime-500" /> : <span className="h-1.5 w-1.5 rounded-full bg-foreground/30" />}
+                  {step.done ? <CheckCircle2 className="h-3 w-3 text-secondary" /> : <span className="h-1.5 w-1.5 rounded-full bg-foreground/30" />}
                 </div>
                 {step.label}
               </motion.div>
@@ -184,6 +189,7 @@ export function PreviewDisplay({
   isProcessing,
   isResultFetching,
 }: PreviewDisplayProps) {
+  const { t } = useLocale();
   const isCompleted = !!resultUrl;
   const showLoadingOverlay = isProcessing || isResultFetching;
 
@@ -221,12 +227,12 @@ export function PreviewDisplay({
                   key={resultUrl || image.id}
                   beforeImage={image.preview}
                   afterImage={resultUrl!}
-                  beforeLabel="Original"
-                  afterLabel="Background Removed"
+                  beforeLabel={t("remover.preview.original")}
+                  afterLabel={t("remover.preview.backgroundRemoved")}
                   className="h-full"
                 />
                 <motion.div
-                  className="pointer-events-none absolute inset-0 flex items-center justify-center bg-lime-300/10"
+                  className="pointer-events-none absolute inset-0 flex items-center justify-center bg-secondary/10"
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 0 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
@@ -237,7 +243,7 @@ export function PreviewDisplay({
                     transition={{ type: "spring", stiffness: 220, damping: 18 }}
                     className="rounded-full border border-lime-300/40 bg-background/80 px-4 py-2 text-sm font-semibold text-foreground backdrop-blur"
                   >
-                    Background removed
+                    {t("remover.preview.backgroundRemovedBadge")}
                   </motion.div>
                 </motion.div>
               </motion.div>
@@ -251,7 +257,7 @@ export function PreviewDisplay({
               >
                 <img
                   src={image.preview}
-                  alt="Preview"
+                  alt={t("remover.preview.alt")}
                   className="max-h-[70vh] max-w-full w-auto h-auto object-contain"
                   draggable={false}
                 />
@@ -259,7 +265,7 @@ export function PreviewDisplay({
                 <AnimatePresence>
                   {showLoadingOverlay && (
                     <div className="hidden sm:block">
-                      <ProcessingOverlay image={image} isResultFetching={isResultFetching} />
+                      <ProcessingOverlay image={image} isResultFetching={isResultFetching} t={t} />
                     </div>
                   )}
                 </AnimatePresence>

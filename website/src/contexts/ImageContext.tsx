@@ -370,7 +370,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       if (!pollingIntervalsRef.current.has(img.id)) {
         const intervalId = setInterval(() => {
           void refreshImageFromWorker(img);
-        }, 500);
+        }, 2000);
         pollingIntervalsRef.current.set(img.id, intervalId);
       }
     });

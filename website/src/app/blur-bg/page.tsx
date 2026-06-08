@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useRouter } from "next/navigation";
 import { canvasRGB } from "stackblur-canvas";
+import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 export default function BlurBgPage() {
+  const { t } = useLocale();
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
@@ -140,8 +143,8 @@ export default function BlurBgPage() {
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold">Blur Background</h1>
-              <p className="text-muted-foreground text-sm">Blur the background while keeping the subject sharp</p>
+              <h1 className="text-2xl font-bold">{t("home.tools.blurBg")}</h1>
+              <p className="text-muted-foreground text-sm">{t("home.tools.blurBgDesc")}</p>
             </div>
           </div>
 
@@ -149,15 +152,46 @@ export default function BlurBgPage() {
             <div className="w-20 h-20 rounded-2xl bg-muted/50 flex items-center justify-center mb-6">
               <Circle className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+            <h2 className="text-xl font-semibold mb-2">{t("blurBg.accessRestricted.heading")}</h2>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Please process an image with Background Remover first, then use the &ldquo;Blur BG&rdquo; button to access this tool.
+              {t("blurBg.accessRestricted.desc")}
             </p>
             <Button onClick={() => router.push("/remover")} size="lg">
-              Go to Background Remover
+              {t("common.openRemover")}
             </Button>
           </div>
-        </div>
+
+          <section className="mx-auto mb-20 mt-24 max-w-5xl px-4 sm:px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("blurBg.guide.heading")}</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.blurBg")}</h2>
+            </div>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step1Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step1Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step2Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step2Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step3Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step3Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step4Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step4Desc")}</p>
+              </div>
+            </div>
+            </section>
+            <ToolFaq toolKey="blurBg" />
+            <ToolExtraContent toolKey="blurBg" />
+          </div>
       </AppLayout>
     );
   }
@@ -170,8 +204,8 @@ export default function BlurBgPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Blur Background</h1>
-            <p className="text-muted-foreground text-sm">Blur the background while keeping the subject sharp</p>
+            <h1 className="text-2xl font-bold">{t("home.tools.blurBg")}</h1>
+            <p className="text-muted-foreground text-sm">{t("home.tools.blurBgDesc")}</p>
           </div>
         </div>
 
@@ -185,7 +219,7 @@ export default function BlurBgPage() {
               ) : !isLoaded ? (
                 <div className="flex items-center gap-2">
                   <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-                  <span className="text-muted-foreground">Loading...</span>
+                  <span className="text-muted-foreground">{t("common.loading")}</span>
                 </div>
               ) : (
                 <canvas ref={canvasRef} className="max-w-full max-h-full object-contain" />
@@ -193,7 +227,7 @@ export default function BlurBgPage() {
               {isLoaded && isRendering && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
                   <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-xs font-medium text-white/80 shadow-xl">
-                    Updating preview...
+                    {t("blurBg.updatingPreview")}
                   </div>
                 </div>
               )}
@@ -204,19 +238,19 @@ export default function BlurBgPage() {
                   size="sm"
                 >
                   <Download className="h-4 w-4 mr-2" />
-                  Download
+                  {t("remover.actions.download")}
                 </Button>
               )}
             </div>
 
             <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-sm">
-              <span className="text-green-700 dark:text-green-400">Subject is sharp - background will be blurred</span>
+              <span className="text-green-700 dark:text-green-400">{t("blurBg.badge")}</span>
             </div>
           </div>
 
           <div className="space-y-6">
             <div className="p-6 rounded-2xl premium-surface">
-              <h3 className="font-semibold mb-4">Blur Strength ({blurStrength}px)</h3>
+              <h3 className="font-semibold mb-4">{t("blurBg.blurStrength")} ({blurStrength}px)</h3>
               <Slider
                 type="range"
                 min="0"
@@ -226,14 +260,46 @@ export default function BlurBgPage() {
                 className="w-full cursor-pointer"
               />
               <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                <span>Sharp</span>
-                <span>Blurred</span>
+                <span>{t("blurBg.sharp")}</span>
+                <span>{t("blurBg.blurred")}</span>
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">The preview updates automatically after you release the slider.</p>
+              <p className="mt-3 text-xs text-muted-foreground">{t("blurBg.helperText")}</p>
             </div>
           </div>
         </div>
       </div>
+
+      <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("blurBg.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.blurBg")}</h2>
+        </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step1Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step2Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step3Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step4Desc")}</p>
+          </div>
+        </div>
+      </section>
+      <ToolFaq toolKey="blurBg" />
+      <ToolExtraContent toolKey="blurBg" />
     </AppLayout>
   );
 }
+

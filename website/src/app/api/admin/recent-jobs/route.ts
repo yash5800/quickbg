@@ -5,6 +5,7 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 export const dynamic = "force-dynamic";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
+const DB_NAME = process.env.NEXT_MONGODB_DB || "bgremover";
 
 interface JobDocument {
   jobId: string;
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest) {
   try {
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db(DB_NAME);
     const jobs = db.collection<JobDocument>("jobs");
 
     // Get recent jobs (last 50)

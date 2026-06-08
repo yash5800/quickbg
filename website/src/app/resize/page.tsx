@@ -8,6 +8,8 @@ import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 const presets = [
   { label: "1:1", desc: "Square (Instagram, Profile)" },
@@ -19,6 +21,7 @@ const presets = [
 ];
 
 export default function ResizePage() {
+  const { t } = useLocale();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [images, setImages] = useState<{ id: string; file: File; preview: string }[]>([]);
@@ -135,8 +138,8 @@ export default function ResizePage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Smart Resize</h1>
-            <p className="text-muted-foreground text-sm">Resize images with AI-powered quality</p>
+            <h1 className="text-2xl font-bold">{t("home.tools.resize")}</h1>
+            <p className="text-muted-foreground text-sm">{t("home.tools.resizeDesc")}</p>
           </div>
         </div>
 
@@ -229,8 +232,8 @@ export default function ResizePage() {
               className="premium-dashed rounded-[1.75rem] p-12 text-center cursor-pointer transition-all"
             >
               <Upload className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-              <p className="text-lg font-semibold">Click or drag images here</p>
-              <p className="text-sm text-muted-foreground mt-1">PNG, JPG, WebP supported</p>
+              <p className="text-lg font-semibold">{t("home.dropTitle")}</p>
+              <p className="text-sm text-muted-foreground mt-1">PNG, JPG, WebP</p>
             </div>
 
             {images.length > 0 && (
@@ -277,6 +280,37 @@ export default function ResizePage() {
           </div>
         </div>
       </div>
+
+      <section className="mx-auto mb-20 mt-16 max-w-5xl border-t border-white/10 pt-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("resize.guide.heading")}</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.resize")}</h2>
+        </div>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("resize.guide.step1Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("resize.guide.step1Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("resize.guide.step2Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("resize.guide.step2Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("resize.guide.step3Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("resize.guide.step3Desc")}</p>
+          </div>
+          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+            <h3 className="mt-3 text-sm font-semibold text-white">{t("resize.guide.step4Title")}</h3>
+            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("resize.guide.step4Desc")}</p>
+          </div>
+        </div>
+      </section>
+      <ToolFaq toolKey="resize" />
+      <ToolExtraContent toolKey="resize" />
     </AppLayout>
   );
 }

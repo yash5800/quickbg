@@ -14,6 +14,7 @@ interface PersistedImageRecord {
   lastModified: number;
   file: Blob;
   status: ImageItem["status"];
+  creditReserved?: boolean;
   result?: Blob;
   error?: string;
   startTime?: number;
@@ -88,6 +89,7 @@ function toPersistedRecord(image: ImageItem, order: number): PersistedImageRecor
     lastModified: image.file.lastModified,
     file: image.file,
     status: image.status,
+    creditReserved: image.creditReserved,
     error: image.error,
     startTime: image.startTime,
     duration: image.duration,
@@ -168,6 +170,7 @@ export async function restoreImageState(): Promise<ImageItem[]> {
       file,
       preview: URL.createObjectURL(file),
       status: record.status,
+      creditReserved: record.creditReserved,
       error: record.error,
       startTime: record.startTime,
       duration: record.duration,
