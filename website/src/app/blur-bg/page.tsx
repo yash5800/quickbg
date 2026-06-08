@@ -159,6 +159,35 @@ export default function BlurBgPage() {
               {t("common.openRemover")}
             </Button>
           </div>
+
+          <section className="mx-auto mb-20 mt-24 max-w-5xl px-4 sm:px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("blurBg.guide.heading")}</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.blurBg")}</h2>
+            </div>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step1Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step1Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step2Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step2Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step3Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step3Desc")}</p>
+              </div>
+              <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
+                <h3 className="mt-3 text-sm font-semibold text-white">{t("blurBg.guide.step4Title")}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step4Desc")}</p>
+              </div>
+            </div>
+          </section>
         </div>
       </AppLayout>
     );

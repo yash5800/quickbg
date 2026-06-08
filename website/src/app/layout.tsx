@@ -120,7 +120,7 @@ export default async function RootLayout({
           ]
         }) }} />
       </head>
-      <body className="font-sans">
+      <body className="font-sans" suppressHydrationWarning>
         <ClientLayout initialLocale={localeHeader as Locale}>{children}</ClientLayout>
         <Analytics />
       </body>

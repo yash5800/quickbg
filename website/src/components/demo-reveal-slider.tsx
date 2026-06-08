@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeftRight, Check, Sparkles } from "lucide-react";
 import { useLocale } from "@/contexts/LocaleContext";
 
@@ -10,45 +10,37 @@ import processedImage from "../../assets/demo/pro.png";
 
 export function DemoRevealSlider() {
   const { t } = useLocale();
-  const prefersReducedMotion = useReducedMotion();
 
-  const revealTransition = prefersReducedMotion
-    ? { duration: 0 }
-    : {
-        duration: 5.6,
-        ease: "easeInOut" as const,
-        times: [0, 0.14, 0.56, 0.86, 1],
-        repeat: Infinity,
-        repeatDelay: 1.15,
-      };
+  const revealTransition = {
+    duration: 5.6,
+    ease: "easeInOut" as const,
+    times: [0, 0.14, 0.56, 0.86, 1],
+    repeat: Infinity,
+    repeatDelay: 1.15,
+  };
 
-  const originalCropKeyframes = prefersReducedMotion
-    ? ["inset(0 50% 0 0)"]
-    : ["inset(0 100% 0 0)", "inset(0 100% 0 0)", "inset(0 0% 0 0)", "inset(0 0% 0 0)", "inset(0 100% 0 0)"];
-  const handleLeftKeyframes = prefersReducedMotion ? ["0%"] : ["0%", "0%", "100%", "100%", "0%"];
+  const originalCropKeyframes = ["inset(0 100% 0 0)", "inset(0 100% 0 0)", "inset(0 0% 0 0)", "inset(0 0% 0 0)", "inset(0 100% 0 0)"];
+  const handleLeftKeyframes = ["0%", "0%", "100%", "100%", "0%"];
 
   return (
     <div className="relative mx-auto w-full max-w-[42rem]">
       <motion.div
         aria-hidden="true"
         className="absolute -left-6 top-16 h-20 w-20 rounded-[1.4rem] border border-white/10 bg-secondary/90 shadow-[0_24px_90px_-28px_hsl(var(--secondary)_/_0.8)]"
-        animate={prefersReducedMotion ? undefined : { y: [0, -10, 0], rotate: [-8, -2, -8] }}
-        style={{ willChange: "transform" }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [0, -10, 0], rotate: [-8, -2, -8] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         aria-hidden="true"
         className="absolute -right-3 bottom-24 h-16 w-16 rounded-full border border-white/10 bg-secondary/20 backdrop-blur"
-        animate={prefersReducedMotion ? undefined : { y: [0, 12, 0], x: [0, -8, 0] }}
-        style={{ willChange: "transform" }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [0, 12, 0], x: [0, -8, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <motion.section
         className="premium-glass relative z-10 overflow-hidden rounded-[2rem] border border-white/10 p-3 shadow-[0_42px_120px_-48px_rgba(0,0,0,0.95)] sm:rounded-[2.4rem] sm:p-4"
-        animate={prefersReducedMotion ? undefined : { y: [0, -8, 0] }}
-        style={{ willChange: "transform" }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       >
         <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
         <div className="relative overflow-hidden rounded-[1.55rem] border border-white/10 bg-[#070707] sm:rounded-[2rem]">

@@ -30,7 +30,7 @@ import {
   BookOpen,
   ExternalLink,
 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { LocaleLink } from "@/components/locale-link";
@@ -297,13 +297,10 @@ export default function Home() {
   ];
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const prefersReducedMotion = useReducedMotion();
   const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
   const [isDropActive, setIsDropActive] = useState(false);
 
-  const motionTransition = prefersReducedMotion
-    ? { duration: 0 }
-    : { duration: 0.72, ease: "easeOut" as const };
+  const motionTransition = { duration: 0.72, ease: "easeOut" as const };
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -535,7 +532,7 @@ export default function Home() {
 
           <motion.div
             initial={false}
-            animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
             className="relative min-h-[34rem] lg:min-h-[42rem]"
           >
@@ -619,8 +616,8 @@ export default function Home() {
                 return (
                 <motion.div
                   key={stepKey}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.12 }}
                   className="group relative rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/20"
@@ -720,8 +717,8 @@ export default function Home() {
                   type="button"
                   onClick={() => handleSampleSelect(sample)}
                   disabled={!!loadingSampleId}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: index * 0.06 }}
                   className="group overflow-hidden rounded-[1.35rem] border border-white/10 bg-white/[0.045] text-left shadow-[0_24px_80px_-52px_rgba(0,0,0,0.9)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07] disabled:pointer-events-none disabled:opacity-70"
@@ -906,7 +903,7 @@ export default function Home() {
 
           {/* ===== PARALLAX SHOWCASE ===== */}
           <div className="relative mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]">
-            <ScrollLinkedParallax prefersReducedMotion={prefersReducedMotion} fileInputRef={fileInputRef} />
+            <ScrollLinkedParallax fileInputRef={fileInputRef} />
           </div>
 
           {/* ===== BEFORE/AFTER SHOWCASE ===== */}
@@ -1010,8 +1007,8 @@ export default function Home() {
               {testimonials.map((item, i) => (
                 <motion.div
                   key={item.name}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="relative rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6"
@@ -1050,8 +1047,8 @@ export default function Home() {
               {(["time", "edge", "batch", "uptime"] as const).map((key, i) => (
                 <motion.div
                   key={key}
-                  initial={prefersReducedMotion ? false : { opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/20"
@@ -1204,8 +1201,8 @@ export default function Home() {
               {(["png", "jpeg", "webp", "avif", "heic", "tiff", "gif", "bmp"] as const).map((fmt, i) => (
                 <motion.div
                   key={fmt}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: i * 0.05 }}
                   className="group rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4 text-center transition duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-secondary/[0.04]"

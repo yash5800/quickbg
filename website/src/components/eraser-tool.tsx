@@ -140,14 +140,12 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
   // Draw preview stroke
   const drawPreviewStroke = useCallback((path: Point[]) => {
     const previewCanvas = previewCanvasRef.current;
-    if (!previewCanvas) return;
+    if (!previewCanvas || path.length < 2) return;
 
     const ctx = previewCanvas.getContext("2d");
     if (!ctx) return;
 
     ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-
-    if (path.length < 2) return;
 
     const stroke = getStroke(path, getOptions(brushSize));
     if (stroke.length < 2) return;
@@ -158,14 +156,11 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     ctx.lineWidth = 2;
 
     ctx.beginPath();
-    const first = stroke[0];
-    ctx.moveTo(first[0], first[1]);
+    ctx.moveTo(stroke[0][0], stroke[0][1]);
     for (let i = 1; i < stroke.length; i++) {
-      const point = stroke[i];
-      const prevPoint = stroke[i - 1];
-      const midX = (prevPoint[0] + point[0]) / 2;
-      const midY = (prevPoint[1] + point[1]) / 2;
-      ctx.quadraticCurveTo(prevPoint[0], prevPoint[1], midX, midY);
+      const prev = stroke[i - 1];
+      const curr = stroke[i];
+      ctx.quadraticCurveTo(prev[0], prev[1], (prev[0] + curr[0]) / 2, (prev[1] + curr[1]) / 2);
     }
     ctx.closePath();
     ctx.fill();
@@ -182,7 +177,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     });
   }, [drawPreviewStroke]);
 
-  // Apply stroke to canvas
+    // Apply stroke to canvas
   const applyStroke = useCallback((path: Point[]) => {
     const canvas = canvasRef.current;
     if (!canvas || path.length < 2) return;
@@ -193,9 +188,9 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     const stroke = getStroke(path, getOptions(brushSize));
     if (stroke.length < 2) return;
 
-    // Save undo state
+    // Save undo state (limit to 15 levels to avoid memory pressure)
     undoStackRef.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-    if (undoStackRef.current.length > 30) {
+    if (undoStackRef.current.length > 15) {
       undoStackRef.current.shift();
     }
     setUndoDepth(undoStackRef.current.length);
@@ -264,6 +259,8 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     }
   }, [getCanvasPos, zoom]);
 
+  const pointerMoveThrottleRef = useRef(false);
+
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (activePointersRef.current.has(e.pointerId)) {
       activePointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -282,10 +279,14 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
 
-    setCursorPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    // Throttle cursor position updates to ~60fps
+    if (!pointerMoveThrottleRef.current) {
+      pointerMoveThrottleRef.current = true;
+      setCursorPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
 
     if (!isDrawingRef.current || !canvasInitializedRef.current) return;
 
@@ -295,11 +296,22 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
     const lastPoint = currentPathRef.current[currentPathRef.current.length - 1];
     const dist = Math.hypot(pos.x - lastPoint.x, pos.y - lastPoint.y);
 
-    if (dist > 0.75) {
+    if (dist > 2) {
       currentPathRef.current.push({ x: pos.x, y: pos.y, pressure: 0.5 });
       schedulePreviewDraw();
     }
   }, [getCanvasPos, schedulePreviewDraw]);
+
+  // Reset cursor throttle on each frame (only when not drawing)
+  useEffect(() => {
+    let rafId: number;
+    const loop = () => {
+      pointerMoveThrottleRef.current = false;
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   const handlePointerUp = useCallback((e?: React.PointerEvent) => {
     if (e?.currentTarget.hasPointerCapture(e.pointerId)) {
@@ -500,7 +512,7 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
             {cursorPos && (
               <div
                 className={cn(
-                  "absolute border-2 rounded-full pointer-events-none transition-all duration-75",
+                  "absolute border-2 rounded-full pointer-events-none",
                   mode === "erase" ? "border-red-500" : "border-green-500"
                 )}
                 style={{
@@ -508,6 +520,8 @@ export function EraserTool({ processedImage, originalImage, onSave, onClose }: E
                   height: `${brushSize * displayScale}px`,
                   left: `${cursorPos.x - (brushSize * displayScale) / 2}px`,
                   top: `${cursorPos.y - (brushSize * displayScale) / 2}px`,
+                  willChange: "transform",
+                  transform: "translateZ(0)",
                 }}
               />
             )}

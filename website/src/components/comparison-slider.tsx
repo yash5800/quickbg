@@ -39,31 +39,37 @@ export function ComparisonSlider({
     setLoaded({ beforeLoaded: false, afterLoaded: false });
   }, [beforeImage, afterImage]);
 
-  React.useEffect(() => {
-    let beforeImg: HTMLImageElement | null = new Image();
-    beforeImg.src = beforeImage;
-    beforeImg.onload = () => setLoaded((s) => ({ ...s, beforeLoaded: true }));
-    beforeImg.onerror = () => setLoaded((s) => ({ ...s, beforeLoaded: true }));
+  const imagesLoadingRef = React.useRef(false);
 
-    let afterImg: HTMLImageElement | null = null;
-    if (afterImage) {
-      afterImg = new Image();
-      afterImg.src = afterImage;
-      afterImg.onload = () => setLoaded((s) => ({ ...s, afterLoaded: true }));
-      afterImg.onerror = () => setLoaded((s) => ({ ...s, afterLoaded: true }));
-    }
+  React.useEffect(() => {
+    if (imagesLoadingRef.current) return;
+    imagesLoadingRef.current = true;
+
+    let cancelled = false;
+
+    const loadImage = (src: string): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+        img.src = src;
+      });
+    };
+
+    void (async () => {
+      await Promise.all([
+        loadImage(beforeImage),
+        afterImage ? loadImage(afterImage) : Promise.resolve(),
+      ]);
+      if (!cancelled) {
+        setLoaded({ beforeLoaded: true, afterLoaded: !!afterImage });
+        imagesLoadingRef.current = false;
+      }
+    })();
 
     return () => {
-      if (beforeImg) {
-        beforeImg.onload = null;
-        beforeImg.onerror = null;
-        beforeImg = null;
-      }
-      if (afterImg) {
-        afterImg.onload = null;
-        afterImg.onerror = null;
-        afterImg = null;
-      }
+      cancelled = true;
+      imagesLoadingRef.current = false;
     };
   }, [beforeImage, afterImage]);
 

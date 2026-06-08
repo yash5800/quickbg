@@ -5,6 +5,7 @@ import { getOrCreateSessionId } from "@/lib/request-session";
 export const dynamic = "force-dynamic";
 
 const MONGODB_URI = process.env.NEXT_MONGODB_URI;
+const DB_NAME = process.env.NEXT_MONGODB_DB || "bgremover";
 
 const VALID_TOOLS = new Set([
   "remover",
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     const client = new MongoClient(MONGODB_URI);
     await client.connect();
-    const db = client.db("bgremover");
+    const db = client.db(DB_NAME);
 
     await db.collection("tool_ratings").insertOne({
       tool,

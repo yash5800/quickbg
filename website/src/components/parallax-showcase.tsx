@@ -39,15 +39,13 @@ const floatingIconData: IconData[] = [
 ];
 
 interface ScrollLinkedParallaxProps {
-  prefersReducedMotion?: boolean | null;
   fileInputRef?: React.RefObject<HTMLInputElement>;
 }
 
-export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: ScrollLinkedParallaxProps) {
+export function ScrollLinkedParallax({ fileInputRef }: ScrollLinkedParallaxProps) {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const isReduced = prefersReducedMotion ?? reduced ?? false;
+  useReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -83,27 +81,6 @@ export function ScrollLinkedParallax({ prefersReducedMotion, fileInputRef }: Scr
   const cardOpacity: MotionValue<number>[] = stats.map((_, i) => useTransform(scrollYProgress, [0, 0.1 + i * 0.03, 0.8 - i * 0.03, 1], [0.3, 1, 1, 0.4]));
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const cardScale: MotionValue<number>[] = stats.map((_, i) => useTransform(scrollYProgress, [0, 0.15 + i * 0.03, 0.75 - i * 0.03, 1], [0.88, 1, 1, 0.92]));
-
-  if (isReduced) {
-    return (
-      <div ref={sectionRef} className="p-8 sm:p-10">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.performanceMetrics.edge")}</p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.performance")}</h2>
-          <p className="mt-3 text-sm leading-6 text-white/50">{t("home.builtForSpeedDesc")}</p>
-        </div>
-        <div className="mt-10 grid gap-4 sm:grid-cols-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 text-center">
-              <div className="text-4xl font-bold tracking-tight text-white sm:text-5xl">{stat.value}</div>
-              <div className="mt-2 text-sm font-semibold text-white/80">{stat.label}</div>
-              <div className="mt-1 text-xs text-white/40">{stat.sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div ref={sectionRef} className="relative">

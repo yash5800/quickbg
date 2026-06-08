@@ -766,17 +766,6 @@
       "capacityDesc": "Your image will start as soon as capacity opens.",
       "removing": "Removing background",
       "removingDesc": "Detecting the subject edges and creating a transparent cutout."
-    },
-    "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload any image in PNG, JPG, WebP, or HEIC format. Multiple images are supported.",
-      "step2Title": "AI removes the background",
-      "step2Desc": "Our AI automatically detects the subject and removes the background in seconds.",
-      "step3Title": "Fine-tune with Quick Edit",
-      "step3Desc": "Use Eraser, Sharpness, Blur BG, or Replace BG to perfect the result.",
-      "step4Title": "Download",
-      "step4Desc": "Download as transparent PNG with or without watermark overlay."
     }
   },
   "replaceBg": {

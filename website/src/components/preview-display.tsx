@@ -105,7 +105,7 @@ function ProcessingOverlay({ image, isResultFetching, t }: { image: ImageItem; i
         aria-hidden
         className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-sky-300/18 to-transparent"
         animate={{ y: ["-100%", "560%"] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
       />
       <div className="absolute inset-0 flex items-center justify-center p-6">
         <motion.div
@@ -120,7 +120,7 @@ function ProcessingOverlay({ image, isResultFetching, t }: { image: ImageItem; i
                 aria-hidden
                 className="absolute inset-0 rounded-2xl border border-secondary/40"
                 animate={{ scale: [1, 1.35, 1], opacity: [0.7, 0, 0.7] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: "easeOut" }}
               />
               <StatusIcon className={image.status === "queued" ? "h-6 w-6 text-secondary animate-spin" : "h-6 w-6 text-secondary"} />
             </div>

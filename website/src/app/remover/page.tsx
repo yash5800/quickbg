@@ -326,7 +326,7 @@ export default function EditorPage() {
                   }
                 }}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                   {selectedImage && (
                     <SelectedPreview
                       key={selectedImage.id}
@@ -348,20 +348,53 @@ export default function EditorPage() {
             </div>
 
             <aside className="min-h-0">
-              <AnimatePresence mode="wait">
-                {selectedImage && (
-                  <SelectedInfo
-                    key={`info-${selectedImage.id}`}
-                    image={selectedImage}
-                    onRemove={() => handleRemove(selectedImage.id)}
-                    onRetry={() => handleRetry(selectedImage.id)}
-                    onOpenEraser={() => setShowEraser(true)}
-                    onUpdateResult={(dataUrl) => updateImageResult(selectedImage.id, dataUrl)}
-                  />
-                )}
-              </AnimatePresence>
+              <div className="xl:space-y-4">
+                <AnimatePresence>
+                  {selectedImage && (
+                    <SelectedInfo
+                      key={`info-${selectedImage.id}`}
+                      image={selectedImage}
+                      onRemove={() => handleRemove(selectedImage.id)}
+                      onRetry={() => handleRetry(selectedImage.id)}
+                      onOpenEraser={() => setShowEraser(true)}
+                      onUpdateResult={(dataUrl) => updateImageResult(selectedImage.id, dataUrl)}
+                    />
+                  )}
+                </AnimatePresence>
+              </div>
             </aside>
           </div>
+
+          {images.length > 0 && (
+            <section className="mx-auto mt-6 w-full max-w-5xl rounded-xl border border-border/70 bg-background/55 p-5 backdrop-blur">
+              <div className="mx-auto max-w-2xl text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("remover.guide.heading")}</p>
+                <h2 className="mt-2 text-xl font-semibold tracking-normal text-foreground">{t("tools.howToUse.remover")}</h2>
+              </div>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">1</span>
+                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step1Title")}</h3>
+                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step1Desc")}</p>
+                </div>
+                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">2</span>
+                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step2Title")}</h3>
+                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step2Desc")}</p>
+                </div>
+                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">3</span>
+                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step3Title")}</h3>
+                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step3Desc")}</p>
+                </div>
+                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">4</span>
+                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step4Title")}</h3>
+                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step4Desc")}</p>
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* Eraser Tool Modal */}
           {showEraser && selectedImage && selectedImage.result && (
@@ -420,7 +453,6 @@ function SelectedInfo({
   onOpenEraser?: () => void;
   onUpdateResult: (dataUrl: string) => void;
 }) {
-  const { t } = useLocale();
   const [isDownloading, setIsDownloading] = useState(false);
   const { addToast } = useToast();
 
@@ -489,35 +521,6 @@ function SelectedInfo({
         liveStatus="unknown"
         onOpenEraser={onOpenEraser}
       />
-
-      <section className="mx-auto mb-20 mt-16 w-full max-w-4xl border-t border-white/10 pt-12 px-4 sm:px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("remover.guide.heading")}</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-normal text-white sm:text-3xl">{t("tools.howToUse.remover")}</h2>
-        </div>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">1</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">{t("remover.guide.step1Title")}</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("remover.guide.step1Desc")}</p>
-          </div>
-          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">2</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">{t("remover.guide.step2Title")}</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("remover.guide.step2Desc")}</p>
-          </div>
-          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">3</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">{t("remover.guide.step3Title")}</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("remover.guide.step3Desc")}</p>
-          </div>
-          <div className="relative rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">4</span>
-            <h3 className="mt-3 text-sm font-semibold text-white">{t("remover.guide.step4Title")}</h3>
-            <p className="mt-1.5 text-sm leading-6 text-white/50">{t("remover.guide.step4Desc")}</p>
-          </div>
-        </div>
-      </section>
     </motion.div>
   );
 }

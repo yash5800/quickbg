@@ -2,6 +2,7 @@ import { MongoClient, Db, ObjectId } from "mongodb";
 import { v4 as uuidv4 } from "uuid";
 
 const uri = process.env.NEXT_MONGODB_URI;
+const DB_NAME = process.env.NEXT_MONGODB_DB || "bgremover";
 
 interface JobDocument {
   _id?: ObjectId;
@@ -23,7 +24,7 @@ export async function connectDB() {
   if (!mongoClient && uri) {
     mongoClient = new MongoClient(uri);
     await mongoClient.connect();
-    db = mongoClient.db("bgremover");
+    db = mongoClient.db(DB_NAME);
     
     const jobs = db.collection<JobDocument>("jobs");
     
