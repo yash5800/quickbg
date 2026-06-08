@@ -37,10 +37,11 @@ import { ScrollLinkedParallax } from "@/components/parallax-showcase";
 import { InteractiveToolPlayground } from "@/components/interactive-tool-playground";
 import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
+import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
-import originalImage from "../../assets/demo/org.jpg";
-import processedImage from "../../assets/demo/pro.png";
+import originalImage from "../../assets/demo/org2.jpg";
+import processedImage from "../../assets/demo/pro2.png";
 
 const useCases = [
   {
@@ -143,6 +144,7 @@ export default function Home() {
   const router = useRouter();
   const [isDropActive, setIsDropActive] = useState(false);
   const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
+  const { addToast } = useToast();
 
   const motionTransition = { duration: 0.72, ease: "easeOut" as const };
 
@@ -179,6 +181,12 @@ export default function Home() {
         router.push("/remover");
       } catch (error) {
         console.error("[Home] Failed to load stock sample", error);
+        addToast({
+          type: "error",
+          title: "Failed to load sample",
+          description: "Could not load the sample image. Please try again.",
+          duration: 4000,
+        });
       } finally {
         setLoadingSampleId(null);
       }
