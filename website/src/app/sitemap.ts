@@ -27,6 +27,7 @@ const pages: PageEntry[] = [
   { path: '/terms', priority: 0.4 },
   { path: '/legal', priority: 0.4 },
   { path: '/contact', priority: 0.5 },
+  { path: '/offline', priority: 0.3 },
   { path: '/blog/how-ai-background-removal-works', priority: 0.6 },
   { path: '/blog/transparent-pngs-amazon-etsy', priority: 0.6 },
   { path: '/blog/ecommerce-product-photos-guide', priority: 0.6 },
@@ -65,11 +66,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const locale of locales) {
     const prefix = localePrefixes[locale]
     for (const { path, priority } of pages) {
+      const url = `${baseUrl}${prefix}${path === '' ? '' : path}`
+
+      const languages: Record<string, string> = {}
+      for (const altLocale of locales) {
+        const altPrefix = localePrefixes[altLocale]
+        languages[altLocale] = `${baseUrl}${altPrefix}${path === '' ? '' : path}`
+      }
+
       result.push({
-        url: `${baseUrl}${prefix}${path === '' ? '' : path}`,
+        url,
         lastModified: new Date(),
         changeFrequency: priority >= 0.9 ? 'weekly' : ('monthly' as const),
         priority,
+        alternates: { languages },
       })
     }
   }
