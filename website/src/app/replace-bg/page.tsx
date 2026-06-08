@@ -157,9 +157,9 @@ export default function ReplaceBgPage() {
             <div className="w-20 h-20 rounded-2xl bg-muted/50 flex items-center justify-center mb-6">
               <Palette className="h-10 w-10 text-muted-foreground" />
             </div>
-              <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+              <h2 className="text-xl font-semibold mb-2">{t("replaceBg.accessRestricted.heading")}</h2>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Please process an image with Background Remover first, then use the &ldquo;Replace BG&rdquo; button to access this tool.
+              {t("replaceBg.accessRestricted.desc")}
             </p>
             <Button onClick={() => router.push("/remover")} size="lg">
               {t("common.openRemover")}
@@ -233,13 +233,13 @@ export default function ReplaceBgPage() {
             </div>
 
             <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-sm">
-              <span className="text-green-700 dark:text-green-400">Subject ready - background will be replaced</span>
+              <span className="text-green-700 dark:text-green-400">{t("replaceBg.badge")}</span>
             </div>
           </div>
 
           <div className="space-y-6">
             <div className="p-6 rounded-2xl premium-surface">
-              <h3 className="font-semibold mb-4">Background Type</h3>
+              <h3 className="font-semibold mb-4">{t("replaceBg.bgType")}</h3>
               <div className="flex gap-2">
                 {(["color", "gradient", "image"] as const).map((type) => (
                   <button
@@ -253,7 +253,7 @@ export default function ReplaceBgPage() {
                       selectedBg === type ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-muted/80"
                     )}
                   >
-                    {type}
+                    {t(`replaceBg.type${type.charAt(0).toUpperCase() + type.slice(1)}`)}
                   </button>
                 ))}
               </div>
@@ -261,7 +261,7 @@ export default function ReplaceBgPage() {
 
             {selectedBg === "color" && (
               <div className="p-6 rounded-2xl premium-surface">
-                <h3 className="font-semibold mb-4">Choose Color</h3>
+                <h3 className="font-semibold mb-4">{t("replaceBg.chooseColor")}</h3>
                 <div className="flex flex-wrap gap-3">
                   {backgroundColors.map((color) => (
                     <button
@@ -284,7 +284,7 @@ export default function ReplaceBgPage() {
 
             {selectedBg === "gradient" && (
               <div className="p-6 rounded-2xl premium-surface">
-                <h3 className="font-semibold mb-4">Choose Gradient</h3>
+                <h3 className="font-semibold mb-4">{t("replaceBg.chooseGradient")}</h3>
                 <div className="flex flex-wrap gap-3">
                   {gradients.map((grad, idx) => (
                     <button
@@ -307,7 +307,7 @@ export default function ReplaceBgPage() {
 
             {selectedBg === "image" && (
               <div className="p-6 rounded-2xl premium-surface">
-                <h3 className="font-semibold mb-4">Background Image</h3>
+                <h3 className="font-semibold mb-4">{t("replaceBg.bgImage")}</h3>
                 {backgroundImage ? (
                   <div className="relative aspect-video rounded-xl overflow-hidden bg-muted">
                     <img src={backgroundImage} alt="" className="w-full h-full object-contain" />
@@ -327,7 +327,7 @@ export default function ReplaceBgPage() {
                     className="premium-dashed aspect-video rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all"
                   >
                     <Plus className="h-8 w-8 mb-2 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">Click to upload background</p>
+                    <p className="text-sm text-muted-foreground">{t("replaceBg.uploadBg")}</p>
                   </div>
                 )}
                 <input
@@ -349,12 +349,12 @@ export default function ReplaceBgPage() {
               {isProcessing ? (
                 <>
                   <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                  Processing...
+                  {t("replaceBg.processing")}
                 </>
               ) : (
                 <>
                   <Plus className="h-4 w-4 mr-2" />
-                  Replace Background
+                  {t("replaceBg.replaceBtn")}
                 </>
               )}
             </Button>

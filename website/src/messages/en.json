@@ -260,7 +260,8 @@
     "menu": "Menu",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "scrollToTop": "Scroll to top"
+    "scrollToTop": "Scroll to top",
+    "loading": "Loading..."
   },
   "blog": {
     "title": "Blog — QuickBG",
@@ -800,7 +801,15 @@
     "tips": {
       "heading": "Tips for Best Results",
       "content": "For optimal results, upload images where the subject is clearly visible against the background. Well-lit photos with good contrast between subject and background produce the cleanest cutouts. Images with busy or patterned backgrounds still work well, but simple backgrounds yield faster processing. The tool handles multiple subjects in a single image, but results are best when the main subject is prominent. After processing, review the result at 100% zoom to check edges. If you notice minor imperfections, use the Eraser tool in Quick Edit to refine the mask. For product photography, ensure the item is fully visible without obstructions. Group shots work well, but each person should be clearly separated from others."
-    }
+    },
+    "allProcessed": "All images processed!",
+    "readyForDownload": "ready for download.",
+    "imagesSelected": "images selected",
+    "creditsLeft": "credits left",
+    "changesSaved": "Changes saved!",
+    "copiedImage": "Copied image",
+    "copyFailed": "Copy failed",
+    "clipboardBlocked": "Your browser blocked image clipboard access."
   },
   "replaceBg": {
     "title": "Replace Background Online — QuickBG",
@@ -838,7 +847,22 @@
     "tips": {
       "heading": "Tips for Natural-Looking Backgrounds",
       "content": "Choose background colors that complement your subject rather than clash with it. For product photos, neutral colors like white, gray, or soft pastels keep focus on the item. Gradients work well for social media graphics and add depth without distraction. When using a custom image as background, ensure it is high resolution to avoid pixelation. Match the lighting direction between your subject and the background for the most realistic look. For portraits, warm backgrounds complement skin tones while cool backgrounds create contrast. Preview the result at full size before downloading, and use the Eraser tool to fix any edge artifacts where the subject meets the new background."
-    }
+    },
+    "accessRestricted": {
+      "heading": "Access Restricted",
+      "desc": "Please process an image with Background Remover first, then use the \"Replace BG\" button to access this tool."
+    },
+    "badge": "Subject ready — background will be replaced",
+    "bgType": "Background Type",
+    "typeColor": "Color",
+    "typeGradient": "Gradient",
+    "typeImage": "Image",
+    "chooseColor": "Choose Color",
+    "chooseGradient": "Choose Gradient",
+    "bgImage": "Background Image",
+    "uploadBg": "Click to upload background",
+    "replaceBtn": "Replace Background",
+    "processing": "Processing..."
   },
   "blurBg": {
     "title": "Blur Background Online — QuickBG",
@@ -879,7 +903,15 @@
     "tips": {
       "heading": "Tips for the Best Blur Effect",
       "content": "For natural-looking portraits, use a mild to moderate blur that simulates a real lens aperture. Strong blur works well for busy or distracting backgrounds but can look artificial if overdone. Product photos benefit from subtle blur that removes detail without making the background look obviously edited. When blurring group photos, check that edges between people remain clean. For privacy purposes, strong blur effectively obscures faces, license plates, and other identifying information in the background. Always preview the result at full resolution to ensure the transition between sharp subject and blurred background looks smooth. If you notice halos around the subject, reduce the blur intensity slightly."
-    }
+    },
+    "accessRestricted": {
+      "heading": "Access Restricted",
+      "desc": "Please process an image with Background Remover first, then use the \"Blur BG\" button to access this tool."
+    },
+    "badge": "Subject is sharp — background will be blurred",
+    "blurStrength": "Blur Strength",
+    "updatingPreview": "Updating preview...",
+    "helperText": "The preview updates automatically after you release the slider."
   },
   "resize": {
     "title": "Resize Image Online — QuickBG",
@@ -917,7 +949,13 @@
     "tips": {
       "heading": "Tips for Perfect Resizing",
       "content": "Always resize images at the final stage of your editing workflow after adjustments and background removal. Start with the highest resolution source image available — you can always downscale without quality loss but upscaling has limits. For social media, use the platform-specific presets: Instagram posts at 1080x1080, YouTube thumbnails at 1280x720, Facebook covers at 851x315. When upscaling, increase dimensions gradually rather than doubling the size in one step. For print, target at least 300 DPI resolution. Use the aspect ratio lock to prevent distortion, and always preview before downloading."
-    }
+    },
+    "aspectRatio": "Aspect Ratio",
+    "customDimensions": "Custom Dimensions",
+    "scale": "Scale",
+    "results": "Results",
+    "downloadAll": "Download All",
+    "processing": "Processing..."
   },
   "crop": {
     "title": "Crop Image Online — QuickBG",
@@ -955,7 +993,14 @@
     "tips": {
       "heading": "Tips for Effective Cropping",
       "content": "Follow the rule of thirds by positioning your subject off-center for more dynamic compositions. For portraits, crop at the shoulders or waist rather than at joints to avoid an awkward look. When cropping for social media, check each platform's specific requirements — Instagram prefers 1:1 or 4:5, YouTube uses 16:9, and Pinterest favors 2:3 vertical. Leave breathing room around your subject if the image will be used across multiple platforms. Use the rotation feature to straighten horizons in landscape photos. Before cropping, consider whether you might need the full image later — it is better to keep the original and crop non-destructively."
-    }
+    },
+    "free": "Free",
+    "aspectRatio": "Aspect Ratio",
+    "rotation": "Rotation",
+    "zoom": "Zoom",
+    "applyCrop": "Apply Crop",
+    "cropHelper": "Rotate freely, then click Apply Crop to render the result.",
+    "supportedFormats": "JPG, PNG, WebP"
   },
   "adjust": {
     "title": "Adjust Image Online — QuickBG",
@@ -997,7 +1042,25 @@
     "tips": {
       "heading": "Tips for Natural-Looking Adjustments",
       "content": "Start with brightness to get the overall exposure right, then adjust contrast, and finally fine-tune saturation. Small, incremental changes look more natural than large adjustments to a single parameter. For portraits, slightly reduced contrast can be flattering as it softens skin texture. For product photos, accurate brightness and moderate saturation present items truthfully. Boost contrast carefully — too much creates unnatural-looking images with clipped shadows and blown highlights. When converting to grayscale, reduce saturation gradually to find the perfect balance rather than going fully monochrome. Always preview adjustments at full size to check for artifacts or color shifts."
-    }
+    },
+    "imageAdjustments": "Image Adjustments",
+    "brightness": "Brightness",
+    "contrast": "Contrast",
+    "saturation": "Saturation",
+    "reset": "Reset",
+    "undo": "Undo",
+    "redo": "Redo",
+    "history": "History",
+    "resize": "Resize",
+    "enable": "Enable",
+    "width": "Width",
+    "height": "Height",
+    "output": "Output",
+    "quality": "Quality",
+    "targetSize": "Target Size",
+    "lastExport": "Last export",
+    "filename": "Filename:",
+    "formatJson": "Supported formats: JPG, PNG, WebP."
   },
   "sharpness": {
     "title": "Sharpen Image Online — QuickBG",
@@ -1037,7 +1100,20 @@
     "tips": {
       "heading": "Tips for Best Sharpening Results",
       "content": "Apply sharpening as the final step in your editing workflow after resizing and color adjustments. Start with a low intensity and increase gradually — it is better to under-sharpen than over-sharpen. View the image at 100% zoom to check for halos around high-contrast edges. For portraits, sharpen the eyes and hair but avoid over-sharpening skin. For product photos, emphasize texture and detail that matters to buyers. When sharpening after background removal, target the subject only to keep the background smooth. Different output uses need different levels — web images can be sharper than print images. Always preview the result before downloading."
-    }
+    },
+    "accessRestricted": {
+      "heading": "Access Restricted",
+      "desc": "Please process an image with Background Remover first, then use the \"Sharpness\" quick-edit button."
+    },
+    "target": "Target",
+    "subject": "subject",
+    "background": "background",
+    "targetHelper": "Subject/background targeting uses the transparent PNG alpha mask from the remover.",
+    "sectionTitle": "Sharpness",
+    "helperText": "Preview updates automatically after you stop dragging.",
+    "tipText": "Increase gently for portraits and product edges; higher values can create halos.",
+    "buildingPreview": "Building sharpness preview...",
+    "updatingPreview": "Updating preview..."
   },
   "converter": {
     "title": "Image Converter Online — QuickBG",
@@ -1077,7 +1153,16 @@
     "tips": {
       "heading": "Tips for Choosing the Right Format",
       "content": "Use PNG when you need transparency or lossless quality — ideal for logos, graphics, and images with text. Use JPEG for photographs where smaller file size matters more than absolute quality, adjusting the quality slider to balance size and appearance. Use WebP for web content as it combines good compression with broad browser support. Use AVIF for the best compression efficiency on modern browsers. Use TIFF for print workflows and archival storage. If you are unsure, PNG is the safest choice for versatility. For batch conversion, process all images at the same quality setting for consistent output. Always preview a sample before converting a large batch."
-    }
+    },
+    "chooseFormat": "Choose output format and quality.",
+    "outputFormat": "Output format",
+    "convert": "Convert",
+    "download": "Download",
+    "formatPng": "Lossless and keeps transparency. Best for cutouts and graphics.",
+    "formatJpg": "Small, widely supported, and best for photos. No transparency.",
+    "formatWebp": "Modern compression with transparency support in most browsers.",
+    "formatAvif": "Very small files with strong compression. Newer browser support.",
+    "formatTiff": "High-quality archive format for print and production workflows."
   },
   "comparison": {
     "title": "Comparison — QuickBG",

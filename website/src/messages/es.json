@@ -50,7 +50,8 @@
     "menu": "Menú",
     "openMenu": "Abrir menú",
     "closeMenu": "Cerrar menú",
-    "scrollToTop": "Volver arriba"
+    "scrollToTop": "Volver arriba",
+    "loading": "Loading..."
   },
   "home": {
     "title": "Eliminador de Fondos AI Gratuito - Imágenes Ilimitadas, 100% Calidad Original",
@@ -569,7 +570,49 @@
       "capacityDesc": "Tu imagen comenzará tan pronto como haya capacidad.",
       "removing": "Eliminando fondo",
       "removingDesc": "Detectando los bordes del sujeto y creando un recorte transparente."
-    }
+    },
+    "guide": {
+      "heading": "Guide",
+      "step1Title": "Upload your image",
+      "step1Desc": "Upload any image in PNG, JPG, WebP, or HEIC format. Multiple images are supported.",
+      "step2Title": "AI removes the background",
+      "step2Desc": "Our AI automatically detects the subject and removes the background in seconds.",
+      "step3Title": "Fine-tune with Quick Edit",
+      "step3Desc": "Use Eraser, Sharpness, Blur BG, or Replace BG to perfect the result.",
+      "step4Title": "Download",
+      "step4Desc": "Download as transparent PNG with or without watermark overlay."
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "How does AI background removal work?",
+      "a1": "QuickBG uses a deep learning model trained on millions of images to detect subjects and separate them from the background with pixel-level precision.",
+      "q2": "Is background removal really free and unlimited?",
+      "a2": "Yes, completely free with no signup required. Remove backgrounds from unlimited images at full resolution with no watermark.",
+      "q3": "What image formats are supported for upload?",
+      "a3": "Upload PNG, JPG, WebP, HEIC, and AVIF images. Processed results download as transparent PNG files.",
+      "q4": "Can I edit the result after background removal?",
+      "a4": "Yes, use the Quick Edit tools — Eraser to fix mask edges, Sharpness to enhance details, Blur BG to soften the background, and Replace BG to add a new backdrop."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Background Remover",
+      "content": "Professional background removal used to require expensive software and manual effort. QuickBG changes that by delivering studio-quality cutouts in seconds through advanced AI. Whether you are an e-commerce seller creating product listings, a content creator building a personal brand, or a designer preparing assets, our tool eliminates the tedious work of manual masking. There are no subscription fees, no usage caps, and no watermark on your downloads. Every image processes at full resolution, preserving the fine details that matter — hair strands, product edges, and complex subjects. The result is a clean transparent PNG ready for any project."
+    },
+    "howItWorks": {
+      "heading": "How AI Background Removal Works",
+      "content": "QuickBG uses a deep neural network trained on millions of diverse images to understand what constitutes a subject versus a background. When you upload an image, the AI analyzes every pixel, identifying boundaries between foreground and background elements. It detects edges, textures, color transitions, and depth cues to create a precise alpha mask. The model excels at handling challenging subjects like hair, fur, translucent objects, and intricate patterns. Unlike simple chroma-key or color-based removal, our AI understands context — it knows the difference between a person and the wall behind them even when colors are similar. The entire process takes just seconds and requires no manual intervention."
+    },
+    "tips": {
+      "heading": "Tips for Best Results",
+      "content": "For optimal results, upload images where the subject is clearly visible against the background. Well-lit photos with good contrast between subject and background produce the cleanest cutouts. Images with busy or patterned backgrounds still work well, but simple backgrounds yield faster processing. The tool handles multiple subjects in a single image, but results are best when the main subject is prominent. After processing, review the result at 100% zoom to check edges. If you notice minor imperfections, use the Eraser tool in Quick Edit to refine the mask. For product photography, ensure the item is fully visible without obstructions. Group shots work well, but each person should be clearly separated from others."
+    },
+    "allProcessed": "All images processed!",
+    "readyForDownload": "ready for download.",
+    "imagesSelected": "images selected",
+    "creditsLeft": "credits left",
+    "changesSaved": "Changes saved!",
+    "copiedImage": "Copied image",
+    "copyFailed": "Copy failed",
+    "clipboardBlocked": "Your browser blocked image clipboard access."
   },
   "replaceBg": {
     "title": "Reemplazar Fondo Online — QuickBG",
@@ -584,7 +627,45 @@
       "step3Desc": "El selector de color, paradas de degradado y carga de imágenes te permiten ajustar el fondo.",
       "step4Title": "Descargar el resultado",
       "step4Desc": "Exporta como superposición PNG transparente o imagen plana con el nuevo fondo."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "What background options are available?",
+      "a1": "Solid colors, gradients, and custom images. The color picker and gradient controls give you full creative freedom to design the perfect backdrop.",
+      "q2": "Can I use my own image as the replacement background?",
+      "a2": "Yes, upload any image to use as the replacement background. It will be placed behind your subject automatically.",
+      "q3": "Does Replace BG require the Remover first?",
+      "a3": "Yes, start with Background Remover to create a clean subject cutout, then use Replace BG to add a new background behind it.",
+      "q4": "Can I export the result with a transparent background?",
+      "a4": "Yes, download as a transparent PNG overlay if you want to keep the subject separate, or as a flattened image with the new background baked in."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Background Replace",
+      "content": "Replacing an image background opens up unlimited creative possibilities for your visuals. QuickBG lets you swap any background with solid colors, smooth gradients, or custom images — all while keeping your subject perfectly separated. This is essential for e-commerce sellers who need consistent brand backgrounds across their product catalog, marketers creating unified social media visuals, and photographers experimenting with different backdrops without costly reshoots. The tool preserves the subject edges from the original AI cutout, so hair, fur, and intricate details remain crisp against the new background. You can fine-tune colors and gradient stops in real time, seeing exactly how the final image will look before downloading."
+    },
+    "howItWorks": {
+      "heading": "How Background Replacement Works",
+      "content": "Background replacement builds on the AI cutout created by the Background Remover. Once the subject is isolated with a precise alpha mask, QuickBG composites it onto your chosen background. For solid colors, you can pick any hex value or use the visual color picker. For gradients, you define two or more color stops and the gradient direction — linear or radial. For custom images, your uploaded photo is positioned behind the subject automatically. The compositing engine handles transparency blending, edge anti-aliasing, and color matching to ensure the subject looks natural against the new background. You can output the result as a transparent PNG overlay for further editing or as a flattened composite image ready to use."
+    },
+    "tips": {
+      "heading": "Tips for Natural-Looking Backgrounds",
+      "content": "Choose background colors that complement your subject rather than clash with it. For product photos, neutral colors like white, gray, or soft pastels keep focus on the item. Gradients work well for social media graphics and add depth without distraction. When using a custom image as background, ensure it is high resolution to avoid pixelation. Match the lighting direction between your subject and the background for the most realistic look. For portraits, warm backgrounds complement skin tones while cool backgrounds create contrast. Preview the result at full size before downloading, and use the Eraser tool to fix any edge artifacts where the subject meets the new background."
+    },
+    "accessRestricted": {
+      "heading": "Access Restricted",
+      "desc": "Please process an image with Background Remover first, then use the \"Replace BG\" button to access this tool."
+    },
+    "badge": "Subject ready — background will be replaced",
+    "bgType": "Background Type",
+    "typeColor": "Color",
+    "typeGradient": "Gradient",
+    "typeImage": "Image",
+    "chooseColor": "Choose Color",
+    "chooseGradient": "Choose Gradient",
+    "bgImage": "Background Image",
+    "uploadBg": "Click to upload background",
+    "replaceBtn": "Replace Background",
+    "processing": "Processing..."
   },
   "blurBg": {
     "title": "Desenfocar Fondo Online — QuickBG",
@@ -602,7 +683,38 @@
       "step3Desc": "La vista previa se actualiza automáticamente mientras arrastras el control deslizante. Ajusta hasta que se vea natural.",
       "step4Title": "Descargar",
       "step4Desc": "Guarda la imagen desenfocada como PNG transparente o compuesto plano."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "What is AI background blur?",
+      "a1": "QuickBG uses AI to separate the subject from the background, then applies blur only to the background while keeping the subject perfectly sharp.",
+      "q2": "Can I control the blur intensity?",
+      "a2": "Yes, use the slider to adjust blur strength from a subtle soft focus to a strong bokeh effect. The preview updates in real time.",
+      "q3": "Is the background blur permanent?",
+      "a3": "No, you can re-adjust the blur at any time. The original image is preserved, letting you re-edit or revert your changes.",
+      "q4": "What are common use cases for background blur?",
+      "a4": "Portrait photography, product listings for e-commerce, social media profiles, video thumbnails, and privacy-sensitive images all benefit from background blur."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Background Blur",
+      "content": "Background blur adds a professional depth-of-field effect that makes your subject stand out. QuickBG applies blur intelligently — only to the background while keeping the subject perfectly sharp. This is ideal for portrait photographers who want studio-quality bokeh without expensive lenses, e-commerce sellers creating focused product shots, and privacy-conscious users who need to obscure identifying details in the background. The AI accurately separates subject from background even in complex scenes, ensuring blur is applied exactly where intended. You have full control over blur intensity, from a subtle softening to a strong blur that completely eliminates background detail."
+    },
+    "howItWorks": {
+      "heading": "How AI Background Blur Works",
+      "content": "QuickBG first creates a precise subject mask using the same AI technology as the Background Remover. Once the subject is isolated, a blur filter is applied exclusively to the background region. The blur intensity is controlled by a slider that adjusts the kernel size — larger values create stronger blur. The subject remains untouched at full sharpness. The tool supports multiple blur levels, from a gentle softening that mimics a wide aperture lens to an intense blur that creates a smooth bokeh effect. The preview updates in real time as you adjust the slider, letting you find the perfect balance between subject emphasis and background softness."
+    },
+    "tips": {
+      "heading": "Tips for the Best Blur Effect",
+      "content": "For natural-looking portraits, use a mild to moderate blur that simulates a real lens aperture. Strong blur works well for busy or distracting backgrounds but can look artificial if overdone. Product photos benefit from subtle blur that removes detail without making the background look obviously edited. When blurring group photos, check that edges between people remain clean. For privacy purposes, strong blur effectively obscures faces, license plates, and other identifying information in the background. Always preview the result at full resolution to ensure the transition between sharp subject and blurred background looks smooth. If you notice halos around the subject, reduce the blur intensity slightly."
+    },
+    "accessRestricted": {
+      "heading": "Access Restricted",
+      "desc": "Please process an image with Background Remover first, then use the \"Blur BG\" button to access this tool."
+    },
+    "badge": "Subject is sharp — background will be blurred",
+    "blurStrength": "Blur Strength",
+    "updatingPreview": "Updating preview...",
+    "helperText": "The preview updates automatically after you release the slider."
   },
   "resize": {
     "title": "Redimensionar Imagen Online — QuickBG",
@@ -617,7 +729,36 @@
       "step3Desc": "Mira cómo se ve tu imagen en las nuevas dimensiones antes de aplicar el redimensionamiento.",
       "step4Title": "Descargar",
       "step4Desc": "Descarga la imagen redimensionada en tu formato preferido."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "What resize options does QuickBG offer?",
+      "a1": "Preset aspect ratios like 1:1, 4:5, and 16:9, plus custom width and height dimensions. You can preserve the aspect ratio or crop to fit.",
+      "q2": "Will resizing reduce image quality?",
+      "a2": "Downscaling is lossless. Upscaling uses AI to maintain sharpness, but the final quality depends on the target size and your original image resolution.",
+      "q3": "What are standard sizes for social media platforms?",
+      "a3": "Instagram post 1080x1080, Facebook cover 851x315, YouTube thumbnail 1280x720, Twitter header 1500x500, LinkedIn banner 1584x396.",
+      "q4": "Can I resize multiple images at once?",
+      "a4": "Currently images are resized individually with a live preview. Batch processing with consistent dimensions will be available in a future update."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Image Resizer",
+      "content": "Getting the right image dimensions is critical for professional results across different platforms. QuickBG Image Resizer lets you scale images to exact dimensions while maintaining quality through AI-powered algorithms. Whether you need social media sizes, print dimensions, or web-optimized images, the tool provides preset ratios and custom options. Downscaling images reduces file size for faster loading without visible quality loss. Upscaling uses intelligent interpolation to add pixels smoothly rather than creating blocky artifacts. The real-time preview shows exactly how your image will look at the target size, and you can choose to preserve the aspect ratio or crop to fit."
+    },
+    "howItWorks": {
+      "heading": "How Image Resizing Works",
+      "content": "QuickBG offers two resize modes. Preset aspect ratios like 1:1, 4:5, and 16:9 automatically constrain dimensions to match common platform requirements. Custom mode lets you enter exact width and height values. When you change one dimension, the other adjusts automatically if aspect ratio lock is enabled. For downscaling, the tool uses area-averaging to maintain sharpness while reducing pixel count. For upscaling, AI-based interpolation analyzes neighboring pixels to create smooth transitions and preserve edge detail. The preview updates instantly as you adjust values, showing the resulting dimensions and estimated file size before you download."
+    },
+    "tips": {
+      "heading": "Tips for Perfect Resizing",
+      "content": "Always resize images at the final stage of your editing workflow after adjustments and background removal. Start with the highest resolution source image available — you can always downscale without quality loss but upscaling has limits. For social media, use the platform-specific presets: Instagram posts at 1080x1080, YouTube thumbnails at 1280x720, Facebook covers at 851x315. When upscaling, increase dimensions gradually rather than doubling the size in one step. For print, target at least 300 DPI resolution. Use the aspect ratio lock to prevent distortion, and always preview before downloading."
+    },
+    "aspectRatio": "Aspect Ratio",
+    "customDimensions": "Custom Dimensions",
+    "scale": "Scale",
+    "results": "Results",
+    "downloadAll": "Download All",
+    "processing": "Processing..."
   },
   "crop": {
     "title": "Recortar Imagen Online — QuickBG",
@@ -632,7 +773,37 @@
       "step3Desc": "Arrastra los controles de recorte o rota para encuadrar tu sujeto exactamente como quieras.",
       "step4Title": "Aplicar y descargar",
       "step4Desc": "Haz clic en Aplicar Recorte, luego descarga el resultado en tu formato elegido."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "What aspect ratios are available?",
+      "a1": "Freeform crop, 1:1 square, 4:3, 16:9 widescreen, 9:16 portrait, 3:2, and custom dimensions. Pick the ratio that fits your target platform.",
+      "q2": "Can I rotate the image while cropping?",
+      "a2": "Yes, use the rotation slider to adjust orientation while keeping the crop area fixed. Fine-tune the angle until your subject is perfectly aligned.",
+      "q3": "Does cropping reduce image resolution?",
+      "a3": "Cropping removes outer pixels, so the remaining area retains full resolution. The overall image dimensions decrease naturally based on your crop selection.",
+      "q4": "What are the best crop dimensions for social media?",
+      "a4": "1:1 for Instagram posts, 16:9 for YouTube thumbnails, 4:5 for Facebook and Instagram ads, 9:16 for TikTok and Stories, 3:2 for print and photography."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Crop Tool",
+      "content": "Cropping is one of the most fundamental image editing operations, and getting it right transforms your composition. QuickBG Crop Tool gives you precise control over framing with support for freeform and preset aspect ratios. Whether you are preparing images for social media, creating print layouts, or adjusting composition after background removal, the crop tool maintains full image quality in the selected area. The rotation feature lets you straighten crooked horizons or create dynamic angles. Real-time preview shows the exact crop boundaries so you know what the final image will look like. All major aspect ratios are built in — 1:1, 4:3, 16:9, 9:16, 3:2, and custom."
+    },
+    "howItWorks": {
+      "heading": "How the Crop Tool Works",
+      "content": "The crop tool overlays a draggable selection area on your image with adjustable handles at each corner and edge. You can click and drag any handle to resize the crop region, or click inside the region to reposition it over the image. The aspect ratio menu lets you lock the crop to a specific proportion — when locked, dragging one handle automatically adjusts adjacent sides to maintain the ratio. The rotation slider rotates the crop region independently of the image, letting you straighten or angle your composition. Once you apply the crop, only the selected area is kept and the rest of the image is discarded. The result downloads at the original resolution."
+    },
+    "tips": {
+      "heading": "Tips for Effective Cropping",
+      "content": "Follow the rule of thirds by positioning your subject off-center for more dynamic compositions. For portraits, crop at the shoulders or waist rather than at joints to avoid an awkward look. When cropping for social media, check each platform's specific requirements — Instagram prefers 1:1 or 4:5, YouTube uses 16:9, and Pinterest favors 2:3 vertical. Leave breathing room around your subject if the image will be used across multiple platforms. Use the rotation feature to straighten horizons in landscape photos. Before cropping, consider whether you might need the full image later — it is better to keep the original and crop non-destructively."
+    },
+    "free": "Free",
+    "aspectRatio": "Aspect Ratio",
+    "rotation": "Rotation",
+    "zoom": "Zoom",
+    "applyCrop": "Apply Crop",
+    "cropHelper": "Rotate freely, then click Apply Crop to render the result.",
+    "supportedFormats": "JPG, PNG, WebP"
   },
   "adjust": {
     "title": "Ajustar Imagen Online — QuickBG",
@@ -651,7 +822,48 @@
       "step3Desc": "Selecciona formato y calidad. Alterna el tamaño de archivo objetivo para optimizar la salida.",
       "step4Title": "Descargar",
       "step4Desc": "Descarga la imagen ajustada a máxima calidad con todos los cambios aplicados."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "What image adjustments does QuickBG support?",
+      "a1": "Brightness, contrast, and saturation sliders let you fine-tune your image. All adjustments update in real time so you can see the effect instantly.",
+      "q2": "Will adjusting the image reduce quality?",
+      "a2": "No, QuickBG preserves original image quality. You can also choose the output format and quality level when downloading the result.",
+      "q3": "What file formats can I export after adjusting?",
+      "a3": "Download as PNG, JPG, or WebP. Use the Format Converter tool if you need additional formats like AVIF or TIFF.",
+      "q4": "When should I adjust brightness and contrast?",
+      "a4": "Adjust when your image looks too dark or washed out, before resizing or after background removal to match the subject with the new background."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Image Adjust",
+      "content": "Even well-exposed photos can benefit from subtle adjustments to brightness, contrast, and saturation. QuickBG Image Adjust gives you precise control over these core parameters with real-time preview. Brightening an underexposed image reveals detail in shadow areas, while adjusting contrast adds depth and punch. Saturation control lets you make colors more vibrant or create a muted, desaturated look. All adjustments are applied independently so you can fine-tune each parameter without affecting the others. The tool supports multiple output formats and quality settings, making it suitable for web use, print, or further editing. Whether you are correcting smartphone photos or refining professional work, the controls are intuitive and responsive."
+    },
+    "howItWorks": {
+      "heading": "How Image Adjustment Works",
+      "content": "QuickBG provides three adjustment sliders that modify your image's pixel data in real time. The brightness slider shifts all pixel values up or down, making the entire image lighter or darker. Contrast increases or decreases the difference between light and dark areas — higher contrast makes shadows deeper and highlights brighter, while lower contrast creates a flatter, softer look. Saturation controls the intensity of all colors simultaneously, from vivid full color to complete grayscale. The adjustments are processed client-side using the HTML Canvas API, so your image never leaves your browser. The preview updates instantly as you move any slider, and you can reset all adjustments to default with a single click."
+    },
+    "tips": {
+      "heading": "Tips for Natural-Looking Adjustments",
+      "content": "Start with brightness to get the overall exposure right, then adjust contrast, and finally fine-tune saturation. Small, incremental changes look more natural than large adjustments to a single parameter. For portraits, slightly reduced contrast can be flattering as it softens skin texture. For product photos, accurate brightness and moderate saturation present items truthfully. Boost contrast carefully — too much creates unnatural-looking images with clipped shadows and blown highlights. When converting to grayscale, reduce saturation gradually to find the perfect balance rather than going fully monochrome. Always preview adjustments at full size to check for artifacts or color shifts."
+    },
+    "imageAdjustments": "Image Adjustments",
+    "brightness": "Brightness",
+    "contrast": "Contrast",
+    "saturation": "Saturation",
+    "reset": "Reset",
+    "undo": "Undo",
+    "redo": "Redo",
+    "history": "History",
+    "resize": "Resize",
+    "enable": "Enable",
+    "width": "Width",
+    "height": "Height",
+    "output": "Output",
+    "quality": "Quality",
+    "targetSize": "Target Size",
+    "lastExport": "Last export",
+    "filename": "Filename:",
+    "formatJson": "Supported formats: JPG, PNG, WebP."
   },
   "sharpness": {
     "title": "Enfocar Imagen Online — QuickBG",
@@ -668,7 +880,43 @@
       "step3Desc": "Apunta al sujeto, fondo o ambos usando la máscara alpha del removedor.",
       "step4Title": "Descargar",
       "step4Desc": "La vista previa se actualiza automáticamente. Descarga cuando estés satisfecho con el resultado."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "What is AI sharpness adjustment?",
+      "a1": "QuickBG enhances edge contrast and detail clarity using intelligent algorithms that avoid over-sharpening artifacts and halos.",
+      "q2": "Can I sharpen only the subject or just the background?",
+      "a2": "Yes, choose to sharpen the subject, the background, or both using the alpha mask created during background removal.",
+      "q3": "Will sharpening create unwanted artifacts?",
+      "a3": "When used gently, sharpening enhances details naturally. Higher values may produce halos around high-contrast edges, so increase gradually.",
+      "q4": "When should I sharpen an image?",
+      "a4": "After resizing an image, for slightly soft portraits, product photos that lack crispness, or scanned images that need edge clarity."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Sharpness Tool",
+      "content": "Image sharpness can make the difference between a professional-looking photo and one that appears soft or out of focus. QuickBG Sharpness Tool enhances edge definition and detail clarity using intelligent algorithms that avoid the harsh artifacts common with basic sharpening. The tool is especially valuable after background removal, where the subject edges may benefit from enhanced crispness. You can target sharpening to the subject only, the background only, or both, giving you precise control over the final look. This is ideal for product photographers who need every detail visible, portrait retouchers enhancing eye and hair detail, and anyone working with images that look slightly soft after resizing or format conversion."
+    },
+    "howItWorks": {
+      "heading": "How AI Sharpening Works",
+      "content": "QuickBG analyzes your image to identify edges and fine details, then selectively increases contrast at those boundaries to create the perception of greater sharpness. Unlike basic unsharp mask filters that apply uniformly, our algorithm detects which areas are edges versus smooth surfaces and sharpens only where needed. This prevents common problems like noise amplification in smooth areas like skin or sky. The sharpness slider controls intensity from subtle to strong. When used after background removal, the tool can apply sharpening exclusively to the subject using the existing alpha mask, leaving the background untouched. The preview updates in real time so you can see the effect at full resolution before downloading."
+    },
+    "tips": {
+      "heading": "Tips for Best Sharpening Results",
+      "content": "Apply sharpening as the final step in your editing workflow after resizing and color adjustments. Start with a low intensity and increase gradually — it is better to under-sharpen than over-sharpen. View the image at 100% zoom to check for halos around high-contrast edges. For portraits, sharpen the eyes and hair but avoid over-sharpening skin. For product photos, emphasize texture and detail that matters to buyers. When sharpening after background removal, target the subject only to keep the background smooth. Different output uses need different levels — web images can be sharper than print images. Always preview the result before downloading."
+    },
+    "accessRestricted": {
+      "heading": "Access Restricted",
+      "desc": "Please process an image with Background Remover first, then use the \"Sharpness\" quick-edit button."
+    },
+    "target": "Target",
+    "subject": "subject",
+    "background": "background",
+    "targetHelper": "Subject/background targeting uses the transparent PNG alpha mask from the remover.",
+    "helperText": "Preview updates automatically after you stop dragging.",
+    "tipText": "Increase gently for portraits and product edges; higher values can create halos.",
+    "buildingPreview": "Building sharpness preview...",
+    "updatingPreview": "Updating preview...",
+    "sectionTitle": "Sharpness"
   },
   "converter": {
     "title": "Convertidor de Imágenes Online — QuickBG",
@@ -685,7 +933,39 @@
       "step3Desc": "Haz clic en Convertir para procesar. La herramienta maneja la conversión por lotes automáticamente.",
       "step4Title": "Descargar",
       "step4Desc": "Descarga archivos individuales o todos los resultados como un archivo ZIP."
-    }
+    },
+    "faq": {
+      "heading": "Frequently Asked Questions",
+      "q1": "Which image format should I choose?",
+      "a1": "PNG for transparency and lossless quality, JPEG for photos with smaller file sizes, WebP for modern web use with good compression, AVIF for the best compression-to-quality ratio.",
+      "q2": "Does format conversion reduce image quality?",
+      "a2": "Converting to a lossy format like JPEG or WebP may reduce quality depending on the compression level you choose. PNG and TIFF conversions are lossless.",
+      "q3": "Can I convert multiple images in batch?",
+      "a3": "Yes, upload multiple images and the converter processes them in a single batch. You can download results individually or as a ZIP archive.",
+      "q4": "What image formats are supported for conversion?",
+      "a4": "Upload PNG, JPG, WebP, HEIC, AVIF, or TIFF and convert to any of these formats. HEIC and AVIF offer modern compression with excellent quality."
+    },
+    "benefits": {
+      "heading": "Why Use QuickBG Image Converter",
+      "content": "Different platforms and use cases demand different image formats, and converting between them while maintaining quality is essential. QuickBG Image Converter supports all major formats — PNG, JPG, WebP, AVIF, HEIC, and TIFF — with batch processing for efficiency. PNG preserves transparency and delivers lossless quality for images with cutout subjects. JPG offers smaller file sizes ideal for photographs and web use. WebP and AVIF provide modern compression with excellent quality-to-size ratios. TIFF is the professional standard for print and archival purposes. The converter handles multiple images in a single batch, letting you download results individually or as a ZIP archive, saving significant time when processing large sets."
+    },
+    "howItWorks": {
+      "heading": "How Format Conversion Works",
+      "content": "QuickBG converts images by decoding the source format into raw pixel data, then encoding that data into the target format using optimized compression libraries. For lossless formats like PNG and TIFF, all original pixel data is preserved exactly. For lossy formats like JPEG and WebP, you control the quality level via a slider — higher quality means larger file sizes with less compression artifacts. AVIF offers superior compression efficiency, producing smaller files than JPEG at equivalent visual quality. The conversion happens entirely in your browser using WebAssembly-based codecs, meaning your images never upload to a server. Batch mode processes all selected images sequentially and packages them for convenient download."
+    },
+    "tips": {
+      "heading": "Tips for Choosing the Right Format",
+      "content": "Use PNG when you need transparency or lossless quality — ideal for logos, graphics, and images with text. Use JPEG for photographs where smaller file size matters more than absolute quality, adjusting the quality slider to balance size and appearance. Use WebP for web content as it combines good compression with broad browser support. Use AVIF for the best compression efficiency on modern browsers. Use TIFF for print workflows and archival storage. If you are unsure, PNG is the safest choice for versatility. For batch conversion, process all images at the same quality setting for consistent output. Always preview a sample before converting a large batch."
+    },
+    "chooseFormat": "Choose output format and quality.",
+    "outputFormat": "Output format",
+    "convert": "Convert",
+    "download": "Download",
+    "formatPng": "Lossless and keeps transparency. Best for cutouts and graphics.",
+    "formatJpg": "Small, widely supported, and best for photos. No transparency.",
+    "formatWebp": "Modern compression with transparency support in most browsers.",
+    "formatAvif": "Very small files with strong compression. Newer browser support.",
+    "formatTiff": "High-quality archive format for print and production workflows."
   },
   "comparison": {
     "title": "Comparativa — QuickBG",

@@ -265,9 +265,9 @@ export default function SharpnessPage() {
             <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-muted/50">
               <Circle className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h2 className="mb-2 text-xl font-semibold">Access Restricted</h2>
+            <h2 className="mb-2 text-xl font-semibold">{t("sharpness.accessRestricted.heading")}</h2>
             <p className="mb-6 max-w-md text-muted-foreground">
-              Please process an image with Background Remover first, then use the &quot;Sharpness&quot; quick-edit button.
+              {t("sharpness.accessRestricted.desc")}
             </p>
             <Button onClick={() => router.push("/remover")} size="lg">
               {t("common.openRemover")}
@@ -348,7 +348,7 @@ export default function SharpnessPage() {
                 <div className="absolute inset-0 bg-gradient-to-b from-background/5 via-background/15 to-background/35" />
                 <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/50 px-4 py-2 text-xs font-medium text-white/80 shadow-xl backdrop-blur-md">
                   <RefreshCw className="h-4 w-4 animate-spin" />
-                  Building sharpness preview...
+                  {t("sharpness.buildingPreview")}
                 </div>
               </div>
             ) : null}
@@ -356,7 +356,7 @@ export default function SharpnessPage() {
             {isLoaded && isRendering && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
                 <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-xs font-medium text-white/80 shadow-xl">
-                  Updating preview...
+                  {t("sharpness.updatingPreview")}
                 </div>
               </div>
             )}
@@ -364,7 +364,7 @@ export default function SharpnessPage() {
 
           <aside className="space-y-4">
             <div className="premium-surface rounded-xl p-5">
-              <h2 className="font-semibold">Target</h2>
+              <h2 className="font-semibold">{t("sharpness.target")}</h2>
               <div className="mt-3 grid grid-cols-2 gap-2">
                 {(["subject", "background"] as const).map((value) => (
                   <button
@@ -375,22 +375,22 @@ export default function SharpnessPage() {
                       target === value ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-accent"
                     )}
                   >
-                    {value}
+                    {t(`sharpness.${value}`)}
                   </button>
                 ))}
               </div>
               <p className="mt-3 text-xs text-muted-foreground">
-                Subject/background targeting uses the transparent PNG alpha mask from the remover.
+                {t("sharpness.targetHelper")}
               </p>
             </div>
 
             <div className="premium-surface rounded-xl p-5">
               <div className="mb-2 flex items-center justify-between">
-                <h2 className="font-semibold">Sharpness</h2>
+                <h2 className="font-semibold">{t("sharpness.sectionTitle")}</h2>
                 <span className="text-sm text-muted-foreground">{Math.round(amount * 100)}%</span>
               </div>
               <Slider type="range" min="0" max="1.5" step="0.05" value={amount} onChange={(event) => setAmount(Number(event.target.value))} />
-              <p className="mt-3 text-xs text-muted-foreground">Preview updates automatically after you stop dragging.</p>
+              <p className="mt-3 text-xs text-muted-foreground">{t("sharpness.helperText")}</p>
             </div>
 
             <div className="flex gap-2">
@@ -408,7 +408,7 @@ export default function SharpnessPage() {
 
             <div className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
               <Sparkles className="mb-2 h-4 w-4 text-primary" />
-              Increase gently for portraits and product edges; higher values can create halos.
+              {t("sharpness.tipText")}
             </div>
           </aside>
         </div>

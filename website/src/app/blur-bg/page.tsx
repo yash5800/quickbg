@@ -152,9 +152,9 @@ export default function BlurBgPage() {
             <div className="w-20 h-20 rounded-2xl bg-muted/50 flex items-center justify-center mb-6">
               <Circle className="h-10 w-10 text-muted-foreground" />
             </div>
-            <h2 className="text-xl font-semibold mb-2">Access Restricted</h2>
+            <h2 className="text-xl font-semibold mb-2">{t("blurBg.accessRestricted.heading")}</h2>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Please process an image with Background Remover first, then use the &ldquo;Blur BG&rdquo; button to access this tool.
+              {t("blurBg.accessRestricted.desc")}
             </p>
             <Button onClick={() => router.push("/remover")} size="lg">
               {t("common.openRemover")}
@@ -219,7 +219,7 @@ export default function BlurBgPage() {
               ) : !isLoaded ? (
                 <div className="flex items-center gap-2">
                   <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
-                  <span className="text-muted-foreground">Loading...</span>
+                  <span className="text-muted-foreground">{t("common.loading")}</span>
                 </div>
               ) : (
                 <canvas ref={canvasRef} className="max-w-full max-h-full object-contain" />
@@ -227,7 +227,7 @@ export default function BlurBgPage() {
               {isLoaded && isRendering && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px]">
                   <div className="rounded-full border border-white/10 bg-black/55 px-4 py-2 text-xs font-medium text-white/80 shadow-xl">
-                    Updating preview...
+                    {t("blurBg.updatingPreview")}
                   </div>
                 </div>
               )}
@@ -244,13 +244,13 @@ export default function BlurBgPage() {
             </div>
 
             <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-sm">
-              <span className="text-green-700 dark:text-green-400">Subject is sharp - background will be blurred</span>
+              <span className="text-green-700 dark:text-green-400">{t("blurBg.badge")}</span>
             </div>
           </div>
 
           <div className="space-y-6">
             <div className="p-6 rounded-2xl premium-surface">
-              <h3 className="font-semibold mb-4">Blur Strength ({blurStrength}px)</h3>
+              <h3 className="font-semibold mb-4">{t("blurBg.blurStrength")} ({blurStrength}px)</h3>
               <Slider
                 type="range"
                 min="0"
@@ -263,7 +263,7 @@ export default function BlurBgPage() {
                 <span>{t("blurBg.sharp")}</span>
                 <span>{t("blurBg.blurred")}</span>
               </div>
-              <p className="mt-3 text-xs text-muted-foreground">The preview updates automatically after you release the slider.</p>
+              <p className="mt-3 text-xs text-muted-foreground">{t("blurBg.helperText")}</p>
             </div>
           </div>
         </div>
