@@ -370,13 +370,13 @@
         "title": "Bildsegmentierung verstehen: Semantik vs. Instanz vs. Panoptik",
         "excerpt": "Tauchen Sie ein in die drei Hauptparadigmen der Bildsegmentierung und erfahren Sie, wie jeder Ansatz moderne Computer-Vision-Anwendungen vom autonomen Fahren bis zur KI-Hintergrundentfernung unterstützt.",
         "category": "Technologie",
-        "content": "Image segmentation is one of the most fundamental tasks in computer vision, yet it remains widely misunderstood outside academic circles. If you have ever used a tool like our <a href=\"/remover\">background remover</a> or tried to isolate a specific object in a photo, you have benefited from segmentation technology. But not all segmentation is created equal. There are three major paradigms: semantic, instance, and panoptic segmentation. Each serves a different purpose and comes with its own trade-offs.\n\n## What Is Image Segmentation?\n\nAt its core, image segmentation means partitioning a digital image into multiple segments or regions. Unlike image classification which labels an entire image, or object detection which draws boxes around objects, segmentation works at the pixel level. Every pixel in the image is assigned to a category. This pixel-level precision is what makes tools like <a href=\"/replace-bg\">replace background</a> and <a href=\"/blur-bg\">blur background</a> so effective.\n\n<table><thead><tr><th>Task</th><th>Output</th><th>Precision</th><th>Use Case</th></tr></thead><tbody><tr><td>Classification</td><td>Single label</td><td>Image-level</td><td>Content moderation</td></tr><tr><td>Object Detection</td><td>Bounding boxes</td><td>Region-level</td><td>Self-driving cars</td></tr><tr><td>Semantic Segmentation</td><td>Pixel-wise labels</td><td>Pixel-level</td><td>Medical imaging</td></tr><tr><td>Instance Segmentation</td><td>Per-object masks</td><td>Pixel-level</td><td>E-commerce photos</td></tr><tr><td>Panoptic Segmentation</td><td>Unified labels</td><td>Pixel-level</td><td>Robotics</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"Segmentation comparison\" />\n\n### How It Works\n\nModern semantic segmentation relies on fully convolutional networks (FCNs) and encoder-decoder architectures like U-Net. The encoder progressively downsamples spatial information, while the decoder recovers fine-grained details. Skip connections help preserve boundary information.\n\n### Common Applications\n\n1. Autonomous driving road scene understanding\n2. Medical image analysis (organ and tumor segmentation)\n3. Satellite imagery land cover classification\n4. <a href=\"/adjust\">Photo adjustment</a> and enhancement pipelines\n\n### Key Architectures\n\n- **Mask R-CNN**: The most widely adopted architecture, extending Faster R-CNN with a mask prediction branch\n- **YOLACT**: A real-time approach that generates prototype masks and linear combination coefficients\n- **SOLO**: A fully convolutional method that treats instance segmentation as a classification problem\n\n<table><thead><tr><th>Model</th><th>Speed (FPS)</th><th>mAP</th><th>Memory (GB)</th><th>Year</th></tr></thead><tbody><tr><td>Mask R-CNN</td><td>5</td><td>37.1</td><td>8.2</td><td>2017</td></tr><tr><td>YOLACT</td><td>33</td><td>31.2</td><td>4.1</td><td>2019</td></tr><tr><td>SOLO</td><td>12</td><td>36.8</td><td>6.3</td><td>2020</td></tr><tr><td>Mask2Former</td><td>8</td><td>47.7</td><td>7.6</td><td>2022</td></tr></tbody></table>\n\nThis level of precision is what powers our <a href=\"/crop\">crop tool</a> and <a href=\"/sharpness\">sharpness enhancer</a>, where individual object boundaries matter for high-quality output.\n\n### Practical Comparison\n\n<table><thead><tr><th>Criterion</th><th>Semantic</th><th>Instance</th><th>Panoptic</th></tr></thead><tbody><tr><td>Distinguishes instances</td><td>No</td><td>Yes</td><td>Yes</td></tr><tr><td>Covers all pixels</td><td>Yes</td><td>No</td><td>Yes</td></tr><tr><td>Computational cost</td><td>Low</td><td>High</td><td>Very High</td></tr><tr><td>Training complexity</td><td>Moderate</td><td>High</td><td>Very High</td></tr><tr><td>Best for backgrounds</td><td>Yes</td><td>No</td><td>Partial</td></tr></tbody></table>\n\n### Choosing the Right Approach\n\nFor most background removal tasks, semantic segmentation is sufficient. Tools like our <a href=\"/remover\">background remover</a> use semantic segmentation to separate foreground from background. However, if you need to isolate multiple objects individually, instance segmentation with Mask R-CNN is the better choice. For comprehensive scene understanding, panoptic segmentation is the gold standard.\n\nVisit our <a href=\"/tools\">tools page</a> to see these technologies in action, or check the <a href=\"/faq\">FAQ</a> for common questions. For more on AI imaging, see the <a href=\"/about\">about page</a>."
+        "content": "Bildsegmentierung ist eine der grundlegendsten Aufgaben in der Computer Vision, bleibt aber außerhalb von akademischen Kreisen weitgehend missverstanden. Wenn Sie jemals ein Tool wie unser<a href=\"/remover\">Hintergrundentferner</a>oder versucht, ein bestimmtes Objekt in einem Foto zu isolieren, haben Sie von der Segmentierungstechnologie profitiert. Aber nicht jede Segmentierung ist gleich. Es gibt drei Hauptparadigmen: semantische, Instanz und panoptische Segmentierung. Jeder dient einem anderen Zweck und kommt mit seinen eigenen Kompromissen.\n\n## Was ist Bildsegmentierung?\n\nIm Kern bedeutet Bildsegmentierung die Partitionierung eines digitalen Bildes in mehrere Segmente oder Regionen. Im Gegensatz zur Bildklassifizierung, die ein gesamtes Bild kennzeichnet, oder zur Objekterkennung, die Kästchen um Objekte zieht, funktioniert die Segmentierung auf Pixelebene. Jedes Pixel im Bild ist einer Kategorie zugeordnet. Diese Genauigkeit auf Pixelebene macht Werkzeuge wie<a href=\"/replace-bg\">Ersatz-Hintergrund</a>und<a href=\"/blur-bg\">Unschärfe-Hintergrund</a>So effektiv.\n\n<table><thead><tr><th>Aufgabe</th><th>Output</th><th>Präzision</th><th>Use Case</th></tr></thead><tbody><tr><td>Klassifizierung</td><td>Einzeletikett</td><td>Bildebene</td><td>Content Moderation</td></tr><tr><td>Objekterkennung</td><td>Begrenzungsboxen</td><td>Regionsebene</td><td>Selbstfahrende Autos</td></tr><tr><td>Semantische Segmentierung</td><td>Pixelweise Etiketten</td><td>Pixelebene</td><td>Medizinische Bildgebung</td></tr><tr><td>Instanzsegmentierung</td><td>Objektmasken</td><td>Pixelebene</td><td>E-Commerce-Fotos</td></tr><tr><td>Panoptische Segmentierung</td><td>Unified Labels</td><td>Pixelebene</td><td>Robotik</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"Segmentation comparison\" />### Wie es funktioniert\n\nModerne semantische Segmentierung basiert auf vollständig konvolutionalen Netzwerken (FCNs) und Encoder-Decoder-Architekturen wie U-Net. Der Encoder verkleinert schrittweise räumliche Informationen, während der Decoder feinkörnige Details wiederherstellt. Skip-Verbindungen helfen, Grenzinformationen zu bewahren.\n\n### Gemeinsame Anwendungen\n\n1. Verständnis des autonomen Straßenverkehrs\n2. Medizinische Bildanalyse (Organ- und Tumorsegmentierung)\n3. Klassifizierung der Bodenbedeckung durch Satellitenbilder\n4.<a href=\"/adjust\">Fotokorrektur</a>und Erweiterungspipelines\n\n### Schlüsselarchitekturen\n\n- **Maske R-CNN**: Die am weitesten verbreitete Architektur erweitert Faster R-CNN mit einem Maskenvorhersagezweig\n- **YOLACT**: Ein Echtzeit-Ansatz, der Prototypenmasken und lineare Kombinationskoeffizienten generiert\n- **SOLO**: Eine vollständig konvolutionale Methode, die die Instanzsegmentierung als Klassifizierungsproblem behandelt\n\n<table><thead><tr><th>Modell</th><th>Geschwindigkeit (FPS)</th><th>mAP</th><th>Speicher (GB)</th><th>Jahr</th></tr></thead><tbody><tr><td>Maske R-CNN</td><td>5</td><td>37.1</td><td>8.2</td><td>2017</td></tr><tr><td>YOLACT</td><td>33</td><td>31.2</td><td>4.1.</td><td>2019</td></tr><tr><td>SOLO</td><td>12</td><td>36.8</td><td>6,3</td><td>2020</td></tr><tr><td>Maske2Früher</td><td>8</td><td>47.7</td><td>7,6</td><td>2022</td></tr></tbody></table>Diese Präzision ist es, die unsere Kräfte<a href=\"/crop\">Erntewerkzeug</a>und<a href=\"/sharpness\">Schärfeverstärker</a>, wobei individuelle Objektgrenzen für eine qualitativ hochwertige Ausgabe von Bedeutung sind.\n\n### Praktischer Vergleich\n\n<table><thead><tr><th>Kriterium</th><th>Semantisch</th><th>Instance</th><th>Panoptik</th></tr></thead><tbody><tr><td>Unterscheidung von Instanzen</td><td>Nein</td><td>Ja</td><td>Ja</td></tr><tr><td>Deckt alle Pixel ab</td><td>Ja</td><td>Nein</td><td>Ja</td></tr><tr><td>Berechnungskosten</td><td>niedrig</td><td>hoch</td><td>Sehr hoch</td></tr><tr><td>Komplexität des Trainings</td><td>Moderat</td><td>hoch</td><td>Sehr hoch</td></tr><tr><td>Am besten für Hintergründe</td><td>Ja</td><td>Nein</td><td>Teilweise</td></tr></tbody></table>### Den richtigen Ansatz wählen\n\nFür die meisten Hintergrundentfernungsaufgaben ist eine semantische Segmentierung ausreichend. Tools wie unsere<a href=\"/remover\">Hintergrundentferner</a>Verwenden Sie die semantische Segmentierung, um Vordergrund vom Hintergrund zu trennen. Wenn Sie jedoch mehrere Objekte einzeln isolieren müssen, ist die Instanzsegmentierung mit Mask R-CNN die bessere Wahl. Für ein umfassendes Szenenverständnis ist die panoptische Segmentierung der Goldstandard.\n\nBesuchen Sie unsere<a href=\"/tools\">Werkzeugseite</a>um diese Technologien in Aktion zu sehen oder die<a href=\"/faq\">FAQ</a>für gemeinsame Fragen. Für mehr über AI Imaging, siehe die<a href=\"/about\">über die Seite</a>."
       },
       "evolution-of-background-removal-chroma-key-to-deep-learning": {
         "title": "Die Entwicklung der Hintergrundentfernung: Vom Chroma Key zum Deep Learning",
         "excerpt": "Verfolgen Sie die faszinierende Reise der Hintergrundentfernungstechnologie vom analogen Chroma-Key-Compositing bis hin zu modernen Deep-Learning-Modellen wie BiRefNet und MODNet.",
         "category": "Technologie",
-        "content": "Background removal has come a remarkably long way. What once required a $50,000 video mixer, a dedicated studio, and a carefully lit green screen can now be accomplished in milliseconds with a browser-based tool like our <a href=\"/remover\">background remover</a>. This article traces the evolution of background removal technology from its analog origins to the deep learning revolution that powers today's most accurate matting solutions.\n\n## The Chroma Key Era\n\n### Analog Beginnings\n\nThe first background removal technique was chroma key compositing, pioneered by Petro Vlahos in the 1960s. The concept was simple: shoot a subject in front of a uniformly colored backdrop, then electronically replace that color with a different background. Early systems like the Ultimatte used analog circuitry to detect the chroma key color and generate a control signal.\n\n**Key limitations of analog chroma key:**\n\n1. Required a perfectly lit, evenly colored backdrop\n2. Struggled with motion blur and fine details like hair\n3. Could not handle transparent or semi-transparent objects\n4. Needed expensive specialized hardware\n5. Required significant studio space\n\n<table><thead><tr><th>Era</th><th>Technology</th><th>Hardware Cost</th><th>Processing Time</th><th>Accuracy</th></tr></thead><tbody><tr><td>1960s-1980s</td><td>Analog chroma key</td><td>$50,000+</td><td>Real-time</td><td>Low</td></tr><tr><td>1990s</td><td>Digital chroma key</td><td>$10,000+</td><td>Real-time</td><td>Medium</td></tr><tr><td>2000s</td><td>Software chroma key</td><td>$500+</td><td>Minutes</td><td>Medium</td></tr><tr><td>2010s</td><td>ML-assisted matting</td><td>$0+</td><td>Seconds</td><td>High</td></tr><tr><td>2020s</td><td>Deep learning matting</td><td>$0+</td><td>Milliseconds</td><td>Very High</td></tr></tbody></table>\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Evolution of background removal technology\" />\n\n### The Rise of Software-Based Removal\n\n### Photoshop and the Magic Wand\n\nAdobe Photoshop introduced the Magic Wand tool in 1990, bringing background removal to the desktop. It worked by selecting contiguous pixels within a defined color range. While revolutionary for its time, it required significant manual refinement and struggled with complex edges.\n\n### Edge Detection and Matting\n\nThe late 1990s and early 2000s saw the development of more sophisticated matting algorithms:\n\n- **Bayesian Matting** (2001): Used statistical models to estimate foreground and background colors\n- **Closed-Form Matting** (2007): Solved the matting equation using a sparse linear system\n- **KNN Matting** (2012): Used k-nearest neighbors for non-local matting\n- **Shared Matting** (2010): Combined multiple sampling strategies\n\nThese algorithms were a significant step forward but still required a **trimap** — a user-provided segmentation that marked foreground, background, and unknown regions. This manual input was the biggest bottleneck.\n\n### The Deep Learning Revolution\n\nThe 2017 paper Deep Image Matting by Xu et al. marked a turning point. For the first time, a deep neural network could predict alpha mattes directly from a natural image and a trimap. The model used a two-stage architecture: a deep convolutional encoder-decoder for coarse prediction followed by a small refinement network.\n\n### Towards Trimap-Free Matting\n\nBy 2020, researchers began developing models that could produce high-quality mattes without trimaps:\n\n**MODNet** (2020): A lightweight, real-time portrait matting model that operates without any auxiliary input.\n\n**U2Net** (2020): A nested U-Net architecture that captures both fine details and global context.\n\n**BiRefNet** (2023): The current state of the art, using bilateral reference networks for high-fidelity matting.\n\n### Comparison of Modern Approaches\n\n<table><thead><tr><th>Model</th><th>Params</th><th>SAD</th><th>MSE</th><th>Trimap-Free</th><th>Real-Time</th></tr></thead><tbody><tr><td>MODNet</td><td>6.5M</td><td>42.1</td><td>0.013</td><td>Yes</td><td>Yes</td></tr><tr><td>U2Net</td><td>44.0M</td><td>38.8</td><td>0.009</td><td>Yes</td><td>No</td></tr><tr><td>BiRefNet</td><td>25.3M</td><td>35.2</td><td>0.007</td><td>Yes</td><td>Yes</td></tr><tr><td>Deep Matting</td><td>14.2M</td><td>39.7</td><td>0.011</td><td>No</td><td>No</td></tr></tbody></table>\n\n### Where We Are Today\n\nModern background removal tools combine multiple deep learning models to handle different scenarios. Our <a href=\"/remover\">background remover</a> uses an ensemble of BiRefNet and MODNet, switching between them based on the input type. Portrait photos route through MODNet for speed, while complex subjects with fur or transparent objects use BiRefNet for maximum accuracy.\n\nThe <a href=\"/crop\">crop tool</a>, <a href=\"/resize\">resize tool</a>, and <a href=\"/adjust\">adjust tool</a> all leverage the same underlying segmentation technology to deliver professional results in milliseconds.\n\n### The Future\n\nLooking ahead, the next breakthroughs in background removal will likely come from:\n\n1. **Video matting**: Real-time per-frame matting for video streams\n2. **3D-aware matting**: Using depth information for more accurate edges\n3. **Interactive refinement**: Allowing users to correct mistakes with minimal clicks\n4. **On-device processing**: Running sophisticated models on mobile devices\n\nVisit our <a href=\"/tools\">tools page</a> to explore all available options, or check the <a href=\"/faq\">FAQ</a> for technical details. Learn more about our mission on the <a href=\"/about\">about page</a>.\n\nFrom analog chroma key mixers costing tens of thousands of dollars to free browser-based AI tools, background removal technology has undergone a remarkable transformation. The shift from hardware-dependent chroma key to software-based matting to deep learning has democratized access to professional-quality image editing. Today, anyone with a web browser can achieve results that would have required a professional studio just a decade ago."
+        "content": "Hintergrundentfernung hat einen bemerkenswert langen Weg zurückgelegt. Was einst einen 50.000-Dollar-Videomixer, ein dediziertes Studio und einen sorgfältig beleuchteten grünen Bildschirm erforderte, kann jetzt mit einem browserbasierten Tool wie unserem in Millisekunden erreicht werden<a href=\"/remover\">Hintergrundentferner</a>Dieser Artikel verfolgt die Entwicklung der Hintergrundentfernungstechnologie von ihren analogen Ursprüngen bis hin zur Deep-Learning-Revolution, die die genauesten Mattenlösungen von heute antreibt.\n\nDie Chroma Key Era\n\n### Analoge Anfänge\n\nDie erste Technik zur Hintergrundentfernung war Chroma Key Compositing, das in den 1960er Jahren von Petro Vlahos entwickelt wurde. Das Konzept war einfach: Schießen Sie ein Motiv vor einem einheitlich farbigen Hintergrund und ersetzen Sie diese Farbe dann elektronisch durch einen anderen Hintergrund. Frühe Systeme wie der Ultimatte verwendeten analoge Schaltungen, um die Chroma-Schlüsselfarbe zu erkennen und ein Steuersignal zu erzeugen.\n\n**Schlüsselbeschränkungen der analogen Chroma-Taste:**\n\n1. Erfordert eine perfekt beleuchtete, gleichmäßig farbige Kulisse\n2. Kämpfen mit Bewegungsunschärfe und feinen Details wie Haar\n3. Nicht mit transparenten oder halbtransparenten Objekten umgehen konnten\n4. Benötigte teure Spezialgeräte\n5. Erforderlicher erheblicher Studioraum\n\n<table><thead><tr><th>Era</th><th>Technologie</th><th>Hardwarekosten</th><th>Verarbeitungszeit</th><th>Genauigkeit</th></tr></thead><tbody><tr><td>1960er-1980er Jahre</td><td>Analoge Chroma-Taste</td><td>$ 50.000 +</td><td>Echtzeit</td><td>niedrig</td></tr><tr><td>1990er Jahre</td><td>Digital Chroma Key</td><td>$10.000+</td><td>Echtzeit</td><td>Medium</td></tr><tr><td>2000er Jahre</td><td>Software Chroma Key</td><td>$500+</td><td>Protokoll</td><td>Medium</td></tr><tr><td>2010er Jahre</td><td>ML-unterstützte Matten</td><td>$0+</td><td>Sekunden</td><td>hoch</td></tr><tr><td>2020er</td><td>Deep Learning Matting</td><td>$0+</td><td>Millisekunden</td><td>Sehr hoch</td></tr></tbody></table>\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Evolution of background removal technology\" />### Der Aufstieg der softwarebasierten Entfernung\n\nPhotoshop und der Zauberstab\n\nAdobe Photoshop führte 1990 das Magic Wand-Tool ein und brachte die Hintergrundentfernung auf den Desktop. Es funktionierte, indem es zusammenhängende Pixel innerhalb eines definierten Farbbereichs auswählte. Obwohl es für seine Zeit revolutionär war, erforderte es eine erhebliche manuelle Verfeinerung und kämpfte mit komplexen Kanten.\n\n### Edge Detection und Matting\n\nIn den späten 1990er und frühen 2000er Jahren wurden ausgefeiltere Mattierungsalgorithmen entwickelt:\n\n- **Bayesian Matting** (2001): Verwendete statistische Modelle zur Schätzung von Vordergrund- und Hintergrundfarben\n- **Closed-Form Matting** (2007): Die Mattierungsgleichung mit einem dünnen linearen System gelöst\n- **KNN Matting** (2012): Gebrauchte k-nächste Nachbarn für nicht-lokale Matten\n- **Shared Matting ** (2010): Kombinierte Mehrfachstichprobenstrategien\n\nDiese Algorithmen waren ein bedeutender Schritt vorwärts, erforderten jedoch immer noch eine **trimap** - eine vom Benutzer bereitgestellte Segmentierung, die Vordergrund, Hintergrund und unbekannte Regionen markierte. Diese manuelle Eingabe war der größte Engpass.\n\n### Die Deep Learning Revolution\n\nDas 2017 erschienene Papier Deep Image Matting von Xu et al. markierte einen Wendepunkt. Zum ersten Mal konnte ein tiefes neuronales Netzwerk Alphamatten direkt aus einem natürlichen Bild und einer Trimap vorhersagen. Das Modell verwendete eine zweistufige Architektur: einen tiefen Faltungs-Encoder-Decoder für grobe Vorhersagen, gefolgt von einem kleinen Verfeinerungsnetzwerk.\n\n### In Richtung Trimap-Free Matting\n\nBis 2020 begannen die Forscher mit der Entwicklung von Modellen, die hochwertige Matte ohne Trimaps produzieren könnten:\n\n**MODNet** (2020): Ein leichtes Echtzeit-Porträtmodell, das ohne Hilfseingabe arbeitet.\n\n**U2Net** (2020): Eine verschachtelte U-Net-Architektur, die sowohl feine Details als auch globalen Kontext erfasst.\n\n**BiRefNet** (2023): Der aktuelle Stand der Technik, mit bilateralen Referenznetzwerken für High-Fidelity-Matten.\n\n### Vergleich moderner Ansätze\n\n<table><thead><tr><th>Modell</th><th>Ecken</th><th>SAD</th><th>MSE</th><th>Trimap-frei</th><th>Echtzeit</th></tr></thead><tbody><tr><td>MODNet</td><td>6,5 M</td><td>42.1</td><td>0,013</td><td>Ja</td><td>Ja</td></tr><tr><td>U2Net</td><td>44.0M</td><td>38.8</td><td>0,009</td><td>Ja</td><td>Nein</td></tr><tr><td>BiRefNet</td><td>25,3 M</td><td>35.2</td><td>0,007</td><td>Ja</td><td>Ja</td></tr><tr><td>Deep Matting</td><td>14.2M</td><td>39.7</td><td>0,011</td><td>Nein</td><td>Nein</td></tr></tbody></table>### Wo wir heute sind\n\nModerne Tools zur Hintergrundentfernung kombinieren mehrere Deep-Learning-Modelle, um verschiedene Szenarien zu bewältigen. Unsere<a href=\"/remover\">Hintergrundentferner</a>verwendet ein Ensemble aus BiRefNet und MODNet und wechselt zwischen ihnen basierend auf dem Eingabetyp. Porträtfotos führen durch MODNet für Geschwindigkeit, während komplexe Motive mit Pelz oder transparenten Objekten BiRefNet für maximale Genauigkeit verwenden.\n\nDie<a href=\"/crop\">Erntewerkzeug</a>,<a href=\"/resize\">Größenänderungswerkzeug</a>, und<a href=\"/adjust\">Justierwerkzeug</a>Alle nutzen die gleiche zugrunde liegende Segmentierungstechnologie, um professionelle Ergebnisse in Millisekunden zu liefern.\n\n### Die Zukunft\n\nMit Blick auf die Zukunft werden die nächsten Durchbrüche in der Hintergrundentfernung wahrscheinlich kommen von:\n\n1. ** Videomatten**: Echtzeit-Matting für Videostreams\n2. **3D-bewusste Matten**: Verwendung von Tiefeninformationen für genauere Kanten\n3. **Interaktive Verfeinerung**: Benutzern erlauben, Fehler mit minimalen Klicks zu korrigieren\n4. **On-Device-Verarbeitung**: Ausführen anspruchsvoller Modelle auf mobilen Geräten\n\nBesuchen Sie unsere<a href=\"/tools\">Werkzeugseite</a>um alle verfügbaren Optionen zu erkunden oder die<a href=\"/faq\">FAQ</a>für technische Details. Erfahren Sie mehr über unsere Mission auf der<a href=\"/about\">über die Seite</a>.\n\nVon analogen Chroma Key Mixern, die Zehntausende von Dollar kosten, bis hin zu kostenlosen browserbasierten KI-Tools hat die Hintergrundentfernungstechnologie eine bemerkenswerte Transformation durchlaufen. Der Wechsel von hardwareabhängigen Chromaschlüsseln zu softwarebasierten Matten hin zu Deep Learning hat den Zugang zu Bildbearbeitung in professioneller Qualität demokratisiert. Heute kann jeder mit einem Webbrowser Ergebnisse erzielen, die noch vor einem Jahrzehnt ein professionelles Studio erfordert hätten."
       },
       "birefnet-vs-u2net-vs-modnet-comparing-ai-matting-models": {
         "title": "BiRefNet vs. U2Net vs. MODNet: Vergleich von AI-Matting-Modellen",
@@ -394,7 +394,7 @@
         "title": "Die Wissenschaft der Bildauflösung: DPI, PPI und warum Größe wichtig ist",
         "excerpt": "Verstehen Sie den entscheidenden Unterschied zwischen DPI und PPI, wie sich die Auflösung auf die Druck- und Webqualität auswirkt und warum die richtige Größenänderung von Bildern über Erfolg oder Misserfolg Ihrer Projekte entscheidet.",
         "category": "Technologie",
-        "content": "Image resolution is one of the most misunderstood concepts in digital imaging. Many people use DPI and PPI interchangeably, but they refer to fundamentally different things. Whether you are preparing an image for print using our <a href=\"/resize\">resize tool</a> or optimizing web graphics with the <a href=\"/converter\">converter</a>, understanding resolution science is essential.\n\n## DPI vs PPI: The Fundamental Difference\n\n**DPI** (Dots Per Inch) refers to the number of ink droplets a printer places per inch of paper. It is a property of the output device, not the image file. **PPI** (Pixels Per Inch) refers to the number of pixels in an image per inch of display.\n\n<table><thead><tr><th>Term</th><th>Stands For</th><th>Applies To</th><th>Typical Value</th></tr></thead><tbody><tr><td>DPI</td><td>Dots Per Inch</td><td>Printers</td><td>300-1200</td></tr><tr><td>PPI</td><td>Pixels Per Inch</td><td>Screens and files</td><td>72-300</td></tr><tr><td>LPI</td><td>Lines Per Inch</td><td>Print halftones</td><td>50-200</td></tr><tr><td>MP</td><td>Megapixels</td><td>Camera sensors</td><td>8-100</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"DPI vs PPI comparison\" />\n\n## How Resolution Affects Output Quality\n\n### Print Resolution\n\nFor high-quality printing, the standard rule is 300 PPI at the target print size. A 3000x2400 pixel image at 300 PPI produces a 10x8 inch print.\n\n**Recommended PPI for different print applications:**\n1. **300 PPI**: Magazines, photo books, fine art prints\n2. **240 PPI**: Brochures, flyers, high-quality marketing materials\n3. **150 PPI**: Large format posters (viewed from distance)\n4. **72 PPI**: Billboards (viewed from very far away)\n\n### Web Resolution\n\nWeb images use PPI only for display sizing. A 72 PPI image renders at the same pixel dimensions as a 300 PPI image on screen.\n\n## Image Dimensions and File Size\n\n<table><thead><tr><th>Dimensions</th><th>Megapixels</th><th>8-bit RGB (uncompressed)</th><th>JPEG (quality 90)</th><th>PNG</th></tr></thead><tbody><tr><td>1920 x 1080</td><td>2.1</td><td>6.2 MB</td><td>350 KB</td><td>2.1 MB</td></tr><tr><td>3840 x 2160</td><td>8.3</td><td>24.9 MB</td><td>1.2 MB</td><td>7.8 MB</td></tr><tr><td>6000 x 4000</td><td>24.0</td><td>72.0 MB</td><td>3.5 MB</td><td>22.5 MB</td></tr></tbody></table>\n\n## Resizing and Resampling\n\n**Resizing** changes the PPI metadata without changing pixel dimensions. **Resampling** actually adds or removes pixels.\n\n### Interpolation Algorithms\n\n- **Nearest Neighbor**: Fastest, pixelated results. Good for pixel art\n- **Bilinear**: Moderate quality, moderate speed\n- **Bicubic**: Better quality, slower. Best for photographs\n- **Lanczos**: Highest quality, slowest. Ideal for downsampling\n- **AI-based**: Uses deep learning to add detail when upscaling\n\nOur <a href=\"/sharpness\">sharpness enhancer</a> and <a href=\"/resize\">resize tool</a> use Lanczos interpolation with an optional AI upscaling mode.\n\n## Resolution and Background Removal\n\nResolution plays a critical role in <a href=\"/remover\">background removal</a> quality:\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Resolution and background removal\" />\n\n1. **Low resolution (under 1 MP)**: Insufficient detail for accurate edge detection\n2. **Medium resolution (2-8 MP)**: Ideal balance of quality and processing speed\n3. **High resolution (12+ MP)**: Best accuracy but slower processing\n\nHigher resolution images provide more pixel data for AI matting models like BiRefNet and MODNet.\n\n## The QuickBG Approach\n\nOur <a href=\"/resize\">resize tool</a> and <a href=\"/adjust\">adjust tool</a> handle resolution intelligently:\n- Automatic PPI detection from image metadata\n- Smart cropping with the <a href=\"/crop\">crop tool</a> that preserves resolution\n- Batch processing for multiple images at different resolutions\n- Format-specific optimization (WebP for web, TIFF for print, PNG for transparency)\n\nFor common questions about image resolution and file formats, visit our <a href=\"/faq\">FAQ page</a>. Learn more about our technology on the <a href=\"/about\">about page</a>."
+        "content": "Bildauflösung ist eines der am meisten missverstandenen Konzepte in der digitalen Bildgebung. Viele Menschen verwenden DPI und PPI austauschbar, aber sie beziehen sich auf grundlegend unterschiedliche Dinge. Ob Sie ein Bild für den Druck mit unserem vorbereiten<a href=\"/resize\">Größenänderungswerkzeug</a>oder die Optimierung von Webgrafiken mit dem<a href=\"/converter\">Konverter</a>Das Verständnis von Resolution Science ist unerlässlich.\n\nDPI vs PPI: Der grundlegende Unterschied\n\n**DPI** (Dots Per Inch) bezieht sich auf die Anzahl der Tintentropfen, die ein Drucker pro Zoll Papier platziert. Es ist eine Eigenschaft des Ausgabegeräts, nicht der Bilddatei. **PPI** (Pixels Per Inch) bezieht sich auf die Anzahl der Pixel in einem Bild pro Zoll Anzeige.\n\n<table><thead><tr><th>Laufzeit</th><th>Steht für</th><th>Gilt für</th><th>Typischer Wert</th></tr></thead><tbody><tr><td>DPI</td><td>Punkte pro Zoll</td><td>Drucker</td><td>300-1200</td></tr><tr><td>PPI</td><td>Pixel pro Zoll</td><td>Bildschirme und Dateien</td><td>72-300</td></tr><tr><td>LPI</td><td>Linien pro Zoll</td><td>Druckhalbtöne</td><td>50-200</td></tr><tr><td>MP</td><td>Megapixel</td><td>Kamerasensoren</td><td>8-100</td></tr></tbody></table>\n\n<img src=\"/assets/demo/pro.png\" alt=\"DPI vs PPI comparison\" />## Wie Auflösung die Outputqualität beeinflusst\n\n### Print Resolution\n\nFür hochwertiges Drucken ist die Standardregel 300 PPI bei der Zieldruckgröße. Ein 3000x2400 Pixel Bild bei 300 PPI erzeugt einen 10x8 Zoll Druck.\n\n** Empfohlener PPI für verschiedene Druckanwendungen:**\n1. **300 PPI**: Zeitschriften, Fotobücher, Kunstdrucke\n2. **240 PPI**: Broschüren, Flyer, hochwertiges Marketingmaterial\n3. **150 PPI**: Großformatige Poster (aus der Ferne betrachtet)\n4. **72 PPI**: Werbetafeln (von sehr weit weg gesehen)\n\n### Web Resolution\n\nWeb-Bilder verwenden PPI nur für Display-Sizing. Ein 72 PPI-Bild wird mit den gleichen Pixelabmessungen dargestellt wie ein 300 PPI-Bild auf dem Bildschirm.\n\n## Bilddimensionen und Dateigröße\n\n<table><thead><tr><th>Abmessungen</th><th>Megapixel</th><th>8-Bit RGB (unkomprimiert)</th><th>JPEG (Qualität 90)</th><th>PNG</th></tr></thead><tbody><tr><td>1920 x 1080</td><td>2.1.</td><td>6,2 MB</td><td>350 KB</td><td>2.1 MB</td></tr><tr><td>3840 x 2160</td><td>8.3</td><td>24,9 MB</td><td>1,2 MB</td><td>7,8 MB</td></tr><tr><td>6000 x 4000</td><td>24.0</td><td>72,0 MB</td><td>3,5 MB</td><td>22,5 MB</td></tr></tbody></table>## Resizing und Resampling\n\n** Die Größenänderung** ändert die PPI-Metadaten, ohne die Pixelabmessungen zu ändern. **Resampling** fügt oder entfernt tatsächlich Pixel.\n\n### Interpolationsalgorithmen\n\n- **Nächster Nachbar**: Schnellste, pixelige Ergebnisse. Gut für Pixel Art\n- **Bilinear**: Moderate Qualität, moderate Geschwindigkeit\n- **Bicubic**: Bessere Qualität, langsamer. Am besten für Fotos\n- **Lanczos**: Höchste Qualität, langsamste. Ideal für Downsampling\n- **AI-basiert**: Verwendet Deep Learning, um beim Upscaling Details hinzuzufügen\n\nUnsere<a href=\"/sharpness\">Schärfeverstärker</a>und<a href=\"/resize\">Größenänderungswerkzeug</a>Verwenden Sie die Lanczos-Interpolation mit einem optionalen AI-Upscaling-Modus.\n\n## Auflösung und Hintergrundentfernung\n\nResolution spielt entscheidende Rolle in<a href=\"/remover\">Hintergrundentfernung</a>Qualität:\n\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Resolution and background removal\" />1. **Niedrige Auflösung (unter 1 MP)**: Unzureichende Details für eine genaue Kantenerkennung\n2. **Mittelauflösung (2-8 MP)**: Ideale Balance zwischen Qualität und Verarbeitungsgeschwindigkeit\n3. **Hohe Auflösung (12+ MP)**: Beste Genauigkeit, aber langsamere Verarbeitung\n\nHöher auflösende Bilder liefern mehr Pixeldaten für KI-Matting-Modelle wie BiRefNet und MODNet.\n\n## Der QuickBG-Ansatz\n\nUnsere<a href=\"/resize\">Größenänderungswerkzeug</a>und<a href=\"/adjust\">Justierwerkzeug</a>Auflösung intelligent handhaben:\nAutomatische PPI-Erkennung aus Bildmetadaten\nSmart Cropping mit dem<a href=\"/crop\">Erntewerkzeug</a>Das bewahrt die Auflösung\nBatchverarbeitung für mehrere Bilder mit unterschiedlichen Auflösungen\nFormatspezifische Optimierung (WebP für Web, TIFF für Print, PNG für Transparenz)\n\nFür häufige Fragen zu Bildauflösung und Dateiformaten besuchen Sie unsere<a href=\"/faq\">FAQ-Seite</a>Erfahren Sie mehr über unsere Technologie auf der<a href=\"/about\">über die Seite</a>."
       },
       "quickbg-vs-removebg-which-background-removal-tool-is-better": {
         "title": "QuickBG vs. Remove.bg: Welches Tool zum Entfernen des Hintergrunds ist im Jahr 2026 besser?",
@@ -442,13 +442,13 @@
         "title": "So erstellen Sie eine Bildverarbeitungspipeline für Ihren Online-Shop",
         "excerpt": "Eine automatisierte Bildpipeline spart Stunden pro Woche und stellt sicher, dass jedes Produktfoto hinsichtlich Geschwindigkeit und Konvertierungen optimiert ist.",
         "category": "Tipps",
-        "content": "Every product image on your online store is a salesperson. If it loads slowly or looks inconsistent, that salesperson is underperforming. Building an automated image processing pipeline fixes all three problems at once.\n\n## Why You Need a Pipeline\n\nManual image editing works for a 20-product store. When you hit 200 or 2,000 products, it collapses. An automated pipeline delivers:\n1. Consistent file sizes for faster page loads\n2. Uniform dimensions for professional appearance\n3. Background-free product shots\n4. Multiple format exports (WebP + JPEG)\n5. Automatic backups\n\n## Pipeline Architecture\n\n### Stage 1: Ingestion and Validation\n<table>\n  <thead>\n    <tr><th>Step</th><th>Tool</th><th>Purpose</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Upload raw images</td><td>QuickBG API</td><td>Receive originals</td></tr>\n    <tr><td>Validate resolution</td><td>Custom script</td><td>Reject images under 1200px</td></tr>\n    <tr><td>Check colour space</td><td>ImageMagick</td><td>Convert CMYK to sRGB</td></tr>\n    <tr><td>Store original</td><td>Cloud storage</td><td>Backup</td></tr>\n  </tbody>\n</table>\n\n### Stage 2: Background Removal\nUse <a href=\"/remover\">QuickBG's background remover</a>. It supports batch processing so you can remove backgrounds from 50 product photos in under two minutes.\n\n### Stage 3: Standardization\n1. Crop to consistent aspect ratio using <a href=\"/crop\">crop tool</a>\n2. Resize using <a href=\"/resize\">resize tool</a>\n3. Apply sharpening with <a href=\"/sharpness\">sharpness tool</a>\n4. Normalize white balance with <a href=\"/adjust\">adjust tool</a>\n\n### Stage 4: Format Optimization\n<table>\n  <thead>\n    <tr><th>Format</th><th>Use Case</th><th>Size Reduction vs TIFF</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>WebP</td><td>Modern browsers (primary)</td><td>34%</td></tr>\n    <tr><td>JPEG (quality 82)</td><td>Legacy browser fallback</td><td>26%</td></tr>\n    <tr><td>AVIF</td><td>Cutting-edge performance</td><td>50%</td></tr>\n    <tr><td>PNG</td><td>Transparency assets</td><td>12%</td></tr>\n  </tbody>\n</table>\n\nUse <a href=\"/converter\">converter tool</a> to batch-generate both formats simultaneously.\n\n## Comparison: Manual vs Automated\n\n| Task | Manual (100 images) | Automated Pipeline | Time Saved |\n|---|---|---|---|\n| Background removal | 200 min | 5 min | 195 min |\n| Resize and crop | 100 min | 2 min | 98 min |\n| Colour correction | 150 min | 3 min | 147 min |\n| Format conversion | 50 min | 1 min | 49 min |\n| Total | 530 min | 11 min | 519 min |\n\n## Tools Mentioned\n<a href=\"/remover\">Background remover</a>, <a href=\"/resize\">Image resizer</a>, <a href=\"/crop\">Crop tool</a>, <a href=\"/adjust\">Image adjuster</a>, <a href=\"/sharpness\">Sharpness enhancer</a>, <a href=\"/converter\">Format converter</a>, <a href=\"/comparison\">Plan comparison</a>\n\n<img src=\"/assets/demo/pro.png\" alt=\"QuickBG Pro batch processing dashboard\">\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Background removal pipeline for e-commerce\">"
+        "content": "Jedes Produktbild in Ihrem Online-Shop ist ein Verkäufer. Wenn es langsam lädt oder inkonsistent aussieht, ist dieser Verkäufer leistungsschwach. Der Aufbau einer automatisierten Bildverarbeitungspipeline behebt alle drei Probleme auf einmal.\n\n## Warum Sie eine Pipeline brauchen\n\nManuelle Bildbearbeitung funktioniert für einen 20-Produkt-Shop. Wenn Sie 200 oder 2.000 Produkte treffen, bricht es zusammen. Eine automatisierte Pipeline liefert:\n1. Konsistente Dateigrößen für schnellere Seitenladungen\n2. Einheitliche Abmessungen für das professionelle Erscheinungsbild\n3. Hintergrundfreie Produktaufnahmen\n4. Mehrformatige Exporte (WebP + JPEG)\n5. Automatische Backups\n\n## Pipelinearchitektur\n\n### Phase 1: Aufnahme und Validierung\n<table>\n  <thead>\n    <tr><th>Schritt</th><th>Werkzeug</th><th>Zweck</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Rohbilder hochladen</td><td>QuickBG API</td><td>Originale erhalten</td></tr>\n    <tr><td>Validierung der Auflösung</td><td>Benutzerdefiniertes Skript</td><td>Bilder unter 1200px ablehnen</td></tr>\n    <tr><td>Farbraum prüfen</td><td>BildMagie</td><td>CMYK in sRGB umwandeln</td></tr>\n    <tr><td>Originallager</td><td>Cloud Storage</td><td>Backup</td></tr>\n  </tbody>\n</table>### Stufe 2: Hintergrundentfernung\nVerwendung<a href=\"/remover\">Hintergrundentferner von QuickBG</a>Es unterstützt Batch-Verarbeitung, so dass Sie Hintergründe von 50 Produktfotos in weniger als zwei Minuten entfernen können.\n\n### Stufe 3: Standardisierung\n1. Pflanzung zum konstanten Seitenverhältnis mit Hilfe von<a href=\"/crop\">Erntewerkzeug</a>2. Größenänderung<a href=\"/resize\">Größenänderungswerkzeug</a>3. Schärfen mit<a href=\"/sharpness\">Schärfwerkzeug</a>4. Normalisierung des Weißabgleichs mit<a href=\"/adjust\">Justierwerkzeug</a>### Stufe 4: Formatoptimierung\n<table>\n  <thead>\n    <tr><th>Format</th><th>Use Case</th><th>Größenreduzierung vs. TIFF</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>WebP</td><td>Moderne Browser (primär)</td><td>34 %</td></tr>\n    <tr><td>JPEG (Qualität 82)</td><td>Legacy Browser Fallback</td><td>26 %</td></tr>\n    <tr><td>AVIF</td><td>Spitzenleistung</td><td>50 %</td></tr>\n    <tr><td>PNG</td><td>Transparenzvermögen</td><td>12 %</td></tr>\n  </tbody>\n</table>Verwendung<a href=\"/converter\">Konverterwerkzeug</a>Batch-Generierung beider Formate gleichzeitig.\n\n## Vergleich: Manuell vs. automatisiert\n\n| Aufgabe | Handbuch (100 Bilder) | Automatisierte Pipeline | Zeit gespart |\n|---|---|---|---|\n| Hintergrundentfernung | 200 min. | 5 min. | 195 min |\n| Größe und Ernte | 100 min. | 2 min | 98 min. |\n| Farbkorrektur | 150 min. | 3 min | 147 min |\n| Formatumwandlung | 50 min. | 1 min | 49 min. |\n| Insgesamt | 530 min | 11 min. | 519 min |\n## Tools erwähnt\n<a href=\"/remover\">Hintergrundentferner</a>,<a href=\"/resize\">Bildwiedergabe</a>,<a href=\"/crop\">Erntewerkzeug</a>,<a href=\"/adjust\">Bildversteller</a>,<a href=\"/sharpness\">Schärfeverstärker</a>,<a href=\"/converter\">Formatwandler</a>,<a href=\"/comparison\">Planvergleich</a>\n\n<img src=\"/assets/demo/pro.png\" alt=\"QuickBG Pro batch processing dashboard\">\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Background removal pipeline for e-commerce\">"
       },
       "common-image-file-formats-explained-png-jpg-webp-avif": {
         "title": "Erklärung gängiger Bilddateiformate: Wann PNG, JPG, WebP oder AVIF verwendet werden sollten",
         "excerpt": "Lernen Sie die Stärken und Schwächen von PNG, JPEG, WebP und AVIF kennen, damit Sie für jeden Anwendungsfall das richtige Format auswählen können.",
         "category": "Tipps",
-        "content": "Choosing the wrong image format is one of the most common performance mistakes. A PNG where JPEG would work adds 200 KB of unnecessary weight. A JPEG where WebP is supported leaves 30% performance on the table.\n\n## How Image Compression Works\n\n<table>\n  <thead>\n    <tr><th>Type</th><th>How It Works</th><th>Best For</th><th>Example Format</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Lossless</td><td>Preserves every pixel exactly</td><td>Screenshots, diagrams, logos</td><td>PNG, WebP Lossless</td></tr>\n    <tr><td>Lossy</td><td>Discards some detail to reduce size</td><td>Photographs, gradients</td><td>JPEG, WebP Lossy, AVIF</td></tr>\n    <tr><td>Chroma subsampling</td><td>Reduces colour resolution</td><td>Any photo</td><td>4:2:0 in JPEG</td></tr>\n  </tbody>\n</table>\n\n## Format Deep Dive\n\n### PNG\n- Compression: Lossless\n- Transparency: Full alpha channel\n- Best for: Screenshots, logos, UI elements\n\n### JPEG\n- Compression: Lossy (quality 0-100)\n- Transparency: Not supported\n- Best for: Photographs, social media images\n\n### WebP\n- Compression: Lossy and lossless modes\n- Transparency: Yes\n- Best for: Universal replacement for JPEG and PNG\n\n### AVIF\n- Compression: Lossy and lossless\n- Transparency: Yes\n- Best for: High-traffic sites, HDR content\n\n## Comparison Table\n\n<table>\n  <thead>\n    <tr><th>Format</th><th>Avg Size (1MB source)</th><th>Quality at 80%</th><th>Transparency</th><th>Browser Support</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>PNG</td><td>800 KB</td><td>Lossless</td><td>Yes</td><td>100%</td></tr>\n    <tr><td>JPEG</td><td>260 KB</td><td>Good</td><td>No</td><td>100%</td></tr>\n    <tr><td>WebP</td><td>180 KB</td><td>Excellent</td><td>Yes</td><td>97%</td></tr>\n    <tr><td>AVIF</td><td>130 KB</td><td>Excellent</td><td>Yes</td><td>80%</td></tr>\n  </tbody>\n</table>\n\n## Decision Framework\n\n1. Use AVIF with WebP fallback for modern web apps\n2. Use WebP with JPEG fallback for public-facing sites\n3. Use PNG only when transparency is required\n4. Use JPEG at quality 82 for product photography\n5. Use animated WebP instead of GIF\n\nBefore converting, remove distracting backgrounds with <a href=\"/remover\">QuickBG's background remover</a>. Use <a href=\"/converter\">converter tool</a> for bulk conversion. Use <a href=\"/sharpness\">sharpness tool</a> for crisp edges. Visit <a href=\"/adjust\">adjust tool</a> for colour correction.\n\n<img src=\"/assets/demo/pro.png\" alt=\"QuickBG Pro format conversion interface\">\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Image being prepared for format conversion\">"
+        "content": "Die Wahl des falschen Bildformats ist einer der häufigsten Leistungsfehler. Ein PNG, bei dem JPEG funktionieren würde, fügt 200 KB unnötiges Gewicht hinzu. Ein JPEG, bei dem WebP unterstützt wird, lässt 30% Leistung auf dem Tisch.\n\n## Wie Image Compression funktioniert\n\n<table>\n  <thead>\n    <tr><th>Typ</th><th>Wie es funktioniert</th><th>Am besten für</th><th>Beispielformat</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>verlustfrei</td><td>Jedes Pixel genau erhalten</td><td>Screenshots, Diagramme, Logos</td><td>PNG, WebP Lossless</td></tr>\n    <tr><td>Verlust</td><td>Verwerfen Sie einige Details, um die Größe zu reduzieren</td><td>Fotografien, Steigungen</td><td>JPEG, WebP Lossy, AVIF</td></tr>\n    <tr><td>Unterprobenahme von Chrom</td><td>Reduziert die Farbauflösung</td><td>Jedes Foto</td><td>4:2:0 in JPEG</td></tr>\n  </tbody>\n</table>Format Deep Dive\n\n### PNG\nKompression: Lossless\n- Transparenz: Voller Alpha-Kanal\nAm besten für: Screenshots, Logos, UI-Elemente\n\n### JPEG\n- Kompression: Lossy (Qualität 0-100)\nTransparenz: Nicht unterstützt\n- Am besten für: Fotos, Social Media Bilder\n\n### WebP\nKomprimierung: Lossy und lossless Modi\n- Transparenz: Ja\n- Am besten für: Universalersatz für JPEG und PNG\n\n### AVIF\nKompression: Lossy und lossless\n- Transparenz: Ja\n- Am besten für: High-Traffic-Sites, HDR-Inhalte\n\nVergleichstabelle\n\n<table>\n  <thead>\n    <tr><th>Format</th><th>Avg Size (1 MB Quelle)</th><th>Qualität bei 80%</th><th>Transparenz</th><th>Browser-Unterstützung</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>PNG</td><td>800 KB</td><td>verlustfrei</td><td>Ja</td><td>100 %</td></tr>\n    <tr><td>JPEG</td><td>260 KB</td><td>Gut</td><td>Nein</td><td>100 %</td></tr>\n    <tr><td>WebP</td><td>180 KB</td><td>Hervorragend</td><td>Ja</td><td>97 %</td></tr>\n    <tr><td>AVIF</td><td>130 KB</td><td>Hervorragend</td><td>Ja</td><td>80 %</td></tr>\n  </tbody>\n</table>## Entscheidungsrahmen\n\n1. Verwenden Sie AVIF mit WebP-Fallback für moderne Web-Apps\n2. Verwenden Sie WebP mit JPEG-Fallback für öffentlich zugängliche Websites\n3. PNG nur verwenden, wenn Transparenz erforderlich ist\n4. JPEG in Qualität 82 für Produktfotografie verwenden\n5. Animiertes WebP anstelle von GIF verwenden\n\nEntfernen Sie vor dem Konvertieren ablenkende Hintergründe mit<a href=\"/remover\">Hintergrundentferner von QuickBG</a>. Verwendung<a href=\"/converter\">Konverterwerkzeug</a>für die Massenumwandlung. Verwendung<a href=\"/sharpness\">Schärfwerkzeug</a>für knackige Kanten. Besuch<a href=\"/adjust\">Justierwerkzeug</a>zur Farbkorrektur.\n\n<img src=\"/assets/demo/pro.png\" alt=\"QuickBG Pro format conversion interface\">\n<img src=\"/assets/demo/bgremoverp.jpg\" alt=\"Image being prepared for format conversion\">"
       },
       "10-image-editing-mistakes-that-hurt-your-conversion-rates": {
         "title": "10 Fehler bei der Bildbearbeitung, die Ihre Conversion-Raten beeinträchtigen",
@@ -763,15 +763,15 @@
       "removingDesc": "Detecting the subject edges and creating a transparent cutout."
     },
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload any image in PNG, JPG, WebP, or HEIC format. Multiple images are supported.",
-      "step2Title": "AI removes the background",
-      "step2Desc": "Our AI automatically detects the subject and removes the background in seconds.",
-      "step3Title": "Fine-tune with Quick Edit",
-      "step3Desc": "Use Eraser, Sharpness, Blur BG, or Replace BG to perfect the result.",
+      "heading": "Führung",
+      "step1Title": "Laden Sie Ihr Bild hoch",
+      "step1Desc": "Laden Sie ein beliebiges Bild im Format PNG, JPG, WebP oder HEIC hoch. Mehrere Bilder werden unterstützt.",
+      "step2Title": "AI entfernt den Hintergrund",
+      "step2Desc": "Unsere KI erkennt automatisch das Motiv und entfernt den Hintergrund in Sekunden.",
+      "step3Title": "Fine-Tune mit Quick Edit",
+      "step3Desc": "Verwenden Sie Eraser, Sharpness, Blur BG oder Replace BG, um das Ergebnis zu perfektionieren.",
       "step4Title": "Download",
-      "step4Desc": "Download as transparent PNG with or without watermark overlay."
+      "step4Desc": "Download als transparentes PNG mit oder ohne Wasserzeichen-Overlay."
     },
     "steps": {
       "upload": "Upload",
@@ -780,89 +780,89 @@
       "export": "Export"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "How does AI background removal work?",
-      "a1": "QuickBG uses a deep learning model trained on millions of images to detect subjects and separate them from the background with pixel-level precision.",
-      "q2": "Is background removal really free and unlimited?",
-      "a2": "Yes, completely free with no signup required. Remove backgrounds from unlimited images at full resolution with no watermark.",
-      "q3": "What image formats are supported for upload?",
-      "a3": "Upload PNG, JPG, WebP, HEIC, and AVIF images. Processed results download as transparent PNG files.",
-      "q4": "Can I edit the result after background removal?",
-      "a4": "Yes, use the Quick Edit tools — Eraser to fix mask edges, Sharpness to enhance details, Blur BG to soften the background, and Replace BG to add a new backdrop."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Wie funktioniert AI-Hintergrundentfernung?",
+      "a1": "QuickBG verwendet ein Deep-Learning-Modell, das auf Millionen von Bildern trainiert wurde, um Probanden zu erkennen und sie mit Pixelgenauigkeit vom Hintergrund zu trennen.",
+      "q2": "Ist Hintergrundentfernung wirklich kostenlos und unbegrenzt?",
+      "a2": "Ja, völlig kostenlos ohne anmeldung erforderlich. Hintergründe aus unbegrenzten Bildern in voller Auflösung ohne Wasserzeichen entfernen.",
+      "q3": "Welche Bildformate werden für den Upload unterstützt?",
+      "a3": "Laden Sie PNG, JPG, WebP, HEIC und AVIF-Bilder hoch. Verarbeitete Ergebnisse werden als transparente PNG-Dateien heruntergeladen.",
+      "q4": "Kann ich das Ergebnis nach der Hintergrundentfernung bearbeiten?",
+      "a4": "Ja, verwenden Sie die Quick Edit-Tools - Eraser zum Beheben von Maskenkanten, Sharpness zum Verbessern von Details, Blur BG zum Weichen des Hintergrunds und Replace BG zum Hinzufügen eines neuen Hintergrunds."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Background Remover",
-      "content": "Professional background removal used to require expensive software and manual effort. QuickBG changes that by delivering studio-quality cutouts in seconds through advanced AI. Whether you are an e-commerce seller creating product listings, a content creator building a personal brand, or a designer preparing assets, our tool eliminates the tedious work of manual masking. There are no subscription fees, no usage caps, and no watermark on your downloads. Every image processes at full resolution, preserving the fine details that matter — hair strands, product edges, and complex subjects. The result is a clean transparent PNG ready for any project."
+      "heading": "Warum QuickBG Background Remover verwenden",
+      "content": "Professionelle Hintergrundentfernung erforderte früher teure Software und manuellen Aufwand. QuickBG ändert dies, indem es durch fortschrittliche KI Ausschnitte in Studioqualität in Sekunden liefert. Ob Sie ein E-Commerce-Verkäufer sind, der Produktlisten erstellt, ein Content-Ersteller, der eine persönliche Marke aufbaut, oder ein Designer, der Vermögenswerte vorbereitet, unser Tool eliminiert die mühsame Arbeit des manuellen Maskierens. Es gibt keine Abonnementgebühren, keine Nutzungsobergrenzen und kein Wasserzeichen auf Ihren Downloads. Jedes Bild verarbeitet in voller Auflösung und bewahrt die feinen Details, die wichtig sind - Haarsträhnen, Produktkanten und komplexe Themen. Das Ergebnis ist eine saubere transparente PNG bereit für jedes Projekt."
     },
     "howItWorks": {
-      "heading": "How AI Background Removal Works",
-      "content": "QuickBG uses a deep neural network trained on millions of diverse images to understand what constitutes a subject versus a background. When you upload an image, the AI analyzes every pixel, identifying boundaries between foreground and background elements. It detects edges, textures, color transitions, and depth cues to create a precise alpha mask. The model excels at handling challenging subjects like hair, fur, translucent objects, and intricate patterns. Unlike simple chroma-key or color-based removal, our AI understands context — it knows the difference between a person and the wall behind them even when colors are similar. The entire process takes just seconds and requires no manual intervention."
+      "heading": "Wie AI Background Removal funktioniert",
+      "content": "QuickBG verwendet ein tiefes neuronales Netzwerk, das auf Millionen verschiedener Bilder trainiert wird, um zu verstehen, was ein Subjekt im Vergleich zu einem Hintergrund ausmacht. Wenn Sie ein Bild hochladen, analysiert die KI jedes Pixel und identifiziert Grenzen zwischen Vordergrund- und Hintergrundelementen. Es erkennt Kanten, Texturen, Farbübergänge und Tiefensignale, um eine präzise Alpha-Maske zu erstellen. Das Modell zeichnet sich durch den Umgang mit herausfordernden Themen wie Haaren, Fell, durchscheinenden Objekten und komplizierten Mustern aus. Im Gegensatz zur einfachen Chroma-Taste oder farbbasierten Entfernung versteht unsere KI den Kontext - sie kennt den Unterschied zwischen einer Person und der Wand dahinter, auch wenn die Farben ähnlich sind. Der gesamte Prozess dauert nur Sekunden und erfordert keinen manuellen Eingriff."
     },
     "tips": {
-      "heading": "Tips for Best Results",
-      "content": "For optimal results, upload images where the subject is clearly visible against the background. Well-lit photos with good contrast between subject and background produce the cleanest cutouts. Images with busy or patterned backgrounds still work well, but simple backgrounds yield faster processing. The tool handles multiple subjects in a single image, but results are best when the main subject is prominent. After processing, review the result at 100% zoom to check edges. If you notice minor imperfections, use the Eraser tool in Quick Edit to refine the mask. For product photography, ensure the item is fully visible without obstructions. Group shots work well, but each person should be clearly separated from others."
+      "heading": "Tipps für die besten Ergebnisse",
+      "content": "Für optimale Ergebnisse laden Sie Bilder hoch, bei denen das Motiv vor dem Hintergrund deutlich sichtbar ist. Gut beleuchtete Fotos mit gutem Kontrast zwischen Motiv und Hintergrund erzeugen die saubersten Ausschnitte. Bilder mit beschäftigten oder gemusterten Hintergründen funktionieren immer noch gut, aber einfache Hintergründe liefern eine schnellere Verarbeitung. Das Tool behandelt mehrere Motive in einem einzigen Bild, aber die Ergebnisse sind am besten, wenn das Hauptmotiv prominent ist. Nach der Verarbeitung überprüfen Sie das Ergebnis bei 100% Zoom, um Kanten zu überprüfen. Wenn Sie kleinere Mängel bemerken, verwenden Sie das Eraser-Tool in Quick Edit, um die Maske zu verfeinern. Stellen Sie bei der Produktfotografie sicher, dass der Artikel ohne Hindernisse vollständig sichtbar ist. Gruppenaufnahmen funktionieren gut, aber jede Person sollte klar von anderen getrennt sein."
     },
-    "allProcessed": "All images processed!",
-    "readyForDownload": "ready for download.",
-    "imagesSelected": "images selected",
-    "creditsLeft": "credits left",
-    "changesSaved": "Changes saved!",
-    "copiedImage": "Copied image",
-    "copyFailed": "Copy failed",
-    "clipboardBlocked": "Your browser blocked image clipboard access."
+    "allProcessed": "Alle Bilder verarbeitet!",
+    "readyForDownload": "Bereit zum Download.",
+    "imagesSelected": "Ausgewählte Bilder",
+    "creditsLeft": "Restkredite",
+    "changesSaved": "Änderungen gerettet!",
+    "copiedImage": "Kopierbild",
+    "copyFailed": "Kopie fehlgeschlagen",
+    "clipboardBlocked": "Ihr Browser blockiert den Zugriff auf Bildzwischenablagen."
   },
   "replaceBg": {
     "title": "Hintergrund ersetzen – QuickBG",
     "description": "Hintergrund durch Farbe oder Bild ersetzen. Kostenlos.",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Open the image",
-      "step1Desc": "Start from Background Remover and click the Replace BG quick-edit button on a completed image.",
-      "step2Title": "Choose background type",
-      "step2Desc": "Select solid color, gradient, or custom image as your new background.",
-      "step3Title": "Adjust and preview",
-      "step3Desc": "Color picker, gradient stops, and image upload let you fine-tune the backdrop.",
-      "step4Title": "Download the result",
-      "step4Desc": "Export as transparent PNG overlay or flattened image with the new background."
+      "heading": "Führung",
+      "step1Title": "Öffnen Sie das Bild",
+      "step1Desc": "Starten Sie von Background Remover und klicken Sie auf die Schaltfläche BG Quick-Editing für ein abgeschlossenes Bild ersetzen.",
+      "step2Title": "Hintergrundtyp auswählen",
+      "step2Desc": "Wählen Sie Vollfarbe, Farbverlauf oder benutzerdefiniertes Bild als neuen Hintergrund.",
+      "step3Title": "Adjust und Preview",
+      "step3Desc": "Farbwähler, Gradientenstopps und Bildupload ermöglichen es Ihnen, den Hintergrund zu verfeinern.",
+      "step4Title": "Download des Ergebnisses",
+      "step4Desc": "Exportieren Sie als transparentes PNG-Overlay oder abgeflachtes Bild mit dem neuen Hintergrund."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What background options are available?",
-      "a1": "Solid colors, gradients, and custom images. The color picker and gradient controls give you full creative freedom to design the perfect backdrop.",
-      "q2": "Can I use my own image as the replacement background?",
-      "a2": "Yes, upload any image to use as the replacement background. It will be placed behind your subject automatically.",
-      "q3": "Does Replace BG require the Remover first?",
-      "a3": "Yes, start with Background Remover to create a clean subject cutout, then use Replace BG to add a new background behind it.",
-      "q4": "Can I export the result with a transparent background?",
-      "a4": "Yes, download as a transparent PNG overlay if you want to keep the subject separate, or as a flattened image with the new background baked in."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Welche Hintergrundoptionen stehen zur Verfügung?",
+      "a1": "Feste Farben, Farbverläufe und benutzerdefinierte Bilder. Die Farbauswahl und die Gradientensteuerung geben Ihnen volle kreative Freiheit, um die perfekte Kulisse zu entwerfen.",
+      "q2": "Kann ich mein eigenes Bild als Ersatzhintergrund verwenden?",
+      "a2": "Ja, laden Sie ein beliebiges Bild hoch, das als Ersatzhintergrund verwendet werden soll. Es wird automatisch hinter Ihrem Thema platziert.",
+      "q3": "Ersetzt BG zuerst den Entferner?",
+      "a3": "Ja, beginnen Sie mit Background Remover, um einen sauberen Betreffausschnitt zu erstellen, und verwenden Sie dann Replace BG, um einen neuen Hintergrund hinzuzufügen.",
+      "q4": "Kann ich das Ergebnis mit einem transparenten Hintergrund exportieren?",
+      "a4": "Ja, laden Sie als transparentes PNG-Overlay herunter, wenn Sie das Motiv getrennt halten möchten, oder als abgeflachtes Bild mit dem neuen Hintergrund."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Background Replace",
-      "content": "Replacing an image background opens up unlimited creative possibilities for your visuals. QuickBG lets you swap any background with solid colors, smooth gradients, or custom images — all while keeping your subject perfectly separated. This is essential for e-commerce sellers who need consistent brand backgrounds across their product catalog, marketers creating unified social media visuals, and photographers experimenting with different backdrops without costly reshoots. The tool preserves the subject edges from the original AI cutout, so hair, fur, and intricate details remain crisp against the new background. You can fine-tune colors and gradient stops in real time, seeing exactly how the final image will look before downloading."
+      "heading": "Warum QuickBG Background ersetzen",
+      "content": "Das Ersetzen eines Bildhintergrunds eröffnet unbegrenzte kreative Möglichkeiten für Ihre Visuals. Mit QuickBG können Sie jeden Hintergrund mit festen Farben, glatten Steigungen oder benutzerdefinierten Bildern austauschen, während Sie Ihr Motiv perfekt trennen. Dies ist wichtig für E-Commerce-Verkäufer, die konsistente Markenhintergründe in ihrem Produktkatalog benötigen, Vermarkter, die einheitliche Social-Media-Grafiken erstellen, und Fotografen, die ohne kostspielige Nachdrehs mit verschiedenen Hintergründen experimentieren. Das Tool bewahrt die Motivkanten aus dem ursprünglichen AI-Ausschnitt, so dass Haare, Fell und komplizierte Details vor dem neuen Hintergrund knackig bleiben. Sie können Farben und Farbverlaufsstopps in Echtzeit fein abstimmen und genau sehen, wie das endgültige Bild vor dem Herunterladen aussieht."
     },
     "howItWorks": {
-      "heading": "How Background Replacement Works",
-      "content": "Background replacement builds on the AI cutout created by the Background Remover. Once the subject is isolated with a precise alpha mask, QuickBG composites it onto your chosen background. For solid colors, you can pick any hex value or use the visual color picker. For gradients, you define two or more color stops and the gradient direction — linear or radial. For custom images, your uploaded photo is positioned behind the subject automatically. The compositing engine handles transparency blending, edge anti-aliasing, and color matching to ensure the subject looks natural against the new background. You can output the result as a transparent PNG overlay for further editing or as a flattened composite image ready to use."
+      "heading": "Wie Background Replacement funktioniert",
+      "content": "Hintergrundersatz baut auf dem AI-Ausschnitt auf, der vom Background Remover erstellt wurde. Sobald das Motiv mit einer präzisen Alpha-Maske isoliert ist, verbindet QuickBG es mit dem von Ihnen gewählten Hintergrund. Für einfarbige Farben können Sie einen beliebigen Hex-Wert auswählen oder den visuellen Farbwähler verwenden. Für Gradienten definieren Sie zwei oder mehr Farbstopps und die Gradientenrichtung - linear oder radial. Bei benutzerdefinierten Bildern wird Ihr hochgeladenes Foto automatisch hinter dem Motiv positioniert. Die Compositing-Engine verarbeitet Transparenzmischung, Edge-Anti-Aliasing und Farbabstimmung, um sicherzustellen, dass das Motiv vor dem neuen Hintergrund natürlich aussieht. Sie können das Ergebnis als transparentes PNG-Overlay für die weitere Bearbeitung oder als abgeflachtes Kompositbild ausgeben."
     },
     "tips": {
-      "heading": "Tips for Natural-Looking Backgrounds",
-      "content": "Choose background colors that complement your subject rather than clash with it. For product photos, neutral colors like white, gray, or soft pastels keep focus on the item. Gradients work well for social media graphics and add depth without distraction. When using a custom image as background, ensure it is high resolution to avoid pixelation. Match the lighting direction between your subject and the background for the most realistic look. For portraits, warm backgrounds complement skin tones while cool backgrounds create contrast. Preview the result at full size before downloading, and use the Eraser tool to fix any edge artifacts where the subject meets the new background."
+      "heading": "Tipps für natürlich aussehende Hintergründe",
+      "content": "Wählen Sie Hintergrundfarben, die Ihr Motiv ergänzen, anstatt mit ihm zu kollidieren. Bei Produktfotos konzentrieren sich neutrale Farben wie Weiß, Grau oder weiche Pastellfarben auf den Artikel. Gradienten eignen sich gut für Social Media Grafiken und fügen Tiefe ohne Ablenkung hinzu. Wenn Sie ein benutzerdefiniertes Bild als Hintergrund verwenden, stellen Sie sicher, dass es eine hohe Auflösung hat, um eine Pixelierung zu vermeiden. Passen Sie die Lichtrichtung zwischen Ihrem Motiv und dem Hintergrund für den realistischsten Look an. Für Porträts ergänzen warme Hintergründe Hauttöne, während kühle Hintergründe Kontraste erzeugen. Zeigen Sie das Ergebnis in voller Größe vor, bevor Sie es herunterladen, und verwenden Sie das Eraser-Tool, um alle Randartefakte zu beheben, bei denen das Motiv auf den neuen Hintergrund trifft."
     },
     "accessRestricted": {
-      "heading": "Access Restricted",
-      "desc": "Please process an image with Background Remover first, then use the \"Replace BG\" button to access this tool."
+      "heading": "Zugriff eingeschränkt",
+      "desc": "Bitte verarbeiten Sie zuerst ein Bild mit Background Remover und verwenden Sie dann die Schaltfläche \"BG ersetzen\", um auf dieses Tool zuzugreifen."
     },
-    "badge": "Subject ready — background will be replaced",
-    "bgType": "Background Type",
-    "typeColor": "Color",
-    "typeGradient": "Gradient",
-    "typeImage": "Image",
-    "chooseColor": "Choose Color",
-    "chooseGradient": "Choose Gradient",
-    "bgImage": "Background Image",
-    "uploadBg": "Click to upload background",
-    "replaceBtn": "Replace Background",
-    "processing": "Processing..."
+    "badge": "Thema bereit - Hintergrund wird ersetzt",
+    "bgType": "Hintergrundtyp",
+    "typeColor": "Farbe",
+    "typeGradient": "Gefälle",
+    "typeImage": "Bild",
+    "chooseColor": "Wählen Sie Farbe",
+    "chooseGradient": "Wählen Sie Gradient",
+    "bgImage": "Hintergrundbild",
+    "uploadBg": "Klicken Sie, um Hintergrund hochzuladen",
+    "replaceBtn": "Hintergrund ersetzen",
+    "processing": "Verarbeitung ..."
   },
   "blurBg": {
     "title": "Hintergrundunschärfe – QuickBG",
@@ -871,135 +871,135 @@
     "blurred": "Unschärfe",
     "error": "Fehler",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Open the image",
-      "step1Desc": "Process an image in Background Remover first, then click the Blur BG quick-edit button.",
-      "step2Title": "Adjust blur strength",
-      "step2Desc": "Use the slider to control how much blur is applied to the background while the subject stays sharp.",
-      "step3Title": "Preview the effect",
-      "step3Desc": "The preview updates automatically as you drag the slider. Fine-tune until it looks natural.",
+      "heading": "Führung",
+      "step1Title": "Öffnen Sie das Bild",
+      "step1Desc": "Verarbeiten Sie zuerst ein Bild in Background Remover und klicken Sie dann auf die Schaltfläche Blur BG Quick-Editing.",
+      "step2Title": "Verwischungsstärke einstellen",
+      "step2Desc": "Verwenden Sie den Schieberegler, um zu steuern, wie viel Unschärfe auf den Hintergrund angewendet wird, während das Motiv scharf bleibt.",
+      "step3Title": "Vorschau auf den Effekt",
+      "step3Desc": "Die Vorschau wird automatisch aktualisiert, wenn Sie den Slider ziehen. Fein abgestimmt, bis es natürlich aussieht.",
       "step4Title": "Download",
-      "step4Desc": "Save the blurred image as a transparent PNG or flattened composite."
+      "step4Desc": "Speichern Sie das unscharfe Bild als transparentes PNG oder abgeflachtes Komposit."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What is AI background blur?",
-      "a1": "QuickBG uses AI to separate the subject from the background, then applies blur only to the background while keeping the subject perfectly sharp.",
-      "q2": "Can I control the blur intensity?",
-      "a2": "Yes, use the slider to adjust blur strength from a subtle soft focus to a strong bokeh effect. The preview updates in real time.",
-      "q3": "Is the background blur permanent?",
-      "a3": "No, you can re-adjust the blur at any time. The original image is preserved, letting you re-edit or revert your changes.",
-      "q4": "What are common use cases for background blur?",
-      "a4": "Portrait photography, product listings for e-commerce, social media profiles, video thumbnails, and privacy-sensitive images all benefit from background blur."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Was ist AI Background Blur?",
+      "a1": "QuickBG verwendet AI, um das Motiv vom Hintergrund zu trennen, und wendet dann Unschärfe nur auf den Hintergrund an, während das Motiv perfekt scharf bleibt.",
+      "q2": "Kann ich die Unschärfeintensität kontrollieren?",
+      "a2": "Ja, verwenden Sie den Slider, um die Unschärfe von einem subtilen weichen Fokus auf einen starken Bokeh-Effekt einzustellen. Die Vorschau wird in Echtzeit aktualisiert.",
+      "q3": "Ist die Hintergrundverwischung dauerhaft?",
+      "a3": "Nein, Sie können die Unschärfe jederzeit neu einstellen. Das Originalbild bleibt erhalten, sodass Sie Ihre Änderungen erneut bearbeiten oder rückgängig machen können.",
+      "q4": "Was sind gängige Anwendungsfälle für Background Blur?",
+      "a4": "Porträtfotografie, Produktlisten für E-Commerce, Social-Media-Profile, Video-Miniaturansichten und datenschutzsensitive Bilder profitieren alle von Hintergrundunschärfen."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Background Blur",
-      "content": "Background blur adds a professional depth-of-field effect that makes your subject stand out. QuickBG applies blur intelligently — only to the background while keeping the subject perfectly sharp. This is ideal for portrait photographers who want studio-quality bokeh without expensive lenses, e-commerce sellers creating focused product shots, and privacy-conscious users who need to obscure identifying details in the background. The AI accurately separates subject from background even in complex scenes, ensuring blur is applied exactly where intended. You have full control over blur intensity, from a subtle softening to a strong blur that completely eliminates background detail."
+      "heading": "Warum QuickBG Background Blur verwenden",
+      "content": "Hintergrundverwischung fügt einen professionellen Tiefeneffekt hinzu, der Ihr Motiv hervorhebt. QuickBG wendet Unschärfe intelligent an - nur auf den Hintergrund, während das Motiv perfekt scharf gehalten wird. Dies ist ideal für porträtfotografen, die bokeh in studioqualität ohne teure objektive wünschen, e-commerce-verkäufer, die fokussierte produktaufnahmen erstellen, und datenschutzbewusste benutzer, die identifizierende details im hintergrund verschleiern müssen. Die ki trennt das motiv auch in komplexen szenen genau vom hintergrund und stellt sicher, dass die unschärfe genau dort angewendet wird, wo sie beabsichtigt ist. Sie haben die volle Kontrolle über die Unschärfeintensität, von einer subtilen Erweichung bis hin zu einer starken Unschärfe, die Hintergrunddetails vollständig eliminiert."
     },
     "howItWorks": {
-      "heading": "How AI Background Blur Works",
-      "content": "QuickBG first creates a precise subject mask using the same AI technology as the Background Remover. Once the subject is isolated, a blur filter is applied exclusively to the background region. The blur intensity is controlled by a slider that adjusts the kernel size — larger values create stronger blur. The subject remains untouched at full sharpness. The tool supports multiple blur levels, from a gentle softening that mimics a wide aperture lens to an intense blur that creates a smooth bokeh effect. The preview updates in real time as you adjust the slider, letting you find the perfect balance between subject emphasis and background softness."
+      "heading": "Wie AI Background Blur funktioniert",
+      "content": "QuickBG erstellt zunächst eine präzise Motivmaske mit der gleichen KI-Technologie wie der Background Remover. Sobald das Motiv isoliert ist, wird ein Unschärfefilter ausschließlich auf den Hintergrundbereich angewendet. Die Unschärfeintensität wird durch einen Schieberegler gesteuert, der die Kernelgröße anpasst - größere Werte erzeugen eine stärkere Unschärfe. Das Thema bleibt bei voller Schärfe unberührt. Das Werkzeug unterstützt mehrere Unschärfen, von einer sanften Erweichung, die eine Weitöffnungslinse nachahmt, bis hin zu einer intensiven Unschärfe, die einen glatten Bokeh-Effekt erzeugt. Die Vorschau wird in Echtzeit aktualisiert, während Sie den Schieberegler anpassen, sodass Sie die perfekte Balance zwischen Themenschwerpunkt und Hintergrundweichheit finden."
     },
     "tips": {
-      "heading": "Tips for the Best Blur Effect",
-      "content": "For natural-looking portraits, use a mild to moderate blur that simulates a real lens aperture. Strong blur works well for busy or distracting backgrounds but can look artificial if overdone. Product photos benefit from subtle blur that removes detail without making the background look obviously edited. When blurring group photos, check that edges between people remain clean. For privacy purposes, strong blur effectively obscures faces, license plates, and other identifying information in the background. Always preview the result at full resolution to ensure the transition between sharp subject and blurred background looks smooth. If you notice halos around the subject, reduce the blur intensity slightly."
+      "heading": "Tipps für den besten Blur-Effekt",
+      "content": "Verwenden Sie für natürlich aussehende Porträts eine leichte bis mäßige Unschärfe, die eine echte Linsenöffnung simuliert. Starke Unschärfe funktioniert gut für beschäftigte oder ablenkende Hintergründe, kann aber künstlich aussehen, wenn sie übertrieben ist. Produktfotos profitieren von einer subtilen Unschärfe, die Details entfernt, ohne dass der Hintergrund offensichtlich bearbeitet aussieht. Wenn Sie Gruppenfotos verwischen, überprüfen Sie, ob die Kanten zwischen den Personen sauber bleiben. Aus Datenschutzgründen verdeckt starke Unschärfe effektiv Gesichter, Nummernschilder und andere identifizierende Informationen im Hintergrund. Zeigen Sie das Ergebnis immer in voller Auflösung an, um sicherzustellen, dass der Übergang zwischen scharfem Motiv und verschwommenem Hintergrund glatt aussieht. Wenn Sie Halos um das Thema herum bemerken, reduzieren Sie die Unschärfeintensität leicht."
     },
     "accessRestricted": {
-      "heading": "Access Restricted",
-      "desc": "Please process an image with Background Remover first, then use the \"Blur BG\" button to access this tool."
+      "heading": "Zugriff eingeschränkt",
+      "desc": "Bitte verarbeiten Sie zuerst ein Bild mit Background Remover und verwenden Sie dann die Schaltfläche \"Blur BG\", um auf dieses Tool zuzugreifen."
     },
-    "badge": "Subject is sharp — background will be blurred",
-    "blurStrength": "Blur Strength",
-    "updatingPreview": "Updating preview...",
-    "helperText": "The preview updates automatically after you release the slider."
+    "badge": "Thema ist scharf - Hintergrund wird verschwommen",
+    "blurStrength": "Blurfestigkeit",
+    "updatingPreview": "Update Preview...",
+    "helperText": "Die Vorschau wird automatisch aktualisiert, nachdem Sie den Slider freigegeben haben."
   },
   "resize": {
     "title": "Bildgröße ändern – QuickBG",
     "description": "Bilder für Marktplätze skalieren. Kostenlos.",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload any image. Accepted formats include PNG, JPG, WebP, and HEIC.",
-      "step2Title": "Choose aspect ratio or custom dimensions",
-      "step2Desc": "Pick from preset ratios (1:1, 4:5, 16:9, etc.) or enter custom width and height.",
-      "step3Title": "Review the preview",
-      "step3Desc": "See how your image looks at the new dimensions before applying the resize.",
+      "heading": "Führung",
+      "step1Title": "Laden Sie Ihr Bild hoch",
+      "step1Desc": "Laden Sie jedes Bild hoch. Akzeptierte Formate umfassen PNG, JPG, WebP und HEIC.",
+      "step2Title": "Wählen Sie Seitenverhältnis oder benutzerdefinierte Dimensionen",
+      "step2Desc": "Wählen Sie aus voreingestellten Verhältnissen (1:1, 4:5, 16:9 usw.) oder geben Sie die benutzerdefinierte Breite und Höhe ein.",
+      "step3Title": "Überprüfen Sie die Preview",
+      "step3Desc": "Sehen Sie, wie Ihr Bild die neuen Dimensionen betrachtet, bevor Sie die Größe anwenden.",
       "step4Title": "Download",
-      "step4Desc": "Download the resized image in your preferred format."
+      "step4Desc": "Laden Sie das verkleinerte Bild in Ihrem bevorzugten Format herunter."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What resize options does QuickBG offer?",
-      "a1": "Preset aspect ratios like 1:1, 4:5, and 16:9, plus custom width and height dimensions. You can preserve the aspect ratio or crop to fit.",
-      "q2": "Will resizing reduce image quality?",
-      "a2": "Downscaling is lossless. Upscaling uses AI to maintain sharpness, but the final quality depends on the target size and your original image resolution.",
-      "q3": "What are standard sizes for social media platforms?",
-      "a3": "Instagram post 1080x1080, Facebook cover 851x315, YouTube thumbnail 1280x720, Twitter header 1500x500, LinkedIn banner 1584x396.",
-      "q4": "Can I resize multiple images at once?",
-      "a4": "Currently images are resized individually with a live preview. Batch processing with consistent dimensions will be available in a future update."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Welche Größenänderungen bietet QuickBG an?",
+      "a1": "Voreingestellte Seitenverhältnisse wie 1:1, 4:5 und 16:9 sowie benutzerdefinierte Breiten- und Höhenabmessungen. Sie können das Seitenverhältnis oder die Ernte passend halten.",
+      "q2": "Verringert die Größenänderung die Bildqualität?",
+      "a2": "Downscaling ist verlustfrei. Upscaling verwendet KI, um die Schärfe zu erhalten, aber die endgültige Qualität hängt von der Zielgröße und Ihrer ursprünglichen Bildauflösung ab.",
+      "q3": "Was sind Standardgrößen für Social Media Plattformen?",
+      "a3": "Instagram Post 1080x1080, Facebook Cover 851x315, YouTube Thumbnail 1280x720, Twitter Header 1500x500, LinkedIn Banner 1584x396.",
+      "q4": "Kann ich die Größe mehrerer Bilder gleichzeitig ändern?",
+      "a4": "Aktuell werden Bilder mit einer Live-Vorschau individuell verkleinert. Batch-Verarbeitung mit konsistenten Dimensionen wird in einem zukünftigen Update verfügbar sein."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Image Resizer",
-      "content": "Getting the right image dimensions is critical for professional results across different platforms. QuickBG Image Resizer lets you scale images to exact dimensions while maintaining quality through AI-powered algorithms. Whether you need social media sizes, print dimensions, or web-optimized images, the tool provides preset ratios and custom options. Downscaling images reduces file size for faster loading without visible quality loss. Upscaling uses intelligent interpolation to add pixels smoothly rather than creating blocky artifacts. The real-time preview shows exactly how your image will look at the target size, and you can choose to preserve the aspect ratio or crop to fit."
+      "heading": "Warum QuickBG Image Resizer verwenden",
+      "content": "Die richtigen Bilddimensionen zu erhalten, ist entscheidend für professionelle Ergebnisse auf verschiedenen Plattformen. QuickBG Image Resizer ermöglicht es Ihnen, Bilder auf exakte Dimensionen zu skalieren und gleichzeitig die Qualität durch KI-basierte Algorithmen zu erhalten. Egal, ob Sie Social Media-Größen, Druckabmessungen oder weboptimierte Bilder benötigen, das Tool bietet voreingestellte Verhältnisse und benutzerdefinierte Optionen. Das Herunterskalieren von Bildern reduziert die Dateigröße für ein schnelleres Laden ohne sichtbaren Qualitätsverlust. Upscaling verwendet intelligente Interpolation, um Pixel reibungslos hinzuzufügen, anstatt blockierende Artefakte zu erstellen. Die Echtzeit-Vorschau zeigt genau, wie Ihr Bild die Zielgröße sieht, und Sie können wählen, ob Sie das Seitenverhältnis oder den Schnitt passen."
     },
     "howItWorks": {
-      "heading": "How Image Resizing Works",
-      "content": "QuickBG offers two resize modes. Preset aspect ratios like 1:1, 4:5, and 16:9 automatically constrain dimensions to match common platform requirements. Custom mode lets you enter exact width and height values. When you change one dimension, the other adjusts automatically if aspect ratio lock is enabled. For downscaling, the tool uses area-averaging to maintain sharpness while reducing pixel count. For upscaling, AI-based interpolation analyzes neighboring pixels to create smooth transitions and preserve edge detail. The preview updates instantly as you adjust values, showing the resulting dimensions and estimated file size before you download."
+      "heading": "Wie Image Resizing funktioniert",
+      "content": "QuickBG bietet zwei Größenänderungsmodi. Voreingestellte Seitenverhältnisse wie 1:1, 4:5 und 16:9 schränken die Dimensionen automatisch ein, um den üblichen Plattformanforderungen zu entsprechen. Mit dem benutzerdefinierten Modus können Sie genaue Breiten- und Höhenwerte eingeben. Wenn Sie eine Dimension ändern, passt sich die andere automatisch an, wenn die Seitenverhältnissperre aktiviert ist. Für das Downscaling verwendet das Tool eine Flächenmittelung, um die Schärfe zu erhalten und gleichzeitig die Pixelzahl zu reduzieren. Für das Hochskalieren analysiert die KI-basierte Interpolation benachbarte Pixel, um reibungslose Übergänge zu erzeugen und Randdetails zu erhalten. Die Vorschau wird sofort aktualisiert, wenn Sie Werte anpassen, und zeigt die resultierenden Dimensionen und die geschätzte Dateigröße an, bevor Sie herunterladen."
     },
     "tips": {
-      "heading": "Tips for Perfect Resizing",
-      "content": "Always resize images at the final stage of your editing workflow after adjustments and background removal. Start with the highest resolution source image available — you can always downscale without quality loss but upscaling has limits. For social media, use the platform-specific presets: Instagram posts at 1080x1080, YouTube thumbnails at 1280x720, Facebook covers at 851x315. When upscaling, increase dimensions gradually rather than doubling the size in one step. For print, target at least 300 DPI resolution. Use the aspect ratio lock to prevent distortion, and always preview before downloading."
+      "heading": "Tipps für perfekte Resizing",
+      "content": "Ändern Sie die Größe der Bilder immer in der letzten Phase Ihres Bearbeitungs-Workflows nach Anpassungen und Hintergrundentfernung. Beginnen Sie mit dem hochauflösenden Quellbild, das verfügbar ist - Sie können immer ohne Qualitätsverlust herunterskalieren, aber das Hochskalieren hat Grenzen. Verwenden Sie für Social Media die plattformspezifischen Presets: Instagram-Posts bei 1080x1080, YouTube-Miniaturansichten bei 1280x720, Facebook-Cover bei 851x315. Beim Hochskalieren erhöhen Sie die Dimensionen allmählich, anstatt die Größe in einem Schritt zu verdoppeln. Für den Druck, Ziel mindestens 300 DPI Auflösung. Verwenden Sie die Seitenverhältnissperre, um Verzerrungen zu vermeiden, und immer eine Vorschau vor dem Herunterladen."
     },
-    "aspectRatio": "Aspect Ratio",
-    "customDimensions": "Custom Dimensions",
-    "scale": "Scale",
-    "results": "Results",
+    "aspectRatio": "Aspektverhältnis",
+    "customDimensions": "Maßgerecht",
+    "scale": "Waage",
+    "results": "Ergebnisse",
     "downloadAll": "Download All",
-    "processing": "Processing..."
+    "processing": "Verarbeitung ..."
   },
   "crop": {
     "title": "Bild zuschneiden – QuickBG",
     "description": "Bilder mit benutzerdefinierten Seitenverhältnissen zuschneiden.",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload an image",
-      "step1Desc": "Upload any image file. The crop tool supports all major image formats.",
-      "step2Title": "Select aspect ratio",
-      "step2Desc": "Choose from Free, 1:1, 4:3, 16:9, 9:16, or 3:2. Or use rotation and zoom freely.",
-      "step3Title": "Adjust the crop area",
-      "step3Desc": "Drag the crop handles or rotate to frame your subject exactly how you want it.",
-      "step4Title": "Apply and download",
-      "step4Desc": "Click Apply Crop, then download the result in your chosen format."
+      "heading": "Führung",
+      "step1Title": "Ein Bild hochladen",
+      "step1Desc": "Laden Sie eine beliebige Bilddatei hoch. Das Zuschnittwerkzeug unterstützt alle gängigen Bildformate.",
+      "step2Title": "Auswahl des Seitenverhältnisses",
+      "step2Desc": "Wählen Sie zwischen Free, 1:1, 4:3, 16:9, 9:16 oder 3:2. Oder verwenden Sie Rotation und Zoom frei.",
+      "step3Title": "Anpassung der Anbaufläche",
+      "step3Desc": "Ziehen Sie die Erntegriffe oder drehen Sie sich, um Ihr Motiv genau so zu gestalten, wie Sie es möchten.",
+      "step4Title": "Bewerben und herunterladen",
+      "step4Desc": "Klicken Sie auf Crop anwenden und laden Sie das Ergebnis in Ihrem gewählten Format herunter."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What aspect ratios are available?",
-      "a1": "Freeform crop, 1:1 square, 4:3, 16:9 widescreen, 9:16 portrait, 3:2, and custom dimensions. Pick the ratio that fits your target platform.",
-      "q2": "Can I rotate the image while cropping?",
-      "a2": "Yes, use the rotation slider to adjust orientation while keeping the crop area fixed. Fine-tune the angle until your subject is perfectly aligned.",
-      "q3": "Does cropping reduce image resolution?",
-      "a3": "Cropping removes outer pixels, so the remaining area retains full resolution. The overall image dimensions decrease naturally based on your crop selection.",
-      "q4": "What are the best crop dimensions for social media?",
-      "a4": "1:1 for Instagram posts, 16:9 for YouTube thumbnails, 4:5 for Facebook and Instagram ads, 9:16 for TikTok and Stories, 3:2 for print and photography."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Welche Seitenverhältnisse stehen zur Verfügung?",
+      "a1": "Freiform Ernte, 1:1 Quadrat, 4:3, 16:9 Breitbild, 9:16 Porträt, 3:2 und benutzerdefinierte Dimensionen. Wählen Sie das Verhältnis, das zu Ihrer Zielplattform passt.",
+      "q2": "Kann ich das Bild beim Zuschneiden drehen?",
+      "a2": "Ja, verwenden Sie den Rotationsschieber, um die Ausrichtung anzupassen, während die Erntefläche fixiert bleibt. Verfeinern Sie den Winkel, bis Ihr Motiv perfekt ausgerichtet ist.",
+      "q3": "Reduziert Cropping die Bildauflösung?",
+      "a3": "Cropping entfernt äußere Pixel, so dass der verbleibende Bereich die volle Auflösung behält. Die Gesamtbilddimensionen verringern sich auf natürliche Weise basierend auf Ihrer Ernteauswahl.",
+      "q4": "Was sind die besten Anbaugrößen für Social Media?",
+      "a4": "1:1 für Instagram-Posts, 16:9 für YouTube-Miniaturansichten, 4:5 für Facebook- und Instagram-Anzeigen, 9:16 für TikTok und Stories, 3:2 für Print und Fotografie."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Crop Tool",
-      "content": "Cropping is one of the most fundamental image editing operations, and getting it right transforms your composition. QuickBG Crop Tool gives you precise control over framing with support for freeform and preset aspect ratios. Whether you are preparing images for social media, creating print layouts, or adjusting composition after background removal, the crop tool maintains full image quality in the selected area. The rotation feature lets you straighten crooked horizons or create dynamic angles. Real-time preview shows the exact crop boundaries so you know what the final image will look like. All major aspect ratios are built in — 1:1, 4:3, 16:9, 9:16, 3:2, and custom."
+      "heading": "Warum QuickBG Crop Tool verwenden",
+      "content": "Cropping ist eine der grundlegendsten Bildbearbeitungsoperationen, und es richtig zu machen, verändert Ihre Komposition. QuickBG Crop Tool bietet Ihnen eine präzise Kontrolle über das Framing mit Unterstützung für Freiform und voreingestellte Seitenverhältnisse. Egal, ob Sie Bilder für soziale Medien vorbereiten, Drucklayouts erstellen oder die Zusammensetzung nach dem Entfernen des Hintergrunds anpassen, das Zuschnittwerkzeug behält die volle Bildqualität in dem ausgewählten Bereich bei. Mit der Rotationsfunktion können Sie krumme Horizonte begradigen oder dynamische Winkel erzeugen. Echtzeit-Vorschau zeigt die genauen Zuschnittgrenzen, so dass Sie wissen, wie das endgültige Bild aussehen wird. Alle wichtigen Aspektverhältnisse sind eingebaut - 1:1, 4:3, 16:9, 9:16, 3:2 und benutzerdefiniert."
     },
     "howItWorks": {
-      "heading": "How the Crop Tool Works",
-      "content": "The crop tool overlays a draggable selection area on your image with adjustable handles at each corner and edge. You can click and drag any handle to resize the crop region, or click inside the region to reposition it over the image. The aspect ratio menu lets you lock the crop to a specific proportion — when locked, dragging one handle automatically adjusts adjacent sides to maintain the ratio. The rotation slider rotates the crop region independently of the image, letting you straighten or angle your composition. Once you apply the crop, only the selected area is kept and the rest of the image is discarded. The result downloads at the original resolution."
+      "heading": "Wie das Crop Tool funktioniert",
+      "content": "Das Erntewerkzeug überlagert einen schleppbaren Auswahlbereich auf Ihrem Bild mit verstellbaren Griffen an jeder Ecke und Kante. Sie können auf einen beliebigen Griff klicken und ihn ziehen, um die Größe des Zuschnittbereichs zu ändern, oder auf den Bereich klicken, um ihn über das Bild zu positionieren. Das Seitenverhältnis-Menü ermöglicht es Ihnen, das Erntegut auf einen bestimmten Anteil zu sperren - wenn es gesperrt ist, passt das Ziehen eines Griffs automatisch die benachbarten Seiten an, um das Verhältnis beizubehalten. Der Rotationsschieber dreht den Erntegutbereich unabhängig vom Bild und lässt Sie Ihre Komposition begradigen oder winkeln. Sobald Sie die Ernte anwenden, bleibt nur der ausgewählte Bereich erhalten und der Rest des Bildes wird verworfen. Das Ergebnis wird mit der ursprünglichen Auflösung heruntergeladen."
     },
     "tips": {
-      "heading": "Tips for Effective Cropping",
-      "content": "Follow the rule of thirds by positioning your subject off-center for more dynamic compositions. For portraits, crop at the shoulders or waist rather than at joints to avoid an awkward look. When cropping for social media, check each platform's specific requirements — Instagram prefers 1:1 or 4:5, YouTube uses 16:9, and Pinterest favors 2:3 vertical. Leave breathing room around your subject if the image will be used across multiple platforms. Use the rotation feature to straighten horizons in landscape photos. Before cropping, consider whether you might need the full image later — it is better to keep the original and crop non-destructively."
+      "heading": "Tipps für effektives Cropping",
+      "content": "Befolgen Sie die Drittelregel, indem Sie Ihr Motiv außermittig für dynamischere Kompositionen positionieren. Für Porträts, Ernte an den Schultern oder Taille statt an den Gelenken, um einen unangenehmen Blick zu vermeiden. Überprüfen Sie beim Zuschneiden für Social Media die spezifischen Anforderungen jeder Plattform - Instagram bevorzugt 1:1 oder 4:5, YouTube verwendet 16:9 und Pinterest bevorzugt 2:3 vertikal. Lassen Sie Raum für Ihr Motiv, wenn das Bild auf mehreren Plattformen verwendet wird. Verwenden Sie die Rotationsfunktion, um Horizonte in Landschaftsfotos zu begradigen. Bevor Sie zuschneiden, überlegen Sie, ob Sie das vollständige Bild später benötigen - es ist besser, das Original und die Ernte zerstörungsfrei zu behalten."
     },
-    "free": "Free",
-    "aspectRatio": "Aspect Ratio",
+    "free": "frei",
+    "aspectRatio": "Aspektverhältnis",
     "rotation": "Rotation",
     "zoom": "Zoom",
-    "applyCrop": "Apply Crop",
-    "cropHelper": "Rotate freely, then click Apply Crop to render the result.",
+    "applyCrop": "Anwenden von Crop",
+    "cropHelper": "Drehen Sie sich frei und klicken Sie dann auf Crop anwenden, um das Ergebnis zu rendern.",
     "supportedFormats": "JPG, PNG, WebP"
   },
   "adjust": {
@@ -1010,57 +1010,57 @@
     "selectImage": "Bild auswählen",
     "change": "Ändern",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload a JPG, PNG, or WebP image to start adjusting.",
-      "step2Title": "Fine-tune adjustments",
-      "step2Desc": "Use the brightness, contrast, and saturation sliders. Changes update in real time.",
-      "step3Title": "Choose output settings",
-      "step3Desc": "Select format and quality. Toggle target file size for output optimization.",
+      "heading": "Führung",
+      "step1Title": "Laden Sie Ihr Bild hoch",
+      "step1Desc": "Laden Sie ein JPG-, PNG- oder WebP-Bild hoch, um mit der Anpassung zu beginnen.",
+      "step2Title": "Feinsteuerungsanpassungen",
+      "step2Desc": "Verwenden Sie die Helligkeits-, Kontrast- und Sättigungsschieber. Updates in Echtzeit ändern.",
+      "step3Title": "Wählen Sie Output-Einstellungen",
+      "step3Desc": "Wählen Sie Format und Qualität. Zieldateigröße für die Outputoptimierung umschalten.",
       "step4Title": "Download",
-      "step4Desc": "Download the adjusted image at full quality with all changes applied."
+      "step4Desc": "Laden Sie das angepasste Bild in voller Qualität mit allen Änderungen herunter."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What image adjustments does QuickBG support?",
-      "a1": "Brightness, contrast, and saturation sliders let you fine-tune your image. All adjustments update in real time so you can see the effect instantly.",
-      "q2": "Will adjusting the image reduce quality?",
-      "a2": "No, QuickBG preserves original image quality. You can also choose the output format and quality level when downloading the result.",
-      "q3": "What file formats can I export after adjusting?",
-      "a3": "Download as PNG, JPG, or WebP. Use the Format Converter tool if you need additional formats like AVIF or TIFF.",
-      "q4": "When should I adjust brightness and contrast?",
-      "a4": "Adjust when your image looks too dark or washed out, before resizing or after background removal to match the subject with the new background."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Welche Bildanpassungen unterstützt QuickBG?",
+      "a1": "Helligkeit, Kontrast und Sättigungsschieber lassen Sie Ihr Bild feinabstimmen. Alle Anpassungen werden in Echtzeit aktualisiert, sodass Sie den Effekt sofort sehen können.",
+      "q2": "Wird die Anpassung des Bildes die Qualität reduzieren?",
+      "a2": "Nein, QuickBG bewahrt die ursprüngliche Bildqualität. Sie können auch das Ausgabeformat und die Qualitätsstufe beim Herunterladen des Ergebnisses auswählen.",
+      "q3": "Welche Dateiformate kann ich nach der Anpassung exportieren?",
+      "a3": "Download als PNG, JPG oder WebP. Verwenden Sie das Format Converter-Tool, wenn Sie zusätzliche Formate wie AVIF oder TIFF benötigen.",
+      "q4": "Wann sollte ich Helligkeit und Kontrast anpassen?",
+      "a4": "Passen Sie an, wenn Ihr Bild zu dunkel oder ausgewaschen aussieht, bevor Sie die Größe ändern oder nach der Hintergrundentfernung, um das Motiv mit dem neuen Hintergrund abzugleichen."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Image Adjust",
-      "content": "Even well-exposed photos can benefit from subtle adjustments to brightness, contrast, and saturation. QuickBG Image Adjust gives you precise control over these core parameters with real-time preview. Brightening an underexposed image reveals detail in shadow areas, while adjusting contrast adds depth and punch. Saturation control lets you make colors more vibrant or create a muted, desaturated look. All adjustments are applied independently so you can fine-tune each parameter without affecting the others. The tool supports multiple output formats and quality settings, making it suitable for web use, print, or further editing. Whether you are correcting smartphone photos or refining professional work, the controls are intuitive and responsive."
+      "heading": "Warum QuickBG Image Adjust verwenden",
+      "content": "Selbst gut belichtete Fotos können von subtilen Anpassungen an Helligkeit, Kontrast und Sättigung profitieren. QuickBG Image Adjust gibt Ihnen eine präzise Kontrolle über diese Kernparameter mit Echtzeit-Vorschau. Das Aufhellen eines unterbelichteten Bildes zeigt Details in Schattenbereichen, während das Anpassen des Kontrastes Tiefe und Schlag verleiht. Mit der Sättigungskontrolle können Sie Farben lebendiger machen oder einen gedämpften, desaturierten Look erzeugen. Alle Anpassungen werden unabhängig voneinander vorgenommen, so dass Sie jeden Parameter fein abstimmen können, ohne die anderen zu beeinflussen. Das Tool unterstützt mehrere Ausgabeformate und Qualitätseinstellungen, wodurch es für die Webnutzung, den Druck oder die weitere Bearbeitung geeignet ist. Egal, ob Sie Smartphone-Fotos korrigieren oder professionelle Arbeit verfeinern, die Steuerung ist intuitiv und reaktionsschnell."
     },
     "howItWorks": {
-      "heading": "How Image Adjustment Works",
-      "content": "QuickBG provides three adjustment sliders that modify your image's pixel data in real time. The brightness slider shifts all pixel values up or down, making the entire image lighter or darker. Contrast increases or decreases the difference between light and dark areas — higher contrast makes shadows deeper and highlights brighter, while lower contrast creates a flatter, softer look. Saturation controls the intensity of all colors simultaneously, from vivid full color to complete grayscale. The adjustments are processed client-side using the HTML Canvas API, so your image never leaves your browser. The preview updates instantly as you move any slider, and you can reset all adjustments to default with a single click."
+      "heading": "Wie Image Adjustment funktioniert",
+      "content": "QuickBG bietet drei Einstellschieber, die die Pixeldaten Ihres Bildes in Echtzeit ändern. Der Helligkeitsschieber verschiebt alle Pixelwerte nach oben oder unten, wodurch das gesamte Bild heller oder dunkler wird. Kontrast erhöht oder verringert den Unterschied zwischen hellen und dunklen Bereichen - höherer Kontrast macht Schatten tiefer und hebt heller hervor, während niedrigerer Kontrast ein flacheres, weicheres Aussehen erzeugt. Die Sättigung steuert die Intensität aller Farben gleichzeitig, von der lebhaften Vollfarbe bis zur vollständigen Graustufe. Die Anpassungen werden clientseitig mit der HTML Canvas API verarbeitet, sodass Ihr Bild Ihren Browser nie verlässt. Die Vorschau wird sofort aktualisiert, wenn Sie einen Schieberegler verschieben, und Sie können alle Anpassungen mit einem einzigen Klick auf Standard zurücksetzen."
     },
     "tips": {
-      "heading": "Tips for Natural-Looking Adjustments",
-      "content": "Start with brightness to get the overall exposure right, then adjust contrast, and finally fine-tune saturation. Small, incremental changes look more natural than large adjustments to a single parameter. For portraits, slightly reduced contrast can be flattering as it softens skin texture. For product photos, accurate brightness and moderate saturation present items truthfully. Boost contrast carefully — too much creates unnatural-looking images with clipped shadows and blown highlights. When converting to grayscale, reduce saturation gradually to find the perfect balance rather than going fully monochrome. Always preview adjustments at full size to check for artifacts or color shifts."
+      "heading": "Tipps für natürlich aussehende Anpassungen",
+      "content": "Beginnen Sie mit der Helligkeit, um die Gesamtbelichtung richtig zu machen, dann den Kontrast anzupassen und schließlich die Sättigung zu verfeinern. Kleine, inkrementelle Änderungen sehen natürlicher aus als große Anpassungen an einen einzelnen Parameter. Für Porträts kann ein leicht reduzierter Kontrast schmeichelhaft sein, da er die Hauttextur erweicht. Für Produktfotos, genaue Helligkeit und moderate Sättigung präsentieren Artikel wahrheitsgemäß. Steigern Sie den Kontrast vorsichtig - zu viel erzeugt unnatürlich aussehende Bilder mit abgeschnittenen Schatten und geblasenen Highlights. Reduzieren Sie bei der Umwandlung in Graustufen schrittweise die Sättigung, um das perfekte Gleichgewicht zu finden, anstatt vollständig monochrom zu werden. Immer Vorschau-Anpassungen in voller Größe, um auf Artefakte oder Farbverschiebungen zu überprüfen."
     },
-    "imageAdjustments": "Image Adjustments",
-    "brightness": "Brightness",
-    "contrast": "Contrast",
-    "saturation": "Saturation",
-    "reset": "Reset",
+    "imageAdjustments": "Bildanpassungen",
+    "brightness": "Helligkeit",
+    "contrast": "Kontrast",
+    "saturation": "Sättigung",
+    "reset": "Zurücksetzen",
     "undo": "Undo",
     "redo": "Redo",
-    "history": "History",
-    "resize": "Resize",
-    "enable": "Enable",
-    "width": "Width",
-    "height": "Height",
+    "history": "Geschichte",
+    "resize": "Größe",
+    "enable": "Ermöglicht",
+    "width": "Breite",
+    "height": "Höhe",
     "output": "Output",
-    "quality": "Quality",
-    "targetSize": "Target Size",
-    "lastExport": "Last export",
-    "filename": "Filename:",
-    "formatJson": "Supported formats: JPG, PNG, WebP."
+    "quality": "Qualität",
+    "targetSize": "Zielgröße",
+    "lastExport": "Letzte Ausfuhr",
+    "filename": "Dateiname:",
+    "formatJson": "Unterstützte Formate: JPG, PNG, WebP."
   },
   "sharpness": {
     "title": "Bildschärfe – QuickBG",
@@ -1068,52 +1068,52 @@
     "error": "Fehler",
     "howToUse": "So verwenden Sie die Schärfe",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Open from Remover",
-      "step1Desc": "Process an image with Background Remover first, then click the Sharpness quick-edit button.",
-      "step2Title": "Adjust sharpness",
-      "step2Desc": "Use the slider to control sharpness intensity. Increase gently for portraits and product edges.",
-      "step3Title": "Choose target",
-      "step3Desc": "Target the subject, background, or both using the alpha mask from the remover.",
+      "heading": "Führung",
+      "step1Title": "Öffnen von Remover",
+      "step1Desc": "Verarbeiten Sie ein Bild zuerst mit Background Remover und klicken Sie dann auf die Schaltfläche Sharpness Quick-Editing.",
+      "step2Title": "Schärfe einstellen",
+      "step2Desc": "Verwenden Sie den Schieber, um die Schärfeintensität zu kontrollieren. Erhöhen Sie sanft für Porträts und Produktkanten.",
+      "step3Title": "Ziel auswählen",
+      "step3Desc": "Zieltiere das Thema, den Hintergrund oder beides mit der Alpha-Maske aus dem Entferner.",
       "step4Title": "Download",
-      "step4Desc": "Preview updates automatically. Download when you are satisfied with the result."
+      "step4Desc": "Preview wird automatisch aktualisiert. Download, wenn Sie mit dem Ergebnis zufrieden sind."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What is AI sharpness adjustment?",
-      "a1": "QuickBG enhances edge contrast and detail clarity using intelligent algorithms that avoid over-sharpening artifacts and halos.",
-      "q2": "Can I sharpen only the subject or just the background?",
-      "a2": "Yes, choose to sharpen the subject, the background, or both using the alpha mask created during background removal.",
-      "q3": "Will sharpening create unwanted artifacts?",
-      "a3": "When used gently, sharpening enhances details naturally. Higher values may produce halos around high-contrast edges, so increase gradually.",
-      "q4": "When should I sharpen an image?",
-      "a4": "After resizing an image, for slightly soft portraits, product photos that lack crispness, or scanned images that need edge clarity."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Was ist KI Schärfe Anpassung?",
+      "a1": "QuickBG verbessert den Kantenkontrast und die Detailklarheit mithilfe intelligenter Algorithmen, die ein Überschärfen von Artefakten und Halos vermeiden.",
+      "q2": "Kann ich nur das Thema oder nur den Hintergrund schärfen?",
+      "a2": "Ja, schärfen Sie das Motiv, den Hintergrund oder beides mit der beim Entfernen des Hintergrunds erstellten Alphamaske.",
+      "q3": "Wird das Schärfen unerwünschte Artefakte erzeugen?",
+      "a3": "Bei sanfter Anwendung verbessert das Schärfen die Details auf natürliche Weise. Höhere Werte können Halos um kontrastreiche Kanten erzeugen, so dass sie allmählich zunehmen.",
+      "q4": "Wann sollte ich ein Bild schärfen?",
+      "a4": "Nach der Größenänderung eines Bildes, für leicht weiche Porträts, Produktfotos, denen es an Schärfe mangelt, oder gescannte Bilder, die Kantenklarheit benötigen."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Sharpness Tool",
-      "content": "Image sharpness can make the difference between a professional-looking photo and one that appears soft or out of focus. QuickBG Sharpness Tool enhances edge definition and detail clarity using intelligent algorithms that avoid the harsh artifacts common with basic sharpening. The tool is especially valuable after background removal, where the subject edges may benefit from enhanced crispness. You can target sharpening to the subject only, the background only, or both, giving you precise control over the final look. This is ideal for product photographers who need every detail visible, portrait retouchers enhancing eye and hair detail, and anyone working with images that look slightly soft after resizing or format conversion."
+      "heading": "Warum QuickBG Sharpness Tool verwenden",
+      "content": "Bildschärfe kann den Unterschied zwischen einem professionell aussehenden Foto und einem, das weich oder unscharf erscheint, ausmachen. Das QuickBG Sharpness Tool verbessert die Kantendefinition und Detailklarheit mithilfe intelligenter Algorithmen, die die harten Artefakte vermeiden, die beim grundlegenden Schärfen üblich sind. Das Werkzeug ist besonders wertvoll nach der Hintergrundentfernung, bei der die Objektkanten von einer erhöhten Knusprigkeit profitieren können. Sie können das Schärfen nur auf das Motiv, nur auf den Hintergrund oder auf beides richten, wodurch Sie die genaue Kontrolle über den endgültigen Look haben. Dies ist ideal für Produktfotografen, die jedes sichtbare Detail benötigen, Porträt-Retuschen, die Augen- und Haardetails verbessern, und alle, die mit Bildern arbeiten, die nach einer Größenänderung oder Formatumwandlung leicht weich aussehen."
     },
     "howItWorks": {
-      "heading": "How AI Sharpening Works",
-      "content": "QuickBG analyzes your image to identify edges and fine details, then selectively increases contrast at those boundaries to create the perception of greater sharpness. Unlike basic unsharp mask filters that apply uniformly, our algorithm detects which areas are edges versus smooth surfaces and sharpens only where needed. This prevents common problems like noise amplification in smooth areas like skin or sky. The sharpness slider controls intensity from subtle to strong. When used after background removal, the tool can apply sharpening exclusively to the subject using the existing alpha mask, leaving the background untouched. The preview updates in real time so you can see the effect at full resolution before downloading."
+      "heading": "Wie AI Sharpening funktioniert",
+      "content": "QuickBG analysiert Ihr Bild, um Kanten und feine Details zu identifizieren, und erhöht dann selektiv den Kontrast an diesen Grenzen, um die Wahrnehmung einer größeren Schärfe zu erzeugen. Im Gegensatz zu einfachen unscharfen Maskenfiltern, die einheitlich angewendet werden, erkennt unser Algorithmus, welche Bereiche Kanten gegenüber glatten Oberflächen sind, und schärft nur dort, wo es nötig ist. Dies verhindert häufige Probleme wie Lärmverstärkung in glatten Bereichen wie Haut oder Himmel. Der Schärfe-Slider steuert die Intensität von subtil bis stark. Bei Verwendung nach dem Entfernen des Hintergrunds kann das Werkzeug das Schärfen ausschließlich mit der vorhandenen Alphamaske auf das Motiv anwenden, wobei der Hintergrund unberührt bleibt. Die Vorschau wird in Echtzeit aktualisiert, sodass Sie den Effekt vor dem Herunterladen in voller Auflösung sehen können."
     },
     "tips": {
-      "heading": "Tips for Best Sharpening Results",
-      "content": "Apply sharpening as the final step in your editing workflow after resizing and color adjustments. Start with a low intensity and increase gradually — it is better to under-sharpen than over-sharpen. View the image at 100% zoom to check for halos around high-contrast edges. For portraits, sharpen the eyes and hair but avoid over-sharpening skin. For product photos, emphasize texture and detail that matters to buyers. When sharpening after background removal, target the subject only to keep the background smooth. Different output uses need different levels — web images can be sharper than print images. Always preview the result before downloading."
+      "heading": "Tipps für die besten Sharpening Ergebnisse",
+      "content": "Wenden Sie das Schärfen als letzten Schritt in Ihrem Bearbeitungsworkflow nach Größenänderungen und Farbanpassungen an. Beginnen Sie mit einer niedrigen Intensität und steigen Sie allmählich an - es ist besser, unterzuschärfen als überzuschärfen. Sehen Sie sich das Bild bei 100% Zoom an, um nach Halos um kontrastreiche Kanten zu suchen. Für Porträts, schärfen Sie die Augen und Haare, aber vermeiden Sie überschärfende Haut. Für Produktfotos betonen Sie Textur und Details, die für Käufer wichtig sind. Wenn Sie nach dem Entfernen des Hintergrunds schärfen, zielen Sie das Motiv nur an, um den Hintergrund glatt zu halten. Unterschiedliche Output-Anwendungen erfordern unterschiedliche Ebenen - Webbilder können schärfer sein als Druckbilder. Immer Vorschau des Ergebnisses vor dem Download."
     },
     "accessRestricted": {
-      "heading": "Access Restricted",
-      "desc": "Please process an image with Background Remover first, then use the \"Sharpness\" quick-edit button."
+      "heading": "Zugriff eingeschränkt",
+      "desc": "Bitte verarbeiten Sie zuerst ein Bild mit Background Remover und verwenden Sie dann die Schnellbearbeitungsschaltfläche \"Sharpness\"."
     },
-    "target": "Target",
-    "subject": "subject",
-    "background": "background",
-    "targetHelper": "Subject/background targeting uses the transparent PNG alpha mask from the remover.",
-    "helperText": "Preview updates automatically after you stop dragging.",
-    "tipText": "Increase gently for portraits and product edges; higher values can create halos.",
-    "buildingPreview": "Building sharpness preview...",
-    "updatingPreview": "Updating preview...",
-    "sectionTitle": "Sharpness"
+    "target": "Ziel",
+    "subject": "Thema",
+    "background": "Hintergrund",
+    "targetHelper": "Subject/Hintergrund-Targeting verwendet die transparente PNG-Alpha-Maske des Entferners.",
+    "helperText": "Vorschau wird automatisch aktualisiert, nachdem Sie das Ziehen beendet haben.",
+    "tipText": "Erhöhen Sie sanft für Porträts und Produktkanten; höhere Werte können Halos erzeugen.",
+    "buildingPreview": "Vorschau der Gebäudeschärfe...",
+    "updatingPreview": "Update Preview...",
+    "sectionTitle": "Schärfe"
   },
   "converter": {
     "title": "Formatkonverter – QuickBG",
@@ -1121,48 +1121,48 @@
     "change": "Ändern",
     "howToUse": "So verwenden Sie den Format-Konverter",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload images",
-      "step1Desc": "Upload one or more images. Supported formats: PNG, JPG, WebP, HEIC, AVIF, TIFF.",
-      "step2Title": "Choose output format",
-      "step2Desc": "Select PNG, JPG, WebP, AVIF, or TIFF as the target format and adjust quality.",
-      "step3Title": "Review and convert",
-      "step3Desc": "Click Convert to process. The tool handles batch conversion automatically.",
+      "heading": "Führung",
+      "step1Title": "Bilder hochladen",
+      "step1Desc": "Laden Sie ein oder mehrere Bilder hoch. Unterstützte Formate: PNG, JPG, WebP, HEIC, AVIF, TIFF.",
+      "step2Title": "Ausgabeformat auswählen",
+      "step2Desc": "Wählen Sie PNG, JPG, WebP, AVIF oder TIFF als Zielformat und passen Sie die Qualität an.",
+      "step3Title": "Überprüfung und Konvertierung",
+      "step3Desc": "Klicken Sie auf Konvertieren in Prozess. Das Tool übernimmt die Batch-Konvertierung automatisch.",
       "step4Title": "Download",
-      "step4Desc": "Download individual files or all results as a ZIP archive."
+      "step4Desc": "Laden Sie einzelne Dateien oder alle Ergebnisse als ZIP-Archiv herunter."
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "Which image format should I choose?",
-      "a1": "PNG for transparency and lossless quality, JPEG for photos with smaller file sizes, WebP for modern web use with good compression, AVIF for the best compression-to-quality ratio.",
-      "q2": "Does format conversion reduce image quality?",
-      "a2": "Converting to a lossy format like JPEG or WebP may reduce quality depending on the compression level you choose. PNG and TIFF conversions are lossless.",
-      "q3": "Can I convert multiple images in batch?",
-      "a3": "Yes, upload multiple images and the converter processes them in a single batch. You can download results individually or as a ZIP archive.",
-      "q4": "What image formats are supported for conversion?",
-      "a4": "Upload PNG, JPG, WebP, HEIC, AVIF, or TIFF and convert to any of these formats. HEIC and AVIF offer modern compression with excellent quality."
+      "heading": "Häufig gestellte Fragen",
+      "q1": "Welches Bildformat soll ich wählen?",
+      "a1": "PNG für Transparenz und verlustfreie Qualität, JPEG für Fotos mit kleineren Dateigrößen, WebP für moderne Webnutzung mit guter Komprimierung, AVIF für das beste Komprimierungs-Qualitätsverhältnis.",
+      "q2": "Reduziert die Formatkonvertierung die Bildqualität?",
+      "a2": "Die Konvertierung in ein verlustbehaftetes Format wie JPEG oder WebP kann die Qualität abhängig von der von Ihnen gewählten Komprimierungsstufe verringern. PNG und TIFF Conversions sind verlustfrei.",
+      "q3": "Kann ich mehrere Bilder in Batch konvertieren?",
+      "a3": "Ja, laden Sie mehrere Bilder hoch und der Konverter verarbeitet sie in einem einzigen Batch. Sie können die Ergebnisse einzeln oder als ZIP-Archiv herunterladen.",
+      "q4": "Welche Bildformate werden für die Konvertierung unterstützt?",
+      "a4": "Laden Sie PNG, JPG, WebP, HEIC, AVIF oder TIFF hoch und konvertieren Sie in eines dieser Formate. HEIC und AVIF bieten moderne Kompression mit ausgezeichneter Qualität."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Image Converter",
-      "content": "Different platforms and use cases demand different image formats, and converting between them while maintaining quality is essential. QuickBG Image Converter supports all major formats — PNG, JPG, WebP, AVIF, HEIC, and TIFF — with batch processing for efficiency. PNG preserves transparency and delivers lossless quality for images with cutout subjects. JPG offers smaller file sizes ideal for photographs and web use. WebP and AVIF provide modern compression with excellent quality-to-size ratios. TIFF is the professional standard for print and archival purposes. The converter handles multiple images in a single batch, letting you download results individually or as a ZIP archive, saving significant time when processing large sets."
+      "heading": "Warum QuickBG Image Converter verwenden",
+      "content": "Verschiedene Plattformen und Anwendungsfälle erfordern unterschiedliche Bildformate, und die Konvertierung zwischen ihnen unter Beibehaltung der Qualität ist unerlässlich. QuickBG Image Converter unterstützt alle wichtigen Formate - PNG, JPG, WebP, AVIF, HEIC und TIFF - mit Batch-Verarbeitung für Effizienz. PNG bewahrt Transparenz und liefert verlustfreie Qualität für Bilder mit ausgeschnittenen Motiven. JPG bietet kleinere Dateigrößen, ideal für Fotos und Web-Nutzung. WebP und AVIF bieten eine moderne Komprimierung mit hervorragenden Größenverhältnissen. TIFF ist der professionelle Standard für Druck- und Archivierungszwecke. Der Konverter verarbeitet mehrere Bilder in einem einzigen Batch, sodass Sie die Ergebnisse einzeln oder als ZIP-Archiv herunterladen können, was bei der Verarbeitung großer Mengen viel Zeit spart."
     },
     "howItWorks": {
-      "heading": "How Format Conversion Works",
-      "content": "QuickBG converts images by decoding the source format into raw pixel data, then encoding that data into the target format using optimized compression libraries. For lossless formats like PNG and TIFF, all original pixel data is preserved exactly. For lossy formats like JPEG and WebP, you control the quality level via a slider — higher quality means larger file sizes with less compression artifacts. AVIF offers superior compression efficiency, producing smaller files than JPEG at equivalent visual quality. The conversion happens entirely in your browser using WebAssembly-based codecs, meaning your images never upload to a server. Batch mode processes all selected images sequentially and packages them for convenient download."
+      "heading": "Wie Format Conversion funktioniert",
+      "content": "QuickBG konvertiert Bilder, indem es das Quellformat in rohe Pixeldaten dekodiert und diese Daten dann mithilfe optimierter Komprimierungsbibliotheken in das Zielformat kodiert. Bei verlustfreien Formaten wie PNG und TIFF bleiben alle Originalpixeldaten exakt erhalten. Bei verlustbehafteten Formaten wie JPEG und WebP steuern Sie die Qualitätsstufe über einen Schieberegler - höhere Qualität bedeutet größere Dateigrößen mit weniger Kompressionsartefakten. AVIF bietet eine überlegene Komprimierungseffizienz und erzeugt kleinere Dateien als JPEG bei gleichwertiger visueller Qualität. Die Konvertierung erfolgt vollständig in Ihrem Browser mit WebAssembly-basierten Codecs, was bedeutet, dass Ihre Bilder niemals auf einen Server hochgeladen werden. Der Batch-Modus verarbeitet alle ausgewählten Bilder sequentiell und verpackt sie zum bequemen Download."
     },
     "tips": {
-      "heading": "Tips for Choosing the Right Format",
-      "content": "Use PNG when you need transparency or lossless quality — ideal for logos, graphics, and images with text. Use JPEG for photographs where smaller file size matters more than absolute quality, adjusting the quality slider to balance size and appearance. Use WebP for web content as it combines good compression with broad browser support. Use AVIF for the best compression efficiency on modern browsers. Use TIFF for print workflows and archival storage. If you are unsure, PNG is the safest choice for versatility. For batch conversion, process all images at the same quality setting for consistent output. Always preview a sample before converting a large batch."
+      "heading": "Tipps zur Auswahl des richtigen Formats",
+      "content": "Verwenden Sie PNG, wenn Sie Transparenz oder verlustfreie Qualität benötigen - ideal für Logos, Grafiken und Bilder mit Text. Verwenden Sie JPEG für Fotos, bei denen eine kleinere Dateigröße wichtiger ist als die absolute Qualität, und passen Sie den Qualitäts-Slider an, um Größe und Aussehen auszugleichen. Verwenden Sie WebP für Webinhalte, da es eine gute Komprimierung mit breiter Browserunterstützung kombiniert. Verwenden Sie AVIF für die beste Komprimierungseffizienz in modernen Browsern. Verwenden Sie TIFF für Druck-Workflows und Archivierung. Wenn Sie unsicher sind, ist PNG die sicherste Wahl für Vielseitigkeit. Verarbeiten Sie für die Batch-Konvertierung alle Bilder mit der gleichen Qualitätseinstellung für eine konsistente Ausgabe. Immer eine vorschau einer probe anzeigen, bevor sie eine große charge konvertieren."
     },
-    "chooseFormat": "Choose output format and quality.",
-    "outputFormat": "Output format",
-    "convert": "Convert",
+    "chooseFormat": "Wählen Sie Ausgabeformat und Qualität.",
+    "outputFormat": "Ausgabeformat",
+    "convert": "Konvertieren",
     "download": "Download",
-    "formatPng": "Lossless and keeps transparency. Best for cutouts and graphics.",
-    "formatJpg": "Small, widely supported, and best for photos. No transparency.",
-    "formatWebp": "Modern compression with transparency support in most browsers.",
-    "formatAvif": "Very small files with strong compression. Newer browser support.",
-    "formatTiff": "High-quality archive format for print and production workflows."
+    "formatPng": "Lossless und behält Transparenz. Am besten für Ausschnitte und Grafiken.",
+    "formatJpg": "Klein, breit unterstützt und am besten für Fotos. Keine Transparenz.",
+    "formatWebp": "Moderne Komprimierung mit Transparenzunterstützung in den meisten Browsern.",
+    "formatAvif": "Sehr kleine Dateien mit starker Kompression. Neuere Browser-Unterstützung.",
+    "formatTiff": "Hochwertiges Archivformat für Druck- und Produktionsworkflows."
   },
   "comparison": {
     "title": "QuickBG vs. Remove.bg – Vergleich",

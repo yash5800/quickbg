@@ -763,15 +763,15 @@
       "removingDesc": "Detecting the subject edges and creating a transparent cutout."
     },
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload any image in PNG, JPG, WebP, or HEIC format. Multiple images are supported.",
-      "step2Title": "AI removes the background",
-      "step2Desc": "Our AI automatically detects the subject and removes the background in seconds.",
-      "step3Title": "Fine-tune with Quick Edit",
-      "step3Desc": "Use Eraser, Sharpness, Blur BG, or Replace BG to perfect the result.",
-      "step4Title": "Download",
-      "step4Desc": "Download as transparent PNG with or without watermark overlay."
+      "heading": "गाइड",
+      "step1Title": "अपनी छवि अपलोड करें",
+      "step1Desc": "PNG, JPG, WebP, या HEIC प्रारूप में किसी भी छवि को अपलोड करें। एकाधिक छवियां समर्थित हैं।",
+      "step2Title": "AI पृष्ठभूमि को हटा देता है",
+      "step2Desc": "हमारी एआई स्वचालित रूप से विषय का पता लगाती है और सेकंड में पृष्ठभूमि को हटा देती है।",
+      "step3Title": "क्विक एडिट के साथ ठीक ट्यून",
+      "step3Desc": "Eraser, Sharpness, Blur BG, या BG को परिणाम को सही करने के लिए बदलें।",
+      "step4Title": "डाउनलोड",
+      "step4Desc": "पानी के निशान ओवरले के साथ या बिना पारदर्शी पीएनजी के रूप में डाउनलोड करें।"
     },
     "steps": {
       "upload": "Upload",
@@ -780,89 +780,89 @@
       "export": "Export"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "How does AI background removal work?",
-      "a1": "QuickBG uses a deep learning model trained on millions of images to detect subjects and separate them from the background with pixel-level precision.",
-      "q2": "Is background removal really free and unlimited?",
-      "a2": "Yes, completely free with no signup required. Remove backgrounds from unlimited images at full resolution with no watermark.",
-      "q3": "What image formats are supported for upload?",
-      "a3": "Upload PNG, JPG, WebP, HEIC, and AVIF images. Processed results download as transparent PNG files.",
-      "q4": "Can I edit the result after background removal?",
-      "a4": "Yes, use the Quick Edit tools — Eraser to fix mask edges, Sharpness to enhance details, Blur BG to soften the background, and Replace BG to add a new backdrop."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "एआई पृष्ठभूमि हटाने कैसे काम करता है?",
+      "a1": "QuickBG विषयों का पता लगाने और पिक्सेल स्तर की सटीकता के साथ पृष्ठभूमि से अलग करने के लिए लाखों छवियों पर प्रशिक्षित एक गहरी शिक्षण मॉडल का उपयोग करता है।",
+      "q2": "क्या पृष्ठभूमि वास्तव में मुक्त और असीमित है?",
+      "a2": "हाँ, पूरी तरह से कोई साइनअप की आवश्यकता नहीं है। बिना किसी वॉटरमार्क के पूर्ण रिज़ॉल्यूशन पर असीमित छवियों से पृष्ठभूमि निकालें।",
+      "q3": "क्या छवि प्रारूप अपलोड करने के लिए समर्थन कर रहे हैं?",
+      "a3": "PNG, JPG, WebP, HEIC और AVIF छवियों को अपलोड करें। संसाधित परिणाम पारदर्शी PNG फ़ाइलों के रूप में डाउनलोड करते हैं।",
+      "q4": "क्या मैं पृष्ठभूमि हटाने के बाद परिणाम संपादित कर सकता हूं?",
+      "a4": "हाँ, क्विक एडिट टूल का उपयोग करें - इरेज़र मास्क किनारों को ठीक करने के लिए, विवरण बढ़ाने के लिए Sharpness, ब्लूर BG पृष्ठभूमि को नरम करने के लिए, और BG को एक नई पृष्ठभूमि जोड़ने के लिए बदलें।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Background Remover",
-      "content": "Professional background removal used to require expensive software and manual effort. QuickBG changes that by delivering studio-quality cutouts in seconds through advanced AI. Whether you are an e-commerce seller creating product listings, a content creator building a personal brand, or a designer preparing assets, our tool eliminates the tedious work of manual masking. There are no subscription fees, no usage caps, and no watermark on your downloads. Every image processes at full resolution, preserving the fine details that matter — hair strands, product edges, and complex subjects. The result is a clean transparent PNG ready for any project."
+      "heading": "QuickBG पृष्ठभूमि रीमूवर का उपयोग क्यों करें",
+      "content": "व्यावसायिक पृष्ठभूमि हटाने के लिए महंगे सॉफ्टवेयर और मैनुअल प्रयास की आवश्यकता होती है। QuickBG परिवर्तन कि उन्नत AI के माध्यम से सेकंड में स्टूडियो गुणवत्ता वाले कटआउट वितरित करके। चाहे आप एक ई-कॉमर्स विक्रेता हैं जो उत्पाद लिस्टिंग बनाते हैं, एक सामग्री निर्माता एक व्यक्तिगत ब्रांड का निर्माण करता है, या एक डिजाइनर तैयार करने वाली संपत्ति है, हमारा उपकरण मैनुअल मास्किंग के tedious काम को समाप्त करता है। कोई सदस्यता शुल्क नहीं है, कोई उपयोग कैप नहीं है, और आपके डाउनलोड पर कोई वॉटरमार्क नहीं है। पूर्ण रिज़ॉल्यूशन पर हर छवि प्रक्रियाएं, ठीक विवरण को संरक्षित करती हैं, जो बात - बाल किस्में, उत्पाद किनारों और जटिल विषयों। परिणाम किसी भी परियोजना के लिए एक स्वच्छ पारदर्शी पीएनजी तैयार है।"
     },
     "howItWorks": {
-      "heading": "How AI Background Removal Works",
-      "content": "QuickBG uses a deep neural network trained on millions of diverse images to understand what constitutes a subject versus a background. When you upload an image, the AI analyzes every pixel, identifying boundaries between foreground and background elements. It detects edges, textures, color transitions, and depth cues to create a precise alpha mask. The model excels at handling challenging subjects like hair, fur, translucent objects, and intricate patterns. Unlike simple chroma-key or color-based removal, our AI understands context — it knows the difference between a person and the wall behind them even when colors are similar. The entire process takes just seconds and requires no manual intervention."
+      "heading": "कैसे एआई पृष्ठभूमि हटाने वर्क्स",
+      "content": "QuickBG लाखों विविध छवियों पर प्रशिक्षित एक गहरी तंत्रिका नेटवर्क का उपयोग करता है, यह समझने के लिए कि एक विषय पृष्ठभूमि बनाम क्या है। जब आप एक छवि अपलोड करते हैं, तो एआई हर पिक्सेल का विश्लेषण करती है, जो अग्रभूमि और पृष्ठभूमि तत्वों के बीच सीमाओं की पहचान करती है। यह सटीक अल्फा मास्क बनाने के लिए किनारों, बनावट, रंग संक्रमण और गहराई cues का पता लगाता है। मॉडल बाल, फर, पारभासी वस्तुओं और जटिल पैटर्न जैसे चुनौतीपूर्ण विषयों को संभालने में उत्कृष्टता प्राप्त करता है। सरल क्रोमा-की या रंग आधारित हटाने के विपरीत, हमारी एआई संदर्भ को समझता है - यह किसी व्यक्ति और दीवार के बीच अंतर जानता है, यहां तक कि जब रंग समान होते हैं। पूरी प्रक्रिया सिर्फ सेकंड लेती है और उसे मैनुअल हस्तक्षेप की आवश्यकता नहीं होती है।"
     },
     "tips": {
-      "heading": "Tips for Best Results",
-      "content": "For optimal results, upload images where the subject is clearly visible against the background. Well-lit photos with good contrast between subject and background produce the cleanest cutouts. Images with busy or patterned backgrounds still work well, but simple backgrounds yield faster processing. The tool handles multiple subjects in a single image, but results are best when the main subject is prominent. After processing, review the result at 100% zoom to check edges. If you notice minor imperfections, use the Eraser tool in Quick Edit to refine the mask. For product photography, ensure the item is fully visible without obstructions. Group shots work well, but each person should be clearly separated from others."
+      "heading": "सर्वश्रेष्ठ परिणाम के लिए युक्तियाँ",
+      "content": "इष्टतम परिणामों के लिए, छवियों को अपलोड करें जहां विषय पृष्ठभूमि के खिलाफ स्पष्ट रूप से दिखाई देता है। विषय और पृष्ठभूमि के बीच अच्छे विपरीत के साथ अच्छी तरह से प्रकाशित तस्वीरें सबसे स्वच्छ कटआउट उत्पन्न करती हैं। व्यस्त या पैटर्न वाली पृष्ठभूमि वाली छवियां अभी भी अच्छी तरह से काम करती हैं, लेकिन सरल पृष्ठभूमि तेजी से प्रसंस्करण पैदा करती है। टूल एक एकल छवि में एकाधिक विषयों को संभालता है, लेकिन मुख्य विषय प्रमुख होने पर परिणाम सबसे अच्छे होते हैं। प्रसंस्करण के बाद, किनारों की जांच के लिए 100% ज़ूम पर परिणाम की समीक्षा करें। यदि आप मामूली खामियों को नोटिस करते हैं, तो मास्क को परिष्कृत करने के लिए क्विक एडिट में इरेज़र टूल का उपयोग करें। उत्पाद फोटोग्राफी के लिए, यह सुनिश्चित करें कि आइटम बाधा के बिना पूरी तरह से दिखाई दे रहा है। ग्रुप शॉट्स अच्छी तरह से काम करते हैं, लेकिन प्रत्येक व्यक्ति को दूसरों से स्पष्ट रूप से अलग किया जाना चाहिए।"
     },
-    "allProcessed": "All images processed!",
-    "readyForDownload": "ready for download.",
-    "imagesSelected": "images selected",
-    "creditsLeft": "credits left",
-    "changesSaved": "Changes saved!",
+    "allProcessed": "सभी चित्र संसाधित!",
+    "readyForDownload": "डाउनलोड करने के लिए तैयार",
+    "imagesSelected": "चयनित चित्र",
+    "creditsLeft": "छोड़ दिया क्रेडिट",
+    "changesSaved": "परिवर्तन बचाया!",
     "copiedImage": "Copied image",
-    "copyFailed": "Copy failed",
-    "clipboardBlocked": "Your browser blocked image clipboard access."
+    "copyFailed": "प्रतिलिपि विफल",
+    "clipboardBlocked": "आपका ब्राउज़र अवरुद्ध छवि क्लिपबोर्ड एक्सेस।"
   },
   "replaceBg": {
     "title": "ऑनलाइन बैकग्राउंड बदलें — QuickBG",
     "description": "सॉलिड रंगों या ग्रेडिएंट से इमेज का बैकग्राउंड बदलें। मुफ़्त, बिना साइनअप के।",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Open the image",
-      "step1Desc": "Start from Background Remover and click the Replace BG quick-edit button on a completed image.",
-      "step2Title": "Choose background type",
-      "step2Desc": "Select solid color, gradient, or custom image as your new background.",
-      "step3Title": "Adjust and preview",
-      "step3Desc": "Color picker, gradient stops, and image upload let you fine-tune the backdrop.",
-      "step4Title": "Download the result",
-      "step4Desc": "Export as transparent PNG overlay or flattened image with the new background."
+      "heading": "गाइड",
+      "step1Title": "छवि खोलें",
+      "step1Desc": "पृष्ठभूमि रीमूवर से शुरू करें और एक पूर्ण छवि पर बदलें BG त्वरित संपादित बटन पर क्लिक करें।",
+      "step2Title": "पृष्ठभूमि प्रकार चुनें",
+      "step2Desc": "अपनी नई पृष्ठभूमि के रूप में ठोस रंग, ढाल या कस्टम छवि का चयन करें।",
+      "step3Title": "समायोजन और पूर्वावलोकन",
+      "step3Desc": "कलर पिकर, ग्रेडिएंट स्टॉप और इमेज अपलोड आपको बैकड्रॉप को ठीक करने देता है।",
+      "step4Title": "परिणाम डाउनलोड करें",
+      "step4Desc": "नई पृष्ठभूमि के साथ पारदर्शी पीएनजी ओवरले या सपाट छवि के रूप में निर्यात करें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What background options are available?",
-      "a1": "Solid colors, gradients, and custom images. The color picker and gradient controls give you full creative freedom to design the perfect backdrop.",
-      "q2": "Can I use my own image as the replacement background?",
-      "a2": "Yes, upload any image to use as the replacement background. It will be placed behind your subject automatically.",
-      "q3": "Does Replace BG require the Remover first?",
-      "a3": "Yes, start with Background Remover to create a clean subject cutout, then use Replace BG to add a new background behind it.",
-      "q4": "Can I export the result with a transparent background?",
-      "a4": "Yes, download as a transparent PNG overlay if you want to keep the subject separate, or as a flattened image with the new background baked in."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "क्या पृष्ठभूमि विकल्प उपलब्ध हैं?",
+      "a1": "ठोस रंग, ढाल और कस्टम छवियों। रंग पिकर और ढाल नियंत्रण आपको सही पृष्ठभूमि डिजाइन करने के लिए पूर्ण रचनात्मक स्वतंत्रता देते हैं।",
+      "q2": "क्या मैं अपनी खुद की छवि को प्रतिस्थापन पृष्ठभूमि के रूप में इस्तेमाल कर सकता हूं?",
+      "a2": "हाँ, किसी भी छवि को प्रतिस्थापन पृष्ठभूमि के रूप में उपयोग करने के लिए अपलोड करें। इसे अपने विषय के पीछे स्वचालित रूप से रखा जाएगा।",
+      "q3": "क्या BG को पहले रिमूवर की आवश्यकता होती है?",
+      "a3": "हां, एक स्वच्छ विषय कटआउट बनाने के लिए पृष्ठभूमि रीमूवर के साथ शुरू करें, फिर इसके पीछे एक नई पृष्ठभूमि जोड़ने के लिए BG को बदलें।",
+      "q4": "क्या मैं एक पारदर्शी पृष्ठभूमि के साथ परिणाम निर्यात कर सकता हूं?",
+      "a4": "हां, यदि आप विषय को अलग रखना चाहते हैं तो पारदर्शी पीएनजी ओवरले के रूप में डाउनलोड करें, या नई पृष्ठभूमि बेक्ड के साथ एक सपाट छवि के रूप में।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Background Replace",
-      "content": "Replacing an image background opens up unlimited creative possibilities for your visuals. QuickBG lets you swap any background with solid colors, smooth gradients, or custom images — all while keeping your subject perfectly separated. This is essential for e-commerce sellers who need consistent brand backgrounds across their product catalog, marketers creating unified social media visuals, and photographers experimenting with different backdrops without costly reshoots. The tool preserves the subject edges from the original AI cutout, so hair, fur, and intricate details remain crisp against the new background. You can fine-tune colors and gradient stops in real time, seeing exactly how the final image will look before downloading."
+      "heading": "क्यों QuickBG पृष्ठभूमि बदलें का उपयोग करें",
+      "content": "एक छवि पृष्ठभूमि को बदलने से आपके दृश्यों के लिए असीमित रचनात्मक संभावनाएं खुल जाती हैं। QuickBG आपको ठोस रंगों, चिकनी ढाल, या कस्टम छवियों के साथ किसी भी पृष्ठभूमि को स्वैप करने देता है - अपने विषय को पूरी तरह से अलग रखते हुए। यह ई-कॉमर्स विक्रेताओं के लिए आवश्यक है, जिन्हें अपने उत्पाद सूची में लगातार ब्रांड पृष्ठभूमि की आवश्यकता होती है, विपणक एकीकृत सोशल मीडिया दृश्य बनाते हैं, और फोटोग्राफरों ने बिना किसी महंगे रीशूट के विभिन्न पृष्ठभूमि के साथ प्रयोग किया। उपकरण मूल एआई कटआउट से विषय किनारों को संरक्षित करता है, इसलिए बाल, फर और जटिल विवरण नई पृष्ठभूमि के खिलाफ कुरकुरा रहता है। आप वास्तविक समय में ठीक रंग और ढाल स्टॉप कर सकते हैं, वास्तव में देखते हुए कि अंतिम छवि कैसे डाउनलोड करने से पहले दिखाई देगी।"
     },
     "howItWorks": {
-      "heading": "How Background Replacement Works",
-      "content": "Background replacement builds on the AI cutout created by the Background Remover. Once the subject is isolated with a precise alpha mask, QuickBG composites it onto your chosen background. For solid colors, you can pick any hex value or use the visual color picker. For gradients, you define two or more color stops and the gradient direction — linear or radial. For custom images, your uploaded photo is positioned behind the subject automatically. The compositing engine handles transparency blending, edge anti-aliasing, and color matching to ensure the subject looks natural against the new background. You can output the result as a transparent PNG overlay for further editing or as a flattened composite image ready to use."
+      "heading": "पृष्ठभूमि रिप्लेसमेंट वर्क्स",
+      "content": "पृष्ठभूमि प्रतिस्थापन पृष्ठभूमि रीमूवर द्वारा बनाई गई एआई कटआउट पर बनाता है। एक बार जब विषय एक सटीक अल्फा मास्क के साथ अलग हो जाता है, तो QuickBG इसे अपनी चुनी हुई पृष्ठभूमि पर मिश्रित करता है। ठोस रंगों के लिए, आप किसी भी हेक्स मान को चुन सकते हैं या दृश्य रंग पिकर का उपयोग कर सकते हैं। ढाल के लिए, आप दो या अधिक रंग स्टॉप और ढाल दिशा - रैखिक या रेडियल को परिभाषित करते हैं। कस्टम छवियों के लिए, आपकी अपलोड की गई तस्वीर स्वचालित रूप से विषय के पीछे स्थित है। कम्पोसिटिंग इंजन पारदर्शिता सम्मिश्रण, किनारे विरोधी झूठ बोलने और रंग मिलान को यह सुनिश्चित करने के लिए कि विषय नई पृष्ठभूमि के खिलाफ प्राकृतिक दिखता है। आप परिणाम को आगे संपादन के लिए पारदर्शी पीएनजी ओवरले के रूप में या उपयोग करने के लिए तैयार एक सपाट समग्र छवि के रूप में आउटपुट कर सकते हैं।"
     },
     "tips": {
-      "heading": "Tips for Natural-Looking Backgrounds",
-      "content": "Choose background colors that complement your subject rather than clash with it. For product photos, neutral colors like white, gray, or soft pastels keep focus on the item. Gradients work well for social media graphics and add depth without distraction. When using a custom image as background, ensure it is high resolution to avoid pixelation. Match the lighting direction between your subject and the background for the most realistic look. For portraits, warm backgrounds complement skin tones while cool backgrounds create contrast. Preview the result at full size before downloading, and use the Eraser tool to fix any edge artifacts where the subject meets the new background."
+      "heading": "प्राकृतिक पृष्ठभूमि के लिए युक्तियाँ",
+      "content": "पृष्ठभूमि रंग है कि इसके साथ टकराव के बजाय अपने विषय के पूरक चुनें। उत्पाद तस्वीरों के लिए, सफेद, भूरे या नरम पेस्टल जैसे तटस्थ रंग आइटम पर ध्यान केंद्रित करते हैं। ग्रेडिएंट सोशल मीडिया ग्राफिक्स के लिए अच्छी तरह से काम करते हैं और विचलन के बिना गहराई जोड़ते हैं। पृष्ठभूमि के रूप में एक कस्टम छवि का उपयोग करते समय, यह सुनिश्चित करना कि पिक्सेलेशन से बचने के लिए यह उच्च रिज़ॉल्यूशन है। अपने विषय के बीच प्रकाश दिशा और सबसे यथार्थवादी देखो के लिए पृष्ठभूमि मैच। चित्रों के लिए, गर्म पृष्ठभूमि त्वचा टोन का पूरक है जबकि शांत पृष्ठभूमि विपरीत बनाती है। डाउनलोड करने से पहले परिणाम को पूर्ण आकार में पूर्वावलोकन करें और किसी भी एज कलाकृतियों को ठीक करने के लिए इरेज़र टूल का उपयोग करें जहां विषय नई पृष्ठभूमि को पूरा करता है।"
     },
     "accessRestricted": {
-      "heading": "Access Restricted",
-      "desc": "Please process an image with Background Remover first, then use the \"Replace BG\" button to access this tool."
+      "heading": "पहुँच प्रतिबंधित",
+      "desc": "कृपया पहले पृष्ठभूमि रीमूवर के साथ एक छवि को संसाधित करें, फिर इस उपकरण तक पहुंचने के लिए \"Replace BG\" बटन का उपयोग करें।"
     },
-    "badge": "Subject ready — background will be replaced",
-    "bgType": "Background Type",
-    "typeColor": "Color",
-    "typeGradient": "Gradient",
-    "typeImage": "Image",
-    "chooseColor": "Choose Color",
-    "chooseGradient": "Choose Gradient",
-    "bgImage": "Background Image",
-    "uploadBg": "Click to upload background",
-    "replaceBtn": "Replace Background",
-    "processing": "Processing..."
+    "badge": "विषय तैयार - पृष्ठभूमि को प्रतिस्थापित किया जाएगा",
+    "bgType": "पृष्ठभूमि प्रकार",
+    "typeColor": "रंग",
+    "typeGradient": "ग्रेडियेंट",
+    "typeImage": "छवि",
+    "chooseColor": "रंग चुनें",
+    "chooseGradient": "Gradient चुनें",
+    "bgImage": "पृष्ठभूमि छवि",
+    "uploadBg": "पृष्ठभूमि अपलोड करने के लिए क्लिक करें",
+    "replaceBtn": "पृष्ठभूमि बदलें",
+    "processing": "प्रसंस्करण..."
   },
   "blurBg": {
     "title": "ऑनलाइन बैकग्राउंड ब्लर करें — QuickBG",
@@ -871,135 +871,135 @@
     "blurred": "ब्लर",
     "error": "त्रुटि",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Open the image",
-      "step1Desc": "Process an image in Background Remover first, then click the Blur BG quick-edit button.",
-      "step2Title": "Adjust blur strength",
-      "step2Desc": "Use the slider to control how much blur is applied to the background while the subject stays sharp.",
-      "step3Title": "Preview the effect",
-      "step3Desc": "The preview updates automatically as you drag the slider. Fine-tune until it looks natural.",
-      "step4Title": "Download",
-      "step4Desc": "Save the blurred image as a transparent PNG or flattened composite."
+      "heading": "गाइड",
+      "step1Title": "छवि खोलें",
+      "step1Desc": "पहले पृष्ठभूमि रीमूवर में एक छवि की प्रक्रिया करें, फिर ब्लर BG क्विक-एडिट बटन पर क्लिक करें।",
+      "step2Title": "ब्लूर ताकत समायोजित करें",
+      "step2Desc": "यह नियंत्रित करने के लिए स्लाइडर का उपयोग करें कि पृष्ठभूमि पर कितना ब्लर लगाया जाता है जबकि विषय तेज रहता है।",
+      "step3Title": "प्रभाव का पूर्वावलोकन करें",
+      "step3Desc": "जब आप स्लाइडर को खींचते हैं तो पूर्वावलोकन स्वचालित रूप से अपडेट करता है। जब तक यह प्राकृतिक दिखता है तब तक ठीक-ट्यून।",
+      "step4Title": "डाउनलोड",
+      "step4Desc": "एक पारदर्शी पीएनजी या समतल समग्र के रूप में धुंधला छवि को सहेजें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What is AI background blur?",
-      "a1": "QuickBG uses AI to separate the subject from the background, then applies blur only to the background while keeping the subject perfectly sharp.",
-      "q2": "Can I control the blur intensity?",
-      "a2": "Yes, use the slider to adjust blur strength from a subtle soft focus to a strong bokeh effect. The preview updates in real time.",
-      "q3": "Is the background blur permanent?",
-      "a3": "No, you can re-adjust the blur at any time. The original image is preserved, letting you re-edit or revert your changes.",
-      "q4": "What are common use cases for background blur?",
-      "a4": "Portrait photography, product listings for e-commerce, social media profiles, video thumbnails, and privacy-sensitive images all benefit from background blur."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "एआई पृष्ठभूमि ब्लर क्या है?",
+      "a1": "QuickBG विषय को पृष्ठभूमि से अलग करने के लिए AI का उपयोग करता है, फिर विषय को पूरी तरह तेज रखने के दौरान केवल पृष्ठभूमि पर धुंधला लागू होता है।",
+      "q2": "क्या मैं ब्लूर तीव्रता को नियंत्रित कर सकता हूँ?",
+      "a2": "हाँ, स्लाइडर का उपयोग एक सूक्ष्म नरम ध्यान से एक मजबूत bokeh प्रभाव को धुंधला ताकत को समायोजित करने के लिए करें। वास्तविक समय में पूर्वावलोकन अद्यतन।",
+      "q3": "क्या पृष्ठभूमि धुंधला स्थायी है?",
+      "a3": "नहीं, आप किसी भी समय ब्लर को फिर से समायोजित कर सकते हैं। मूल छवि संरक्षित है, आपको अपने परिवर्तनों को फिर से संपादित या परिवर्तित करने की अनुमति देता है।",
+      "q4": "पृष्ठभूमि धुंधला के लिए सामान्य उपयोग के मामले क्या हैं?",
+      "a4": "पोर्ट्रेट फोटोग्राफी, ई-कॉमर्स, सोशल मीडिया प्रोफाइल, वीडियो थंबनेल और गोपनीयता-संवेदनशील छवियों के लिए उत्पाद सूची पृष्ठभूमि ब्लर से लाभ उठाती है।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Background Blur",
-      "content": "Background blur adds a professional depth-of-field effect that makes your subject stand out. QuickBG applies blur intelligently — only to the background while keeping the subject perfectly sharp. This is ideal for portrait photographers who want studio-quality bokeh without expensive lenses, e-commerce sellers creating focused product shots, and privacy-conscious users who need to obscure identifying details in the background. The AI accurately separates subject from background even in complex scenes, ensuring blur is applied exactly where intended. You have full control over blur intensity, from a subtle softening to a strong blur that completely eliminates background detail."
+      "heading": "क्यों QuickBG पृष्ठभूमि Blur का उपयोग करें",
+      "content": "पृष्ठभूमि ब्लर एक पेशेवर गहराई से क्षेत्र प्रभाव जोड़ता है जो आपके विषय को बाहर खड़ा करता है। QuickBG बुद्धिमानी से धुंधला लागू होता है - केवल पृष्ठभूमि पर, जबकि विषय को पूरी तरह तेज रखता है। यह उन चित्र फोटोग्राफरों के लिए आदर्श है जो महंगे लेंस के बिना स्टूडियो-गुणवत्ता वाले बोकेह चाहते हैं, ई-कॉमर्स विक्रेता केंद्रित उत्पाद शॉट्स बनाते हैं, और गोपनीयता के प्रति जागरूक उपयोगकर्ता जिन्हें पृष्ठभूमि में विवरण की पहचान करने की आवश्यकता होती है। एआई जटिल दृश्यों में भी पृष्ठभूमि से विषय को सही ढंग से अलग करता है, यह सुनिश्चित करता है कि ब्लर को ठीक उसी तरह लागू किया गया है जहां इरादा था। आपके पास ब्लूर तीव्रता पर पूर्ण नियंत्रण है, एक सूक्ष्म नरम से एक मजबूत ब्लर तक जो पूरी तरह से पृष्ठभूमि विस्तार को समाप्त करता है।"
     },
     "howItWorks": {
-      "heading": "How AI Background Blur Works",
-      "content": "QuickBG first creates a precise subject mask using the same AI technology as the Background Remover. Once the subject is isolated, a blur filter is applied exclusively to the background region. The blur intensity is controlled by a slider that adjusts the kernel size — larger values create stronger blur. The subject remains untouched at full sharpness. The tool supports multiple blur levels, from a gentle softening that mimics a wide aperture lens to an intense blur that creates a smooth bokeh effect. The preview updates in real time as you adjust the slider, letting you find the perfect balance between subject emphasis and background softness."
+      "heading": "कैसे AI पृष्ठभूमि Blur वर्क्स",
+      "content": "QuickBG पहले पृष्ठभूमि रीमूवर के समान एआई प्रौद्योगिकी का उपयोग करके एक सटीक विषय मुखौटा बनाता है। एक बार जब विषय अलग हो जाता है, तो विशेष रूप से पृष्ठभूमि क्षेत्र में एक ब्लर फ़िल्टर लागू किया जाता है। ब्लर तीव्रता को एक स्लाइडर द्वारा नियंत्रित किया जाता है जो कर्नेल आकार को समायोजित करता है - बड़े मान मजबूत ब्लर बनाते हैं। विषय पूर्ण तेजता पर अछूता रहता है। उपकरण एकाधिक ब्लर स्तरों का समर्थन करता है, एक सौम्य नरमता से जो एक विस्तृत एपर्चर लेंस को एक तीव्र ब्लर की नकल करता है जो एक चिकनी बोके प्रभाव बनाता है। जैसा कि आप स्लाइडर को समायोजित करते हैं, वास्तविक समय में पूर्वावलोकन अद्यतन करता है, आपको विषय पर जोर देने और पृष्ठभूमि की नरमता के बीच सही संतुलन खोजने की अनुमति देता है।"
     },
     "tips": {
-      "heading": "Tips for the Best Blur Effect",
-      "content": "For natural-looking portraits, use a mild to moderate blur that simulates a real lens aperture. Strong blur works well for busy or distracting backgrounds but can look artificial if overdone. Product photos benefit from subtle blur that removes detail without making the background look obviously edited. When blurring group photos, check that edges between people remain clean. For privacy purposes, strong blur effectively obscures faces, license plates, and other identifying information in the background. Always preview the result at full resolution to ensure the transition between sharp subject and blurred background looks smooth. If you notice halos around the subject, reduce the blur intensity slightly."
+      "heading": "सर्वश्रेष्ठ ब्लूर प्रभाव के लिए युक्तियाँ",
+      "content": "प्राकृतिक दिखने वाले चित्रों के लिए, हल्के से मध्यम ब्लर का उपयोग करें जो एक वास्तविक लेंस एपर्चर को अनुकरण करता है। मजबूत धुंधला व्यस्त या विचलित पृष्ठभूमि के लिए अच्छी तरह से काम करता है लेकिन अगर ओवरडोन हो तो कृत्रिम दिख सकता है। उत्पाद तस्वीरें सूक्ष्म धुंध से लाभ जो पृष्ठभूमि को स्पष्ट रूप से संपादित किए बिना विस्तार को हटा देती हैं। जब समूह की तस्वीरों को धुंधला करते हैं, तो चेक करें कि लोगों के बीच के किनारे साफ रहते हैं। गोपनीयता उद्देश्यों के लिए, मजबूत ब्लर प्रभावी रूप से पृष्ठभूमि में चेहरे, लाइसेंस प्लेटों और अन्य पहचान की जानकारी को अस्पष्ट करता है। हमेशा तेज विषय और धुंधला पृष्ठभूमि के बीच संक्रमण सुनिश्चित करने के लिए परिणाम को पूर्ण रिज़ॉल्यूशन पर पूर्वावलोकन करें। यदि आप विषय के चारों ओर हालो को देखते हैं, तो ब्लर तीव्रता को थोड़ा कम करें।"
     },
     "accessRestricted": {
-      "heading": "Access Restricted",
-      "desc": "Please process an image with Background Remover first, then use the \"Blur BG\" button to access this tool."
+      "heading": "पहुँच प्रतिबंधित",
+      "desc": "कृपया पहले पृष्ठभूमि रीमूवर के साथ एक छवि को संसाधित करें, फिर इस उपकरण तक पहुंचने के लिए \"ब्लूर BG\" बटन का उपयोग करें।"
     },
-    "badge": "Subject is sharp — background will be blurred",
-    "blurStrength": "Blur Strength",
-    "updatingPreview": "Updating preview...",
-    "helperText": "The preview updates automatically after you release the slider."
+    "badge": "विषय तेज है - पृष्ठभूमि धुंधला हो जाएगा",
+    "blurStrength": "ब्लूर स्ट्रेंथ",
+    "updatingPreview": "अद्यतन करना",
+    "helperText": "जब आप स्लाइडर जारी करते हैं तो पूर्वावलोकन स्वचालित रूप से अपडेट करता है।"
   },
   "resize": {
     "title": "ऑनलाइन इमेज रीसाइज़ करें — QuickBG",
     "description": "मुफ़्त में ऑनलाइन इमेज रीसाइज़ करें। AI-संचालित रीसाइज़िंग से गुणवत्ता बनाए रखें।",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload any image. Accepted formats include PNG, JPG, WebP, and HEIC.",
-      "step2Title": "Choose aspect ratio or custom dimensions",
-      "step2Desc": "Pick from preset ratios (1:1, 4:5, 16:9, etc.) or enter custom width and height.",
-      "step3Title": "Review the preview",
-      "step3Desc": "See how your image looks at the new dimensions before applying the resize.",
-      "step4Title": "Download",
-      "step4Desc": "Download the resized image in your preferred format."
+      "heading": "गाइड",
+      "step1Title": "अपनी छवि अपलोड करें",
+      "step1Desc": "किसी भी छवि को अपलोड करें। स्वीकृत प्रारूपों में PNG, JPG, WebP और HEIC शामिल हैं।",
+      "step2Title": "पहलू अनुपात या कस्टम आयाम चुनें",
+      "step2Desc": "प्रीसेट अनुपात (1:1, 4:5, 16: 9, आदि) से चुनें या कस्टम चौड़ाई और ऊंचाई दर्ज करें।",
+      "step3Title": "पूर्वावलोकन की समीक्षा करें",
+      "step3Desc": "देखें कि आपकी छवि कैसे आकार लगाने से पहले नए आयामों को देखती है।",
+      "step4Title": "डाउनलोड",
+      "step4Desc": "अपने पसंदीदा प्रारूप में आकार की छवि डाउनलोड करें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What resize options does QuickBG offer?",
-      "a1": "Preset aspect ratios like 1:1, 4:5, and 16:9, plus custom width and height dimensions. You can preserve the aspect ratio or crop to fit.",
-      "q2": "Will resizing reduce image quality?",
-      "a2": "Downscaling is lossless. Upscaling uses AI to maintain sharpness, but the final quality depends on the target size and your original image resolution.",
-      "q3": "What are standard sizes for social media platforms?",
-      "a3": "Instagram post 1080x1080, Facebook cover 851x315, YouTube thumbnail 1280x720, Twitter header 1500x500, LinkedIn banner 1584x396.",
-      "q4": "Can I resize multiple images at once?",
-      "a4": "Currently images are resized individually with a live preview. Batch processing with consistent dimensions will be available in a future update."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "QuickBG क्या विकल्प है?",
+      "a1": "प्रीसेट पहलू अनुपात जैसे 1:1, 4:5, और 16: 9, प्लस कस्टम चौड़ाई और ऊंचाई आयाम। आप पहलू अनुपात या फसल को फिट करने के लिए संरक्षित कर सकते हैं।",
+      "q2": "क्या छवि की गुणवत्ता को कम कर देगा?",
+      "a2": "डाउन्स्कलिंग हानिकारक है। Upscaling AI का उपयोग तीव्रता को बनाए रखने के लिए करता है, लेकिन अंतिम गुणवत्ता लक्ष्य आकार और आपके मूल छवि संकल्प पर निर्भर करती है।",
+      "q3": "सोशल मीडिया प्लेटफॉर्म के लिए मानक आकार क्या हैं?",
+      "a3": "इंस्टाग्राम पोस्ट 1080x1080, फेसबुक कवर 851x315, यूट्यूब थंबनेल 1280x720, ट्विटर हेडर 1500x500, लिंक्डइन बैनर 1584x396.",
+      "q4": "क्या मैं कई छवियों को एक बार में बदल सकता हूँ?",
+      "a4": "वर्तमान में छवियों को व्यक्तिगत रूप से लाइव पूर्वावलोकन के साथ रीसाइज किया जाता है। लगातार आयामों के साथ बैच प्रसंस्करण भविष्य के अद्यतन में उपलब्ध होगा।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Image Resizer",
-      "content": "Getting the right image dimensions is critical for professional results across different platforms. QuickBG Image Resizer lets you scale images to exact dimensions while maintaining quality through AI-powered algorithms. Whether you need social media sizes, print dimensions, or web-optimized images, the tool provides preset ratios and custom options. Downscaling images reduces file size for faster loading without visible quality loss. Upscaling uses intelligent interpolation to add pixels smoothly rather than creating blocky artifacts. The real-time preview shows exactly how your image will look at the target size, and you can choose to preserve the aspect ratio or crop to fit."
+      "heading": "क्यों QuickBG छवि Resizer का उपयोग करें",
+      "content": "सही छवि आयाम प्राप्त करना विभिन्न प्लेटफार्मों में पेशेवर परिणामों के लिए महत्वपूर्ण है। QuickBG छवि Resizer आपको AI-powered एल्गोरिदम के माध्यम से गुणवत्ता बनाए रखने के दौरान छवियों को सटीक आयामों में स्केल करने देता है। चाहे आपको सोशल मीडिया के आकार, प्रिंट आयाम या वेब-ऑप्टिमाइज़्ड छवियों की आवश्यकता हो, टूल प्रीसेट अनुपात और कस्टम विकल्प प्रदान करता है। डाउन्स्कलिंग छवियां दृश्य गुणवत्ता हानि के बिना तेजी से लोड करने के लिए फ़ाइल आकार को कम करती हैं। Upscaling अवरुद्ध कलाकृतियों के बजाय आसानी से पिक्सल जोड़ने के लिए बुद्धिमान interpolation का उपयोग करता है। वास्तविक समय पूर्वावलोकन से पता चलता है कि आपकी छवि लक्ष्य आकार पर कैसे दिखाई देगी, और आप फिट होने के लिए पहलू अनुपात या फसल को संरक्षित करने का विकल्प चुन सकते हैं।"
     },
     "howItWorks": {
-      "heading": "How Image Resizing Works",
-      "content": "QuickBG offers two resize modes. Preset aspect ratios like 1:1, 4:5, and 16:9 automatically constrain dimensions to match common platform requirements. Custom mode lets you enter exact width and height values. When you change one dimension, the other adjusts automatically if aspect ratio lock is enabled. For downscaling, the tool uses area-averaging to maintain sharpness while reducing pixel count. For upscaling, AI-based interpolation analyzes neighboring pixels to create smooth transitions and preserve edge detail. The preview updates instantly as you adjust values, showing the resulting dimensions and estimated file size before you download."
+      "heading": "कैसे छवि Resizing वर्क्स",
+      "content": "QuickBG दो आकार मोड प्रदान करता है। प्रीसेट पहलू अनुपात जैसे 1:1, 4:5, और 16: 9 स्वचालित रूप से सामान्य मंच आवश्यकताओं के मिलान के लिए आयामों को नियंत्रित करता है। कस्टम मोड आपको सटीक चौड़ाई और ऊंचाई मान दर्ज करने देता है। जब आप एक आयाम बदलते हैं, तो दूसरा स्वचालित रूप से समायोजित होता है अगर पहलू अनुपात लॉक सक्षम होता है। डाउन्स्कलिंग के लिए, उपकरण पिक्सेल की गिनती को कम करते समय तेजता बनाए रखने के लिए क्षेत्र-औसत का उपयोग करता है। upscaling के लिए, एआई आधारित इंटरपोलेशन पड़ोसी पिक्सल का विश्लेषण करता है ताकि चिकनी संक्रमण पैदा हो सके और किनारे के विस्तार को बनाए रखा जा सके। प्रीव्यू तुरंत अपडेट करता है क्योंकि आप मूल्यों को समायोजित करते हैं, जिसके परिणामस्वरूप आयाम और अनुमानित फ़ाइल आकार को डाउनलोड करने से पहले दिखाते हैं।"
     },
     "tips": {
-      "heading": "Tips for Perfect Resizing",
-      "content": "Always resize images at the final stage of your editing workflow after adjustments and background removal. Start with the highest resolution source image available — you can always downscale without quality loss but upscaling has limits. For social media, use the platform-specific presets: Instagram posts at 1080x1080, YouTube thumbnails at 1280x720, Facebook covers at 851x315. When upscaling, increase dimensions gradually rather than doubling the size in one step. For print, target at least 300 DPI resolution. Use the aspect ratio lock to prevent distortion, and always preview before downloading."
+      "heading": "Perfect Resizing के लिए युक्तियाँ",
+      "content": "समायोजन और पृष्ठभूमि हटाने के बाद हमेशा अपने संपादन कार्यप्रवाह के अंतिम चरण में छवियों को आकार देना। उपलब्ध उच्चतम रिज़ॉल्यूशन स्रोत छवि के साथ शुरू करें - आप हमेशा गुणवत्ता हानि के बिना डाउनस्केल कर सकते हैं लेकिन अपस्केलिंग की सीमा है। सोशल मीडिया के लिए, प्लेटफॉर्म-विशिष्ट प्रीसेट का उपयोग करें: 1080x1080 पर इंस्टाग्राम पोस्ट, 1280x720 पर यूट्यूब थंबनेल, फेसबुक 851x315 पर कवर करता है। जब upscaling, एक कदम में आकार दोगुना करने के बजाय धीरे-धीरे आयाम बढ़ाते हैं। प्रिंट के लिए, कम से कम 300 डीपीआई संकल्प को लक्षित करें। विरूपण को रोकने के लिए पहलू अनुपात लॉक का उपयोग करें, और डाउनलोड करने से पहले हमेशा पूर्वावलोकन करें।"
     },
-    "aspectRatio": "Aspect Ratio",
-    "customDimensions": "Custom Dimensions",
-    "scale": "Scale",
-    "results": "Results",
-    "downloadAll": "Download All",
-    "processing": "Processing..."
+    "aspectRatio": "पहलू अनुपात",
+    "customDimensions": "कस्टम आयाम",
+    "scale": "स्केल",
+    "results": "परिणाम",
+    "downloadAll": "डाउनलोड करें",
+    "processing": "प्रसंस्करण..."
   },
   "crop": {
     "title": "ऑनलाइन इमेज क्रॉप करें — QuickBG",
     "description": "मुफ़्त में ऑनलाइन इमेज क्रॉप करें। प्रीसेट आस्पेक्ट रेशियो के साथ स्मार्ट क्रॉप।",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload an image",
-      "step1Desc": "Upload any image file. The crop tool supports all major image formats.",
-      "step2Title": "Select aspect ratio",
-      "step2Desc": "Choose from Free, 1:1, 4:3, 16:9, 9:16, or 3:2. Or use rotation and zoom freely.",
-      "step3Title": "Adjust the crop area",
-      "step3Desc": "Drag the crop handles or rotate to frame your subject exactly how you want it.",
-      "step4Title": "Apply and download",
-      "step4Desc": "Click Apply Crop, then download the result in your chosen format."
+      "heading": "गाइड",
+      "step1Title": "छवि अपलोड करें",
+      "step1Desc": "किसी भी छवि फ़ाइल को अपलोड करें। फसल उपकरण सभी प्रमुख छवि प्रारूपों का समर्थन करता है।",
+      "step2Title": "पहलू अनुपात चुनें",
+      "step2Desc": "फ्री, 1:1, 4:3, 16:9, 9:16, या 3:2 से चुनें। या स्वतंत्र रूप से घूर्णन और ज़ूम का उपयोग करें।",
+      "step3Title": "फसल क्षेत्र समायोजित करें",
+      "step3Desc": "क्रॉप हैंडल को खींचें या अपने विषय को ठीक उसी तरह तैयार करने के लिए घुमाएं जिसे आप चाहते हैं।",
+      "step4Title": "लागू करें और डाउनलोड करें",
+      "step4Desc": "क्लिक करें फसल लागू करें, फिर अपने चुने हुए प्रारूप में परिणाम डाउनलोड करें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What aspect ratios are available?",
-      "a1": "Freeform crop, 1:1 square, 4:3, 16:9 widescreen, 9:16 portrait, 3:2, and custom dimensions. Pick the ratio that fits your target platform.",
-      "q2": "Can I rotate the image while cropping?",
-      "a2": "Yes, use the rotation slider to adjust orientation while keeping the crop area fixed. Fine-tune the angle until your subject is perfectly aligned.",
-      "q3": "Does cropping reduce image resolution?",
-      "a3": "Cropping removes outer pixels, so the remaining area retains full resolution. The overall image dimensions decrease naturally based on your crop selection.",
-      "q4": "What are the best crop dimensions for social media?",
-      "a4": "1:1 for Instagram posts, 16:9 for YouTube thumbnails, 4:5 for Facebook and Instagram ads, 9:16 for TikTok and Stories, 3:2 for print and photography."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "कौन से अनुपात उपलब्ध हैं?",
+      "a1": "फ्रीफॉर्म फसल, 1: 1 वर्ग, 4: 3, 16: 9 वाइडस्क्रीन, 9:16 चित्र, 3: 2, और कस्टम आयाम। उस अनुपात को चुनें जो आपके लक्ष्य प्लेटफॉर्म को फिट करता है।",
+      "q2": "क्या मैं क्रॉपिंग करते समय छवि को घुमा सकता हूं?",
+      "a2": "हां, फसल क्षेत्र को निर्धारित रखते हुए अभिविन्यास को समायोजित करने के लिए घूर्णन स्लाइडर का उपयोग करें। जब तक आपका विषय पूरी तरह से संरेखित नहीं हो जाता तब तक कोण को ठीक-ट्यून करें।",
+      "q3": "क्या फसल छवि संकल्प को कम करती है?",
+      "a3": "क्रॉपिंग बाहरी पिक्सेल को हटा देता है, इसलिए शेष क्षेत्र पूर्ण रिज़ॉल्यूशन को बरकरार रखता है। समग्र छवि आयाम स्वाभाविक रूप से आपकी फसल चयन के आधार पर कम हो जाता है।",
+      "q4": "सोशल मीडिया के लिए सबसे अच्छा फसल आयाम क्या हैं?",
+      "a4": "1:1 Instagram पदों के लिए, 16:9 यूट्यूब थंबनेल के लिए, 4:5 फेसबुक और इंस्टाग्राम विज्ञापनों के लिए, 9:16 TikTok और कहानियों के लिए, 3:2 प्रिंट और फोटोग्राफी के लिए."
     },
     "benefits": {
-      "heading": "Why Use QuickBG Crop Tool",
-      "content": "Cropping is one of the most fundamental image editing operations, and getting it right transforms your composition. QuickBG Crop Tool gives you precise control over framing with support for freeform and preset aspect ratios. Whether you are preparing images for social media, creating print layouts, or adjusting composition after background removal, the crop tool maintains full image quality in the selected area. The rotation feature lets you straighten crooked horizons or create dynamic angles. Real-time preview shows the exact crop boundaries so you know what the final image will look like. All major aspect ratios are built in — 1:1, 4:3, 16:9, 9:16, 3:2, and custom."
+      "heading": "क्यों QuickBG फसल उपकरण का उपयोग करें",
+      "content": "क्रॉपिंग सबसे मौलिक छवि संपादन कार्यों में से एक है, और इसे सही ढंग से अपनी रचना को बदल देता है। QuickBG क्रॉप टूल आपको फ्रीफॉर्म और पूर्व निर्धारित पहलू अनुपात के समर्थन के साथ framing पर सटीक नियंत्रण देता है। चाहे आप सोशल मीडिया के लिए छवियां तैयार कर रहे हों, प्रिंट लेआउट बनाना, या पृष्ठभूमि हटाने के बाद रचना को समायोजित करना, फसल उपकरण चयनित क्षेत्र में पूर्ण छवि गुणवत्ता बनाए रखता है। घूर्णन सुविधा आपको crooked क्षितिज को सीधा करने या गतिशील कोण बनाने की अनुमति देती है। रियल टाइम पूर्वावलोकन सटीक फसल सीमाओं को दर्शाता है ताकि आप जानते हैं कि अंतिम छवि कैसा दिखेगी। सभी प्रमुख पहलू अनुपात - 1: 1, 4: 3, 16: 9, 9: 16, 3: 2 और कस्टम में बनाए गए हैं।"
     },
     "howItWorks": {
-      "heading": "How the Crop Tool Works",
-      "content": "The crop tool overlays a draggable selection area on your image with adjustable handles at each corner and edge. You can click and drag any handle to resize the crop region, or click inside the region to reposition it over the image. The aspect ratio menu lets you lock the crop to a specific proportion — when locked, dragging one handle automatically adjusts adjacent sides to maintain the ratio. The rotation slider rotates the crop region independently of the image, letting you straighten or angle your composition. Once you apply the crop, only the selected area is kept and the rest of the image is discarded. The result downloads at the original resolution."
+      "heading": "कैसे काम करता है फसल उपकरण",
+      "content": "फसल उपकरण प्रत्येक कोने और किनारे पर समायोज्य हैंडल के साथ अपनी छवि पर एक ड्रैगेबल चयन क्षेत्र को ओवरले करता है। आप फसल क्षेत्र को आकार देने के लिए किसी भी हैंडल पर क्लिक कर सकते हैं, या उस क्षेत्र के अंदर क्लिक कर सकते हैं ताकि इसे छवि पर दोबारा लागू किया जा सके। पहलू अनुपात मेनू आपको फसल को एक विशिष्ट अनुपात में लॉक करने देता है - जब लॉक हो जाता है, तो एक हैंडल को खींचने से अनुपात बनाए रखने के लिए स्वचालित रूप से आसन्न पक्षों को समायोजित किया जाता है। घूर्णन स्लाइडर छवि से स्वतंत्र रूप से फसल क्षेत्र को घुमाता है, जिससे आप अपनी संरचना को सीधा या कोण देते हैं। एक बार जब आप फसल लागू करते हैं, तो केवल चयनित क्षेत्र रखा जाता है और बाकी छवि को खारिज कर दिया जाता है। परिणाम मूल संकल्प पर डाउनलोड करता है।"
     },
     "tips": {
-      "heading": "Tips for Effective Cropping",
-      "content": "Follow the rule of thirds by positioning your subject off-center for more dynamic compositions. For portraits, crop at the shoulders or waist rather than at joints to avoid an awkward look. When cropping for social media, check each platform's specific requirements — Instagram prefers 1:1 or 4:5, YouTube uses 16:9, and Pinterest favors 2:3 vertical. Leave breathing room around your subject if the image will be used across multiple platforms. Use the rotation feature to straighten horizons in landscape photos. Before cropping, consider whether you might need the full image later — it is better to keep the original and crop non-destructively."
+      "heading": "प्रभावी फसल के लिए युक्तियाँ",
+      "content": "अधिक गतिशील रचनाओं के लिए अपने विषय ऑफ-सेंटर को पोजीशन करके तीसरे नियम का पालन करें। चित्रों के लिए, कंधे पर फसल या कमर के बजाय जोड़ों के बजाय एक अजीब नज़र से बचने के लिए। सोशल मीडिया के लिए क्रॉपिंग करते समय, प्रत्येक प्लेटफॉर्म की विशिष्ट आवश्यकताओं की जांच करें - इंस्टाग्राम 1:1 या 4:5 पसंद करता है, यूट्यूब 16: 9 का उपयोग करता है, और Pinterest 2:3 वर्टिकल का पक्ष लेता है। यदि छवि एकाधिक प्लेटफार्मों पर उपयोग की जाएगी तो अपने विषय के आसपास श्वास कक्ष छोड़ दें। परिदृश्य तस्वीरों में क्षितिज को सीधा करने के लिए घूर्णन सुविधा का उपयोग करें। फसल से पहले, विचार करें कि क्या आपको बाद में पूर्ण छवि की आवश्यकता हो सकती है - मूल और फसल को गैर-विनाशात्मक रूप से रखना बेहतर है।"
     },
-    "free": "Free",
-    "aspectRatio": "Aspect Ratio",
-    "rotation": "Rotation",
-    "zoom": "Zoom",
-    "applyCrop": "Apply Crop",
-    "cropHelper": "Rotate freely, then click Apply Crop to render the result.",
+    "free": "फ्री",
+    "aspectRatio": "पहलू अनुपात",
+    "rotation": "रोटेशन",
+    "zoom": "ज़ूम",
+    "applyCrop": "फसल लागू करें",
+    "cropHelper": "स्वतंत्र रूप से घुमाएं, फिर क्लिक करें लागू फसल परिणाम प्रस्तुत करने के लिए।",
     "supportedFormats": "JPG, PNG, WebP"
   },
   "adjust": {
@@ -1010,57 +1010,57 @@
     "selectImage": "इमेज चुनें",
     "change": "बदलें",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload your image",
-      "step1Desc": "Upload a JPG, PNG, or WebP image to start adjusting.",
-      "step2Title": "Fine-tune adjustments",
-      "step2Desc": "Use the brightness, contrast, and saturation sliders. Changes update in real time.",
-      "step3Title": "Choose output settings",
-      "step3Desc": "Select format and quality. Toggle target file size for output optimization.",
-      "step4Title": "Download",
-      "step4Desc": "Download the adjusted image at full quality with all changes applied."
+      "heading": "गाइड",
+      "step1Title": "अपनी छवि अपलोड करें",
+      "step1Desc": "समायोजन शुरू करने के लिए एक JPG, PNG, या WebP छवि अपलोड करें।",
+      "step2Title": "ललित-ट्यून समायोजन",
+      "step2Desc": "चमक, विपरीत और संतृप्ति स्लाइडर का उपयोग करें। वास्तविक समय में बदलाव अद्यतन।",
+      "step3Title": "आउटपुट सेटिंग चुनें",
+      "step3Desc": "प्रारूप और गुणवत्ता का चयन करें। आउटपुट अनुकूलन के लिए टॉगल लक्ष्य फ़ाइल आकार।",
+      "step4Title": "डाउनलोड",
+      "step4Desc": "सभी परिवर्तनों के साथ पूर्ण गुणवत्ता पर समायोजित छवि डाउनलोड करें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What image adjustments does QuickBG support?",
-      "a1": "Brightness, contrast, and saturation sliders let you fine-tune your image. All adjustments update in real time so you can see the effect instantly.",
-      "q2": "Will adjusting the image reduce quality?",
-      "a2": "No, QuickBG preserves original image quality. You can also choose the output format and quality level when downloading the result.",
-      "q3": "What file formats can I export after adjusting?",
-      "a3": "Download as PNG, JPG, or WebP. Use the Format Converter tool if you need additional formats like AVIF or TIFF.",
-      "q4": "When should I adjust brightness and contrast?",
-      "a4": "Adjust when your image looks too dark or washed out, before resizing or after background removal to match the subject with the new background."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "क्या छवि समायोजन QuickBG समर्थन करता है?",
+      "a1": "चमक, विपरीत, और संतृप्ति स्लाइडर्स आपको अपनी छवि को ठीक करने देते हैं। सभी समायोजन वास्तविक समय में अद्यतन करते हैं ताकि आप तुरंत प्रभाव देख सकें।",
+      "q2": "क्या छवि को समायोजित करने से गुणवत्ता कम हो जाएगी?",
+      "a2": "नहीं, QuickBG मूल छवि गुणवत्ता को बनाए रखता है। परिणाम डाउनलोड करते समय आप आउटपुट प्रारूप और गुणवत्ता स्तर भी चुन सकते हैं।",
+      "q3": "क्या फ़ाइल प्रारूप मैं समायोजन के बाद निर्यात कर सकते हैं?",
+      "a3": "PNG, JPG, या WebP के रूप में डाउनलोड करें। अगर आपको AVIF या TIFF जैसे अतिरिक्त प्रारूपों की आवश्यकता है तो प्रारूप कनवर्टर टूल का उपयोग करें।",
+      "q4": "मुझे चमक और विपरीत कैसे समायोजित करना चाहिए?",
+      "a4": "जब आपकी छवि बहुत अंधेरा दिखती है, तब समायोजित करें, फिर से आकार देने या पृष्ठभूमि हटाने के बाद, नए पृष्ठभूमि के साथ विषय से मिलान करने के लिए।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Image Adjust",
-      "content": "Even well-exposed photos can benefit from subtle adjustments to brightness, contrast, and saturation. QuickBG Image Adjust gives you precise control over these core parameters with real-time preview. Brightening an underexposed image reveals detail in shadow areas, while adjusting contrast adds depth and punch. Saturation control lets you make colors more vibrant or create a muted, desaturated look. All adjustments are applied independently so you can fine-tune each parameter without affecting the others. The tool supports multiple output formats and quality settings, making it suitable for web use, print, or further editing. Whether you are correcting smartphone photos or refining professional work, the controls are intuitive and responsive."
+      "heading": "QuickBG छवि समायोजन का उपयोग क्यों करें",
+      "content": "यहां तक कि अच्छी तरह से विस्तारित तस्वीरें सूक्ष्म समायोजन से चमक, विपरीत और संतृप्ति तक लाभ उठा सकती हैं। QuickBG छवि समायोजन आपको वास्तविक समय पूर्वावलोकन के साथ इन कोर मापदंडों पर सटीक नियंत्रण देता है। एक underexposed छवि को चमकते हुए छाया क्षेत्रों में विस्तार प्रकट होता है, जबकि विपरीत समायोजन गहराई और पंच को जोड़ता है। संतृप्ति नियंत्रण आपको रंगों को अधिक जीवंत बनाने देता है या एक muted, desaturated नज़र बनाता है। सभी समायोजन स्वतंत्र रूप से लागू होते हैं ताकि आप दूसरों को प्रभावित किए बिना प्रत्येक पैरामीटर को ठीक कर सकें। उपकरण एकाधिक आउटपुट प्रारूपों और गुणवत्ता सेटिंग्स का समर्थन करता है, जो इसे वेब उपयोग, प्रिंट या आगे संपादन के लिए उपयुक्त बनाता है। चाहे आप स्मार्टफोन फ़ोटो को सही कर रहे हों या पेशेवर काम को परिष्कृत कर रहे हों, नियंत्रण सहज और उत्तरदायी हैं।"
     },
     "howItWorks": {
-      "heading": "How Image Adjustment Works",
-      "content": "QuickBG provides three adjustment sliders that modify your image's pixel data in real time. The brightness slider shifts all pixel values up or down, making the entire image lighter or darker. Contrast increases or decreases the difference between light and dark areas — higher contrast makes shadows deeper and highlights brighter, while lower contrast creates a flatter, softer look. Saturation controls the intensity of all colors simultaneously, from vivid full color to complete grayscale. The adjustments are processed client-side using the HTML Canvas API, so your image never leaves your browser. The preview updates instantly as you move any slider, and you can reset all adjustments to default with a single click."
+      "heading": "छवि समायोजन कैसे काम करता है",
+      "content": "QuickBG तीन समायोजन स्लाइडर प्रदान करता है जो वास्तविक समय में आपकी छवि के पिक्सेल डेटा को संशोधित करता है। चमक स्लाइडर सभी पिक्सेल मूल्यों को ऊपर या नीचे स्थानांतरित करता है, जिससे पूरे छवि को हल्का या गहरा बना दिया जाता है। विपरीत बढ़ जाती है या प्रकाश और अंधेरे क्षेत्रों के बीच अंतर को कम करती है - उच्च विपरीत छाया को गहरा बनाता है और चमकदार को उजागर करता है, जबकि निचले विपरीत एक चापलूसी, नरम नज़र बनाता है। संतृप्ति सभी रंगों की तीव्रता को एक साथ नियंत्रित करती है, जो उज्ज्वल पूर्ण रंग से ग्रे स्केल को पूरा करती है। समायोजन HTML कैनवास एपीआई का उपयोग करके क्लाइंट-साइड संसाधित किए जाते हैं, इसलिए आपकी छवि कभी भी आपके ब्राउज़र को नहीं छोड़ती है। जैसा कि आप किसी स्लाइडर को स्थानांतरित करते हैं, तुरंत पूर्वावलोकन अद्यतन करता है, और आप एक क्लिक के साथ डिफ़ॉल्ट रूप से सभी समायोजन को रीसेट कर सकते हैं।"
     },
     "tips": {
-      "heading": "Tips for Natural-Looking Adjustments",
-      "content": "Start with brightness to get the overall exposure right, then adjust contrast, and finally fine-tune saturation. Small, incremental changes look more natural than large adjustments to a single parameter. For portraits, slightly reduced contrast can be flattering as it softens skin texture. For product photos, accurate brightness and moderate saturation present items truthfully. Boost contrast carefully — too much creates unnatural-looking images with clipped shadows and blown highlights. When converting to grayscale, reduce saturation gradually to find the perfect balance rather than going fully monochrome. Always preview adjustments at full size to check for artifacts or color shifts."
+      "heading": "प्राकृतिक दिखने वाले समायोजन के लिए युक्तियाँ",
+      "content": "समग्र जोखिम को सही करने के लिए चमक के साथ शुरू करें, फिर इसके विपरीत समायोजित करें, और अंत में ठीक-ट्यून संतृप्ति। लघु, वृद्धिशील परिवर्तन एक एकल पैरामीटर के लिए बड़े समायोजन की तुलना में अधिक प्राकृतिक लगते हैं। चित्रों के लिए, थोड़ा कम विपरीत समतल हो सकता है क्योंकि यह त्वचा की बनावट को नरम करता है। उत्पाद तस्वीरों के लिए, सटीक चमक और मध्यम संतृप्ति वस्तुएं सत्य रूप से प्रस्तुत करती हैं। इसके विपरीत सावधानी से बूस्ट करें - क्लिप्ड छाया और उड़ा हाइलाइट्स के साथ बहुत अधिक अप्राकृतिक दिखने वाली छवियां बनाता है। जब ग्रेस्केल में परिवर्तित हो जाता है, तो पूरी तरह से मोनोक्रोम जाने के बजाय सही संतुलन खोजने के लिए धीरे-धीरे संतृप्ति को कम करें। कलाकृतियों या रंग बदलावों की जांच के लिए हमेशा पूर्ण आकार में समायोजन का पूर्वावलोकन करें।"
     },
-    "imageAdjustments": "Image Adjustments",
-    "brightness": "Brightness",
-    "contrast": "Contrast",
-    "saturation": "Saturation",
-    "reset": "Reset",
-    "undo": "Undo",
-    "redo": "Redo",
-    "history": "History",
-    "resize": "Resize",
-    "enable": "Enable",
-    "width": "Width",
-    "height": "Height",
-    "output": "Output",
-    "quality": "Quality",
-    "targetSize": "Target Size",
-    "lastExport": "Last export",
-    "filename": "Filename:",
-    "formatJson": "Supported formats: JPG, PNG, WebP."
+    "imageAdjustments": "छवि समायोजन",
+    "brightness": "चमक",
+    "contrast": "कंट्रास्ट",
+    "saturation": "संतृप्ति",
+    "reset": "रीसेट करें",
+    "undo": "हिन्दी",
+    "redo": "रेडो",
+    "history": "इतिहास",
+    "resize": "आकार",
+    "enable": "सक्षम",
+    "width": "चौड़ाई",
+    "height": "ऊंचाई",
+    "output": "उत्पादन",
+    "quality": "गुणवत्ता",
+    "targetSize": "लक्ष्य आकार",
+    "lastExport": "अंतिम निर्यात",
+    "filename": "फाईल का नाम:",
+    "formatJson": "समर्थित प्रारूप: जेपीजी, पीएनजी, वेबपी।"
   },
   "sharpness": {
     "title": "ऑनलाइन इमेज शार्प करें — QuickBG",
@@ -1068,52 +1068,52 @@
     "error": "त्रुटि",
     "howToUse": "शार्पनेस का उपयोग कैसे करें",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Open from Remover",
-      "step1Desc": "Process an image with Background Remover first, then click the Sharpness quick-edit button.",
-      "step2Title": "Adjust sharpness",
-      "step2Desc": "Use the slider to control sharpness intensity. Increase gently for portraits and product edges.",
-      "step3Title": "Choose target",
-      "step3Desc": "Target the subject, background, or both using the alpha mask from the remover.",
-      "step4Title": "Download",
-      "step4Desc": "Preview updates automatically. Download when you are satisfied with the result."
+      "heading": "गाइड",
+      "step1Title": "रीमूवर से खुला",
+      "step1Desc": "पहले पृष्ठभूमि रीमूवर के साथ एक छवि की प्रक्रिया करें, फिर तीव्रता त्वरित संपादित बटन पर क्लिक करें।",
+      "step2Title": "तीव्रता को समायोजित करें",
+      "step2Desc": "तीव्रता को नियंत्रित करने के लिए स्लाइडर का उपयोग करें। चित्र और उत्पाद किनारों के लिए धीरे-धीरे बढ़ना।",
+      "step3Title": "लक्ष्य चुनें",
+      "step3Desc": "हटानेवाला से अल्फा मास्क का उपयोग करके विषय, पृष्ठभूमि या दोनों को लक्षित करें।",
+      "step4Title": "डाउनलोड",
+      "step4Desc": "स्वचालित रूप से अद्यतन पूर्वावलोकन करें। जब आप परिणाम से संतुष्ट हैं तो डाउनलोड करें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "What is AI sharpness adjustment?",
-      "a1": "QuickBG enhances edge contrast and detail clarity using intelligent algorithms that avoid over-sharpening artifacts and halos.",
-      "q2": "Can I sharpen only the subject or just the background?",
-      "a2": "Yes, choose to sharpen the subject, the background, or both using the alpha mask created during background removal.",
-      "q3": "Will sharpening create unwanted artifacts?",
-      "a3": "When used gently, sharpening enhances details naturally. Higher values may produce halos around high-contrast edges, so increase gradually.",
-      "q4": "When should I sharpen an image?",
-      "a4": "After resizing an image, for slightly soft portraits, product photos that lack crispness, or scanned images that need edge clarity."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "AI sharpness समायोजन क्या है?",
+      "a1": "QuickBG बुद्धिमान एल्गोरिदम का उपयोग करके बढ़त के विपरीत और विस्तार स्पष्टता को बढ़ाता है जो ओवर-शार्पिंग कलाकृतियों और हेलो से बच जाता है।",
+      "q2": "क्या मैं केवल विषय या सिर्फ पृष्ठभूमि को तेज कर सकता हूं?",
+      "a2": "हां, पृष्ठभूमि हटाने के दौरान बनाए गए अल्फा मास्क का उपयोग करके विषय, पृष्ठभूमि या दोनों को तेज करने का विकल्प चुनें।",
+      "q3": "क्या अवांछित कलाकृतियों को तेज कर देगा?",
+      "a3": "जब धीरे-धीरे उपयोग किया जाता है, तो तेजी से विवरण को बढ़ाता है। उच्च मूल्य उच्च विपरीत किनारों के आसपास हेलो का उत्पादन कर सकते हैं, इसलिए धीरे-धीरे बढ़ सकते हैं।",
+      "q4": "मुझे एक छवि कब लेनी चाहिए?",
+      "a4": "एक छवि को आकार देने के बाद, थोड़ा नरम चित्रों के लिए, उत्पाद तस्वीरें जिसमें कुरकुरापन की कमी होती है, या स्कैन की गई छवियां जिन्हें किनारे की स्पष्टता की आवश्यकता होती है।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Sharpness Tool",
-      "content": "Image sharpness can make the difference between a professional-looking photo and one that appears soft or out of focus. QuickBG Sharpness Tool enhances edge definition and detail clarity using intelligent algorithms that avoid the harsh artifacts common with basic sharpening. The tool is especially valuable after background removal, where the subject edges may benefit from enhanced crispness. You can target sharpening to the subject only, the background only, or both, giving you precise control over the final look. This is ideal for product photographers who need every detail visible, portrait retouchers enhancing eye and hair detail, and anyone working with images that look slightly soft after resizing or format conversion."
+      "heading": "क्यों QuickBG Sharpness उपकरण का उपयोग करें",
+      "content": "छवि तीव्रता एक पेशेवर दिखने वाली तस्वीर और एक है कि नरम या ध्यान से बाहर दिखाई देता है के बीच अंतर बना सकते हैं। QuickBG Sharpness टूल बुद्धिमान एल्गोरिदम का उपयोग करके बढ़त परिभाषा और विस्तार स्पष्टता को बढ़ाता है जो बुनियादी sharpening के साथ आम तौर पर कठोर कलाकृतियों से बचने में मदद करता है। उपकरण पृष्ठभूमि हटाने के बाद विशेष रूप से मूल्यवान है, जहां विषय किनारों को बढ़ाया कुरकुरापन से लाभ हो सकता है। आप केवल विषय को तेज कर सकते हैं, केवल पृष्ठभूमि, या दोनों, आपको अंतिम रूप पर सटीक नियंत्रण देते हैं। यह उन उत्पाद फोटोग्राफरों के लिए आदर्श है जिन्हें प्रत्येक विवरण की आवश्यकता होती है दृश्यमान, चित्र रीटचर्स आंखों और बालों के विस्तार को बढ़ाते हैं, और जो छवियों के साथ काम करते हैं जो आकार बदलने या प्रारूप रूपांतरण के बाद थोड़ा नरम दिखते हैं।"
     },
     "howItWorks": {
-      "heading": "How AI Sharpening Works",
-      "content": "QuickBG analyzes your image to identify edges and fine details, then selectively increases contrast at those boundaries to create the perception of greater sharpness. Unlike basic unsharp mask filters that apply uniformly, our algorithm detects which areas are edges versus smooth surfaces and sharpens only where needed. This prevents common problems like noise amplification in smooth areas like skin or sky. The sharpness slider controls intensity from subtle to strong. When used after background removal, the tool can apply sharpening exclusively to the subject using the existing alpha mask, leaving the background untouched. The preview updates in real time so you can see the effect at full resolution before downloading."
+      "heading": "कैसे एआई Sharpening वर्क्स",
+      "content": "QuickBG किनारों और ठीक विवरण की पहचान करने के लिए अपनी छवि का विश्लेषण करता है, फिर चयनात्मक रूप से उन सीमाओं पर विपरीत बढ़ जाती है ताकि अधिक तीव्रता की धारणा बन सके। मूल unsharp मास्क फिल्टर के विपरीत जो समान रूप से लागू होते हैं, हमारे एल्गोरिथ्म का पता चलता है कि कौन से क्षेत्र किनारों को चिकनी सतहों से भिन्न होते हैं और केवल जहां जरूरत होती है, वहां तेज होते हैं। यह त्वचा या आकाश जैसे चिकनी क्षेत्रों में शोर बढ़ाने जैसी आम समस्याओं को रोकता है। तेजता स्लाइडर सूक्ष्म से मजबूत तक तीव्रता को नियंत्रित करता है। जब पृष्ठभूमि हटाने के बाद इस्तेमाल किया जाता है, तो उपकरण विशेष रूप से मौजूदा अल्फा मास्क का उपयोग करके विषय पर तेजी से लागू हो सकता है, जिससे पृष्ठभूमि untouched हो जाती है। वास्तविक समय में पूर्वावलोकन अद्यतन इसलिए आप डाउनलोड करने से पहले पूर्ण रिज़ॉल्यूशन पर प्रभाव देख सकते हैं।"
     },
     "tips": {
-      "heading": "Tips for Best Sharpening Results",
-      "content": "Apply sharpening as the final step in your editing workflow after resizing and color adjustments. Start with a low intensity and increase gradually — it is better to under-sharpen than over-sharpen. View the image at 100% zoom to check for halos around high-contrast edges. For portraits, sharpen the eyes and hair but avoid over-sharpening skin. For product photos, emphasize texture and detail that matters to buyers. When sharpening after background removal, target the subject only to keep the background smooth. Different output uses need different levels — web images can be sharper than print images. Always preview the result before downloading."
+      "heading": "सर्वश्रेष्ठ Sharpening परिणाम के लिए युक्तियाँ",
+      "content": "Resizing और रंग समायोजन के बाद अपने संपादन वर्कफ़्लो में अंतिम चरण के रूप में sharpening लागू करें। कम तीव्रता के साथ शुरू करें और धीरे-धीरे बढ़ें - ओवर-शार्पेन की तुलना में अंडर-शार्पेन करना बेहतर है। उच्च विपरीत किनारों के आसपास हेलोस की जांच के लिए 100% ज़ूम पर छवि देखें। चित्रों के लिए, आंखों और बालों को तेज करें लेकिन त्वचा को खत्म करने से बचें। उत्पाद तस्वीरों के लिए, बनावट और विस्तार पर जोर देते हैं जो खरीदारों के लिए मायने रखते हैं। जब पृष्ठभूमि हटाने के बाद तेज हो जाती है, तो उस विषय को केवल पृष्ठभूमि को चिकनी रखने के लिए लक्षित करें। विभिन्न आउटपुट का उपयोग विभिन्न स्तरों की आवश्यकता होती है - वेब छवियां प्रिंट छवियों की तुलना में तेज हो सकती हैं। हमेशा डाउनलोड करने से पहले परिणाम का पूर्वावलोकन करें।"
     },
     "accessRestricted": {
-      "heading": "Access Restricted",
-      "desc": "Please process an image with Background Remover first, then use the \"Sharpness\" quick-edit button."
+      "heading": "पहुँच प्रतिबंधित",
+      "desc": "कृपया पहले पृष्ठभूमि रीमूवर के साथ एक छवि को संसाधित करें, फिर \"Sharpness\" त्वरित संपादित बटन का उपयोग करें।"
     },
-    "target": "Target",
-    "subject": "subject",
-    "background": "background",
-    "targetHelper": "Subject/background targeting uses the transparent PNG alpha mask from the remover.",
-    "helperText": "Preview updates automatically after you stop dragging.",
-    "tipText": "Increase gently for portraits and product edges; higher values can create halos.",
-    "buildingPreview": "Building sharpness preview...",
-    "updatingPreview": "Updating preview...",
-    "sectionTitle": "Sharpness"
+    "target": "लक्ष्य",
+    "subject": "विषय",
+    "background": "पृष्ठभूमि",
+    "targetHelper": "विषय / पृष्ठभूमि लक्ष्यीकरण हटानेवाला से पारदर्शी पीएनजी अल्फा मास्क का उपयोग करता है।",
+    "helperText": "जब आप ड्रैगिंग बंद कर देते हैं तो स्वचालित रूप से अपडेट की समीक्षा करें।",
+    "tipText": "चित्रों और उत्पाद किनारों के लिए धीरे-धीरे बढ़ना; उच्च मान हालो बना सकते हैं।",
+    "buildingPreview": "बिल्डिंग sharpness पूर्वावलोकन ...",
+    "updatingPreview": "अद्यतन करना",
+    "sectionTitle": "तीव्रता"
   },
   "converter": {
     "title": "ऑनलाइन इमेज कन्वर्टर — QuickBG",
@@ -1121,48 +1121,48 @@
     "change": "बदलें",
     "howToUse": "फ़ॉर्मेट कन्वर्टर का उपयोग कैसे करें",
     "guide": {
-      "heading": "Guide",
-      "step1Title": "Upload images",
-      "step1Desc": "Upload one or more images. Supported formats: PNG, JPG, WebP, HEIC, AVIF, TIFF.",
-      "step2Title": "Choose output format",
-      "step2Desc": "Select PNG, JPG, WebP, AVIF, or TIFF as the target format and adjust quality.",
-      "step3Title": "Review and convert",
-      "step3Desc": "Click Convert to process. The tool handles batch conversion automatically.",
-      "step4Title": "Download",
-      "step4Desc": "Download individual files or all results as a ZIP archive."
+      "heading": "गाइड",
+      "step1Title": "छवियों को अपलोड करें",
+      "step1Desc": "एक या अधिक छवियों को अपलोड करें। समर्थित प्रारूप: PNG, JPG, WebP, HEIC, AVIF, TIFF।",
+      "step2Title": "आउटपुट प्रारूप चुनें",
+      "step2Desc": "PNG, JPG, WebP, AVIF, या TIFF को लक्ष्य प्रारूप के रूप में चुनें और गुणवत्ता को समायोजित करें।",
+      "step3Title": "समीक्षा और परिवर्तित",
+      "step3Desc": "प्रक्रिया में कनवर्ट करने के लिए क्लिक करें। टूल स्वचालित रूप से बैच रूपांतरण को संभालता है।",
+      "step4Title": "डाउनलोड",
+      "step4Desc": "व्यक्तिगत फ़ाइलों या सभी परिणामों को ZIP संग्रह के रूप में डाउनलोड करें।"
     },
     "faq": {
-      "heading": "Frequently Asked Questions",
-      "q1": "Which image format should I choose?",
-      "a1": "PNG for transparency and lossless quality, JPEG for photos with smaller file sizes, WebP for modern web use with good compression, AVIF for the best compression-to-quality ratio.",
-      "q2": "Does format conversion reduce image quality?",
-      "a2": "Converting to a lossy format like JPEG or WebP may reduce quality depending on the compression level you choose. PNG and TIFF conversions are lossless.",
-      "q3": "Can I convert multiple images in batch?",
-      "a3": "Yes, upload multiple images and the converter processes them in a single batch. You can download results individually or as a ZIP archive.",
-      "q4": "What image formats are supported for conversion?",
-      "a4": "Upload PNG, JPG, WebP, HEIC, AVIF, or TIFF and convert to any of these formats. HEIC and AVIF offer modern compression with excellent quality."
+      "heading": "अक्सर पूछे जाने वाले प्रश्न",
+      "q1": "मुझे किस छवि प्रारूप का चयन करना चाहिए?",
+      "a1": "पारदर्शिता और नुकसान रहित गुणवत्ता के लिए पीएनजी, छोटी फ़ाइल आकार वाली तस्वीरों के लिए जेपीईजी, अच्छे संपीड़न के साथ आधुनिक वेब उपयोग के लिए वेबपी, सर्वोत्तम संपीड़न-से-गुणवत्ता अनुपात के लिए AVIF।",
+      "q2": "क्या प्रारूप रूपांतरण छवि की गुणवत्ता को कम करता है?",
+      "a2": "JPEG या WebP जैसे एक नुकसान भरे प्रारूप में कनवर्ट करने से आपके द्वारा चुने गए संपीड़न स्तर के आधार पर गुणवत्ता कम हो सकती है। पीएनजी और टीआईएफएफ रूपांतरण बेकार हैं।",
+      "q3": "क्या मैं बैच में कई छवियों को बदल सकता हूं?",
+      "a3": "हां, एकाधिक छवियां अपलोड करें और कनवर्टर उन्हें एक ही बैच में संसाधित करता है। आप व्यक्तिगत रूप से या एक ZIP संग्रह के रूप में परिणाम डाउनलोड कर सकते हैं।",
+      "q4": "क्या छवि प्रारूप रूपांतरण के लिए समर्थन कर रहे हैं?",
+      "a4": "PNG, JPG, WebP, HEIC, AVIF, या TIFF अपलोड करें और इन प्रारूपों में से किसी को भी रूपांतरित करें। HEIC और AVIF उत्कृष्ट गुणवत्ता के साथ आधुनिक संपीड़न प्रदान करते हैं।"
     },
     "benefits": {
-      "heading": "Why Use QuickBG Image Converter",
-      "content": "Different platforms and use cases demand different image formats, and converting between them while maintaining quality is essential. QuickBG Image Converter supports all major formats — PNG, JPG, WebP, AVIF, HEIC, and TIFF — with batch processing for efficiency. PNG preserves transparency and delivers lossless quality for images with cutout subjects. JPG offers smaller file sizes ideal for photographs and web use. WebP and AVIF provide modern compression with excellent quality-to-size ratios. TIFF is the professional standard for print and archival purposes. The converter handles multiple images in a single batch, letting you download results individually or as a ZIP archive, saving significant time when processing large sets."
+      "heading": "क्यों QuickBG छवि कनवर्टर का उपयोग करें",
+      "content": "विभिन्न प्लेटफ़ॉर्म और उपयोग के मामले विभिन्न छवि प्रारूपों की मांग करते हैं, और गुणवत्ता को बनाए रखने के दौरान उनके बीच कन्वर्ट करना आवश्यक है। QuickBG छवि कनवर्टर सभी प्रमुख प्रारूपों का समर्थन करता है - PNG, JPG, WebP, AVIF, HEIC और TIFF - दक्षता के लिए बैच प्रसंस्करण के साथ। पीएनजी पारदर्शिता को संरक्षित करता है और कटआउट विषयों के साथ छवियों के लिए हानिकारक गुणवत्ता प्रदान करता है। JPG फोटोग्राफ और वेब उपयोग के लिए आदर्श फ़ाइल आकार प्रदान करता है। WebP और AVIF उत्कृष्ट गुणवत्ता से आकार अनुपात के साथ आधुनिक संपीड़न प्रदान करते हैं। टीआईएफएफ प्रिंट और अभिलेखीय उद्देश्यों के लिए पेशेवर मानक है। कनवर्टर एक एकल बैच में एकाधिक छवियों को संभालता है, जिससे आप व्यक्तिगत रूप से या ZIP संग्रह के रूप में परिणाम डाउनलोड कर सकते हैं, बड़े सेटों को संसाधित करते समय महत्वपूर्ण समय बचा सकते हैं।"
     },
     "howItWorks": {
-      "heading": "How Format Conversion Works",
-      "content": "QuickBG converts images by decoding the source format into raw pixel data, then encoding that data into the target format using optimized compression libraries. For lossless formats like PNG and TIFF, all original pixel data is preserved exactly. For lossy formats like JPEG and WebP, you control the quality level via a slider — higher quality means larger file sizes with less compression artifacts. AVIF offers superior compression efficiency, producing smaller files than JPEG at equivalent visual quality. The conversion happens entirely in your browser using WebAssembly-based codecs, meaning your images never upload to a server. Batch mode processes all selected images sequentially and packages them for convenient download."
+      "heading": "कैसे प्रारूप रूपांतरण वर्क्स",
+      "content": "QuickBG छवियों को स्रोत प्रारूप को कच्चे पिक्सेल डेटा में डिकोड करके परिवर्तित करता है, फिर अनुकूलित संपीड़न पुस्तकालयों का उपयोग करके उस डेटा को लक्ष्य प्रारूप में एन्कोड करता है। PNG और TIFF जैसे हानिकारक प्रारूपों के लिए, सभी मूल पिक्सेल डेटा बिल्कुल संरक्षित है। JPEG और WebP जैसे हानिकारक प्रारूपों के लिए, आप एक स्लाइडर के माध्यम से गुणवत्ता स्तर को नियंत्रित करते हैं - उच्च गुणवत्ता का मतलब कम संपीड़न कलाकृतियों के साथ बड़ी फ़ाइल आकार है। AVIF बेहतर संपीड़न दक्षता प्रदान करता है, जो समकक्ष दृश्य गुणवत्ता पर JPEG की तुलना में छोटी फ़ाइलों का उत्पादन करता है। रूपांतरण पूरी तरह से WebAssembly आधारित codecs का उपयोग करके अपने ब्राउज़र में होता है, जिसका अर्थ है कि आपकी छवियां कभी भी सर्वर पर अपलोड नहीं करती हैं। बैच मोड सभी चयनित छवियों को क्रमिक रूप से संसाधित करता है और उन्हें सुविधाजनक डाउनलोड के लिए पैकेज करता है।"
     },
     "tips": {
-      "heading": "Tips for Choosing the Right Format",
-      "content": "Use PNG when you need transparency or lossless quality — ideal for logos, graphics, and images with text. Use JPEG for photographs where smaller file size matters more than absolute quality, adjusting the quality slider to balance size and appearance. Use WebP for web content as it combines good compression with broad browser support. Use AVIF for the best compression efficiency on modern browsers. Use TIFF for print workflows and archival storage. If you are unsure, PNG is the safest choice for versatility. For batch conversion, process all images at the same quality setting for consistent output. Always preview a sample before converting a large batch."
+      "heading": "सही प्रारूप चुनने के लिए युक्तियाँ",
+      "content": "जब आपको पारदर्शिता या हानि रहित गुणवत्ता की आवश्यकता होती है तो PNG का उपयोग करें - लोगो, ग्राफिक्स और पाठ के साथ छवियों के लिए आदर्श। तस्वीरों के लिए JPEG का उपयोग करें जहां छोटी फ़ाइल का आकार पूर्ण गुणवत्ता से अधिक होता है, गुणवत्ता वाले स्लाइडर को आकार और उपस्थिति को संतुलित करने के लिए समायोजित करता है। वेब सामग्री के लिए WebP का उपयोग करें क्योंकि यह व्यापक ब्राउज़र समर्थन के साथ अच्छा संपीड़न को जोड़ती है। आधुनिक ब्राउज़रों पर सर्वोत्तम संपीड़न दक्षता के लिए AVIF का उपयोग करें। प्रिंट वर्कफ़्लो और अभिलेखीय भंडारण के लिए टीआईएफएफ का उपयोग करें। यदि आप अनिश्चित हैं, तो पीएनजी बहुमुखी प्रतिभा के लिए सबसे सुरक्षित विकल्प है। बैच रूपांतरण के लिए, सुसंगत आउटपुट के लिए एक ही गुणवत्ता सेटिंग पर सभी छवियों को संसाधित करें। हमेशा एक बड़े बैच को बदलने से पहले एक नमूने का पूर्वावलोकन करें।"
     },
-    "chooseFormat": "Choose output format and quality.",
-    "outputFormat": "Output format",
-    "convert": "Convert",
-    "download": "Download",
-    "formatPng": "Lossless and keeps transparency. Best for cutouts and graphics.",
-    "formatJpg": "Small, widely supported, and best for photos. No transparency.",
-    "formatWebp": "Modern compression with transparency support in most browsers.",
-    "formatAvif": "Very small files with strong compression. Newer browser support.",
-    "formatTiff": "High-quality archive format for print and production workflows."
+    "chooseFormat": "आउटपुट प्रारूप और गुणवत्ता चुनें।",
+    "outputFormat": "आउटपुट प्रारूप",
+    "convert": "बदलना",
+    "download": "डाउनलोड",
+    "formatPng": "हानिरहित और पारदर्शिता रखता है। कटआउट और ग्राफिक्स के लिए सर्वश्रेष्ठ।",
+    "formatJpg": "छोटे, व्यापक रूप से समर्थित और तस्वीरों के लिए सर्वश्रेष्ठ। कोई पारदर्शिता नहीं।",
+    "formatWebp": "अधिकांश ब्राउज़रों में पारदर्शिता समर्थन के साथ आधुनिक संपीड़न।",
+    "formatAvif": "मजबूत संपीड़न के साथ बहुत छोटी फाइलें। नया ब्राउज़र समर्थन।",
+    "formatTiff": "प्रिंट और उत्पादन कार्यप्रवाह के लिए उच्च गुणवत्ता वाले संग्रह प्रारूप।"
   },
   "comparison": {
     "title": "तुलना — QuickBG",

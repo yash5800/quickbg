@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Scissors, Maximize2, Palette, Layers, Crop, Contrast, ArrowLeft, ArrowUpRight, Sparkles, FileImage, BookOpen, ChevronRight, Clock, ArrowRight } from "lucide-react";
 import { LocaleLink } from "@/components/locale-link";
 import { useLocale } from "@/contexts/LocaleContext";
+import { localePrefixes, defaultLocale } from "@/lib/i18n/config";
 
 const toolKeyMap: Record<string, string> = {
   "remove-bg": "removeBg",
@@ -111,27 +112,21 @@ const categories = [
 
 const blogHighlights = [
   {
-    title: "How AI Background Removal Works in 2026",
-    excerpt: "Discover the technology behind modern background removal — from BiRefNet neural networks to real-time edge detection.",
+    slug: "how-ai-background-removal-works",
     date: "May 2026",
     readTime: "8 min read",
-    slug: "how-ai-background-removal-works",
     color: "from-sky-500/20",
   },
   {
-    title: "10 Ways to Use Transparent PNGs for Amazon & Etsy",
-    excerpt: "Maximize your product listings with transparent PNGs. From lifestyle mockups to infographics, learn the strategies top sellers use.",
+    slug: "transparent-pngs-amazon-etsy",
     date: "May 2026",
     readTime: "10 min read",
-    slug: "transparent-pngs-amazon-etsy",
     color: "from-violet-500/20",
   },
   {
-    title: "Best Practices for E-commerce Product Photos in 2026",
-    excerpt: "A complete guide to shooting and editing product photos that sell. Includes lighting tips, composition rules, and post-processing workflows.",
+    slug: "ecommerce-product-photos-guide",
     date: "June 2026",
     readTime: "12 min read",
-    slug: "ecommerce-product-photos-guide",
     color: "from-emerald-500/20",
   },
 ];
@@ -171,14 +166,18 @@ const chooseGuide = [
 
 export default function ToolsPage() {
   const router = useRouter();
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const localizedPath = (path: string) => {
+    if (locale === defaultLocale) return path;
+    return `${localePrefixes[locale]}${path}`;
+  };
 
   return (
     <AppLayout>
       <div className="tools-shell mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         {/* ===== PAGE HEADER ===== */}
         <div className="mb-10 flex items-start gap-4">
-          <Button onClick={() => router.push("/")} variant="ghost" size="icon" className="mt-1 h-10 w-10 shrink-0 rounded-full border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]">
+          <Button onClick={() => router.push(localizedPath("/"))} variant="ghost" size="icon" className="mt-1 h-10 w-10 shrink-0 rounded-full border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]">
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div className="min-w-0">
@@ -202,7 +201,7 @@ export default function ToolsPage() {
                 {t("tools.recommendedDesc")}
               </p>
             </div>
-            <Button onClick={() => router.push("/remover")} className="rounded-full bg-white text-black hover:bg-secondary">
+            <Button onClick={() => router.push(localizedPath("/remover"))} className="rounded-full bg-white text-black hover:bg-secondary">
               {t("tools.openRemoverBtn")}
               <ArrowUpRight className="ml-2 h-4 w-4" />
             </Button>
@@ -224,7 +223,7 @@ export default function ToolsPage() {
                   return (
                     <button
                       key={tool.id}
-                      onClick={() => router.push(tool.href)}
+                      onClick={() => router.push(localizedPath(tool.href))}
                       className="premium-surface group relative overflow-hidden rounded-[1.5rem] p-5 text-left transition duration-300 hover:-translate-y-1 hover:border-white/20"
                     >
                       <div className={cn("absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition duration-300 group-hover:opacity-100", tool.glow)} />
@@ -338,8 +337,8 @@ export default function ToolsPage() {
                   <span>·</span>
                   <span>{post.readTime}</span>
                 </div>
-                <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{post.title}</h3>
-                <p className="relative mt-2 text-sm leading-6 text-white/50">{post.excerpt}</p>
+                <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{t(`blog.articles.${post.slug}.title`)}</h3>
+                <p className="relative mt-2 text-sm leading-6 text-white/50">{t(`blog.articles.${post.slug}.excerpt`)}</p>
                 <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                   {t("blog.readArticle")} <ArrowRight className="h-3 w-3" />
                 </div>

@@ -4,19 +4,12 @@ import React, { useCallback, useRef, useState } from "react";
 import {
   ArrowUpRight,
   CheckCircle2,
-  Contrast,
-  Crop,
   Globe,
   Layers,
   Loader2,
-  Maximize2,
-  Palette,
-  Scissors,
   ShieldCheck,
   Upload,
-  Wand2,
   Zap,
-  FileImage,
   Star,
   Clock,
   ShoppingCart,
@@ -29,6 +22,7 @@ import {
   ArrowRight,
   BookOpen,
   ExternalLink,
+  FileImage,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -40,147 +34,13 @@ import { AppLayout } from "@/components/app-layout";
 import { DemoRevealSlider } from "@/components/demo-reveal-slider";
 import { ComparisonSlider } from "@/components/comparison-slider";
 import { ScrollLinkedParallax } from "@/components/parallax-showcase";
+import { InteractiveToolPlayground } from "@/components/interactive-tool-playground";
 import { Typewriter } from "@/components/typewriter";
 import { useImages } from "@/contexts/ImageContext";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
-import { adjust, bgblur, bgremovep, bgreplace, convert, crop, resize, sharpness } from "@/lib/demo-smaples";
 import originalImage from "../../assets/demo/org.jpg";
 import processedImage from "../../assets/demo/pro.png";
-
-const tools = [
-  {
-    id: "remove-bg",
-    icon: Scissors,
-    title: "Background Remover",
-    description: "Instantly remove backgrounds from any image with AI precision. Works on portraits, products, pets, and more.",
-    badge: "Core",
-    href: "/remover",
-    accent: "text-secondary",
-    glow: "from-sky-500/20",
-    demo_image: bgremovep,
-    tips: "Best for e-commerce product photos and portraits"
-  },
-  {
-    id: "resize",
-    icon: Maximize2,
-    title: "Smart Resize",
-    description: "Resize images for storefronts, socials, and profiles without extra setup. Preset ratios included.",
-    badge: "Popular",
-    href: "/resize",
-    accent: "text-primary",
-    glow: "from-violet-500/20",
-    demo_image: resize,
-    tips: "Perfect for Amazon, Etsy, and social media"
-  },
-  {
-    id: "replace-bg",
-    icon: Palette,
-    title: "Background Replace",
-    description: "Swap transparent cutouts onto clean colors, gradients, or custom images instantly.",
-    badge: "New",
-    href: "/replace-bg",
-    accent: "text-secondary",
-    glow: "from-emerald-500/20",
-    demo_image: bgreplace,
-    tips: "Create branded product shots in seconds"
-  },
-  {
-    id: "blur-bg",
-    icon: Layers,
-    title: "Blur Background",
-    description: "Create depth and focus with soft, realistic background blur. Adjustable intensity.",
-    badge: null,
-    href: "/blur-bg",
-    accent: "text-primary",
-    glow: "from-rose-500/20",
-    demo_image: bgblur,
-    tips: "Great for profile photos and portraits"
-  },
-  {
-    id: "crop",
-    icon: Crop,
-    title: "Smart Crop",
-    description: "Frame images for ads, marketplaces, and social ratios in seconds. Custom aspect ratios.",
-    badge: null,
-    href: "/crop",
-    accent: "text-secondary",
-    glow: "from-secondary/20",
-    demo_image: crop,
-    tips: "Ideal for thumbnails and banner ads"
-  },
-  {
-    id: "sharpness",
-    icon: Wand2,
-    title: "Sharpness",
-    description: "Sharpen the subject or background independently for crisp final exports.",
-    badge: "New",
-    href: "/sharpness",
-    accent: "text-secondary",
-    glow: "from-amber-500/20",
-    demo_image: sharpness,
-    tips: "Polish product edges before listing"
-  },
-  {
-    id: "adjust",
-    icon: Contrast,
-    title: "Adjust Image",
-    description: "Fine-tune brightness, contrast, and saturation before export. Quality compression included.",
-    badge: null,
-    href: "/adjust",
-    accent: "text-primary",
-    glow: "from-cyan-500/20",
-    demo_image: adjust,
-    tips: "Final touch-ups before download"
-  },
-  {
-    id: "converter",
-    icon: FileImage,
-    title: "Format Converter",
-    description: "Convert between PNG, JPG, WebP, AVIF, and TIFF with quality controls and batch support.",
-    badge: "New",
-    href: "/converter",
-    accent: "text-primary",
-    glow: "from-indigo-500/20",
-    demo_image: convert,
-    tips: "Convert bulk images in one go"
-  },
-];
-
-const howItWorks = [
-  {
-    icon: Upload,
-    title: "Upload your image",
-    description: "Drag and drop or click to upload. Supports PNG, JPG, WebP, HEIC, and AVIF. Batch upload works too.",
-    color: "text-secondary/80",
-    bg: "bg-secondary/10",
-    border: "border-secondary/20",
-  },
-  {
-    icon: Wand2,
-    title: "AI removes the background",
-    description: "Our BiRefNet-powered engine detects edges, hair, fur, and complex boundaries automatically. No manual selection needed.",
-    color: "text-primary/80",
-    bg: "bg-primary/10",
-    border: "border-primary/20",
-  },
-  {
-    icon: Palette,
-    title: "Refine or replace",
-    description: "Use the erase/restore brush for touch-ups, then blur, replace, resize, crop, or adjust your image.",
-    color: "text-secondary/80",
-    bg: "bg-secondary/10",
-    border: "border-secondary/20",
-  },
-  {
-    icon: Download,
-    title: "Download transparent PNG",
-    description: "Export your cutout as a high-quality transparent PNG. Full resolution preserved, no watermark, no limits.",
-    color: "text-secondary/80",
-    bg: "bg-secondary/10",
-    border: "border-secondary/20",
-  },
-];
 
 const useCases = [
   {
@@ -244,40 +104,24 @@ const testimonials = [
 
 const blogHighlights = [
   {
-    title: "How AI Background Removal Works in 2026",
-    excerpt: "Discover the technology behind modern background removal — from BiRefNet neural networks to real-time edge detection and how it compares to traditional chroma key methods.",
+    slug: "how-ai-background-removal-works",
     date: "May 2026",
     readTime: "8 min read",
-    slug: "how-ai-background-removal-works",
     color: "from-sky-500/20",
   },
   {
-    title: "10 Ways to Use Transparent PNGs for Amazon & Etsy",
-    excerpt: "Maximize your product listings with transparent PNGs. From lifestyle mockups to infographics, learn the strategies top sellers use to stand out.",
+    slug: "transparent-pngs-amazon-etsy",
     date: "May 2026",
     readTime: "10 min read",
-    slug: "transparent-pngs-amazon-etsy",
     color: "from-violet-500/20",
   },
   {
-    title: "Best Practices for E-commerce Product Photos in 2026",
-    excerpt: "A complete guide to shooting and editing product photos that sell. Includes lighting tips, composition rules, and post-processing workflows.",
+    slug: "ecommerce-product-photos-guide",
     date: "June 2026",
     readTime: "12 min read",
-    slug: "ecommerce-product-photos-guide",
     color: "from-emerald-500/20",
   },
 ];
-
-function Download({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-  );
-}
 
 const orgImageSrc = typeof originalImage === "string" ? originalImage : originalImage.src;
 const proImageSrc = typeof processedImage === "string" ? processedImage : processedImage.src;
@@ -297,8 +141,8 @@ export default function Home() {
   ];
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
   const [isDropActive, setIsDropActive] = useState(false);
+  const [loadingSampleId, setLoadingSampleId] = useState<string | null>(null);
 
   const motionTransition = { duration: 0.72, ease: "easeOut" as const };
 
@@ -593,7 +437,7 @@ export default function Home() {
             })}
           </div>
 
-          {/* ===== HOW IT WORKS ===== */}
+          {/* ===== INTERACTIVE TOOL PLAYGROUND ===== */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -602,41 +446,7 @@ export default function Home() {
             transition={motionTransition}
             className="mt-24"
           >
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.simpleWorkflow")}</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.howItWorks")}</h2>
-              <p className="mt-3 text-sm leading-6 text-white/50">
-                {t("home.howItWorksDesc")}
-              </p>
-            </div>
-
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {(["upload", "ai", "refine", "download"] as const).map((stepKey, index) => {
-                const StepIcon = howItWorks[index].icon;
-                return (
-                <motion.div
-                  key={stepKey}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.12 }}
-                  className="group relative rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:border-white/20"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-                  <div className={cn("relative mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border", howItWorks[index].border, howItWorks[index].bg)}>
-                    <StepIcon className={cn("h-6 w-6", howItWorks[index].color)} />
-                  </div>
-                  <div className="relative mb-2 flex items-center gap-2">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-xs font-semibold text-white/60">
-                      {index + 1}
-                    </span>
-                  </div>
-                  <h3 className="relative text-base font-semibold text-white">{t(`home.howItWorksSteps.${stepKey}`)}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-white/50">{t(`home.howItWorksSteps.${stepKey}Desc`)}</p>
-                </motion.div>
-                );
-              })}
-            </div>
+            <InteractiveToolPlayground />
           </motion.div>
 
           {/* ===== DROP ZONE ===== */}
@@ -646,7 +456,7 @@ export default function Home() {
             onDragLeave={handleDropZoneDragLeave}
             onDragOver={handleDropZoneDragOver}
             onDrop={handleDropZoneDrop}
-            className="group mx-auto mt-16 w-full max-w-4xl cursor-pointer"
+            className="group mx-auto mt-24 w-full max-w-4xl cursor-pointer"
           >
             <div
               className={cn(
@@ -743,80 +553,6 @@ export default function Home() {
                     </span>
                   </div>
                 </motion.button>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* ===== TOOLS SECTION ===== */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-            transition={motionTransition}
-            className="mt-24"
-          >
-            <div className="mb-8 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-              <div className="max-w-2xl">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.imageToolkit")}</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-                  {t("home.toolkitTitle")}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-white/50">
-                  {t("home.toolkitDesc")}
-                </p>
-              </div>
-              <LocaleLink
-                href="/tools"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
-              >
-                {t("home.viewAllTools")}
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </LocaleLink>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 relative">
-              {tools.map((tool) => (
-                <LocaleLink
-                  key={tool.id}
-                  href={tool.href}
-                  className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07]"
-                  onClick={(e) => {
-                    if (tool.id === "remove-bg" && !hasImages) {
-                      e.preventDefault();
-                      fileInputRef.current?.click();
-                    }
-                  }}
-                >
-                  <div className={cn("absolute inset-0 bg-gradient-to-br to-transparent opacity-0 transition duration-300 group-hover:opacity-100", tool.glow)} />
-                  <div className="relative flex items-start justify-between gap-4">
-                    <div className={cn("flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-black/30", tool.accent)}>
-                      <tool.icon className="h-5 w-5" />
-                    </div>
-                    {tool.badge && (
-                      <span className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] font-medium text-white/60">
-                        {tool.badge}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="relative mt-5 text-base font-semibold text-white">{t(`home.tools.${tool.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}`)}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-white/50 max-w-[200px] max-md:w-[130px]">{t(`home.tools.${tool.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Desc`)}</p>
-                  <p className="relative mt-2 text-xs leading-5 text-white/35 italic">{t(`home.tools.${tool.id.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Tip`)}</p>
-                  <div className="relative mt-4 inline-flex items-center gap-2 text-xs font-medium text-white/60 transition group-hover:text-white">
-                    {t("home.openTool")}
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </div>
-                  <div className="hover:-bottom-2 hover:-right-4 absolute -right-5 -bottom-3 z-20 -rotate-12 rounded-[1.5rem] border border-white/10 bg-[#111]/80 p-1 shadow-[0_32px_100px_-44px_rgba(0,0,0,0.9)] backdrop-blur transition-all">
-                    <div className="relative h-44 w-44 overflow-hidden rounded-2xl">
-                      <Image
-                        src={tool.demo_image}
-                        alt="Photo Shot"
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-                </LocaleLink>
               ))}
             </div>
           </motion.div>
@@ -939,6 +675,114 @@ export default function Home() {
             </div>
           </motion.div>
 
+          {/* ===== SEO EXPLAINER ===== */}
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24 rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 sm:p-8 lg:p-10"
+          >
+            <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-start">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.seoExplainer")}</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
+                  {t("home.seoTitle")}
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-white/55 sm:text-base">
+                  {t("home.seoDesc")}
+                </p>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.howItWorks")}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    {t("home.seoCards.howItWorksDesc")}
+                  </p>
+                  <LocaleLink href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.tryRemover")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.png")}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    {t("home.seoCards.pngDesc")}
+                  </p>
+                  <LocaleLink href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.readGuide")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.handles")}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    {t("home.seoCards.handlesDesc")}
+                  </p>
+                  <LocaleLink href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.viewAllTools")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
+                </div>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.refine")}</h3>
+                  <p className="mt-2 text-sm leading-6 text-white/50">
+                    {t("home.seoCards.refineDesc")}
+                  </p>
+                  <LocaleLink href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
+                    {t("home.seoCards.visitFaq")} <ExternalLink className="h-3 w-3" />
+                  </LocaleLink>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* ===== SUPPORTED FORMATS ===== */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            transition={motionTransition}
+            className="mt-24"
+          >
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.compatibility")}</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.worksEvery")}</h2>
+              <p className="mt-3 text-sm leading-6 text-white/50">
+                {t("home.worksEveryDesc")}
+              </p>
+            </div>
+
+            <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+              {(["png", "jpeg", "webp", "avif", "heic", "tiff", "gif", "bmp"] as const).map((fmt, i) => (
+                <motion.div
+                  key={fmt}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: i * 0.05 }}
+                  className="group rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4 text-center transition duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-secondary/[0.04]"
+                >
+                  <FileImage className="mx-auto h-6 w-6 text-white/40 transition duration-300 group-hover:text-secondary" />
+                  <div className="mt-2 text-sm font-semibold text-white transition duration-300 group-hover:text-secondary">{fmt === "jpeg" ? "JPEG" : fmt.charAt(0).toUpperCase() + fmt.slice(1)}</div>
+                  <div className="mt-0.5 text-[11px] text-white/40">{t(`home.formats.${fmt}`)}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <LocaleLink
+                href="/tools"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
+              >
+                {t("home.exploreAllTools")} <ArrowUpRight className="h-3.5 w-3.5" />
+              </LocaleLink>
+            </div>
+          </motion.div>
+
           {/* ===== BLOG HIGHLIGHTS ===== */}
           <motion.div
             variants={sectionVariants}
@@ -979,8 +823,8 @@ export default function Home() {
                     <span>·</span>
                     <span>{post.readTime}</span>
                   </div>
-                  <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{post.title}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-white/50">{post.excerpt}</p>
+                  <h3 className="relative mt-3 text-base font-semibold text-white transition group-hover:text-secondary">{t(`blog.articles.${post.slug}.title`)}</h3>
+                  <p className="relative mt-2 text-sm leading-6 text-white/50">{t(`blog.articles.${post.slug}.excerpt`)}</p>
                   <div className="relative mt-4 inline-flex items-center gap-1 text-xs font-medium text-white/40 transition group-hover:text-white">
                     {t("home.readArticle")} <ArrowRight className="h-3 w-3" />
                   </div>
@@ -1116,113 +960,7 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* ===== SEO EXPLAINER ===== */}
-          <motion.section
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-            transition={motionTransition}
-            className="mt-24 rounded-[2rem] border border-white/10 bg-white/[0.035] p-6 sm:p-8 lg:p-10"
-          >
-            <div className="grid gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-start">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.seoExplainer")}</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">
-                  {t("home.seoTitle")}
-                </h2>
-                <p className="mt-4 max-w-xl text-sm leading-7 text-white/55 sm:text-base">
-                  {t("home.seoDesc")}
-                </p>
-              </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.howItWorks")}</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/50">
-                    {t("home.seoCards.howItWorksDesc")}
-                  </p>
-                  <LocaleLink href="/remover" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
-                    {t("home.seoCards.tryRemover")} <ExternalLink className="h-3 w-3" />
-                  </LocaleLink>
-                </div>
-
-                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.png")}</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/50">
-                    {t("home.seoCards.pngDesc")}
-                  </p>
-                  <LocaleLink href="/blog/transparent-pngs-amazon-etsy" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
-                    {t("home.seoCards.readGuide")} <ExternalLink className="h-3 w-3" />
-                  </LocaleLink>
-                </div>
-
-                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.handles")}</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/50">
-                    {t("home.seoCards.handlesDesc")}
-                  </p>
-                  <LocaleLink href="/tools" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
-                    {t("home.seoCards.viewAllTools")} <ExternalLink className="h-3 w-3" />
-                  </LocaleLink>
-                </div>
-
-                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <h3 className="text-base font-semibold text-white">{t("home.seoCards.refine")}</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/50">
-                    {t("home.seoCards.refineDesc")}
-                  </p>
-                  <LocaleLink href="/faq" className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-secondary hover:text-secondary">
-                    {t("home.seoCards.visitFaq")} <ExternalLink className="h-3 w-3" />
-                  </LocaleLink>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ===== SUPPORTED FORMATS ===== */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-100px" }}
-            transition={motionTransition}
-            className="mt-24"
-          >
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("home.compatibility")}</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-normal text-white sm:text-4xl">{t("home.worksEvery")}</h2>
-              <p className="mt-3 text-sm leading-6 text-white/50">
-                {t("home.worksEveryDesc")}
-              </p>
-            </div>
-
-            <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-              {(["png", "jpeg", "webp", "avif", "heic", "tiff", "gif", "bmp"] as const).map((fmt, i) => (
-                <motion.div
-                  key={fmt}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.05 }}
-                  className="group rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4 text-center transition duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-secondary/[0.04]"
-                >
-                  <FileImage className="mx-auto h-6 w-6 text-white/40 transition duration-300 group-hover:text-secondary" />
-                  <div className="mt-2 text-sm font-semibold text-white transition duration-300 group-hover:text-secondary">{fmt === "jpeg" ? "JPEG" : fmt.charAt(0).toUpperCase() + fmt.slice(1)}</div>
-                  <div className="mt-0.5 text-[11px] text-white/40">{t(`home.formats.${fmt}`)}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="mt-6 text-center">
-              <LocaleLink
-                href="/tools"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
-              >
-                {t("home.exploreAllTools")} <ArrowUpRight className="h-3.5 w-3.5" />
-              </LocaleLink>
-            </div>
-          </motion.div>
 
           {/* ===== FINAL CTA ===== */}
           <motion.div

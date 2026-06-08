@@ -82,7 +82,7 @@
     },
     "dropTitle": "Drop images here or click to upload",
     "dropDesc": "Batch upload is supported. QuickBG sends your images to the remover and exports transparent PNG results.",
-    "viewProcessing": "View {count} processing image{plural}",
+    "viewProcessing": "View {count} processing image(s)",
     "liveSamples": "Live samples",
     "tryReal": "Try the real remover flow.",
     "loadingSample": "Loading sample",
