@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { ImageItem } from "@/types/image";
 import { useProcessingCompleteNotification } from "@/hooks/use-processing-complete-notification";
 import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 export default function EditorPage() {
   const { t } = useLocale();
@@ -249,6 +250,38 @@ export default function EditorPage() {
             <p className="text-muted-foreground mb-4">{t("home.dropDesc")}</p>
           </motion.div>
         </div>
+
+        <section className="mx-auto mt-10 w-full max-w-5xl rounded-xl border border-border/70 bg-background/55 p-5 backdrop-blur">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("remover.guide.heading")}</p>
+            <h2 className="mt-2 text-xl font-semibold tracking-normal text-foreground">{t("tools.howToUse.remover")}</h2>
+          </div>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">1</span>
+              <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step1Title")}</h3>
+              <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step1Desc")}</p>
+            </div>
+            <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">2</span>
+              <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step2Title")}</h3>
+              <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step2Desc")}</p>
+            </div>
+            <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">3</span>
+              <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step3Title")}</h3>
+              <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step3Desc")}</p>
+            </div>
+            <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">4</span>
+              <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step4Title")}</h3>
+              <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step4Desc")}</p>
+            </div>
+          </div>
+        </section>
+
+        <ToolFaq toolKey="remover" variant="light" />
+        <ToolExtraContent toolKey="remover" variant="light" />
       </AppLayout>
     );
   }
@@ -365,36 +398,38 @@ export default function EditorPage() {
             </aside>
           </div>
 
-          {images.length > 0 && (
-            <section className="mx-auto mt-6 w-full max-w-5xl rounded-xl border border-border/70 bg-background/55 p-5 backdrop-blur">
-              <div className="mx-auto max-w-2xl text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("remover.guide.heading")}</p>
-                <h2 className="mt-2 text-xl font-semibold tracking-normal text-foreground">{t("tools.howToUse.remover")}</h2>
+          
+          <section className="mx-auto mt-6 w-full max-w-5xl rounded-xl border border-border/70 bg-background/55 p-5 backdrop-blur">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">{t("remover.guide.heading")}</p>
+              <h2 className="mt-2 text-xl font-semibold tracking-normal text-foreground">{t("tools.howToUse.remover")}</h2>
+            </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">1</span>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step1Title")}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step1Desc")}</p>
               </div>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">1</span>
-                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step1Title")}</h3>
-                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step1Desc")}</p>
-                </div>
-                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">2</span>
-                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step2Title")}</h3>
-                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step2Desc")}</p>
-                </div>
-                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">3</span>
-                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step3Title")}</h3>
-                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step3Desc")}</p>
-                </div>
-                <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">4</span>
-                  <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step4Title")}</h3>
-                  <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step4Desc")}</p>
-                </div>
+              <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">2</span>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step2Title")}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step2Desc")}</p>
               </div>
-            </section>
-          )}
+              <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">3</span>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step3Title")}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step3Desc")}</p>
+              </div>
+              <div className="relative rounded-xl border border-border/70 bg-background/40 p-4">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">4</span>
+                <h3 className="mt-3 text-sm font-semibold text-foreground">{t("remover.guide.step4Title")}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-muted-foreground">{t("remover.guide.step4Desc")}</p>
+              </div>
+            </div>
+          </section>
+
+          <ToolFaq toolKey="remover" variant="light" />
+          <ToolExtraContent toolKey="remover" variant="light" />
 
           {/* Eraser Tool Modal */}
           {showEraser && selectedImage && selectedImage.result && (

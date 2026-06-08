@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 const backgroundColors = [
   { name: "White", value: "#ffffff" },
@@ -192,8 +193,10 @@ export default function ReplaceBgPage() {
                 <p className="mt-1.5 text-sm leading-6 text-white/50">{t("replaceBg.guide.step4Desc")}</p>
               </div>
             </div>
-          </section>
-        </div>
+            </section>
+            <ToolFaq toolKey="replaceBg" />
+            <ToolExtraContent toolKey="replaceBg" />
+          </div>
       </AppLayout>
     );
   }
@@ -387,6 +390,8 @@ export default function ReplaceBgPage() {
           </div>
         </div>
       </section>
+      <ToolFaq toolKey="replaceBg" />
+      <ToolExtraContent toolKey="replaceBg" />
     </AppLayout>
   );
 }

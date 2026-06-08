@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 export default function AdjustPage() {
   const { t } = useLocale();
@@ -646,6 +647,8 @@ export default function AdjustPage() {
           </div>
         </div>
       </section>
+      <ToolFaq toolKey="adjust" />
+      <ToolExtraContent toolKey="adjust" />
     </AppLayout>
   );
 }

@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 const aspectRatios = [
   { label: "Free", value: null },
@@ -505,6 +506,8 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
           </div>
         </div>
       </section>
+      <ToolFaq toolKey="crop" />
+      <ToolExtraContent toolKey="crop" />
     </AppLayout>
   );
 }

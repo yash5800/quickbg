@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AppLayout } from "@/components/app-layout";
 import { useLocale } from "@/contexts/LocaleContext";
 import { Button } from "@/components/ui/button";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { RatingWidget } from "@/components/rating-widget";
@@ -300,8 +301,10 @@ export default function SharpnessPage() {
                 <p className="mt-1.5 text-sm leading-6 text-white/50">{t("sharpness.guide.step4Desc")}</p>
               </div>
             </div>
-          </section>
-        </div>
+            </section>
+            <ToolFaq toolKey="sharpness" />
+            <ToolExtraContent toolKey="sharpness" />
+          </div>
       </AppLayout>
     );
   }
@@ -439,6 +442,8 @@ export default function SharpnessPage() {
           </div>
         </div>
       </section>
+      <ToolFaq toolKey="sharpness" />
+      <ToolExtraContent toolKey="sharpness" />
     </AppLayout>
   );
 }

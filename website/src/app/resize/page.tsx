@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 const presets = [
   { label: "1:1", desc: "Square (Instagram, Profile)" },
@@ -308,6 +309,8 @@ export default function ResizePage() {
           </div>
         </div>
       </section>
+      <ToolFaq toolKey="resize" />
+      <ToolExtraContent toolKey="resize" />
     </AppLayout>
   );
 }

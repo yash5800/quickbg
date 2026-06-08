@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { useRouter } from "next/navigation";
 import { canvasRGB } from "stackblur-canvas";
 import { useLocale } from "@/contexts/LocaleContext";
+import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
 
 export default function BlurBgPage() {
   const { t } = useLocale();
@@ -187,8 +188,10 @@ export default function BlurBgPage() {
                 <p className="mt-1.5 text-sm leading-6 text-white/50">{t("blurBg.guide.step4Desc")}</p>
               </div>
             </div>
-          </section>
-        </div>
+            </section>
+            <ToolFaq toolKey="blurBg" />
+            <ToolExtraContent toolKey="blurBg" />
+          </div>
       </AppLayout>
     );
   }
@@ -294,6 +297,8 @@ export default function BlurBgPage() {
           </div>
         </div>
       </section>
+      <ToolFaq toolKey="blurBg" />
+      <ToolExtraContent toolKey="blurBg" />
     </AppLayout>
   );
 }
