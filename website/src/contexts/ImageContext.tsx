@@ -44,7 +44,9 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const [retryTick, setRetryTick] = React.useState(0);
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const resultFetchAttemptsRef = useRef<Map<string, number>>(new Map());
+  const uploadTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const MAX_RESULT_FETCH_RETRIES = 12; // number of polling attempts before giving up
+  const UPLOAD_TIMEOUT_MS = 30_000; // 30 seconds max for upload
   const [isHydrated, setIsHydrated] = React.useState(false);
 
   const pausePending = useCallback((reason: ImageWaitingReason, retryInSeconds: number) => {
@@ -209,14 +211,19 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     await Promise.all(activeImages.map((img) => refreshImageFromWorker(img)));
   }, [refreshImageFromWorker]);
 
-  // Cleanup polling intervals on unmount
+  // Cleanup intervals & timeouts on unmount
   useEffect(() => {
     const intervals = pollingIntervalsRef.current;
+    const timeouts = uploadTimeoutsRef.current;
     return () => {
       intervals.forEach((intervalId) => {
         clearInterval(intervalId);
       });
       intervals.clear();
+      timeouts.forEach((timeoutId) => {
+        clearTimeout(timeoutId);
+      });
+      timeouts.clear();
     };
   }, []);
 
@@ -237,7 +244,15 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (restoredImages.length > 0) {
-          setImagesStore(restoredImages);
+          // Fix any images stuck in "uploading" state without a jobId -
+          // these are from interrupted uploads and should be retried.
+          const fixedImages = restoredImages.map((img) => {
+            if (img.status === "uploading" && !img.jobId) {
+              return { ...img, status: "pending" as const, error: undefined, startTime: undefined };
+            }
+            return img;
+          });
+          setImagesStore(fixedImages);
         }
 
         pruneExpiredTerminalImages(TERMINAL_RETENTION_MS);
@@ -423,6 +438,21 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     clearWaitingState(pendingImage.id);
     useImagesStore.getState().updateImageStatus(pendingImage.id, "uploading", { startTime: Date.now() });
 
+    // Set upload timeout
+    const uploadTimeoutId = setTimeout(() => {
+      console.error("[ImageContext] Upload timed out for", pendingImage.id);
+      processingRef.current = false;
+      const store = useProcessingStore.getState();
+      if (store.currentImageId === pendingImage.id) {
+        clearSubmitting();
+      }
+      useImagesStore.getState().updateImageStatus(pendingImage.id, "error", {
+        error: "Upload timed out. The worker may be unreachable.",
+        progress: 0,
+      });
+    }, UPLOAD_TIMEOUT_MS);
+    uploadTimeoutsRef.current.set(pendingImage.id, uploadTimeoutId);
+
     // Submit to server
     Promise.resolve(
       pendingImage.creditReserved
@@ -436,6 +466,13 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         if (!response) return;
 
         console.log("[ImageContext] Submit response:", response);
+
+        // Clear upload timeout
+        const existingTimeout = uploadTimeoutsRef.current.get(pendingImage.id);
+        if (existingTimeout) {
+          clearTimeout(existingTimeout);
+          uploadTimeoutsRef.current.delete(pendingImage.id);
+        }
 
         if (response.status === "completed" && response.imageBlob) {
           const url = URL.createObjectURL(response.imageBlob);
@@ -458,6 +495,14 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       })
       .catch((err) => {
         console.error("[ImageContext] Processing failed:", err);
+
+        // Clear upload timeout
+        const existingTimeout = uploadTimeoutsRef.current.get(pendingImage.id);
+        if (existingTimeout) {
+          clearTimeout(existingTimeout);
+          uploadTimeoutsRef.current.delete(pendingImage.id);
+        }
+
         if (err instanceof WorkerApiError && err.status === 403) {
           const details = err.details as { reset_in_seconds?: number; remaining?: number } | null;
           setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
@@ -481,6 +526,14 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       })
       .finally(() => {
         console.log("[ImageContext] Processing complete");
+
+        // Clear upload timeout if still pending
+        const existingTimeout = uploadTimeoutsRef.current.get(pendingImage.id);
+        if (existingTimeout) {
+          clearTimeout(existingTimeout);
+          uploadTimeoutsRef.current.delete(pendingImage.id);
+        }
+
         processingRef.current = false;
         // Only clear if this image is still the current one
         const store = useProcessingStore.getState();
@@ -518,7 +571,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    void (async () => {
+    return (async () => {
       let reservationFailed = false;
       let deferredRetryAt: number | null = null;
 
@@ -556,13 +609,12 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      getQueueStatus()
-        .then((status) => {
-          setCredits(status.remaining, status.reset_in_seconds ?? 3600);
-        })
-        .catch((error) => {
-          console.warn("[ImageContext] Failed to refresh credits after queue reservation:", error);
-        });
+      try {
+        const status = await getQueueStatus();
+        setCredits(status.remaining, status.reset_in_seconds ?? 3600);
+      } catch (error) {
+        console.warn("[ImageContext] Failed to refresh credits after queue reservation:", error);
+      }
     })();
   }, [addImageStore, addToast, setCredits]);
 

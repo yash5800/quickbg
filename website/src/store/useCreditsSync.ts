@@ -5,6 +5,7 @@ import { getQueueStatus } from "@/lib/worker-api";
 
 export function useCreditsSync() {
   const setCredits = useCreditsStore((state) => state.setCredits);
+  const restoreFromStorage = useCreditsStore((state) => state.restoreFromStorage);
   const query = useQuery({
     queryKey: ["queue-status"],
     queryFn: getQueueStatus,
@@ -14,6 +15,11 @@ export function useCreditsSync() {
     refetchIntervalInBackground: false,
     staleTime: 0,
   });
+
+  // Restore persisted credits from localStorage on mount (client-side only)
+  useEffect(() => {
+    restoreFromStorage();
+  }, [restoreFromStorage]);
 
   useEffect(() => {
     if (query.data && Number.isFinite(query.data.remaining)) {
