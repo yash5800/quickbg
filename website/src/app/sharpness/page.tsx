@@ -7,6 +7,7 @@ import { AppLayout } from "@/components/app-layout";
 import { useLocale } from "@/contexts/LocaleContext";
 import { Button } from "@/components/ui/button";
 import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
+import { ToolSections } from "@/components/tool-sections";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { RatingWidget } from "@/components/rating-widget";
@@ -304,7 +305,8 @@ export default function SharpnessPage() {
             </section>
             <ToolFaq toolKey="sharpness" />
             <ToolExtraContent toolKey="sharpness" />
-          </div>
+            <ToolSections toolKey="sharpness" />
+              </div>
       </AppLayout>
     );
   }
@@ -444,6 +446,7 @@ export default function SharpnessPage() {
       </section>
       <ToolFaq toolKey="sharpness" />
       <ToolExtraContent toolKey="sharpness" />
+      <ToolSections toolKey="sharpness" />
     </AppLayout>
   );
 }

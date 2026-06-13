@@ -10,12 +10,14 @@ interface ToolFaqProps {
 export function ToolFaq({ toolKey, variant = "dark" }: ToolFaqProps) {
   const { t } = useLocale();
 
-  const items = [
-    { q: t(`${toolKey}.faq.q1`), a: t(`${toolKey}.faq.a1`) },
-    { q: t(`${toolKey}.faq.q2`), a: t(`${toolKey}.faq.a2`) },
-    { q: t(`${toolKey}.faq.q3`), a: t(`${toolKey}.faq.a3`) },
-    { q: t(`${toolKey}.faq.q4`), a: t(`${toolKey}.faq.a4`) },
-  ];
+  const faqCount = 15;
+  const items = Array.from({ length: faqCount }, (_, i) => {
+    const n = i + 1;
+    const key = `${toolKey}.faq.q${n}`;
+    const q = t(key);
+    if (q === key) return null;
+    return { q, a: t(`${toolKey}.faq.a${n}`) };
+  }).filter((x): x is { q: string; a: string } => x !== null);
 
   const isDark = variant === "dark";
 
@@ -72,35 +74,30 @@ export function ToolExtraContent({ toolKey, variant = "dark" }: ToolExtraContent
   const headingClass = `text-xl font-semibold tracking-normal sm:text-2xl ${isDark ? "text-white" : "text-foreground"}`;
   const paragraphClass = `mt-4 leading-7 ${isDark ? "text-white/70" : "text-muted-foreground"}`;
 
+  const sections = [
+    { key: "benefits", skipIfMissing: false },
+    { key: "howItWorks", skipIfMissing: false },
+    { key: "tips", skipIfMissing: false },
+  ];
+
   return (
     <section className="mx-auto max-w-5xl px-4 sm:px-6">
       <div className="mt-12 space-y-8">
-        <div className={cardClass}>
-          <h2 className={headingClass}>
-            {t(`${toolKey}.benefits.heading`)}
-          </h2>
-          <p className={paragraphClass}>
-            {t(`${toolKey}.benefits.content`)}
-          </p>
-        </div>
-
-        <div className={cardClass}>
-          <h2 className={headingClass}>
-            {t(`${toolKey}.howItWorks.heading`)}
-          </h2>
-          <p className={paragraphClass}>
-            {t(`${toolKey}.howItWorks.content`)}
-          </p>
-        </div>
-
-        <div className={cardClass}>
-          <h2 className={headingClass}>
-            {t(`${toolKey}.tips.heading`)}
-          </h2>
-          <p className={paragraphClass}>
-            {t(`${toolKey}.tips.content`)}
-          </p>
-        </div>
+        {sections.map(({ key, skipIfMissing }) => {
+          const heading = t(`${toolKey}.${key}.heading`);
+          const content = t(`${toolKey}.${key}.content`);
+          if (skipIfMissing && (content === `${toolKey}.${key}.content` || !content)) return null;
+          return (
+            <div key={key} className={cardClass}>
+              <h2 className={headingClass}>
+                {heading}
+              </h2>
+              <p className={paragraphClass}>
+                {content}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

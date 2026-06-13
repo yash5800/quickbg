@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LocaleContext";
 import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
+import { ToolSections } from "@/components/tool-sections";
 
 export default function AdjustPage() {
   const { t } = useLocale();
@@ -649,6 +650,7 @@ export default function AdjustPage() {
       </section>
       <ToolFaq toolKey="adjust" />
       <ToolExtraContent toolKey="adjust" />
+      <ToolSections toolKey="adjust" />
     </AppLayout>
   );
 }

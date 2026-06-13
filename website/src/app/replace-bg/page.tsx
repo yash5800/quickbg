@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/contexts/LocaleContext";
 import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
+import { ToolSections } from "@/components/tool-sections";
 
 const backgroundColors = [
   { name: "White", value: "#ffffff" },
@@ -196,6 +197,7 @@ export default function ReplaceBgPage() {
             </section>
             <ToolFaq toolKey="replaceBg" />
             <ToolExtraContent toolKey="replaceBg" />
+            <ToolSections toolKey="replaceBg" />
           </div>
       </AppLayout>
     );
@@ -392,6 +394,7 @@ export default function ReplaceBgPage() {
       </section>
       <ToolFaq toolKey="replaceBg" />
       <ToolExtraContent toolKey="replaceBg" />
+      <ToolSections toolKey="replaceBg" />
     </AppLayout>
   );
 }

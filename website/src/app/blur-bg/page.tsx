@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { canvasRGB } from "stackblur-canvas";
 import { useLocale } from "@/contexts/LocaleContext";
 import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
+import { ToolSections } from "@/components/tool-sections";
 
 export default function BlurBgPage() {
   const { t } = useLocale();
@@ -191,6 +192,7 @@ export default function BlurBgPage() {
             </section>
             <ToolFaq toolKey="blurBg" />
             <ToolExtraContent toolKey="blurBg" />
+            <ToolSections toolKey="blurBg" />
           </div>
       </AppLayout>
     );
@@ -299,6 +301,7 @@ export default function BlurBgPage() {
       </section>
       <ToolFaq toolKey="blurBg" />
       <ToolExtraContent toolKey="blurBg" />
+      <ToolSections toolKey="blurBg" />
     </AppLayout>
   );
 }

@@ -8,6 +8,7 @@ import { Scissors, Maximize2, Palette, Layers, Crop, Contrast, ArrowLeft, ArrowU
 import { LocaleLink } from "@/components/locale-link";
 import { useLocale } from "@/contexts/LocaleContext";
 import { localePrefixes, defaultLocale } from "@/lib/i18n/config";
+import { ToolSections } from "@/components/tool-sections";
 
 const toolKeyMap: Record<string, string> = {
   "remove-bg": "removeBg",
@@ -136,6 +137,17 @@ const faqItems = [
   { id: "multiple" },
   { id: "signup" },
   { id: "formats" },
+  { id: "q5" },
+  { id: "q6" },
+  { id: "q7" },
+  { id: "q8" },
+  { id: "q9" },
+  { id: "q10" },
+  { id: "q11" },
+  { id: "q12" },
+  { id: "q13" },
+  { id: "q14" },
+  { id: "q15" },
 ];
 
 const workflowTips = [
@@ -347,6 +359,42 @@ export default function ToolsPage() {
           </div>
         </div>
 
+        {/* ===== USE CASES ===== */}
+        <div className="premium-surface mb-10 rounded-[1.75rem] p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Use cases</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">{t("tools.useCases.heading")}</h2>
+          <p className="mt-4 leading-7 text-white/70">
+            {t("tools.useCases.content")}
+          </p>
+        </div>
+
+        {/* ===== COMMON MISTAKES ===== */}
+        <div className="premium-surface mb-10 rounded-[1.75rem] p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Common mistakes</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">{t("tools.commonMistakes.heading")}</h2>
+          <p className="mt-4 leading-7 text-white/70">
+            {t("tools.commonMistakes.content")}
+          </p>
+        </div>
+
+        {/* ===== COMPARISON ===== */}
+        <div className="premium-surface mb-10 rounded-[1.75rem] p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Comparison</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">{t("tools.comparison.heading")}</h2>
+          <p className="mt-4 leading-7 text-white/70">
+            {t("tools.comparison.content")}
+          </p>
+        </div>
+
+        {/* ===== TUTORIAL ===== */}
+        <div className="premium-surface mb-10 rounded-[1.75rem] p-6 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">Tutorial</p>
+          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">{t("tools.tutorial.heading")}</h2>
+          <p className="mt-4 leading-7 text-white/70">
+            {t("tools.tutorial.content")}
+          </p>
+        </div>
+
         {/* ===== FAQ ===== */}
         <div className="mb-6">
           <div className="mb-6 max-w-2xl">
@@ -370,7 +418,7 @@ export default function ToolsPage() {
               </details>
             ))}
           </div>
-          <div className="mt-6">
+          <div className="mt-6 text-center">
             <LocaleLink
               href="/faq"
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-medium text-white/70 transition hover:border-white/20 hover:bg-white/[0.08]"
@@ -380,6 +428,7 @@ export default function ToolsPage() {
             </LocaleLink>
           </div>
         </div>
+        <ToolSections toolKey="tools" />
       </div>
     </AppLayout>
   );

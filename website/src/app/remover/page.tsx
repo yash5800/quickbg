@@ -19,6 +19,7 @@ import { ImageItem } from "@/types/image";
 import { useProcessingCompleteNotification } from "@/hooks/use-processing-complete-notification";
 import { useLocale } from "@/contexts/LocaleContext";
 import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
+import { ToolSections } from "@/components/tool-sections";
 
 export default function EditorPage() {
   const { t } = useLocale();
@@ -282,6 +283,7 @@ export default function EditorPage() {
 
         <ToolFaq toolKey="remover" variant="light" />
         <ToolExtraContent toolKey="remover" variant="light" />
+        <ToolSections toolKey="remover" variant="light" />
       </AppLayout>
     );
   }
@@ -430,7 +432,8 @@ export default function EditorPage() {
 
           <ToolFaq toolKey="remover" variant="light" />
           <ToolExtraContent toolKey="remover" variant="light" />
-
+          <ToolSections toolKey="remover" variant="light" />
+  
           {/* Eraser Tool Modal */}
           {showEraser && selectedImage && selectedImage.result && (
             <EraserTool

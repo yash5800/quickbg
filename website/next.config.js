@@ -4,42 +4,47 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**.huggingface.co',
+        hostname: '**',
       },
     ],
   },
+
   experimental: {
     webpackBuildWorker: false,
     serverActions: {
       bodySizeLimit: '20mb',
     },
   },
+
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains; preload',
-          },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains; preload' },
         ],
+      },
+    ];
+  },
+
+  async redirects() {
+    return [
+      // HTTP to HTTPS + non-www to www (if you want)
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'quickbg.dev' }],
+        destination: 'https://quickbg.dev/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.quickbg.dev' }],
+        destination: 'https://quickbg.dev/:path*',
+        permanent: true,
       },
     ];
   },

@@ -7,6 +7,7 @@ import { AppLayout } from "@/components/app-layout";
 import { useLocale } from "@/contexts/LocaleContext";
 import { Button } from "@/components/ui/button";
 import { ToolFaq, ToolExtraContent } from "@/components/tool-faq";
+import { ToolSections } from "@/components/tool-sections";
 import { Slider } from "@/components/ui/slider";
 import { convertFormat, downloadBlob } from "@/lib/image-operations";
 import { cn } from "@/lib/utils";
@@ -191,6 +192,7 @@ export default function ConverterPage() {
       </section>
       <ToolFaq toolKey="converter" />
       <ToolExtraContent toolKey="converter" />
+      <ToolSections toolKey="converter" />
     </AppLayout>
   );
 }
