@@ -33,13 +33,6 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // HTTP to HTTPS + non-www to www (if you want)
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'quickbg.dev' }],
-        destination: 'https://quickbg.dev/:path*',
-        permanent: true,
-      },
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.quickbg.dev' }],
