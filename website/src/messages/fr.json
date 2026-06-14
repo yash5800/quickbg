@@ -300,6 +300,54 @@
       "q8": {
         "q": "QuickBG fonctionne-t-il sur les appareils mobiles ?",
         "a": "Oui. QuickBG est entièrement responsive et fonctionne sur tous les navigateurs mobiles modernes. Vous pouvez également l'installer en tant que PWA pour une expérience semblable à une application."
+      },
+      "q9": {
+        "q": "Comment fonctionne techniquement le processus de suppression d'arrière-plan ?",
+        "a": "QuickBG utilise le modèle d'IA avancé BiRefNet qui analyse chaque pixel de votre image pour distinguer le premier plan de l'arrière-plan. Le processus se déroule en trois étapes : d'abord, le modèle identifie tous les objets dans l'image, ensuite il cartographie précisément les bords du sujet principal, et enfin il supprime l'arrière-plan et le rend transparent. BiRefNet excelle dans le traitement des cheveux, de la fourrure, des gouttelettes d'eau et autres bords complexes avec une précision remarquable. Tout le traitement s'effectue sur nos serveurs accélérés par GPU en quelques secondes seulement, vous offrant une qualité Photoshop sans aucune installation de logiciel."
+      },
+      "q10": {
+        "q": "Puis-je télécharger des photos RAW ?",
+        "a": "QuickBG ne prend pas actuellement en charge les photos RAW (telles que CR2, NEF, ARW) directement. Les fichiers RAW sont très volumineux et nécessitent un logiciel spécialisé pour être traités. Vous pouvez d'abord convertir vos photos RAW dans des formats standard comme PNG ou JPEG en utilisant Photoshop, GIMP, ou des outils gratuits comme RawTherapee, puis les télécharger sur QuickBG. Nous supportons les images jusqu'à 4096×4096 pixels. Pour de meilleurs résultats, exportez au réglage de qualité le plus élevé offert par votre convertisseur RAW avant le téléchargement."
+      },
+      "q11": {
+        "q": "Quelle est la taille de fichier maximale que je peux télécharger ?",
+        "a": "QuickBG permet des téléchargements jusqu'à 25 Mo par image, ce qui est suffisant pour la plupart des JPEG et PNG haute résolution. Si votre image dépasse cette limite, nous recommandons de la compresser ou de la redimensionner d'abord à l'aide de notre outil d'ajustement. La résolution maximale prise en charge est de 4096×4096 pixels, plus que suffisante pour une utilisation web et les réseaux sociaux. Les fichiers plus volumineux prennent également plus de temps à télécharger et à traiter, donc optimiser votre image au préalable accélérera l'ensemble du flux de travail."
+      },
+      "q12": {
+        "q": "QuickBG prend-il en charge le traitement par lots ?",
+        "a": "Oui, QuickBG prend en charge le traitement par lots. Vous pouvez télécharger plusieurs images simultanément et supprimer leurs arrière-plans en une seule fois. C'est particulièrement utile pour les photos de produits e-commerce, les images de portfolio ou le contenu pour les réseaux sociaux. En mode batch, chaque image est traitée indépendamment et vous pouvez télécharger tous les résultats ensemble sous forme d'archive ZIP ou individuellement. La limite de 25 images par heure s'applique également en mode batch. Pour utiliser le téléchargement par lots, sélectionnez simplement plusieurs fichiers ou faites-les glisser dans la zone de téléchargement."
+      },
+      "q13": {
+        "q": "Quelle est la précision de l'IA de QuickBG ?",
+        "a": "Le modèle d'IA BiRefNet de QuickBG est parmi les plus précis de l'industrie, capable de séparer le premier plan de l'arrière-plan avec une précision de plus de 98% même dans des scénarios complexes. Il gère particulièrement bien les bords difficiles comme les mèches de cheveux, la fourrure, les plumes, les objets transparents et les éclaboussures d'eau avec une fidélité remarquable. Contrairement aux méthodes traditionnelles basées sur le chroma-key, BiRefNet fonctionne aussi bien sur les scènes naturelles, les conditions d'éclairage variables et les arrière-plans complexes. Lorsque le modèle est incertain, il adopte une approche conservatrice, ce qui minimise les risques de couper accidentellement dans votre sujet."
+      },
+      "q14": {
+        "q": "Quelles sont les configurations système requises pour utiliser QuickBG ?",
+        "a": "QuickBG est un outil web, il ne nécessite donc aucun logiciel spécial ni matériel puissant. Tout ce dont vous avez besoin est un navigateur web moderne (Chrome, Firefox, Edge ou Safari) et une connexion internet. Tout le traitement s'effectue sur nos serveurs, ce qui signifie qu'un ordinateur ou un téléphone même ancien peut produire des résultats professionnels. Cependant, une connexion internet plus rapide améliore les vitesses de téléchargement — nous recommandons au moins 5 Mbps. QuickBG fonctionne sur tous les principaux systèmes d'exploitation, y compris Windows, macOS, Linux, iOS et Android."
+      },
+      "q15": {
+        "q": "Comment QuickBG se compare-t-il aux outils payants comme Remove.bg ?",
+        "a": "QuickBG se compare favorablement aux outils payants à plusieurs égards. La plus grande différence est le coût : QuickBG est complètement gratuit, sans carte de crédit, période d'essai ni frais cachés. Remove.bg facture par image ou nécessite un abonnement mensuel, tandis que QuickBG offre 25 images gratuites par heure. En termes de qualité, le modèle BiRefNet de QuickBG offre des résultats égaux ou supérieurs à Remove.bg, surtout autour des cheveux et des bords complexes. QuickBG préserve la résolution originale de votre image et n'ajoute aucun filigrane. Aucune création de compte n'est nécessaire."
+      },
+      "q16": {
+        "q": "Existe-t-il une application de bureau pour QuickBG ?",
+        "a": "QuickBG n'a pas actuellement d'application de bureau native, mais vous pouvez utiliser sa fonctionnalité PWA (Progressive Web App). Lorsque vous visitez notre site dans Chrome ou Edge, cliquez sur l'icône d'installation dans la barre d'adresse pour ajouter QuickBG à votre bureau en tant qu'application. Cela vous donne une fenêtre d'application dédiée, un chargement plus rapide et un support hors ligne pour les pages déjà visitées. L'expérience PWA offre presque tous les avantages d'une application de bureau native sans consommer d'espace disque. Nous prévoyons également de publier une application de bureau native à l'avenir."
+      },
+      "q17": {
+        "q": "Puis-je utiliser QuickBG pour l'intégration API ?",
+        "a": "QuickBG n'offre pas actuellement d'API publique, mais nous prévoyons d'ajouter cette fonctionnalité. Pour l'instant, vous pouvez traiter des images via notre interface web manuellement. Si vous êtes un développeur ayant besoin de traitement d'images à grande échelle, nous vous suggérons de déployer le modèle open-source BiRefNet sur votre propre infrastructure. Notre objectif est de développer une API REST simple et bien documentée qui permettra aux développeurs d'intégrer les capacités de QuickBG directement dans leurs applications et flux de travail."
+      },
+      "q18": {
+        "q": "Qu'advient-il de mes images après le traitement ?",
+        "a": "QuickBG prend votre vie privée très au sérieux. Lorsque vous téléchargez une image, elle est traitée en mémoire sur nos serveurs et n'est jamais écrite sur le disque de façon permanente. Une fois le traitement terminé et que vous avez téléchargé le résultat, les images originale et traitée sont immédiatement et définitivement supprimées de nos serveurs. Nous n'utilisons jamais vos images pour l'entraînement de modèles d'IA, l'analyse ou le partage avec des tiers. Aucun compte ou information personnelle n'est requis, votre identité reste donc complètement anonyme."
+      },
+      "q19": {
+        "q": "QuickBG prend-il en charge les arrière-plans transparents ?",
+        "a": "Oui, QuickBG prend entièrement en charge les arrière-plans transparents. Lorsque vous utilisez le suppresseur d'arrière-plan IA, il supprime automatiquement l'arrière-plan et le remplace par de la transparence (un canal alpha). Cette transparence est préservée dans les formats de sortie qui supportent les canaux alpha, notamment PNG, WebP et TIFF. Les arrière-plans transparents sont idéaux pour les photos de produits e-commerce, les logos, la conception graphique et le design web. Vous pouvez télécharger l'image transparente directement après le traitement ou utiliser notre outil de remplacement d'arrière-plan."
+      },
+      "q20": {
+        "q": "Comment puis-je obtenir les meilleurs résultats avec QuickBG ?",
+        "a": "Pour obtenir les meilleurs résultats avec QuickBG, suivez ces conseils : utilisez des images bien éclairées où le sujet se détache clairement de l'arrière-plan. Les images haute résolution produisent de meilleurs résultats, alors téléchargez la version de la plus haute qualité disponible. Si votre sujet a des bords complexes comme des cheveux ou de la fourrure, assurez un bon contraste entre le sujet et les couleurs de l'arrière-plan. Évitez les arrière-plans chargés ou à motifs qui confondent l'IA. Pour les photos de produits, une configuration propre et uniformément éclairée donne les meilleurs résultats."
       }
     }
   },

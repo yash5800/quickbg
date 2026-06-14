@@ -300,6 +300,54 @@
       "q8": {
         "q": "¿Funciona QuickBG en dispositivos móviles?",
         "a": "Sí. QuickBG es totalmente responsive y funciona en todos los navegadores móviles modernos. También puedes instalarlo como PWA para una experiencia similar a una aplicación."
+      },
+      "q9": {
+        "q": "¿Cómo funciona técnicamente el proceso de eliminación de fondos?",
+        "a": "QuickBG utiliza el modelo de IA avanzado BiRefNet que analiza cada píxel de tu imagen para distinguir entre el primer plano y el fondo. El proceso ocurre en tres etapas: primero, el modelo identifica todos los objetos en la imagen; segundo, mapea con precisión los bordes del sujeto principal; y finalmente, elimina el fondo y lo vuelve transparente. BiRefNet sobresale en el manejo de cabello, pelaje, gotas de agua y otros bordes complejos con una precisión notable. Todo el procesamiento ocurre en nuestros servidores acelerados por GPU en solo unos segundos, brindándote calidad profesional sin necesidad de instalar ningún software."
+      },
+      "q10": {
+        "q": "¿Puedo subir fotos RAW?",
+        "a": "QuickBG actualmente no admite fotos RAW (como CR2, NEF, ARW) directamente. Los archivos RAW son muy grandes y requieren software especializado para procesarse. Sin embargo, puedes convertir tus fotos RAW a formatos estándar como PNG o JPEG usando Photoshop, GIMP o herramientas gratuitas como RawTherapee, y luego subirlas a QuickBG. Soportamos imágenes de hasta 4096×4096 píxeles, que supera la resolución de la mayoría de las fotos RAW después de la conversión. Para obtener los mejores resultados, exporta con la configuración de calidad más alta que ofrezca tu convertidor RAW antes de subir."
+      },
+      "q11": {
+        "q": "¿Cuál es el tamaño máximo de archivo que puedo subir?",
+        "a": "QuickBG permite subidas de hasta 25 MB por imagen, suficiente para la mayoría de JPEG y PNG de alta resolución. Si tu imagen excede este límite, recomendamos comprimirla o redimensionarla primero usando nuestra herramienta de ajuste. La resolución máxima admitida es de 4096×4096 píxeles, más que suficiente para uso web, redes sociales e incluso impresión en tamaños moderados. Los archivos más grandes también tardan más en subirse y procesarse, por lo que optimizar tu imagen de antemano acelerará todo el flujo de trabajo."
+      },
+      "q12": {
+        "q": "¿QuickBG admite el procesamiento por lotes?",
+        "a": "Sí, QuickBG admite el procesamiento por lotes. Puedes subir múltiples imágenes simultáneamente y eliminar sus fondos de una sola vez. Esto es especialmente útil para fotos de productos de e-commerce, imágenes de portafolio o contenido para redes sociales donde necesitas procesar grandes volúmenes. En modo lote, cada imagen se procesa de forma independiente y puedes descargar todos los resultados juntos como un archivo ZIP o individualmente. El límite de 25 imágenes por hora también se aplica en modo lote. Para usar la carga por lotes, simplemente selecciona múltiples archivos o arrastra y suéltalos en el área de carga."
+      },
+      "q13": {
+        "q": "¿Qué tan preciso es el AI de QuickBG?",
+        "a": "El modelo de IA BiRefNet de QuickBG se encuentra entre los más precisos de la industria, capaz de separar el primer plano del fondo con más del 98% de precisión incluso en escenarios complejos. Maneja bordes particularmente difíciles como mechones de cabello, pelaje, plumas, objetos transparentes y salpicaduras de agua con una fidelidad notable. A diferencia de los métodos tradicionales basados en croma clave o color, BiRefNet funciona igualmente bien en escenas naturales, condiciones de iluminación variables y fondos complejos. Cuando el modelo es incierto, adopta un enfoque conservador, minimizando el riesgo de cortar accidentalmente tu sujeto."
+      },
+      "q14": {
+        "q": "¿Cuáles son los requisitos del sistema para usar QuickBG?",
+        "a": "QuickBG es una herramienta basada en web, por lo que no requiere software especial ni hardware potente. Todo lo que necesitas es un navegador web moderno (Chrome, Firefox, Edge o Safari) y una conexión a internet. Todo el procesamiento ocurre en nuestros servidores, lo que significa que incluso una computadora o teléfono antiguo puede producir resultados profesionales. Sin embargo, una conexión a internet más rápida mejora las velocidades de carga y descarga — recomendamos al menos 5 Mbps. QuickBG funciona en todos los sistemas operativos principales incluyendo Windows, macOS, Linux, iOS y Android."
+      },
+      "q15": {
+        "q": "¿Cómo se compara QuickBG con herramientas pagas como Remove.bg?",
+        "a": "QuickBG se compara favorablemente con las herramientas pagas en varios aspectos. La mayor diferencia es el costo: QuickBG es completamente gratuito, sin tarjeta de crédito, período de prueba ni tarifas ocultas. Remove.bg cobra por imagen o requiere una suscripción mensual, mientras que QuickBG ofrece 25 imágenes gratuitas por hora. En cuanto a calidad, el modelo BiRefNet de QuickBG ofrece resultados iguales o mejores que Remove.bg, especialmente alrededor del cabello y bordes complejos. QuickBG preserva la resolución original de tu imagen y no añade marcas de agua. No se requiere creación de cuenta."
+      },
+      "q16": {
+        "q": "¿Hay una aplicación de escritorio para QuickBG?",
+        "a": "QuickBG actualmente no tiene una aplicación de escritorio nativa, pero puedes usar su función PWA (Progressive Web App). Cuando visitas nuestro sitio en Chrome o Edge, haz clic en el icono de instalación en la barra de direcciones para agregar QuickBG a tu escritorio como una aplicación. Esto te brinda una ventana de aplicación dedicada, carga más rápida y soporte sin conexión para páginas visitadas anteriormente. La experiencia PWA ofrece casi todos los beneficios de una aplicación de escritorio nativa sin consumir espacio en disco. También planeamos lanzar una aplicación de escritorio nativa en el futuro."
+      },
+      "q17": {
+        "q": "¿Puedo usar QuickBG para integración de API?",
+        "a": "QuickBG actualmente no ofrece una API pública, pero estamos planeando añadir esta funcionalidad. Por ahora, puedes procesar imágenes a través de nuestra interfaz web manualmente. Si eres un desarrollador que necesita procesamiento de imágenes a gran escala, sugerimos implementar el modelo de código abierto BiRefNet en tu propia infraestructura. Nuestro objetivo es desarrollar una API REST simple y bien documentada que permita a los desarrolladores integrar las capacidades de QuickBG directamente en sus aplicaciones y flujos de trabajo."
+      },
+      "q18": {
+        "q": "¿Qué sucede con mis imágenes después del procesamiento?",
+        "a": "QuickBG toma tu privacidad muy en serio. Cuando subes una imagen, se procesa en memoria en nuestros servidores y nunca se escribe en el disco de forma permanente. Una vez que el procesamiento se completa y has descargado el resultado, tanto la imagen original como la procesada se eliminan inmediata y permanentemente de nuestros servidores. Nunca usamos tus imágenes para entrenamiento de modelos de IA, análisis o compartir con terceros. No se requiere cuenta ni información personal, por lo que tu identidad permanece completamente anónima."
+      },
+      "q19": {
+        "q": "¿QuickBG admite fondos transparentes?",
+        "a": "Sí, QuickBG admite completamente los fondos transparentes. Cuando usas el eliminador de fondos AI, automáticamente elimina el fondo y lo reemplaza con transparencia (un canal alfa). Esta transparencia se conserva en formatos de salida que admiten canales alfa, incluyendo PNG, WebP y TIFF. Los fondos transparentes son ideales para fotos de productos de e-commerce, logotipos, diseño gráfico y diseño web. Puedes descargar la imagen transparente directamente después del procesamiento o usar nuestra herramienta de reemplazo de fondo para añadir un nuevo color sólido, degradado o imagen de fondo."
+      },
+      "q20": {
+        "q": "¿Cómo puedo obtener los mejores resultados con QuickBG?",
+        "a": "Para obtener los mejores resultados con QuickBG, sigue estos consejos: usa imágenes bien iluminadas donde el sujeto se destaque claramente del fondo. Las imágenes de alta resolución producen mejores resultados, así que sube la versión de mayor calidad disponible. Si tu sujeto tiene bordes complejos como cabello o pelaje, asegura un buen contraste entre el sujeto y los colores del fondo. Evita fondos ocupados o con patrones que confundan la IA. Para fotos de productos, una configuración limpia y uniformemente iluminada da los mejores resultados."
       }
     }
   },
