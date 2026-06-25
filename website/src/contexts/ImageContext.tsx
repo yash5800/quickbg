@@ -514,6 +514,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           void releaseUploadSlot()
             .then((reservation) => {
               setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+              useImagesStore.getState().updateImage(pendingImage.id, { creditReserved: false });
             })
             .catch((releaseErr) => {
               console.warn("[ImageContext] Failed to release reserved credit after upload error:", releaseErr);

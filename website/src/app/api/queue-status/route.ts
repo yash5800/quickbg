@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
       const now = Date.now();
       const activeUsage = await hourlyUsage.findOne(
         { ip: clientKey, expiresAt: { $gt: new Date(now) } },
-        { projection: { count: 1, expiresAt: 1 } }
+        { projection: { count: 1, expiresAt: 1 }, sort: { updatedAt: -1 } }
       );
 
       let userUploadCount = Math.min(HOURLY_LIMIT, activeUsage?.count ?? 0);

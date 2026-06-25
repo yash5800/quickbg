@@ -36,7 +36,7 @@ import { ComparisonSlider } from "@/components/comparison-slider";
 import { ScrollLinkedParallax } from "@/components/parallax-showcase";
 import { InteractiveToolPlayground } from "@/components/interactive-tool-playground";
 import { Typewriter } from "@/components/typewriter";
-import { useImages } from "@/contexts/ImageContext";
+import { useImagesStore } from "@/store/images";
 import { useToast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils";
 import { mainsample, StockSample, stockSamples, stocksamples2 } from "@/lib/stock-samples";
@@ -133,7 +133,8 @@ const sectionVariants = {
 };
 
 export default function Home() {
-  const { images, addImages } = useImages();
+  const images = useImagesStore((state) => state.images);
+  const addImages = useImagesStore((state) => state.addImages);
   const { t } = useLocale();
   const heroNotes = [
     t("home.heroNotes.png"),

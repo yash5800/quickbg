@@ -38,7 +38,8 @@ function isIndexConflict(error: unknown): boolean {
 }
 
 function getWindowKey(nowMs: number = Date.now()): string {
-  return `window_${nowMs}`;
+  const hourStart = Math.floor(nowMs / HOUR_WINDOW_MS) * HOUR_WINDOW_MS;
+  return `window_${hourStart}`;
 }
 
 function getSecondsUntilReset(resetAtMs: number, nowMs: number = Date.now()): number {
@@ -133,7 +134,7 @@ async function reserveHourlyUploadSlot(
   for (let attempt = 0; attempt < 3; attempt += 1) {
     const activeUsage = await collection.findOne(
       { ip: clientKey, expiresAt: { $gt: nowDate } },
-      { projection: { count: 1, expiresAt: 1, hourKey: 1 } }
+      { projection: { count: 1, expiresAt: 1, hourKey: 1 }, sort: { updatedAt: -1 } }
     );
 
     if (activeUsage) {
@@ -216,7 +217,7 @@ async function reserveHourlyUploadSlot(
 
   const existing = await collection.findOne(
     { ip: clientKey, expiresAt: { $gt: new Date() } },
-    { projection: { count: 1, expiresAt: 1, hourKey: 1 } }
+    { projection: { count: 1, expiresAt: 1, hourKey: 1 }, sort: { updatedAt: -1 } }
   );
 
   return {
@@ -236,7 +237,7 @@ async function releaseHourlyUploadSlot(
 
   const activeUsage = await collection.findOne(
     { ip: clientKey, expiresAt: { $gt: nowDate } },
-    { projection: { count: 1, expiresAt: 1, hourKey: 1 } }
+    { projection: { count: 1, expiresAt: 1, hourKey: 1 }, sort: { updatedAt: -1 } }
   );
 
   if (!activeUsage) {
