@@ -70,6 +70,11 @@ export const useCreditsStore = create<CreditsState>((set) => ({
       if (!raw) return;
       const data = JSON.parse(raw);
       if (typeof data.remaining === "number" && typeof data.resetAt === "number") {
+        // If the hourly window has expired, ignore stored data
+        if (data.resetAt <= Date.now()) {
+          localStorage.removeItem(CREDITS_STORAGE_KEY);
+          return;
+        }
         set({
           remaining: data.remaining,
           resetAt: data.resetAt,
