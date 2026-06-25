@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { RatingWidget } from "@/components/rating-widget";
 import { addBorder, addWatermark, blobToDataUrl } from "@/lib/image-operations";
+import { clearSiteData } from "@/lib/clear-site-data";
 import { useLocale } from "@/contexts/LocaleContext";
 
 function formatFileSize(bytes: number): string {
@@ -77,6 +78,62 @@ interface PreviewInfoProps {
   isDownloading: boolean;
   liveStatus: string;
   onOpenEraser?: () => void;
+}
+
+function ErrorCard({ image }: { image: ImageItem }) {
+  const { t } = useLocale();
+  const [countdown, setCountdown] = useState(8);
+
+  useEffect(() => {
+    if (countdown <= 0) {
+      clearSiteData().then(() => location.reload());
+      return;
+    }
+    const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+    >
+      <Card className="p-4 space-y-3 bg-destructive/5 border-destructive/20">
+        <div className="flex items-start gap-2">
+          <AlertCircle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
+          <div>
+            <h4 className="font-semibold text-sm text-destructive">
+              {t("remover.error.heading")}
+            </h4>
+            {image.error && (
+              <p className="text-xs text-muted-foreground mt-1">{image.error}</p>
+            )}
+          </div>
+        </div>
+      </Card>
+      <Card className="mt-2 p-3 bg-amber-500/5 border-amber-500/20">
+        <div className="flex items-start gap-2">
+          <BadgeInfo className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-xs text-muted-foreground">
+              Auto-fixing in {countdown}s — clears site data to reset session and fix credit display.
+            </p>
+            <div className="flex gap-2 mt-2">
+              <Button
+                onClick={() => clearSiteData().then(() => location.reload())}
+                variant="outline"
+                size="sm"
+                className="text-xs text-amber-700 border-amber-300 hover:bg-amber-50 dark:text-amber-400 dark:border-amber-700 dark:hover:bg-amber-950"
+              >
+                Fix now
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Card>
+    </motion.div>
+  );
 }
 
 export function PreviewInfo({
@@ -458,25 +515,7 @@ const StatusIcon = statusConfig.icon;
       {/* Error State */}
       <AnimatePresence>
         {isError && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <Card className="p-4 space-y-3 bg-destructive/5 border-destructive/20">
-              <div className="flex items-start gap-2">
-                <AlertCircle className="h-5 w-5 text-destructive mt-0.5 flex-shrink-0" />
-                <div>
-                  <h4 className="font-semibold text-sm text-destructive">
-                    {t("remover.error.heading")}
-                  </h4>
-                  {image.error && (
-                    <p className="text-xs text-muted-foreground mt-1">{image.error}</p>
-                  )}
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+          <ErrorCard image={image} />
         )}
       </AnimatePresence>
 
