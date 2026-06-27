@@ -15,7 +15,7 @@ interface TypewriterProps {
   loopDelay?: number; // ms delay before starting next loop
 }
 
-export const Typewriter: React.FC<TypewriterProps> = ({
+const TypewriterComponent: React.FC<TypewriterProps> = ({
   staticText,
   phrases,
   className = "",
@@ -69,3 +69,7 @@ export const Typewriter: React.FC<TypewriterProps> = ({
     </span>
   );
 };
+
+// Memoized so its per-keystroke state updates re-render in isolation rather than
+// re-rendering the surrounding hero on every character.
+export const Typewriter = React.memo(TypewriterComponent);

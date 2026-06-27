@@ -459,6 +459,9 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         ? uploadImage(pendingImage.file)
         : reserveUploadSlot().then((reservation) => {
             setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+            // Mark the slot as reserved so a later upload failure releases it
+            // (the catch handler only releases when creditReserved is set).
+            useImagesStore.getState().updateImage(pendingImage.id, { creditReserved: true });
             return uploadImage(pendingImage.file);
           })
     )

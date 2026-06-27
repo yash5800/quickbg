@@ -5,6 +5,7 @@ import { getQueueStatus } from "@/lib/worker-api";
 
 export function useCreditsSync() {
   const restoreFromStorage = useCreditsStore((state) => state.restoreFromStorage);
+  const setCredits = useCreditsStore((state) => state.setCredits);
   const query = useQuery({
     queryKey: ["queue-status"],
     queryFn: getQueueStatus,
@@ -19,6 +20,16 @@ export function useCreditsSync() {
   useEffect(() => {
     restoreFromStorage();
   }, [restoreFromStorage]);
+
+  // Apply the authoritative server balance to the store whenever the query
+  // resolves. Without this the badge sits on its default until the first upload.
+  useEffect(() => {
+    const data = query.data;
+    if (!data || typeof data.remaining !== "number") {
+      return;
+    }
+    setCredits(data.remaining, data.reset_in_seconds ?? 3600);
+  }, [query.data, setCredits]);
 
   return query;
 }

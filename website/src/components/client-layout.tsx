@@ -4,7 +4,7 @@ import { LocaleLink } from "@/components/locale-link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, MotionConfig, useReducedMotion } from "framer-motion";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/components/query-provider";
 import { ImageProvider, useImages } from "@/contexts/ImageContext";
@@ -35,8 +35,13 @@ function FloatingCredits() {
   // Sync credits for the whole app from one mounted place.
   useCreditsSync();
 
+  const isExhausted = isInitialized && remaining === 0;
+
   useEffect(() => {
-    if (!isInitialized) {
+    // The live countdown is only displayed while credits are exhausted, so only
+    // run the per-second timer then — avoids re-rendering the badge every second
+    // on every page when there is nothing to count down.
+    if (!isExhausted) {
       return;
     }
 
@@ -47,15 +52,13 @@ function FloatingCredits() {
     update();
     const interval = window.setInterval(update, 1000);
     return () => window.clearInterval(interval);
-  }, [isInitialized, resetAt]);
+  }, [isExhausted, resetAt]);
 
   const formatResetTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
-
-  const isExhausted = isInitialized && remaining === 0;
 
   return (
     <div className="fixed top-20 right-3 z-40 md:right-6">
@@ -81,6 +84,29 @@ function FloatingCredits() {
         )}
       </div>
     </div>
+  );
+}
+
+// Gives every route a smooth fade/rise-in on navigation. Keyed on the pathname
+// so the page content remounts and re-animates per route. Entrance-only (no exit)
+// to stay compatible with the App Router without freezing the outgoing tree.
+//
+// The DOM structure does NOT branch on reduced-motion preference — doing so
+// would mismatch server vs client hydration. Instead the enclosing
+// <MotionConfig reducedMotion="user"> disables the transform/slide for
+// reduced-motion users while keeping the markup identical.
+function PageTransition({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  return (
+    <motion.div
+      key={pathname}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -148,17 +174,21 @@ export function ClientLayout({ children, initialLocale }: { children: React.Reac
         <QueryProvider>
           <ImageProvider>
             <ToastProvider>
-              <div className="min-h-screen bg-background relative overflow-x-hidden flex flex-col">
-                {!isAdminArea && <Header />}
-                <main className="pt-16 flex-1">
-                  <GlobalDropZone>{children}</GlobalDropZone>
-                </main>
-                {!isAdminArea && <FloatingCredits />}
-                <ScrollToTopButton />
-                {!isAdminArea && <Footer />}
-                {!isAdminArea && <CookieConsentBanner />}
-                {!isAdminArea && <PwaInstallPrompt />}
-              </div>
+              <MotionConfig reducedMotion="user">
+                <div className="min-h-screen bg-background relative overflow-x-hidden flex flex-col">
+                  {!isAdminArea && <Header />}
+                  <main className="pt-16 flex-1">
+                    <GlobalDropZone>
+                      <PageTransition>{children}</PageTransition>
+                    </GlobalDropZone>
+                  </main>
+                  {!isAdminArea && <FloatingCredits />}
+                  <ScrollToTopButton />
+                  {!isAdminArea && <Footer />}
+                  {!isAdminArea && <CookieConsentBanner />}
+                  {!isAdminArea && <PwaInstallPrompt />}
+                </div>
+              </MotionConfig>
             </ToastProvider>
           </ImageProvider>
         </QueryProvider>

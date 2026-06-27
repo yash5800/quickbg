@@ -19,6 +19,8 @@ import {
   Frame,
   Sparkles,
   ChevronDown,
+  Stamp,
+  SquareDashedBottom,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -286,15 +288,15 @@ const StatusIcon = statusConfig.icon;
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
             onClick={() => watermarkSectionRef.current?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" })}
-            className="fixed bottom-4 right-6 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-primary/30 bg-background/95 px-4 py-2 text-sm font-medium text-foreground shadow-lg shadow-black/10 backdrop-blur-md"
+            className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full border border-primary/40 bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/25 backdrop-blur-md transition-transform hover:scale-[1.03]"
           >
+            <Stamp className="h-4 w-4" />
             <span>{t("remover.watermark.heading")}</span>
             {!prefersReducedMotion && (
               <motion.span
                 aria-hidden="true"
                 animate={{ y: [0, 4, 0] }}
                 transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
-                className="text-primary"
               >
                 <ChevronDown className="h-4 w-4" />
               </motion.span>
@@ -604,11 +606,12 @@ const StatusIcon = statusConfig.icon;
 
       {/* Tools Section */}
       {isCompleted && image.result && (
-        <div className="pt-2 border-t">
-          <h4 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
-            {t("remover.quickEdit.heading")}
-          </h4>
-          <div className="grid grid-cols-2 gap-2">
+        <div className="flex flex-col gap-3 border-t pt-3">
+          <div>
+            <h4 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wide">
+              {t("remover.quickEdit.heading")}
+            </h4>
+            <div className="grid grid-cols-2 gap-2">
             {onOpenEraser && (
               <Button
                 variant="outline"
@@ -672,54 +675,71 @@ const StatusIcon = statusConfig.icon;
               <Palette className="h-3 w-3 mr-1" />
               {t("remover.quickEdit.replaceBg")}
             </Button>
+            </div>
           </div>
           <motion.div
             ref={watermarkSectionRef}
             initial={false}
             animate={isCompleted ? { opacity: 1, y: 0 } : { opacity: 0.98, y: 0 }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut" }}
-            className="mt-3 space-y-3 rounded-lg border border-border/70 p-3"
+            className="premium-surface space-y-3 rounded-xl p-3.5 scroll-mt-24"
           >
-            <div className="relative overflow-hidden rounded-lg bg-muted/40 p-2">
-              <img
-                src={image.result}
-                alt="Watermark preview"
-                className="mx-auto max-h-32 max-w-full object-contain"
-                style={{ border: borderWidth > 0 ? `${Math.max(1, borderWidth / 4)}px solid ${borderColor}` : undefined }}
-              />
+            <div className="flex items-center gap-2">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                <Stamp className="h-4 w-4" />
+              </span>
+              <div className="leading-tight">
+                <p className="text-sm font-semibold text-foreground">{t("remover.watermark.heading")}</p>
+                <p className="text-[11px] text-muted-foreground">{t("remover.watermark.placeholder")}</p>
+              </div>
+            </div>
+
+            {/* Live preview on a checkerboard so the cutout AND the watermark are clearly visible */}
+            <div className="checkerboard relative overflow-hidden rounded-lg border border-border/70">
+              <div className="flex min-h-[8rem] items-center justify-center p-2">
+                <img
+                  src={image.result}
+                  alt="Watermark preview"
+                  className="max-h-32 max-w-full object-contain"
+                  style={{ border: borderWidth > 0 ? `${Math.max(1, borderWidth / 4)}px solid ${borderColor}` : undefined }}
+                />
+              </div>
               {watermarkText.trim() && (
                 <span
                   className={cn(
-                    "pointer-events-none absolute rounded bg-black/20 px-1 font-semibold text-white",
+                    "pointer-events-none absolute font-bold",
                     watermarkPosition === "top-left" && "left-3 top-3",
                     watermarkPosition === "top-right" && "right-3 top-3",
                     watermarkPosition === "bottom-left" && "bottom-3 left-3",
                     watermarkPosition === "bottom-right" && "bottom-3 right-3",
                     watermarkPosition === "center" && "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                   )}
-                  style={{ color: watermarkColor, opacity: watermarkOpacity, fontSize: `${Math.max(10, watermarkSize / 2)}px` }}
+                  style={{
+                    color: watermarkColor,
+                    opacity: watermarkOpacity,
+                    fontSize: `${Math.max(11, watermarkSize / 2)}px`,
+                    // Dual outline keeps any colour legible on light or dark areas of the cutout
+                    textShadow: "0 0 2px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.55)",
+                  }}
                 >
                   {watermarkText}
                 </span>
               )}
             </div>
 
-            <motion.div
-              initial={false}
-              animate={isCompleted ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-              transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
-              className="space-y-2"
-            >
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("remover.watermark.heading")}</p>
+            <div className="space-y-2.5">
               <input
                 value={watermarkText}
                 onChange={(event) => setWatermarkText(event.target.value)}
                 placeholder={t("remover.watermark.placeholder")}
-                className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm"
+                className="h-9 w-full rounded-lg border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
               />
               <div className="grid grid-cols-2 gap-2">
-                <input type="color" value={watermarkColor} onChange={(event) => setWatermarkColor(event.target.value)} className="h-9 w-full rounded-lg border border-input bg-background" />
-                <select value={watermarkPosition} onChange={(event) => setWatermarkPosition(event.target.value as typeof watermarkPosition)} className="h-9 rounded-lg border border-input bg-background px-2 text-xs">
+                <label className="flex h-9 items-center gap-2 rounded-lg border border-input bg-background px-2 text-xs text-muted-foreground">
+                  <span className="shrink-0">{t("remover.watermark.heading")}</span>
+                  <input type="color" value={watermarkColor} onChange={(event) => setWatermarkColor(event.target.value)} className="h-6 w-full cursor-pointer rounded bg-transparent" aria-label={t("remover.watermark.heading")} />
+                </label>
+                <select value={watermarkPosition} onChange={(event) => setWatermarkPosition(event.target.value as typeof watermarkPosition)} className="h-9 rounded-lg border border-input bg-background px-2 text-xs" aria-label={t("remover.watermark.heading")}>
                   <option value="bottom-right">{t("remover.watermark.position.bottomRight")}</option>
                   <option value="bottom-left">{t("remover.watermark.position.bottomLeft")}</option>
                   <option value="top-right">{t("remover.watermark.position.topRight")}</option>
@@ -728,26 +748,30 @@ const StatusIcon = statusConfig.icon;
                 </select>
               </div>
               <label className="block text-xs text-muted-foreground">
-                {t("remover.watermark.size")} {watermarkSize}px
-                <input type="range" min="12" max="96" value={watermarkSize} onChange={(event) => setWatermarkSize(Number(event.target.value))} className="mt-1 w-full" />
+                {t("remover.watermark.size")} <span className="font-semibold tabular-nums text-foreground">{watermarkSize}px</span>
+                <input type="range" min="12" max="96" value={watermarkSize} onChange={(event) => setWatermarkSize(Number(event.target.value))} className="premium-slider mt-1.5 w-full" />
               </label>
               <label className="block text-xs text-muted-foreground">
-                {t("remover.watermark.opacity")} {Math.round(watermarkOpacity * 100)}%
-                <input type="range" min="0.1" max="1" step="0.05" value={watermarkOpacity} onChange={(event) => setWatermarkOpacity(Number(event.target.value))} className="mt-1 w-full" />
+                {t("remover.watermark.opacity")} <span className="font-semibold tabular-nums text-foreground">{Math.round(watermarkOpacity * 100)}%</span>
+                <input type="range" min="0.1" max="1" step="0.05" value={watermarkOpacity} onChange={(event) => setWatermarkOpacity(Number(event.target.value))} className="premium-slider mt-1.5 w-full" />
               </label>
-              <Button size="sm" className="w-full" disabled={isApplyingTool || !watermarkText.trim()} onClick={() => void applyWatermark()}>
+              <Button size="sm" className="w-full gap-2" disabled={isApplyingTool || !watermarkText.trim()} onClick={() => void applyWatermark()}>
+                {isApplyingTool ? <Loader2 className="h-4 w-4 animate-spin" /> : <Stamp className="h-4 w-4" />}
                 {t("remover.watermark.apply")}
               </Button>
-            </motion.div>
+            </div>
 
-            <div className="space-y-2 border-t border-border/70 pt-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("remover.border.heading")}</p>
-              <div className="grid grid-cols-[1fr_auto] gap-2">
+            <div className="space-y-2.5 border-t border-border/70 pt-3">
+              <div className="flex items-center gap-2">
+                <SquareDashedBottom className="h-4 w-4 text-muted-foreground" />
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("remover.border.heading")}</p>
+              </div>
+              <div className="grid grid-cols-[1fr_auto] items-end gap-2">
                 <label className="text-xs text-muted-foreground">
-                  {t("remover.border.width")} {borderWidth}px
-                  <input type="range" min="0" max="80" value={borderWidth} onChange={(event) => setBorderWidth(Number(event.target.value))} className="mt-1 w-full" />
+                  {t("remover.border.width")} <span className="font-semibold tabular-nums text-foreground">{borderWidth}px</span>
+                  <input type="range" min="0" max="80" value={borderWidth} onChange={(event) => setBorderWidth(Number(event.target.value))} className="premium-slider mt-1.5 w-full" />
                 </label>
-                <input type="color" value={borderColor} onChange={(event) => setBorderColor(event.target.value)} className="mt-4 h-9 w-12 rounded-lg border border-input bg-background" />
+                <input type="color" value={borderColor} onChange={(event) => setBorderColor(event.target.value)} className="h-9 w-12 cursor-pointer rounded-lg border border-input bg-background" aria-label={t("remover.border.heading")} />
               </div>
               <Button size="sm" variant="outline" className="w-full" disabled={isApplyingTool || borderWidth <= 0} onClick={() => void applyBorder()}>
                 {t("remover.border.apply")}

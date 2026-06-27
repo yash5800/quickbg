@@ -37,10 +37,34 @@ export function InteractiveToolPlayground() {
 
   useEffect(() => {
     if (isPaused) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % toolList.length);
-    }, 3800);
-    return () => clearInterval(interval);
+
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    const start = () => {
+      if (interval) return;
+      interval = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % toolList.length);
+      }, 3800);
+    };
+    const stop = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+
+    // Don't burn CPU/battery rotating in a background tab.
+    const handleVisibility = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+
+    handleVisibility();
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [isPaused]);
 
   const localizedPath = (path: string) => {
