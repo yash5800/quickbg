@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload } from "lucide-react";
+import { Upload, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useImagesStore } from "@/store/images";
@@ -240,15 +240,30 @@ export default function EditorPage() {
             animate={{ opacity: 1 }}
             onClick={() => fileInputRef.current?.click()}
             className={cn(
-              "premium-dashed flex min-h-[60vh] cursor-pointer flex-col items-center justify-center rounded-[2rem] text-center transition-all",
-              isDropActive && "border-secondary/70 bg-secondary/10"
+              "premium-dashed group relative flex min-h-[60vh] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-[2rem] px-6 text-center transition-all",
+              isDropActive && "scale-[1.005] border-secondary/70 bg-secondary/10"
             )}
           >
-            <div className="w-24 h-24 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+            <motion.div
+              animate={isDropActive ? { scale: 1.08 } : { scale: 1 }}
+              transition={{ type: "spring", stiffness: 220, damping: 18 }}
+              className="mb-6 flex h-24 w-24 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20 transition-colors group-hover:bg-primary/15"
+            >
               <Upload className="h-12 w-12 text-primary" />
+            </motion.div>
+            <h2 className="mb-2 text-2xl font-semibold sm:text-3xl">{t("home.dropTitle")}</h2>
+            <p className="mb-5 max-w-md text-muted-foreground">{t("home.dropDesc")}</p>
+            <Button size="lg" className="gap-2 shadow-lg shadow-primary/20" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
+              <Upload className="h-4 w-4" />
+              {t("home.uploadImage")}
+            </Button>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-1.5">
+              {["PNG", "JPG", "WebP", "HEIC", "AVIF", "TIFF"].map((fmt) => (
+                <span key={fmt} className="rounded-full border border-border/60 bg-background/50 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                  {fmt}
+                </span>
+              ))}
             </div>
-            <h2 className="text-2xl font-semibold mb-2">{t("home.dropTitle")}</h2>
-            <p className="text-muted-foreground mb-4">{t("home.dropDesc")}</p>
           </motion.div>
         </div>
 
@@ -320,12 +335,26 @@ export default function EditorPage() {
                 </Button>
                 <div>
                   <h1 className="text-2xl font-bold text-foreground">{t("nav.remover")}</h1>
-                  <p className="text-muted-foreground text-sm mt-0.5">
-                    {images.length} {images.length === 1 ? "image" : "images"} selected
-                    <span className="ml-2 text-amber-600 tabular-nums">
-                      ({isCreditsInitialized ? creditsLeft : "\u2026"} credits left)
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                    <span>
+                      {images.length} {images.length === 1 ? "image" : "images"} selected
                     </span>
-                  </p>
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold tabular-nums",
+                        !isCreditsInitialized
+                          ? "border-border/60 text-muted-foreground"
+                          : creditsLeft === 0
+                            ? "border-destructive/40 bg-destructive/10 text-destructive"
+                            : creditsLeft < 10
+                              ? "border-amber-500/40 bg-amber-500/10 text-amber-600"
+                              : "border-primary/30 bg-primary/10 text-primary"
+                      )}
+                    >
+                      <Zap className="h-3 w-3" />
+                      {isCreditsInitialized ? creditsLeft : "\u2026"} credits
+                    </span>
+                  </div>
                 </div>
               </div>
 

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
+import Script from "next/script";
 import { ClientLayout } from "@/components/client-layout";
 import { Analytics } from "@vercel/analytics/react";
 import { defaultLocale, localePrefixes, locales, localeOpenGraph, type Locale } from "@/lib/i18n/config";
@@ -94,11 +95,6 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
-          crossOrigin="anonymous"
-        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
@@ -123,6 +119,12 @@ export default async function RootLayout({
       <body className="font-sans" suppressHydrationWarning>
         <ClientLayout initialLocale={localeHeader as Locale}>{children}</ClientLayout>
         <Analytics />
+        <Script
+          id="adsbygoogle-init"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );

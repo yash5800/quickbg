@@ -1,10 +1,11 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { Upload, Zap, Globe, ShieldCheck, Sparkles, ArrowUpRight, Layers, Clock, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/contexts/LocaleContext";
+import { useReducedMotionSafe } from "@/hooks/use-reduced-motion-safe";
 
 interface Stat {
   value: string;
@@ -45,7 +46,9 @@ interface ScrollLinkedParallaxProps {
 export function ScrollLinkedParallax({ fileInputRef }: ScrollLinkedParallaxProps) {
   const { t } = useLocale();
   const sectionRef = useRef<HTMLDivElement>(null);
-  useReducedMotion();
+  // SSR-safe: false on the server and first client render, so the parallax
+  // markup/styles hydrate identically; the real preference applies after mount.
+  const prefersReducedMotion = useReducedMotionSafe();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -93,21 +96,32 @@ export function ScrollLinkedParallax({ fileInputRef }: ScrollLinkedParallaxProps
         <motion.div
           key={i}
           className={cn("pointer-events-none absolute hidden md:block", item.color)}
-          style={{
-            left: item.x,
-            top: item.y,
-            x: iconX[i],
-            y: iconY[i],
-            rotate: iconRotate[i],
-            opacity: iconOpacityArr[i],
-          }}
+          style={
+            prefersReducedMotion
+              ? { left: item.x, top: item.y, opacity: 0.5 }
+              : {
+                  left: item.x,
+                  top: item.y,
+                  x: iconX[i],
+                  y: iconY[i],
+                  rotate: iconRotate[i],
+                  opacity: iconOpacityArr[i],
+                }
+          }
         >
           <item.Icon className={cn(item.size, "drop-shadow-[0_0_12px_currentColor]")} />
         </motion.div>
       ))}
 
       <motion.div
-        style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
+        {...(prefersReducedMotion
+          ? {
+              initial: { opacity: 0, y: 20 },
+              whileInView: { opacity: 1, y: 0 },
+              viewport: { once: true, margin: "-10%" },
+              transition: { duration: 0.6, ease: "easeOut" as const },
+            }
+          : { style: { y: contentY, opacity: contentOpacity, scale: contentScale } })}
         className="relative p-8 sm:p-10"
       >
         <div className="mx-auto max-w-2xl text-center">
@@ -140,10 +154,22 @@ export function ScrollLinkedParallax({ fileInputRef }: ScrollLinkedParallaxProps
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-4">
-          {stats.map((stat, i) => (
+          {stats.map((stat, i) => {
+            // Non-reduced users get the scroll-linked parallax; reduced-motion
+            // users still get a tasteful staggered fade/rise entrance so the
+            // section never looks static.
+            const cardMotion = prefersReducedMotion
+              ? {
+                  initial: { opacity: 0, y: 24 },
+                  whileInView: { opacity: 1, y: 0 },
+                  viewport: { once: true, margin: "-10%" },
+                  transition: { delay: i * 0.09, duration: 0.5, ease: "easeOut" as const },
+                }
+              : { style: { y: cardY[i], opacity: cardOpacity[i], scale: cardScale[i] } };
+            return (
             <motion.div
               key={stat.label}
-              style={{ y: cardY[i], opacity: cardOpacity[i], scale: cardScale[i] }}
+              {...cardMotion}
               className="group relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 text-center transition duration-300 hover:-translate-y-1 hover:border-white/20"
             >
               <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
@@ -153,7 +179,8 @@ export function ScrollLinkedParallax({ fileInputRef }: ScrollLinkedParallaxProps
               <div className="relative mt-2 text-sm font-semibold text-white/80">{stat.label}</div>
               <div className="relative mt-1 text-xs text-white/40">{stat.sub}</div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         <motion.div

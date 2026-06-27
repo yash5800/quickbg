@@ -89,13 +89,10 @@ export default function BlurBgPage() {
 
     Promise.all([loadImage(originalImage), loadImage(processedImage)])
       .then(([orig, proc]) => {
-        console.log("Images loaded:", orig.width, "x", orig.height, proc.width, "x", proc.height);
         origImgRef.current = orig;
         procImgRef.current = proc;
         setIsLoaded(true);
-
-        const success = renderCanvas();
-        console.log("Render success:", success);
+        renderCanvas();
       })
       .catch((err) => {
         console.error("Image load error:", err);
