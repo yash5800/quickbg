@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
-import { getJobStatus, getQueueStatus, getJobResult, WorkerApiError, reserveUploadSlot, releaseUploadSlot, uploadImage } from "@/lib/worker-api";
+import { getJobStatus, getJobResult, WorkerApiError, reserveUploadSlot, releaseUploadSlot, uploadImage } from "@/lib/worker-api";
 import { persistImageState, restoreImageState } from "@/lib/image-state-persistence";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
@@ -453,19 +453,11 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     }, UPLOAD_TIMEOUT_MS);
     uploadTimeoutsRef.current.set(pendingImage.id, uploadTimeoutId);
 
-    // Submit to server
-    Promise.resolve(
-      pendingImage.creditReserved
-        ? uploadImage(pendingImage.file)
-        : reserveUploadSlot().then((reservation) => {
-            setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
-            // Mark the slot as reserved so a later upload failure releases it
-            // (the catch handler only releases when creditReserved is set).
-            useImagesStore.getState().updateImage(pendingImage.id, { creditReserved: true });
-            return uploadImage(pendingImage.file);
-          })
-    )
-      .then((response) => {
+    // Submit to server. The credit is reserved only AFTER the upload finishes
+    // and the job is entering processing — never during the upload itself — so
+    // uploads that fail (worker unreachable, timeout, etc.) cost nothing.
+    Promise.resolve(uploadImage(pendingImage.file))
+      .then(async (response) => {
         if (!response) return;
 
         console.log("[ImageContext] Submit response:", response);
@@ -475,6 +467,25 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         if (existingTimeout) {
           clearTimeout(existingTimeout);
           uploadTimeoutsRef.current.delete(pendingImage.id);
+        }
+
+        // Reserve the credit now that the upload has completed and the job is
+        // moving into the processing state. Skip if this image already holds a
+        // reservation (e.g. a retry after a transient error).
+        if (!pendingImage.creditReserved) {
+          try {
+            const reservation = await reserveUploadSlot();
+            setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
+            useImagesStore.getState().updateImage(pendingImage.id, { creditReserved: true });
+          } catch (reserveErr) {
+            if (reserveErr instanceof WorkerApiError && reserveErr.status === 403) {
+              const details = reserveErr.details as { reset_in_seconds?: number; remaining?: number } | null;
+              setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
+              pausePending("credits_exhausted", details?.reset_in_seconds ?? 3600);
+              return;
+            }
+            throw reserveErr;
+          }
         }
 
         if (response.status === "completed" && response.imageBlob) {
@@ -575,52 +586,16 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    return (async () => {
-      let reservationFailed = false;
-      let deferredRetryAt: number | null = null;
-
-      for (const file of [...validFiles].reverse()) {
-        if (reservationFailed) {
-          addImageStore(file, {
-            creditReserved: false,
-            waitingReason: deferredRetryAt ? "credits_exhausted" : null,
-            creditResetAt: deferredRetryAt,
-          });
-          continue;
-        }
-
-        try {
-          const reservation = await reserveUploadSlot();
-          setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
-          addImageStore(file, { creditReserved: true });
-        } catch (error) {
-          reservationFailed = true;
-
-          if (error instanceof WorkerApiError && error.status === 403) {
-            const details = error.details as { reset_in_seconds?: number; remaining?: number } | null;
-            deferredRetryAt = Date.now() + (details?.reset_in_seconds ?? 3600) * 1000;
-            setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
-            addImageStore(file, {
-              creditReserved: false,
-              waitingReason: "credits_exhausted",
-              creditResetAt: deferredRetryAt,
-            });
-            continue;
-          }
-
-          console.warn("[ImageContext] Failed to reserve upload slot, deferring reservation for queued files:", error);
-          addImageStore(file, { creditReserved: false });
-        }
-      }
-
-      try {
-        const status = await getQueueStatus();
-        setCredits(status.remaining, status.reset_in_seconds ?? 3600);
-      } catch (error) {
-        console.warn("[ImageContext] Failed to refresh credits after queue reservation:", error);
-      }
-    })();
-  }, [addImageStore, addToast, setCredits]);
+    // Do NOT reserve credits here. A credit is consumed only when an image
+    // actually enters the processing state — the auto-process effect calls
+    // reserveUploadSlot() right before uploading (and handles a 403 by pausing
+    // pending images as credits_exhausted). Deferring the deduction means
+    // images that are removed while still pending, or that never get processed,
+    // are never charged.
+    for (const file of [...validFiles].reverse()) {
+      addImageStore(file, { creditReserved: false });
+    }
+  }, [addImageStore, addToast]);
 
   const removeImage = useCallback((id: string) => {
     const image = useImagesStore.getState().images.find((item) => item.id === id);
