@@ -4,6 +4,9 @@ export interface ImageItem {
   id: string;
   file: File;
   preview: string;
+  /** True once a credit has been consumed for this image (idempotency guard). */
+  charged?: boolean;
+  /** @deprecated legacy reserve/release flag; retained for persisted state compat. */
   creditReserved?: boolean;
   status:
     | "pending"

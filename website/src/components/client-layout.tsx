@@ -65,11 +65,13 @@ function FloatingCredits() {
       <div
         className={cn(
           "flex w-fit items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/90 border shadow-md backdrop-blur-sm text-xs transition-colors",
-          remaining === 0
-            ? "border-destructive/60 bg-destructive/10"
-            : remaining < 10
-              ? "border-amber-500/50 bg-secondary/10"
-              : "border-border/60"
+          !isInitialized
+            ? "border-border/60"
+            : remaining === 0
+              ? "border-destructive/60 bg-destructive/10"
+              : remaining < 10
+                ? "border-amber-500/50 bg-secondary/10"
+                : "border-border/60"
         )}
       >
         <Zap
