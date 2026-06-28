@@ -59,40 +59,47 @@ export class WorkerApiError extends Error {
   }
 }
 
-export async function reserveUploadSlot(): Promise<UploadSlotResponse> {
-  const reservationFormData = new FormData();
-  reservationFormData.append("reserveOnly", "true");
-
-  const reservationResponse = await fetch(`${APP_API_BASE}/remove-background`, {
+/**
+ * Consume one credit for `imageId`. Idempotent on the server — calling it twice
+ * for the same imageId charges once. Throws WorkerApiError(403) when the hourly
+ * limit is reached.
+ */
+export async function consumeCredit(imageId: string): Promise<UploadSlotResponse> {
+  const response = await fetch(`${APP_API_BASE}/credits/consume`, {
     method: "POST",
-    body: reservationFormData,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ imageId }),
+    cache: "no-store",
   });
 
-  if (!reservationResponse.ok) {
-    const error = await reservationResponse.json().catch(() => ({ message: "Failed to reserve upload slot" }));
-    const message = error.message || error.detail || `HTTP ${reservationResponse.status}`;
-    throw new WorkerApiError(message, reservationResponse.status, error);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: "Failed to consume credit" }));
+    const message = error.message || error.detail || `HTTP ${response.status}`;
+    throw new WorkerApiError(message, response.status, error);
   }
 
-  return reservationResponse.json();
+  return response.json();
 }
 
-export async function releaseUploadSlot(): Promise<UploadSlotResponse> {
-  const releaseFormData = new FormData();
-  releaseFormData.append("releaseOnly", "true");
-
-  const releaseResponse = await fetch(`${APP_API_BASE}/remove-background`, {
+/**
+ * Refund the credit previously consumed for `imageId`. Idempotent — a no-op if
+ * the image was never charged. Never throws on the "nothing to refund" case.
+ */
+export async function refundCredit(imageId: string): Promise<UploadSlotResponse> {
+  const response = await fetch(`${APP_API_BASE}/credits/refund`, {
     method: "POST",
-    body: releaseFormData,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ imageId }),
+    cache: "no-store",
   });
 
-  if (!releaseResponse.ok) {
-    const error = await releaseResponse.json().catch(() => ({ message: "Failed to release upload slot" }));
-    const message = error.message || error.detail || `HTTP ${releaseResponse.status}`;
-    throw new WorkerApiError(message, releaseResponse.status, error);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: "Failed to refund credit" }));
+    const message = error.message || error.detail || `HTTP ${response.status}`;
+    throw new WorkerApiError(message, response.status, error);
   }
 
-  return releaseResponse.json();
+  return response.json();
 }
 
 export async function uploadImage(file: File): Promise<JobQueuedResponse> {
@@ -126,23 +133,6 @@ export async function uploadImage(file: File): Promise<JobQueuedResponse> {
   }
 
   return response.json();
-}
-
-export async function submitImage(file: File): Promise<JobQueuedResponse> {
-  console.log("[Worker API] submitImage called:", file.name, file.size);
-
-  if (!WORKER_API_BASE) {
-    throw new Error("NEXT_PUBLIC_WORKER_API_URL is not configured");
-  }
-
-  const reservation = await reserveUploadSlot();
-  const response = await uploadImage(file);
-
-  return {
-    ...response,
-    remaining: reservation.remaining,
-    reset_in_seconds: reservation.reset_in_seconds,
-  };
 }
 
 export async function getJobStatus(jobId: string): Promise<JobStatusResponse> {

@@ -16,11 +16,6 @@ interface JobDocument {
   sessionId: string;
 }
 
-interface HourlyUsage {
-  count: number;
-  expiresAt?: Date;
-}
-
 interface UserUpload {
   uploadedAt: Date;
   hourKey: string;
@@ -49,11 +44,9 @@ export async function GET(request: NextRequest) {
     const db = client.db(DB_NAME);
 
     const jobs = db.collection<JobDocument>("jobs");
-    const hourlyUsage = db.collection<HourlyUsage>("hourly_usage");
+    const creditUsage = db.collection("credit_usage");
     const userUploads = db.collection<UserUpload>("user_uploads");
     const ratings = db.collection("tool_ratings");
-
-    const hourStart = new Date(Date.now() - HOUR_WINDOW_MS);
 
     // Get job stats
     const [totalJobs, completedJobs, failedJobs, queuedJobs, runningJobs, distinctJobUsers, distinctUploadUsers] = await Promise.all([
@@ -128,39 +121,20 @@ export async function GET(request: NextRequest) {
       return acc;
     }, []);
 
-    // Get usage stats
+    // Get usage stats — total credits consumed across all users in the current
+    // hourly window, sourced from the authoritative `credit_usage` counter.
+    const now = Date.now();
+    const windowStart = Math.floor(now / HOUR_WINDOW_MS) * HOUR_WINDOW_MS;
     let totalUploads = 0;
-    let resetInSeconds = getSecondsUntilReset(Date.now() + HOUR_WINDOW_MS);
+    const resetInSeconds = getSecondsUntilReset(windowStart + HOUR_WINDOW_MS, now);
     try {
-      const now = Date.now();
-      const usage = await hourlyUsage.findOne({ expiresAt: { $gt: new Date(now) } });
-      totalUploads = Math.min(HOURLY_LIMIT, usage?.count ?? 0);
-
-      if (usage?.expiresAt) {
-        resetInSeconds = getSecondsUntilReset(usage.expiresAt.getTime(), now);
-      }
-
-      if (!usage) {
-        const legacyCount = await userUploads.countDocuments({
-          uploadedAt: { $gte: hourStart },
-        });
-        totalUploads = Math.min(HOURLY_LIMIT, legacyCount);
-
-        const recentUpload = await userUploads
-          .find(
-            {
-              uploadedAt: { $gte: hourStart },
-            },
-            { projection: { uploadedAt: 1 } }
-          )
-          .sort({ uploadedAt: 1 })
-          .limit(1)
-          .toArray();
-
-        if (recentUpload[0]?.uploadedAt) {
-          resetInSeconds = getSecondsUntilReset(recentUpload[0].uploadedAt.getTime() + HOUR_WINDOW_MS, now);
-        }
-      }
+      const usageAgg = await creditUsage
+        .aggregate([
+          { $match: { windowStart, expiresAt: { $gt: new Date(now) } } },
+          { $group: { _id: null, total: { $sum: "$used" } } },
+        ])
+        .toArray();
+      totalUploads = usageAgg[0]?.total ?? 0;
     } catch {
       totalUploads = 0;
     }

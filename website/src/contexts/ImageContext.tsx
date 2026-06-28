@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
-import { getJobStatus, getJobResult, WorkerApiError, reserveUploadSlot, releaseUploadSlot, uploadImage } from "@/lib/worker-api";
+import { getJobStatus, getJobResult, WorkerApiError, consumeCredit, refundCredit, uploadImage } from "@/lib/worker-api";
 import { persistImageState, restoreImageState } from "@/lib/image-state-persistence";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
@@ -37,7 +37,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const clearWaitingState = useImagesStore((state) => state.clearWaitingState);
   const pruneExpiredTerminalImages = useImagesStore((state) => state.pruneExpiredTerminalImages);
 
-  const setCredits = useCreditsStore((state) => state.setCredits);
+  const setFromServer = useCreditsStore((state) => state.setFromServer);
   const { currentImageId, setSubmitting, clearSubmitting } = useProcessingStore();
   const { addToast } = useToast();
   const processingRef = useRef(false);
@@ -45,6 +45,9 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const resultFetchAttemptsRef = useRef<Map<string, number>>(new Map());
   const uploadTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  // Snapshot of each image's charged/status, used to detect removals and refund
+  // them — covers removals made directly via the store (e.g. the remover page).
+  const chargedSnapshotRef = useRef<Map<string, { charged: boolean; status: ImageItem["status"] }>>(new Map());
   const MAX_RESULT_FETCH_RETRIES = 12; // number of polling attempts before giving up
   const UPLOAD_TIMEOUT_MS = 30_000; // 30 seconds max for upload
   const [isHydrated, setIsHydrated] = React.useState(false);
@@ -52,6 +55,27 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const pausePending = useCallback((reason: ImageWaitingReason, retryInSeconds: number) => {
     pausePendingImages(reason, Date.now() + retryInSeconds * 1000);
   }, [pausePendingImages]);
+
+  // Detect images that were charged but removed before completing, and refund
+  // them. Runs off the images array so it catches removals through any path
+  // (context or store-direct). Idempotent on the server, so overlapping refund
+  // calls are harmless.
+  useEffect(() => {
+    const prev = chargedSnapshotRef.current;
+    const currentIds = new Set(images.map((img) => img.id));
+
+    prev.forEach((info, id) => {
+      if (!currentIds.has(id) && info.charged && info.status !== "completed") {
+        void refundCredit(id)
+          .then((state) => setFromServer(state.remaining, state.reset_in_seconds ?? 3600))
+          .catch((error) => console.warn("[ImageContext] Failed to refund credit after removal:", error));
+      }
+    });
+
+    const next = new Map<string, { charged: boolean; status: ImageItem["status"] }>();
+    images.forEach((img) => next.set(img.id, { charged: !!img.charged, status: img.status }));
+    chargedSnapshotRef.current = next;
+  }, [images, setFromServer]);
 
   const stopPollingForImage = useCallback((imageId: string) => {
     const existingInterval = pollingIntervalsRef.current.get(imageId);
@@ -77,6 +101,24 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       throw workerErr;
     }
   }, []);
+
+  // Refund a charged image whose job ended in failure — worker failures should
+  // not cost a credit. Idempotent on the server and guarded by the `charged`
+  // flag, so it's safe to call from multiple terminal-error paths.
+  const refundImageIfCharged = useCallback((id: string) => {
+    const current = useImagesStore.getState().images.find((item) => item.id === id);
+    if (!current?.charged) {
+      return;
+    }
+    void refundCredit(id)
+      .then((state) => {
+        setFromServer(state.remaining, state.reset_in_seconds ?? 3600);
+        useImagesStore.getState().updateImage(id, { charged: false });
+      })
+      .catch((err) => {
+        console.warn("[ImageContext] Failed to refund credit after failure:", err);
+      });
+  }, [setFromServer]);
 
   const refreshImageFromWorker = useCallback(async (img: ImageItem) => {
     if (!img.jobId || img.jobId === "direct") {
@@ -132,6 +174,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
                 error: "Failed to fetch processed image",
                 progress: 0,
               });
+              refundImageIfCharged(img.id);
               resultFetchAttemptsRef.current.delete(img.id);
               stopPollingForImage(img.id);
 
@@ -156,6 +199,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           error: status.error || "Processing failed",
           progress: 0,
         });
+        refundImageIfCharged(img.id);
         stopPollingForImage(img.id);
 
         const store = useProcessingStore.getState();
@@ -185,6 +229,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           progress: 0,
         });
 
+        refundImageIfCharged(img.id);
         stopPollingForImage(img.id);
 
         const store = useProcessingStore.getState();
@@ -193,7 +238,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
         }
       }
     }
-  }, [clearSubmitting, fetchWorkerResult, stopPollingForImage, updateImageStatusStore]);
+  }, [clearSubmitting, fetchWorkerResult, refundImageIfCharged, stopPollingForImage, updateImageStatusStore]);
 
   const syncActiveJobs = useCallback(async () => {
     const activeImages = useImagesStore.getState().images.filter(
@@ -453,9 +498,11 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     }, UPLOAD_TIMEOUT_MS);
     uploadTimeoutsRef.current.set(pendingImage.id, uploadTimeoutId);
 
-    // Submit to server. The credit is reserved only AFTER the upload finishes
+    // Submit to server. The credit is consumed only AFTER the upload finishes
     // and the job is entering processing — never during the upload itself — so
-    // uploads that fail (worker unreachable, timeout, etc.) cost nothing.
+    // uploads that fail (worker unreachable, timeout, etc.) cost nothing. The
+    // charge is idempotent on the image id, so effect re-runs, retries and
+    // reloads can never double-charge.
     Promise.resolve(uploadImage(pendingImage.file))
       .then(async (response) => {
         if (!response) return;
@@ -469,22 +516,21 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           uploadTimeoutsRef.current.delete(pendingImage.id);
         }
 
-        // Reserve the credit now that the upload has completed and the job is
-        // moving into the processing state. Skip if this image already holds a
-        // reservation (e.g. a retry after a transient error).
-        if (!pendingImage.creditReserved) {
+        // Consume the credit now that the upload has completed and the job is
+        // moving into the processing state.
+        if (!pendingImage.charged) {
           try {
-            const reservation = await reserveUploadSlot();
-            setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
-            useImagesStore.getState().updateImage(pendingImage.id, { creditReserved: true });
-          } catch (reserveErr) {
-            if (reserveErr instanceof WorkerApiError && reserveErr.status === 403) {
-              const details = reserveErr.details as { reset_in_seconds?: number; remaining?: number } | null;
-              setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
+            const state = await consumeCredit(pendingImage.id);
+            setFromServer(state.remaining, state.reset_in_seconds ?? 3600);
+            useImagesStore.getState().updateImage(pendingImage.id, { charged: true });
+          } catch (consumeErr) {
+            if (consumeErr instanceof WorkerApiError && consumeErr.status === 403) {
+              const details = consumeErr.details as { reset_in_seconds?: number; remaining?: number } | null;
+              setFromServer(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
               pausePending("credits_exhausted", details?.reset_in_seconds ?? 3600);
               return;
             }
-            throw reserveErr;
+            throw consumeErr;
           }
         }
 
@@ -519,19 +565,21 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
 
         if (err instanceof WorkerApiError && err.status === 403) {
           const details = err.details as { reset_in_seconds?: number; remaining?: number } | null;
-          setCredits(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
+          setFromServer(details?.remaining ?? 0, details?.reset_in_seconds ?? 3600);
           pausePending("credits_exhausted", details?.reset_in_seconds ?? 3600);
           return;
         }
+        // If this image was already charged, refund it — a failure after the
+        // charge should not cost a credit. Idempotent, so safe if never charged.
         const currentImage = useImagesStore.getState().images.find((item) => item.id === pendingImage.id);
-        if (currentImage?.creditReserved) {
-          void releaseUploadSlot()
-            .then((reservation) => {
-              setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
-              useImagesStore.getState().updateImage(pendingImage.id, { creditReserved: false });
+        if (currentImage?.charged) {
+          void refundCredit(pendingImage.id)
+            .then((state) => {
+              setFromServer(state.remaining, state.reset_in_seconds ?? 3600);
+              useImagesStore.getState().updateImage(pendingImage.id, { charged: false });
             })
-            .catch((releaseErr) => {
-              console.warn("[ImageContext] Failed to release reserved credit after upload error:", releaseErr);
+            .catch((refundErr) => {
+              console.warn("[ImageContext] Failed to refund credit after upload error:", refundErr);
             });
         }
         useImagesStore.getState().updateImageStatus(pendingImage.id, "error", {
@@ -556,7 +604,7 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
           clearSubmitting();
         }
       });
-  }, [images, currentImageId, retryTick, isHydrated, setCredits, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
+  }, [images, currentImageId, retryTick, isHydrated, setFromServer, setSubmitting, clearSubmitting, pausePending, clearWaitingState]);
 
   const addImages = useCallback((files: File[]) => {
     const validFiles: File[] = [];
@@ -586,31 +634,22 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Do NOT reserve credits here. A credit is consumed only when an image
+    // Do NOT charge credits here. A credit is consumed only when an image
     // actually enters the processing state — the auto-process effect calls
-    // reserveUploadSlot() right before uploading (and handles a 403 by pausing
-    // pending images as credits_exhausted). Deferring the deduction means
-    // images that are removed while still pending, or that never get processed,
-    // are never charged.
+    // consumeCredit() after the upload completes (and handles a 403 by pausing
+    // pending images as credits_exhausted). Deferring the charge means images
+    // that are removed while still pending, or that never get processed, are
+    // never charged.
     for (const file of [...validFiles].reverse()) {
-      addImageStore(file, { creditReserved: false });
+      addImageStore(file, { charged: false });
     }
   }, [addImageStore, addToast]);
 
   const removeImage = useCallback((id: string) => {
-    const image = useImagesStore.getState().images.find((item) => item.id === id);
+    // Refund (if needed) is handled centrally by the removal-watch effect, which
+    // covers removals made directly through the store too. Just remove here.
     removeImageStore(id);
-
-    if (image?.creditReserved) {
-      void releaseUploadSlot()
-        .then((reservation) => {
-          setCredits(reservation.remaining, reservation.reset_in_seconds ?? 3600);
-        })
-        .catch((error) => {
-          console.warn("[ImageContext] Failed to release credit after removal:", error);
-        });
-    }
-  }, [removeImageStore, setCredits]);
+  }, [removeImageStore]);
 
   const clearImages = useCallback(() => {
     clearImagesStore();

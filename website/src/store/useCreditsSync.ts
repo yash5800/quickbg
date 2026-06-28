@@ -3,33 +3,32 @@ import { useQuery } from "@tanstack/react-query";
 import { useCreditsStore } from "./credits";
 import { getQueueStatus } from "@/lib/worker-api";
 
+/**
+ * Keeps the display store in sync with the authoritative server balance.
+ * `/api/queue-status` is polled on mount, on an interval, and on window focus —
+ * there is no local cache or persistence, so the badge always reflects the
+ * server. The service worker never caches `/api/*`, so each fetch is fresh.
+ */
 export function useCreditsSync() {
-  const restoreFromStorage = useCreditsStore((state) => state.restoreFromStorage);
-  const setCredits = useCreditsStore((state) => state.setCredits);
+  const setFromServer = useCreditsStore((state) => state.setFromServer);
   const query = useQuery({
     queryKey: ["queue-status"],
     queryFn: getQueueStatus,
     refetchInterval: 60000,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
     refetchIntervalInBackground: false,
-    staleTime: 30000,
+    staleTime: 0,
   });
 
-  // Restore persisted credits from localStorage on mount (client-side only)
-  useEffect(() => {
-    restoreFromStorage();
-  }, [restoreFromStorage]);
-
-  // Apply the authoritative server balance to the store whenever the query
-  // resolves. Without this the badge sits on its default until the first upload.
+  // Apply the authoritative server balance whenever the query resolves.
   useEffect(() => {
     const data = query.data;
     if (!data || typeof data.remaining !== "number") {
       return;
     }
-    setCredits(data.remaining, data.reset_in_seconds ?? 3600);
-  }, [query.data, setCredits]);
+    setFromServer(data.remaining, data.reset_in_seconds ?? 3600);
+  }, [query.data, setFromServer]);
 
   return query;
 }
