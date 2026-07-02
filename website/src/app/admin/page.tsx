@@ -209,9 +209,29 @@ export default function AdminDashboard() {
     onError: () => addToast({ type: "error", title: "Delete failed", duration: 3000 }),
   });
 
+  const clearJobsMutation = useMutation({
+    mutationFn: () => fetchJson<{ cancelled: number; stopped_tasks: number }>("/api/admin/clear-jobs", { method: "POST" }),
+    onSuccess: async (data) => {
+      addToast({
+        type: "success",
+        title: "Queue cleared",
+        description: `${data.cancelled} job(s) cancelled, ${data.stopped_tasks} stopped`,
+        duration: 4000,
+      });
+      await invalidateAdmin();
+    },
+    onError: () => addToast({ type: "error", title: "Failed to clear queue", duration: 3000 }),
+  });
+
   const stats = statsQuery.data ?? null;
   const analytics = analyticsQuery.data ?? null;
-  const jobs = useMemo(() => jobsQuery.data ?? [], [jobsQuery.data]);
+  const jobs = useMemo(() => {
+    // Defensive newest-first sort by parsed timestamp, independent of how the
+    // server/BSON ordered them — guarantees the Job Explorer is never scrambled.
+    return [...(jobsQuery.data ?? [])].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [jobsQuery.data]);
 
   const filteredJobs = useMemo(() => {
     const query = jobQuery.trim().toLowerCase();
@@ -319,6 +339,7 @@ export default function AdminDashboard() {
               cleanupMutation={cleanupMutation}
               clearAnalyticsMutation={clearAnalyticsMutation}
               deleteAllMutation={deleteAllMutation}
+              clearJobsMutation={clearJobsMutation}
             />
           </TabsContent>
         </Tabs>
@@ -646,10 +667,12 @@ function MaintenancePanel({
   cleanupMutation,
   clearAnalyticsMutation,
   deleteAllMutation,
+  clearJobsMutation,
 }: {
   cleanupMutation: UseMutationResult<{ deletedCount: number }, Error, void>;
   clearAnalyticsMutation: UseMutationResult<{ deletedCounts: { analytics: number; seenRecords: number } }, Error, void>;
   deleteAllMutation: UseMutationResult<{ deletedCounts: Record<string, number> }, Error, void>;
+  clearJobsMutation: UseMutationResult<{ cancelled: number; stopped_tasks: number }, Error, void>;
 }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
@@ -682,6 +705,13 @@ function MaintenancePanel({
           <CardDescription>Use destructive operations carefully.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <ActionRow
+            title="Cancel active jobs (kill switch)"
+            description="Immediately cancel all queued + running jobs and stop the worker. Use to drain a stuck queue. Keeps completed/failed history."
+            action="Cancel active jobs"
+            loading={clearJobsMutation.isPending}
+            onClick={() => clearJobsMutation.mutate()}
+          />
           <ActionRow
             title="Cleanup stale jobs"
             description="Remove completed/failed jobs older than the retention window."

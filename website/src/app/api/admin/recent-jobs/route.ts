@@ -31,10 +31,13 @@ export async function GET(request: NextRequest) {
     const db = client.db(DB_NAME);
     const jobs = db.collection<JobDocument>("jobs");
 
-    // Get recent jobs (last 50)
+    // Get recent jobs (last 50). Sort by createdAt with _id as a deterministic
+    // tiebreaker — _id is monotonic with insertion time, so jobs created in the
+    // same second (e.g. a batch upload) come back newest-first in a stable
+    // order instead of arbitrary in-memory order.
     const recentJobs = await jobs
       .find({})
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .limit(50)
       .toArray();
 

@@ -93,8 +93,10 @@ device = None
 dispatcher_task: Optional[asyncio.Task] = None
 cleanup_task: Optional[asyncio.Task] = None
 dispatcher_wakeup: Optional[asyncio.Event] = None
-active_tasks: set[asyncio.Task] = set()
+# Running jobs keyed by jobId so we can cancel a specific job's task.
+active_tasks: dict[str, asyncio.Task] = {}
 active_tasks_lock = asyncio.Lock()
+shutting_down: bool = False
 job_subscribers: dict[str, set[asyncio.Queue[dict]]] = {}
 job_subscribers_lock = asyncio.Lock()
 
@@ -415,6 +417,11 @@ async def process_job(job_id: str) -> None:
             },
         )
         logger.info(f"[Job {job_id}] Successfully completed")
+    except asyncio.CancelledError:
+        # Job was cancelled (user cancel or admin kill switch). The cancel path
+        # already set status to "cancelled"; do not mark it failed.
+        logger.info(f"[Job {job_id}] Cancelled")
+        raise
     except Exception as exc:
         logger.exception("Job %s failed", job_id)
         await update_job(
@@ -426,10 +433,8 @@ async def process_job(job_id: str) -> None:
         )
         logger.error(f"[Job {job_id}] Failed: {str(exc)}")
     finally:
-        current_task = asyncio.current_task()
         async with active_tasks_lock:
-            if current_task in active_tasks:
-                active_tasks.remove(current_task)
+            active_tasks.pop(job_id, None)
         set_dispatcher_wakeup()
 
 
@@ -526,37 +531,41 @@ async def dispatcher_loop() -> None:
     assert dispatcher_wakeup is not None
 
     while True:
-        # Claim and process as many jobs as we can
-        while True:
-            # Check current concurrency
-            async with active_tasks_lock:
-                active_count = len(active_tasks)
-
-            current_concurrency = get_dynamic_concurrency()
-
-            if active_count >= current_concurrency:
-                break
-
-            # claim_next_job handles cleanup and returns an already-claimed job
-            job = await asyncio.to_thread(claim_next_job)
-            if not job:
-                break
-
-            logger.info(f"[Dispatcher] Processing job {job['jobId']}")
-            task = asyncio.create_task(process_job(job["jobId"]))
-            async with active_tasks_lock:
-                active_tasks.add(task)
-
-        # No more jobs to claim, wait for work
         try:
-            await asyncio.wait_for(dispatcher_wakeup.wait(), timeout=QUEUE_POLL_SECONDS)
-        except asyncio.TimeoutError:
-            pass
+            # Claim and process as many jobs as we can
+            while True:
+                # Check current concurrency
+                async with active_tasks_lock:
+                    active_count = len(active_tasks)
 
-        dispatcher_wakeup.clear()
+                if active_count >= get_dynamic_concurrency():
+                    break
 
-        dispatcher_wakeup.clear()
-        logger.debug(f"[Dispatcher] Woke up, checking for new jobs")
+                # claim_next_job handles cleanup and returns an already-claimed job
+                job = await asyncio.to_thread(claim_next_job)
+                if not job:
+                    break
+
+                job_id = job["jobId"]
+                logger.info(f"[Dispatcher] Processing job {job_id}")
+                task = asyncio.create_task(process_job(job_id))
+                async with active_tasks_lock:
+                    active_tasks[job_id] = task
+
+            # No more jobs to claim, wait for work
+            try:
+                await asyncio.wait_for(dispatcher_wakeup.wait(), timeout=QUEUE_POLL_SECONDS)
+            except asyncio.TimeoutError:
+                pass
+            dispatcher_wakeup.clear()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            # A transient failure (e.g. a brief Mongo disconnect) must NEVER kill
+            # the dispatcher — otherwise queued jobs stall until the Space is
+            # restarted. Log it and keep looping.
+            logger.exception("[Dispatcher] loop iteration failed; continuing")
+            await asyncio.sleep(1.0)
 
 
 async def cleanup_loop() -> None:
@@ -678,19 +687,43 @@ def format_sse_payload(job: dict) -> str:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global dispatcher_task, cleanup_task, dispatcher_wakeup
+    global dispatcher_task, cleanup_task, dispatcher_wakeup, shutting_down
 
     print("Loading model...")
     load_model()
     get_job_store()
+    shutting_down = False
     dispatcher_wakeup = asyncio.Event()
     dispatcher_task = asyncio.create_task(dispatcher_loop())
     cleanup_task = asyncio.create_task(cleanup_loop())
+
+    # Safety net: the loops already guard against transient errors, but if a
+    # background task ever exits unexpectedly while the app is running, restart
+    # it instead of silently leaving the queue unattended.
+    def _restart_dispatcher(task: asyncio.Task) -> None:
+        global dispatcher_task
+        if shutting_down or task.cancelled():
+            return
+        logger.error("[Dispatcher] task exited unexpectedly (%r); restarting", task.exception())
+        dispatcher_task = asyncio.create_task(dispatcher_loop())
+        dispatcher_task.add_done_callback(_restart_dispatcher)
+
+    def _restart_cleanup(task: asyncio.Task) -> None:
+        global cleanup_task
+        if shutting_down or task.cancelled():
+            return
+        logger.error("[Cleanup] task exited unexpectedly (%r); restarting", task.exception())
+        cleanup_task = asyncio.create_task(cleanup_loop())
+        cleanup_task.add_done_callback(_restart_cleanup)
+
+    dispatcher_task.add_done_callback(_restart_dispatcher)
+    cleanup_task.add_done_callback(_restart_cleanup)
     print(f"Model loaded on {device}")
 
     try:
         yield
     finally:
+        shutting_down = True
         for task in [dispatcher_task, cleanup_task]:
             if task is not None:
                 task.cancel()
@@ -866,6 +899,64 @@ async def queue_status():
             "completed_jobs": completed_jobs,
         }
     )
+
+
+@app.post("/cancel/{job_id}")
+async def cancel_job(job_id: str):
+    """Cancel a single job. The job id itself is the capability, so this is
+    public — a user can cancel their own queued/processing job. Stops the
+    running task (if any) and marks the job cancelled."""
+    collection = get_job_store()
+
+    result = await asyncio.to_thread(
+        collection.update_one,
+        {"jobId": job_id, "status": {"$in": ["queued", "starting", "running"]}},
+        {"$set": {"status": "cancelled", "error": None, "updatedAt": utcnow()}},
+    )
+
+    async with active_tasks_lock:
+        task = active_tasks.get(job_id)
+    if task is not None:
+        task.cancel()
+
+    cancelled = result.modified_count > 0
+    if cancelled:
+        await asyncio.to_thread(cleanup_files, job_id)
+        job = await asyncio.to_thread(collection.find_one, {"jobId": job_id}, {"_id": 0})
+        if job:
+            await broadcast_job_state(job)
+        set_dispatcher_wakeup()
+
+    return JSONResponse({"cancelled": cancelled, "job_id": job_id})
+
+
+def require_internal_token(request: Request) -> None:
+    # Fail closed: admin actions require a configured token that matches.
+    if not WORKER_INTERNAL_TOKEN or request.headers.get("x-internal-token") != WORKER_INTERNAL_TOKEN:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+
+@app.post("/admin/clear-jobs")
+async def admin_clear_jobs(request: Request):
+    """Kill switch: cancel every queued/running job and stop in-flight tasks.
+    Completed/failed history is left intact. Protected by the internal token."""
+    require_internal_token(request)
+    collection = get_job_store()
+
+    async with active_tasks_lock:
+        tasks = list(active_tasks.values())
+    for task in tasks:
+        task.cancel()
+
+    result = await asyncio.to_thread(
+        collection.update_many,
+        {"status": {"$in": ["queued", "starting", "running"]}},
+        {"$set": {"status": "cancelled", "error": None, "updatedAt": utcnow()}},
+    )
+    set_dispatcher_wakeup()
+
+    logger.warning("[Admin] clear-jobs: cancelled %d job(s), stopped %d task(s)", result.modified_count, len(tasks))
+    return JSONResponse({"cancelled": result.modified_count, "stopped_tasks": len(tasks)})
 
 
 @app.get("/result/{job_id}")

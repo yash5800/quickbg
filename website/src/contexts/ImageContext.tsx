@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useRef, useEffect, useCallback } from "react";
-import { getJobStatus, getJobResult, WorkerApiError, consumeCredit, refundCredit, uploadImage } from "@/lib/worker-api";
+import { getJobStatus, getJobResult, WorkerApiError, consumeCredit, refundCredit, cancelJob, uploadImage } from "@/lib/worker-api";
 import { persistImageState, restoreImageState } from "@/lib/image-state-persistence";
 import { useImagesStore } from "@/store/images";
 import { useCreditsStore } from "@/store/credits";
@@ -45,9 +45,10 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
   const pollingIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const resultFetchAttemptsRef = useRef<Map<string, number>>(new Map());
   const uploadTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  // Snapshot of each image's charged/status, used to detect removals and refund
-  // them — covers removals made directly via the store (e.g. the remover page).
-  const chargedSnapshotRef = useRef<Map<string, { charged: boolean; status: ImageItem["status"] }>>(new Map());
+  // Snapshot of each image's charged/status/jobId, used to detect removals so we
+  // can refund the credit and cancel the worker job — covers removals made
+  // directly via the store (e.g. the remover page).
+  const chargedSnapshotRef = useRef<Map<string, { charged: boolean; status: ImageItem["status"]; jobId?: string }>>(new Map());
   const MAX_RESULT_FETCH_RETRIES = 12; // number of polling attempts before giving up
   const UPLOAD_TIMEOUT_MS = 30_000; // 30 seconds max for upload
   const [isHydrated, setIsHydrated] = React.useState(false);
@@ -56,24 +57,33 @@ export function ImageProvider({ children }: { children: React.ReactNode }) {
     pausePendingImages(reason, Date.now() + retryInSeconds * 1000);
   }, [pausePendingImages]);
 
-  // Detect images that were charged but removed before completing, and refund
-  // them. Runs off the images array so it catches removals through any path
-  // (context or store-direct). Idempotent on the server, so overlapping refund
-  // calls are harmless.
+  // Detect images removed before completing, and (a) refund the credit and
+  // (b) cancel the worker job. Runs off the images array so it catches removals
+  // through any path (context or store-direct). Both calls are idempotent /
+  // best-effort, so overlap is harmless.
   useEffect(() => {
     const prev = chargedSnapshotRef.current;
     const currentIds = new Set(images.map((img) => img.id));
+    const TERMINAL: ImageItem["status"][] = ["completed", "failed", "error"];
 
     prev.forEach((info, id) => {
-      if (!currentIds.has(id) && info.charged && info.status !== "completed") {
+      if (currentIds.has(id)) {
+        return;
+      }
+      // Refund if the credit was held and the work didn't complete.
+      if (info.charged && info.status !== "completed") {
         void refundCredit(id)
           .then((state) => setFromServer(state.remaining, state.reset_in_seconds ?? 3600))
           .catch((error) => console.warn("[ImageContext] Failed to refund credit after removal:", error));
       }
+      // Tell the worker to stop a job that was still queued/processing.
+      if (info.jobId && info.jobId !== "direct" && !TERMINAL.includes(info.status)) {
+        void cancelJob(info.jobId);
+      }
     });
 
-    const next = new Map<string, { charged: boolean; status: ImageItem["status"] }>();
-    images.forEach((img) => next.set(img.id, { charged: !!img.charged, status: img.status }));
+    const next = new Map<string, { charged: boolean; status: ImageItem["status"]; jobId?: string }>();
+    images.forEach((img) => next.set(img.id, { charged: !!img.charged, status: img.status, jobId: img.jobId }));
     chargedSnapshotRef.current = next;
   }, [images, setFromServer]);
 

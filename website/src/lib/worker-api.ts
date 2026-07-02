@@ -161,6 +161,21 @@ export async function getQueueStatus(): Promise<QueueStatus> {
   return response.json();
 }
 
+/**
+ * Ask the worker to cancel a job (stop processing / drop from the queue).
+ * Best-effort: a failure here never blocks the UI removal or the refund.
+ */
+export async function cancelJob(jobId: string): Promise<void> {
+  try {
+    await fetch(`${APP_API_BASE}/cancel/${encodeURIComponent(jobId)}`, {
+      method: "POST",
+      cache: "no-store",
+    });
+  } catch {
+    // ignore — the credit refund and local removal are what matter to the user
+  }
+}
+
 export async function watchJobStatus(
   jobId: string,
   onProgress: (data: JobStatusResponse) => void,
