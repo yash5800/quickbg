@@ -398,13 +398,13 @@ const handleMouseDown = (e: React.MouseEvent, action: "move" | ResizeHandle) => 
                 <h3 className="text-sm font-semibold mb-2">{t("home.beforeAfter")}</h3>
                 <div className="relative rounded-lg overflow-hidden bg-muted">
                   <img src={result} alt="" className="w-full h-auto" />
-                  <a href={result} download="cropped.png" className="absolute top-4 right-4">
-                    <Button size="sm">
-                      <Download className="h-4 w-4 mr-2" />
-                      {t("remover.actions.download")}
-                    </Button>
-                  </a>
                 </div>
+                <a href={result} download="cropped.png" className="mt-3 block">
+                  <Button size="sm" className="w-full">
+                    <Download className="h-4 w-4 mr-2" />
+                    {t("remover.actions.download")}
+                  </Button>
+                </a>
               </div>
             )}
           </div>

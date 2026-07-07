@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import Script from "next/script";
 import { ClientLayout } from "@/components/client-layout";
 import { Analytics } from "@vercel/analytics/react";
-import { defaultLocale, localePrefixes, locales, localeOpenGraph, type Locale } from "@/lib/i18n/config";
+import { defaultLocale, localeOpenGraph, type Locale } from "@/lib/i18n/config";
 import "./globals.css";
 
 const baseKeywords = [
@@ -26,30 +26,30 @@ const SITE_URL = "https://quickbg.dev";
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
   const locale = (headersList.get("x-locale") || defaultLocale) as Locale;
+  const pathWithoutLocale = headersList.get("x-path-without-locale") || "/";
 
   const title = "Free AI Background Remover - Unlimited Images, 100% Original Quality";
   const description = "quickbg.dev offers free AI background remover that preserves 100% of your image's original quality. Instantly detect and remove subjects, process unlimited images quickly, and get professional-quality cutouts with no signup required. Ideal for product photos, social posts, and bulk processing.";
 
-  const prefix = localePrefixes[locale];
-  const canonical = prefix ? `${SITE_URL}${prefix}` : SITE_URL;
+  const isDefaultLocale = locale === defaultLocale;
+  const canonicalPath = pathWithoutLocale === "/" ? "" : pathWithoutLocale;
+  const canonical = `${SITE_URL}${canonicalPath}`;
+  const isPublicContentPage =
+    !pathWithoutLocale.startsWith("/admin") &&
+    pathWithoutLocale !== "/offline";
 
-  const alternates = {
-    canonical,
-    languages: {} as Record<string, string>,
-  };
-
-  for (const loc of locales) {
-    if (loc === locale) continue;
-    const locPrefix = localePrefixes[loc];
-    alternates.languages[loc] = locPrefix ? `${SITE_URL}${locPrefix}` : SITE_URL;
-  }
+  // Non-English routes serve English fallback prose for the tool pages, so they
+  // are mixed-language near-duplicates. Keep them out of the index and point their
+  // canonical at the English original to consolidate signals. Re-enable a locale's
+  // indexing once its translations are complete, then restore hreflang alternates.
+  const alternates = { canonical };
 
   return {
     title,
     description,
     keywords: baseKeywords,
     authors: [{ name: "QuickBG Team" }],
-    robots: "index, follow",
+    robots: isDefaultLocale && isPublicContentPage ? "index, follow" : "noindex, follow",
     manifest: "/manifest.json",
     applicationName: "QuickBG",
     appleWebApp: {
@@ -90,7 +90,12 @@ export default async function RootLayout({
 }>) {
   const headersList = await headers();
   const localeHeader = headersList.get("x-locale") || defaultLocale;
+  const pathWithoutLocale = headersList.get("x-path-without-locale") || "/";
   const lang = localeHeader === "en" ? "en" : localeHeader;
+  const shouldLoadAds =
+    localeHeader === defaultLocale &&
+    !pathWithoutLocale.startsWith("/admin") &&
+    pathWithoutLocale !== "/offline";
 
   return (
     <html lang={lang} suppressHydrationWarning>
@@ -119,12 +124,14 @@ export default async function RootLayout({
       <body className="font-sans" suppressHydrationWarning>
         <ClientLayout initialLocale={localeHeader as Locale}>{children}</ClientLayout>
         <Analytics />
-        <Script
-          id="adsbygoogle-init"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
-          strategy="lazyOnload"
-          crossOrigin="anonymous"
-        />
+        {shouldLoadAds && (
+          <Script
+            id="adsbygoogle-init"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8295197664969828"
+            strategy="lazyOnload"
+            crossOrigin="anonymous"
+          />
+        )}
       </body>
     </html>
   );

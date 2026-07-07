@@ -396,16 +396,6 @@ export default function AdjustPage() {
                   <div className="rounded-xl overflow-hidden premium-surface relative">
                     <div className="flex items-center justify-between px-4 py-3 bg-white/[0.035] border-b border-white/10">
                       <div className="text-sm font-medium text-primary">Processed</div>
-                      <div className="flex items-center gap-2">
-                        {result && (
-                          <a href={result} download={`${image.name.split(".")[0]}_adjusted.${getFileExtension()}`}>
-                            <Button size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              {t("remover.actions.download")}
-                            </Button>
-                          </a>
-                        )}
-                      </div>
                     </div>
                     <div className="p-6 flex items-center justify-center bg-gradient-to-b from-white/3 via-transparent to-transparent">
                       {result ? (
@@ -423,6 +413,16 @@ export default function AdjustPage() {
                         </div>
                       )}
                     </div>
+                    {result && (
+                      <div className="px-4 pb-4">
+                        <a href={result} download={`${image.name.split(".")[0]}_adjusted.${getFileExtension()}`} className="block">
+                          <Button size="sm" className="w-full">
+                            <Download className="h-4 w-4 mr-2" />
+                            {t("remover.actions.download")}
+                          </Button>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 

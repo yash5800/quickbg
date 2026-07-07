@@ -270,6 +270,55 @@ export default async function ComparisonPage() {
           </div>
         </section>
 
+        <section className="mt-16 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <Card className="premium-surface p-6 sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-secondary/80">How to choose</p>
+            <h2 className="mt-2 text-2xl font-semibold text-white">Pick the tool based on the job, not the brand name</h2>
+            <div className="mt-5 space-y-4 text-sm leading-7 text-white/55">
+              <p>
+                Background removal tools look similar until you process a real batch. A one-off profile image has different needs than
+                a 60-photo product catalog, and a design template has different needs than a transparent PNG export. The best choice
+                depends on cost per image, output resolution, privacy, and what you need to do after the background is removed.
+              </p>
+              <p>
+                QuickBG is strongest when you need a practical editing workflow: remove the background, review the cutout, resize,
+                crop, adjust color, sharpen, and convert format without moving through several apps. Photoshop is strongest when you
+                need manual retouching. Canva is strongest when the final deliverable is a designed social graphic. Remove.bg is useful
+                for simple one-off removal, but paid HD exports can become expensive for sellers and agencies.
+              </p>
+            </div>
+          </Card>
+
+          <Card className="premium-surface overflow-hidden p-0">
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-white/10">
+                    <TableHead className="text-white/80 font-semibold">Use case</TableHead>
+                    <TableHead className="text-secondary font-semibold">Best fit</TableHead>
+                    <TableHead className="text-white/80 font-semibold">Why</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[
+                    ["Bulk product photos", "QuickBG", "Batch-friendly workflow with resize, crop, and conversion after removal"],
+                    ["Advanced retouching", "Photoshop", "Manual masks, layers, healing, and compositing controls"],
+                    ["Template-based social posts", "Canva", "Strong layout and template library after the image is already cleaned"],
+                    ["Single quick cutout", "QuickBG or Remove.bg", "Both are fast, but QuickBG keeps HD export free"],
+                    ["Private client assets", "QuickBG", "No training on uploads and short processing-focused retention"],
+                  ].map(([useCase, bestFit, reason]) => (
+                    <TableRow key={useCase} className="border-white/10">
+                      <TableCell className="font-medium text-white/85">{useCase}</TableCell>
+                      <TableCell className="text-sm text-secondary">{bestFit}</TableCell>
+                      <TableCell className="text-sm text-white/50">{reason}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        </section>
+
         <section className="mt-16">
           <Card className="premium-surface overflow-hidden">
             <div className="bg-gradient-to-br from-lime-500/10 via-transparent to-transparent p-6 sm:p-8 lg:p-10">

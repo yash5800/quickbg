@@ -1,5 +1,4 @@
 import type { MetadataRoute } from 'next'
-import { locales, localePrefixes } from '@/lib/i18n/config'
 
 const baseUrl = 'https://quickbg.dev'
 
@@ -27,7 +26,6 @@ const pages: PageEntry[] = [
   { path: '/terms', priority: 0.4 },
   { path: '/legal', priority: 0.4 },
   { path: '/contact', priority: 0.5 },
-  { path: '/offline', priority: 0.3 },
   { path: '/blog/how-ai-background-removal-works', priority: 0.6 },
   { path: '/blog/transparent-pngs-amazon-etsy', priority: 0.6 },
   { path: '/blog/ecommerce-product-photos-guide', priority: 0.6 },
@@ -60,29 +58,17 @@ const pages: PageEntry[] = [
   { path: '/blog/10-image-editing-mistakes-that-hurt-your-conversion-rates', priority: 0.6 },
 ]
 
+// English-only sitemap. The non-default locales (es/fr/de/hi) are intentionally
+// excluded: their tool-page prose falls back to English, so those URLs would be
+// mixed-language near-duplicates of the English pages — exactly what Google/AdSense
+// flags as low-value / auto-generated content. The locale switcher still works for
+// users; the localized routes are marked noindex (see src/app/layout.tsx). Re-add
+// a locale here once its translations are 100% complete.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const result: MetadataRoute.Sitemap = []
-
-  for (const locale of locales) {
-    const prefix = localePrefixes[locale]
-    for (const { path, priority } of pages) {
-      const url = `${baseUrl}${prefix}${path === '' ? '' : path}`
-
-      const languages: Record<string, string> = {}
-      for (const altLocale of locales) {
-        const altPrefix = localePrefixes[altLocale]
-        languages[altLocale] = `${baseUrl}${altPrefix}${path === '' ? '' : path}`
-      }
-
-      result.push({
-        url,
-        lastModified: new Date(),
-        changeFrequency: priority >= 0.9 ? 'weekly' : ('monthly' as const),
-        priority,
-        alternates: { languages },
-      })
-    }
-  }
-
-  return result
+  return pages.map(({ path, priority }) => ({
+    url: `${baseUrl}${path === '' ? '' : path}`,
+    lastModified: new Date(),
+    changeFrequency: priority >= 0.9 ? 'weekly' : ('monthly' as const),
+    priority,
+  }))
 }

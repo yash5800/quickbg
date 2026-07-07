@@ -143,7 +143,7 @@ export default function ConverterPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-2">
-              <Button variant="outline" onClick={() => inputRef.current?.click()}>{t("converter.change")}</Button>
+              <Button variant="default" onClick={() => inputRef.current?.click()}>{t("converter.change")}</Button>
               <Button onClick={() => void convert()} disabled={!file || isConverting}>
                 {isConverting ? "Converting..." : "Convert"}
               </Button>

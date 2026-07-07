@@ -538,7 +538,7 @@ const StatusIcon = statusConfig.icon;
               <Button
                 onClick={onCopy}
                 variant="outline"
-                className="w-full"
+                className="w-full border-sky-500/30 bg-sky-500/10 text-sky-700 hover:bg-sky-500/15 hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200"
                 size="sm"
               >
                 <Copy className="h-4 w-4 mr-2" />
@@ -548,7 +548,7 @@ const StatusIcon = statusConfig.icon;
             <Button
               onClick={onRemove}
               variant="outline"
-              className="w-full"
+              className="w-full border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/15 hover:text-destructive"
               size="sm"
             >
               <X className="h-4 w-4 mr-2" />
@@ -616,7 +616,7 @@ const StatusIcon = statusConfig.icon;
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs"
+                className="text-xs border-rose-500/25 bg-rose-500/10 text-rose-700 hover:bg-rose-500/15 hover:text-rose-800 dark:text-rose-300 dark:hover:text-rose-200"
                 onClick={onOpenEraser}
               >
                 <Eraser className="h-3 w-3 mr-1" />
@@ -626,7 +626,7 @@ const StatusIcon = statusConfig.icon;
             <Button
               variant="outline"
               size="sm"
-              className="text-xs"
+              className="text-xs border-amber-500/25 bg-amber-500/10 text-amber-700 hover:bg-amber-500/15 hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200"
               onClick={() => {
                 sessionStorage.setItem("originalImage", image.preview);
                 sessionStorage.setItem("processedImage", image.result!);
@@ -640,7 +640,7 @@ const StatusIcon = statusConfig.icon;
             <Button
               variant="outline"
               size="sm"
-              className="text-xs"
+              className="text-xs border-violet-500/25 bg-violet-500/10 text-violet-700 hover:bg-violet-500/15 hover:text-violet-800 dark:text-violet-300 dark:hover:text-violet-200"
               onClick={() => {
                 sessionStorage.setItem("toolImages", JSON.stringify([{ preview: image.result!, name: image.file.name }]));
                 router.push("/converter");
@@ -652,7 +652,7 @@ const StatusIcon = statusConfig.icon;
             <Button
               variant="outline"
               size="sm"
-              className="text-xs"
+              className="text-xs border-cyan-500/25 bg-cyan-500/10 text-cyan-700 hover:bg-cyan-500/15 hover:text-cyan-800 dark:text-cyan-300 dark:hover:text-cyan-200"
               onClick={() => {
                 sessionStorage.setItem("originalImage", image.preview);
                 sessionStorage.setItem("processedImage", image.result!);
@@ -665,7 +665,7 @@ const StatusIcon = statusConfig.icon;
             <Button
               variant="outline"
               size="sm"
-              className="text-xs"
+              className="text-xs border-emerald-500/25 bg-emerald-500/10 text-emerald-700 hover:bg-emerald-500/15 hover:text-emerald-800 dark:text-emerald-300 dark:hover:text-emerald-200"
               onClick={() => {
                 sessionStorage.setItem("originalImage", image.preview);
                 sessionStorage.setItem("processedImage", image.result!);
@@ -682,7 +682,7 @@ const StatusIcon = statusConfig.icon;
             initial={false}
             animate={isCompleted ? { opacity: 1, y: 0 } : { opacity: 0.98, y: 0 }}
             transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.28, ease: "easeOut" }}
-            className="premium-surface space-y-3 rounded-xl p-3.5 scroll-mt-24"
+            className="premium-surface space-y-3 rounded-xl border-primary/30 bg-primary/5 p-3.5 shadow-lg shadow-primary/10 scroll-mt-24"
           >
             <div className="flex items-center gap-2">
               <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary">
@@ -695,7 +695,7 @@ const StatusIcon = statusConfig.icon;
             </div>
 
             {/* Live preview on a checkerboard so the cutout AND the watermark are clearly visible */}
-            <div className="checkerboard relative overflow-hidden rounded-lg border border-border/70">
+            <div className="checkerboard relative overflow-hidden rounded-lg border border-primary/25 ring-1 ring-primary/10">
               <div className="flex min-h-[8rem] items-center justify-center p-2">
                 <img
                   src={image.result}

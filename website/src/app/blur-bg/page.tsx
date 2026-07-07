@@ -230,17 +230,18 @@ export default function BlurBgPage() {
                   </div>
                 </div>
               )}
-              {isLoaded && (
-                <Button
-                  onClick={handleDownload}
-                  className="absolute top-4 right-4"
-                  size="sm"
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  {t("remover.actions.download")}
-                </Button>
-              )}
             </div>
+
+            {isLoaded && (
+              <Button
+                onClick={handleDownload}
+                className="w-full"
+                size="sm"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                {t("remover.actions.download")}
+              </Button>
+            )}
 
             <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-sm">
               <span className="text-green-700 dark:text-green-400">{t("blurBg.badge")}</span>

@@ -150,7 +150,7 @@ function ScrollToTopButton() {
             onClick={handleClick}
             aria-label="Scroll to top"
             className={cn(
-              "group h-12 w-12 rounded-full border-2 border-foreground/20 bg-background p-0 shadow-2xl hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-xl",
+              "group h-12 w-12 rounded-full border-2 border-foreground/20 bg-background p-0 shadow-2xl hover:bg-primary hover:text-primary-foreground hover:border-primary hover:shadow-xl text-gray-500 dark:border-foreground",
               "focus-visible:ring-2 focus-visible:ring-ring/80"
             )}
           >

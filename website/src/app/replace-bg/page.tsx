@@ -224,15 +224,16 @@ export default function ReplaceBgPage() {
               ) : (
                 <img src={processedImage} alt="" className="w-full h-full object-contain" />
               )}
-              {result && (
-                <a href={result} download="replaced-bg.png" className="absolute top-4 right-4">
-                  <Button size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    {t("remover.actions.download")}
-                  </Button>
-                </a>
-              )}
             </div>
+
+            {result && (
+              <a href={result} download="replaced-bg.png" className="block">
+                <Button size="sm" className="w-full">
+                  <Download className="h-4 w-4 mr-2" />
+                  {t("remover.actions.download")}
+                </Button>
+              </a>
+            )}
 
             <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-sm">
               <span className="text-green-700 dark:text-green-400">{t("replaceBg.badge")}</span>

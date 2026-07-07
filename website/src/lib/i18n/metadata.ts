@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { locales, defaultLocale, localePrefixes, localeOpenGraph, type Locale } from "./config";
+import { defaultLocale, localeOpenGraph, type Locale } from "./config";
 import { t } from "./translations";
 
 const SITE_URL = "https://quickbg.dev";
@@ -27,26 +27,21 @@ export async function generatePageMetadata(
   const description = overrides?.description || t(locale, `${key}.description`);
   const keywords = overrides?.keywords;
 
-  // Build alternates for all locales
+  const isDefaultLocale = locale === defaultLocale;
   const alternates = {
-    canonical: locale === defaultLocale ? SITE_URL : `${SITE_URL}/${locale}`,
-    languages: {} as Record<string, string>,
+    canonical: SITE_URL,
   };
-
-  for (const loc of locales) {
-    if (loc === locale) continue;
-    const prefix = localePrefixes[loc];
-    alternates.languages[loc] = prefix ? `${SITE_URL}${prefix}` : SITE_URL;
-  }
 
   return {
     title,
     description,
     ...(keywords ? { keywords } : {}),
+    robots: isDefaultLocale ? "index, follow" : "noindex, follow",
     alternates,
     openGraph: {
       title,
       description,
+      url: SITE_URL,
       locale: localeOpenGraph[locale] || "en_US",
     },
   };
@@ -65,28 +60,19 @@ export function getLocaleMetadata(
   const description = overrides?.description || t(locale, `${key}.description`);
   const keywords = overrides?.keywords;
 
-  const prefix = localePrefixes[locale];
   const fullPath = path === "/" ? "" : path;
-  const url = prefix ? `${SITE_URL}${prefix}${fullPath}` : `${SITE_URL}${fullPath}`;
+  const url = `${SITE_URL}${fullPath}`;
+  const isDefaultLocale = locale === defaultLocale;
 
-  // Build alternates for all locales
   const alternates = {
     canonical: url,
-    languages: {} as Record<string, string>,
   };
-
-  for (const loc of locales) {
-    if (loc === locale) continue;
-    const locPrefix = localePrefixes[loc];
-    alternates.languages[loc] = locPrefix
-      ? `${SITE_URL}${locPrefix}${fullPath}`
-      : `${SITE_URL}${fullPath}`;
-  }
 
   return {
     title,
     description,
     ...(keywords ? { keywords } : {}),
+    robots: isDefaultLocale ? "index, follow" : "noindex, follow",
     alternates,
     openGraph: {
       title,
