@@ -2415,7 +2415,7 @@ TikTok's full-screen vertical format demands a different approach. Your imagery 
 
 ## Building a Reusable Asset Library
 
-A practical brand library does not need hundreds of files. Start with five reusable pieces: a transparent logo, two product or portrait cutouts, one blurred background, and one neutral texture or color field. Keep each asset named clearly with size and format, for example `founder-cutout-2000px.png` or `product-hero-webp-1200.webp`. This makes future campaigns faster because you are not hunting through random downloads.
+A practical brand library does not need hundreds of files. Start with five reusable pieces: a transparent logo, two product or portrait cutouts, one blurred background, and one neutral texture or color field. Keep each asset named clearly with size and format, for example \`founder-cutout-2000px.png\` or \`product-hero-webp-1200.webp\`. This makes future campaigns faster because you are not hunting through random downloads.
 
 Use <a href="/remover">background removal</a> to create the cutouts, <a href="/blur-bg">blur background</a> for soft depth, and <a href="/converter">converter</a> to export lightweight web versions. The key is repeatability: same crop rules, same color treatment, and same export sizes.
 
